@@ -1,0 +1,10 @@
+.zb-el-imageSlider {
+  width: 100%;
+  max-width: 100%;
+}
+.zb-el-imageSlider .swiper-slide {
+  text-align: center;
+}
+.zb-el-imageSlider .swiper-button-prev:focus, .zb-el-imageSlider .swiper-button-next:focus {
+  outline: none;
+}

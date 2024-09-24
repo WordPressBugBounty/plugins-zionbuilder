@@ -1,0 +1,137 @@
+.znpb-admin-post__edit-button.znpb-admin-post__edit-button--loading:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+#editor-status--inactive .znpb-admin-post__edit-button--deactivate, #editor-status--active .znpb-admin-post__edit-button--activate, #poststuff-status--inactive .znpb-admin-post__edit-button--deactivate, #poststuff-status--active .znpb-admin-post__edit-button--activate {
+  display: none;
+}
+
+#editor.block-editor__container .znpb-admin-post__edit-button {
+  padding: 8px 14px;
+}
+
+#editor.block-editor__container .znpb-admin-post__edit {
+  margin: 0 15px;
+}
+
+#editor.block-editor__container .editor-styles-wrapper .znpb-admin-post__edit-button {
+  color: #fff;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.znpb-admin-post__edit {
+  display: flex;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.znpb-admin-post__edit-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 14px 32px;
+  margin-right: 10px;
+  color: #fff;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 13px;
+  text-decoration: none;
+  background: #006dd2;
+  cursor: pointer;
+}
+
+.znpb-admin-post__edit-button:hover {
+  background: #0065c3;
+}
+
+.znpb-admin-post__edit-button .znpb-editor-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+}
+
+.znpb-admin-post__edit-button svg:not(:root) {
+  overflow: visible;
+}
+
+.znpb-admin-post__edit-button .zion-icon.zion-svg-inline {
+  display: block;
+  width: 1em;
+  height: 1em;
+  margin: auto;
+  color: #fff;
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 1px;
+}
+
+.znpb-admin-post__edit-button:hover, .znpb-admin-post__edit-button:focus {
+  color: #fff;
+  box-shadow: none;
+  opacity: 0.8;
+}
+
+.znpb-admin-post__edit-button > span {
+  margin-right: 7px;
+}
+
+.znpb-admin-post__edit-button--deactivate {
+  display: none;
+  color: #767676;
+  background: #fff;
+}
+
+.znpb-admin-post__edit-button--deactivate:hover, .znpb-admin-post__edit-button--deactivate:focus {
+  color: #767676;
+  background: #fafafa;
+  box-shadow: none;
+}
+
+.znpb-admin-post__edit-button.znpb-admin-post__edit-button--loading:before {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  margin-right: 7px;
+  border: 2px solid rgba(241, 241, 241, 0.2);
+  border-right-color: #d6d6d6;
+  animation: Rotate 0.6s linear infinite;
+  -webkit-animation: Rotate 0.6s linear infinite;
+}
+
+.znpb-admin-post__edit-button.znpb-admin-post__edit-button--loading .znpb-admin-post__edit-button-icon {
+  display: none;
+}
+
+.znpb-admin-post-editor--active .znpb-admin-post__edit .znpb-admin-post__edit-button--activate, .znpb-admin-post-editor--active #postdivrich, .znpb-admin-post-editor--active .editor-block-list__layout > * {
+  display: none;
+}
+
+.znpb-admin-post-editor--active .znpb-admin-post__edit .znpb-admin-post__edit-button--deactivate, .znpb-admin-post-editor--active .znpb-admin-post__edit-block {
+  display: flex;
+}
+
+.znpb-admin-post__edit-block {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  margin-top: 20px;
+  background: #f3f3f3;
+  border: 1px solid #ccc;
+}
+
+@keyframes Rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

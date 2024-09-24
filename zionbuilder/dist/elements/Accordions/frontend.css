@@ -1,0 +1,64 @@
+.zb-el-accordions-accordionWrapper {
+  overflow: hidden;
+  margin-bottom: 8px;
+  border: 1px solid #e5e5e5;
+}
+.zb-el-accordions-accordionWrapper:last-of-type {
+  margin-bottom: 0;
+}
+
+.zb-el-accordions-accordionTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  color: #858585;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.25s;
+  cursor: pointer;
+}
+.zb-el-accordions--active .zb-el-accordions-accordionTitle {
+  color: #464646;
+}
+.zb-el-accordions--active .zb-el-accordions-accordionTitle > .zb-el-accordions-accordionIcon {
+  transform: scaleY(-1);
+}
+.zb-el-accordions-accordionTitle:focus {
+  outline: none;
+}
+.zb-el-accordions-accordionTitle:hover {
+  color: #464646;
+}
+
+.zb-el-accordions-accordionIcon {
+  font-size: 12px;
+  transition: transform 0.25s;
+}
+.zb-el-accordions-accordionIcon:before {
+  content: "\f078";
+  font-family: "Font Awesome 5 Free Solid";
+}
+
+.zb-el-accordions-accordionContent {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  color: #858585;
+  opacity: 0;
+  visibility: hidden;
+}
+.zb-el-accordions--transition .zb-el-accordions-accordionContent {
+  transition: all 0.25s;
+  transition-property: padding, opacity, height;
+}
+.zb-el-accordions--active .zb-el-accordions-accordionContent {
+  position: relative;
+  height: auto;
+  opacity: 1;
+  visibility: visible;
+}
+.zb-el-accordions-accordionContent__inner {
+  padding: 0 20px 15px;
+  transition: all 0.25s;
+}

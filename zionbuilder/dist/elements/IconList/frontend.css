@@ -1,0 +1,53 @@
+.zb-el-iconList {
+  display: flex;
+}
+.zb-el-iconList.-layout--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.zb-el-iconList.-layout--column {
+  flex-direction: column;
+}
+.zb-el-iconList__item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  text-decoration: none;
+}
+.zb-el-iconList__itemIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  color: #006dd2;
+  font-size: 18px;
+  line-height: 1;
+}
+.zb-el-iconList__itemIcon:before {
+  width: 1em;
+  height: 1em;
+  text-align: center;
+}
+.zb-el-iconList__item--iconLeft .zb-el-iconList__item {
+  flex-direction: row;
+}
+.zb-el-iconList__item--iconRight .zb-el-iconList__item {
+  flex-direction: row-reverse;
+}
+.zb-el-iconList__item--iconRight .zb-el-iconList__itemIcon {
+  margin-right: 0;
+  margin-left: 10px;
+}
+.zb-el-iconList__item--iconTop .zb-el-iconList__item {
+  flex-direction: column;
+}
+.zb-el-iconList__item--iconTop .zb-el-iconList__itemIcon {
+  margin: 0;
+}
+.zb-el-iconList__item--iconBottom .zb-el-iconList__item {
+  flex-direction: column-reverse;
+}
+.zb-el-iconList__item--iconBottom .zb-el-iconList__itemIcon {
+  margin: 0;
+}

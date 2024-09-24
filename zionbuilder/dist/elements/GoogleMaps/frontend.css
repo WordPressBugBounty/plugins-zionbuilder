@@ -1,0 +1,7 @@
+.zb-el-googleMaps {
+  height: 400px;
+}
+.zb-el-googleMaps iframe {
+  width: 100%;
+  height: 100%;
+}

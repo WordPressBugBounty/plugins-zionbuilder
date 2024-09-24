@@ -1,0 +1,28 @@
+.zb-el-iconBox {
+  display: flex;
+}
+.zb-el-iconBox--icon-top {
+  flex-direction: column;
+}
+.zb-el-iconBox--icon-left {
+  flex-direction: row;
+}
+.zb-el-iconBox--icon-left .zb-el-iconBox-iconWrapper {
+  margin-right: 25px;
+}
+.zb-el-iconBox--icon-right {
+  flex-direction: row-reverse;
+}
+.zb-el-iconBox--icon-right .zb-el-iconBox-iconWrapper {
+  margin-left: 25px;
+}
+
+.zb-el-iconBox-text {
+  flex: 1;
+}
+
+.zb-el-iconBox-spacer {
+  display: block;
+  width: 25px;
+  height: 25px;
+}

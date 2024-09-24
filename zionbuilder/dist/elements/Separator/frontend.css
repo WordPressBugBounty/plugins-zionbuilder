@@ -1,0 +1,37 @@
+.zb-el-zionSeparator {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  margin: 10px 0;
+}
+.zb-el-zionSeparator-item {
+  display: flex;
+  width: 100%;
+  border-top: 1px solid;
+}
+.zb-el-zionSeparator-item-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.zb-el-zionSeparator-item--size {
+  width: 100%;
+  border-top-width: 5px;
+}
+.zb-el-zionSeparator-icon {
+  position: relative;
+  padding: 0 20px;
+}
+.zb-el-zionSeparator-icon-line {
+  display: block;
+  width: 50%;
+}
+.zb-el-zionSeparator-icon-line-one {
+  left: 0;
+}
+.zb-el-zionSeparator-icon-line-two {
+  right: 0;
+}

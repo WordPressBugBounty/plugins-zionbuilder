@@ -1,0 +1,58 @@
+.zb-el-alert {
+  position: relative;
+  padding: 20px 40px 20px 25px;
+  color: #fff;
+  background-color: #2ea1f8;
+  border-radius: 3px;
+}
+.zb-el-alert--success {
+  background-color: #28a745;
+}
+.zb-el-alert--warning {
+  background-color: #eec643;
+}
+.zb-el-alert--danger {
+  background-color: #e84655;
+}
+.zb-el-alert--info {
+  background-color: #2ea1f8;
+}
+
+.zb-el-alert__title {
+  display: inline-block;
+  margin: 0 0 15px 0;
+  color: #fff;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.zb-el-alert__closeIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+.zb-el-alert__closeIcon:hover {
+  opacity: 0.6;
+}
+.zb-el-alert__closeIcon:after, .zb-el-alert__closeIcon:before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 9px;
+  display: block;
+  width: 2px;
+  height: 14px;
+  background: currentColor;
+}
+.zb-el-alert__closeIcon:before {
+  transform: rotate(45deg);
+}
+.zb-el-alert__closeIcon:after {
+  transform: rotate(-45deg);
+}
