@@ -57,7 +57,6 @@ class Admin {
 
 		// Set admin body class
 		add_filter( 'admin_body_class', [ $this, 'set_builder_theme' ] );
-
 	}
 
 	/**
@@ -312,7 +311,7 @@ class Admin {
 
 		$post_instance = Plugin::$instance->post_manager->get_post_instance( $post->ID );
 		if ( $post_instance->is_built_with_zion() ) {
-			$whitelabel_title = sprintf( __('Edit with %s', 'zionbuilder'), Whitelabel::get_title() );
+			$whitelabel_title = sprintf( __( 'Edit with %s', 'zionbuilder' ), Whitelabel::get_title() );
 
 			$actions['zionbuilder_edit_link'] = '<a href="' . $post_instance->get_edit_url() . '">' . $whitelabel_title . '</a>';
 		}
@@ -397,7 +396,7 @@ class Admin {
 	 * @return void
 	 */
 	public function add_admin_page() {
-		$zion_logo = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOCAyMSIgd2lkdGg9IjE4Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTggNS40TDkgLjIuMSA1LjRsNC4yIDIuM0w5IDUuMWw0LjEgMi4zLTEwLjUgNi4zTDkgMTcuM2w0LjgtMi42IDEuNiAxLjFMOSAxOS41bC04LTQuNi4yLTcuM0wwIDYuOXY4LjhsOSA1LjEgOC43LTUtMy45LTIuM0w5IDE2bC00LjEtMi40IDEwLjQtNi4xTDkgMy44IDQuMyA2LjQgMi40IDUuMyA5IDEuNmw3LjkgNC42djcuM2wxLjEuN3oiLz48L3N2Zz4=";
+		$zion_logo  = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOCAyMSIgd2lkdGg9IjE4Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTggNS40TDkgLjIuMSA1LjRsNC4yIDIuM0w5IDUuMWw0LjEgMi4zLTEwLjUgNi4zTDkgMTcuM2w0LjgtMi42IDEuNiAxLjFMOSAxOS41bC04LTQuNi4yLTcuM0wwIDYuOXY4LjhsOSA1LjEgOC43LTUtMy45LTIuM0w5IDE2bC00LjEtMi40IDEwLjQtNi4xTDkgMy44IDQuMyA2LjQgMi40IDUuMyA5IDEuNmw3LjkgNC42djcuM2wxLjEuN3oiLz48L3N2Zz4=';
 		$admin_logo = ( Utils::is_pro_active() && Whitelabel::has_custom_logo() ) ? Whitelabel::get_logo_url() : $zion_logo;
 		add_menu_page(
 			Whitelabel::get_title(),

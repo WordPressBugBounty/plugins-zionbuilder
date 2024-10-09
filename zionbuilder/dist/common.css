@@ -1455,6 +1455,10 @@ body .hg-popper-tooltip {
 .znpb-input-wrapper.znpb-forms-input-wrapper--inline > .znpb-input-content {
   display: flex;
   justify-content: flex-end;
+}
+.znpb-input-wrapper.znpb-forms-input-wrapper--inline .znpb-input-content {
+  width: 85px;
+  flex-grow: 0;
 }.znpb-input-range {
   display: flex;
   align-items: center;

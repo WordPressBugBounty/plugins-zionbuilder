@@ -59,14 +59,14 @@ class Environment {
 	 *
 	 * @return mixed The value for the requested id
 	 */
-	public static function get_value( $id, $default = null ) {
+	public static function get_value( $id, $fallback = null ) {
 		$config = self::get_config();
 
 		if ( isset( $config[$id] ) ) {
 			return $config[$id];
 		}
 
-		return $default;
+		return $fallback;
 	}
 
 	/**

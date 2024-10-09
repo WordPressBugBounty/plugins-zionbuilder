@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb8ca9f5d78130f3b3c1c1ac4fd7954f2
+class ComposerStaticInit974640d6bd11d231c4c399225299652a
 {
     public static $prefixLengthsPsr4 = array (
         'Z' => 
@@ -106,6 +106,7 @@ class ComposerStaticInitb8ca9f5d78130f3b3c1c1ac4fd7954f2
         'ZionBuilder\\Integrations\\Revisions' => __DIR__ . '/../..' . '/includes/Integrations/Revisions.php',
         'ZionBuilder\\Integrations\\TwentyNineteen' => __DIR__ . '/../..' . '/includes/Integrations/TwentyNineteen.php',
         'ZionBuilder\\Integrations\\WPML' => __DIR__ . '/../..' . '/includes/Integrations/WPML.php',
+        'ZionBuilder\\Integrations\\WPSearch' => __DIR__ . '/../..' . '/includes/Integrations/WPSearch.php',
         'ZionBuilder\\Integrations\\Yoast' => __DIR__ . '/../..' . '/includes/Integrations/Yoast.php',
         'ZionBuilder\\Library\\Library' => __DIR__ . '/../..' . '/includes/Library/Library.php',
         'ZionBuilder\\Library\\Sources\\BaseSource' => __DIR__ . '/../..' . '/includes/Library/Sources/BaseSource.php',
@@ -155,9 +156,9 @@ class ComposerStaticInitb8ca9f5d78130f3b3c1c1ac4fd7954f2
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb8ca9f5d78130f3b3c1c1ac4fd7954f2::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb8ca9f5d78130f3b3c1c1ac4fd7954f2::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb8ca9f5d78130f3b3c1c1ac4fd7954f2::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit974640d6bd11d231c4c399225299652a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit974640d6bd11d231c4c399225299652a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit974640d6bd11d231c4c399225299652a::$classMap;
 
         }, null, ClassLoader::class);
     }

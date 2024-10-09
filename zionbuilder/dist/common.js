@@ -17781,12 +17781,14 @@ var __async = (__this, __arguments, generator) => {
                       }, {
                         default: vue.withCtx(() => [
                           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(localColorPatterns.value, (color, i) => {
-                            return vue.openBlock(), vue.createElementBlock("span", {
+                            return vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", {
                               key: i,
                               class: "znpb-colorpicker-circle znpb-colorpicker-circle-color",
                               style: vue.normalizeStyle({ "background-color": color }),
                               onClick: ($event) => emit("color-updated", color)
-                            }, null, 12, _hoisted_2$l);
+                            }, null, 12, _hoisted_2$l)), [
+                              [_directive_znpb_tooltip, `${color})`]
+                            ]);
                           }), 128))
                         ]),
                         _: 1
@@ -18093,7 +18095,7 @@ var __async = (__this, __arguments, generator) => {
   const InputColorPicker_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$q = { class: "znpb-custom-selector" };
   const _hoisted_2$j = { class: "znpb-custom-selector__list-wrapper" };
-  const _hoisted_3$e = ["title", "onClick"];
+  const _hoisted_3$e = ["onClick"];
   const _hoisted_4$8 = {
     key: 0,
     class: "znpb-custom-selector__item-name"
@@ -18128,17 +18130,17 @@ var __async = (__this, __arguments, generator) => {
         emit("update:modelValue", valueToSend);
       }
       return (_ctx, _cache) => {
+        const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$q, [
           vue.createElementVNode("ul", _hoisted_2$j, [
             (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.options, (option, index2) => {
-              return vue.openBlock(), vue.createElementBlock("li", {
+              return vue.withDirectives((vue.openBlock(), vue.createElementBlock("li", {
                 key: index2,
                 class: vue.normalizeClass(["znpb-custom-selector__item", {
                   ["znpb-custom-selector__item--activePlaceholder"]: typeof _ctx.modelValue === "undefined" && typeof _ctx.placeholder !== "undefined" && _ctx.placeholder === option.id,
                   ["znpb-custom-selector__item--active"]: _ctx.modelValue === option.id,
                   [`znpb-custom-selector__columns-${_ctx.columns}`]: _ctx.columns
                 }]),
-                title: option.icon ? option.name : "",
                 onClick: ($event) => changeValue(option.id)
               }, [
                 !option.icon ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$8, vue.toDisplayString(option.name), 1)) : vue.createCommentVNode("", true),
@@ -18153,7 +18155,9 @@ var __async = (__this, __arguments, generator) => {
                   }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
                   option.name ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_6$4, vue.toDisplayString(option.name), 1)) : vue.createCommentVNode("", true)
                 ])) : vue.createCommentVNode("", true)
-              ], 10, _hoisted_3$e);
+              ], 10, _hoisted_3$e)), [
+                [_directive_znpb_tooltip, option.icon ? option.name : ""]
+              ]);
             }), 128))
           ])
         ]);

@@ -68,6 +68,7 @@ class Integrations {
 		$this->register_integration( 'ZionBuilder\Integrations\Polylang' );
 		$this->register_integration( 'ZionBuilder\Integrations\HappyFiles' );
 		$this->register_integration( 'ZionBuilder\Integrations\WPML' );
+		$this->register_integration( 'ZionBuilder\Integrations\WPSearch' );
 	}
 
 	/**

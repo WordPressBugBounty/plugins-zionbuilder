@@ -84,8 +84,6 @@ class Shadow extends BaseSchema {
 				'type'      => 'colorpicker',
 				'width'     => 50,
 				'title'     => __( 'Shadow color', 'zionbuilder' ),
-				'min'       => -999,
-				'max'       => 999,
 				'css_class' => 'znpb-shadow-option--ptop znpb-shadow-option__colorpicker',
 			]
 		);

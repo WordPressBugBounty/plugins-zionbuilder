@@ -91,6 +91,7 @@ return array(
     'ZionBuilder\\Integrations\\Revisions' => $baseDir . '/includes/Integrations/Revisions.php',
     'ZionBuilder\\Integrations\\TwentyNineteen' => $baseDir . '/includes/Integrations/TwentyNineteen.php',
     'ZionBuilder\\Integrations\\WPML' => $baseDir . '/includes/Integrations/WPML.php',
+    'ZionBuilder\\Integrations\\WPSearch' => $baseDir . '/includes/Integrations/WPSearch.php',
     'ZionBuilder\\Integrations\\Yoast' => $baseDir . '/includes/Integrations/Yoast.php',
     'ZionBuilder\\Library\\Library' => $baseDir . '/includes/Library/Library.php',
     'ZionBuilder\\Library\\Sources\\BaseSource' => $baseDir . '/includes/Library/Sources/BaseSource.php',

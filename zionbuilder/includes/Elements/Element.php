@@ -532,7 +532,7 @@ class Element {
 
 		$icon = $this->get_element_icon();
 
-		if ( $icon ) {
+		if ( ! empty( $icon ) ) {
 			$config['icon'] = $icon;
 		} else {
 			$config['thumb'] = $this->get_element_image();
@@ -774,7 +774,6 @@ class Element {
 			return;
 		}
 
-
 		/**
 		 * Allows you to create a different renderer
 		 */
@@ -892,14 +891,10 @@ class Element {
 		$video_source = ! empty( $options['videoSource'] ) ? $options['videoSource'] : 'local';
 		if ( $video_source === 'local' && ! empty( $options['mp4'] ) ) {
 			return true;
-		} else {
-			if ( $video_source === 'youtube' && ! empty( $options['youtubeURL'] ) ) {
+		} elseif ( $video_source === 'youtube' && ! empty( $options['youtubeURL'] ) ) {
 				return true;
-			} else {
-				if ( $video_source === 'vimeo' && ! empty( $options['vimeoURL'] ) ) {
-					return true;
-				}
-			}
+		} elseif ( $video_source === 'vimeo' && ! empty( $options['vimeoURL'] ) ) {
+				return true;
 		}
 
 		return false;
