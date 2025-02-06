@@ -11561,7 +11561,7 @@ var __async = (__this, __arguments, generator) => {
           tag: "ul",
           class: "znpb-tree-view-wrapper",
           group: "pagebuilder-treview-elements",
-          handle: ".znpb-tree-view__item-header",
+          handle: ".znpb-tree-view__itemHeader",
           "data-zion-element-uid": _ctx.element.uid,
           onStart: Vue.unref(sortableStart),
           onEnd: Vue.unref(sortableEnd),

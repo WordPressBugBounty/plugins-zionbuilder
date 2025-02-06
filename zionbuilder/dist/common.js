@@ -21562,7 +21562,8 @@ var __async = (__this, __arguments, generator) => {
       optionConfig = applyFilters2("zionbuilder/getOptionConfig", optionConfig, schema, model, formModel);
       if (!optionConfig) {
         console.warn(
-          `Option type ${schema.type} not found. Please register the option type using ZionBuilderApi.options.registerOption!`
+          `Option type ${schema.type} not found. Please register the option type using ZionBuilderApi.options.registerOption!`,
+          schema
         );
         return null;
       }

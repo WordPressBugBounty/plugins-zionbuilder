@@ -27,38 +27,11 @@ class Option extends Stack {
 	public $id = null;
 
 	/**
-	 * Holds a reference to the option type
+	 * Holds a reference to the option config
 	 *
-	 * @var string The option type
+	 * @var array The option config
 	 */
-	public $type = null;
-
-	/**
-	 * Holds a list of child Options
-	 *
-	 * @var Option[] The list of child options
-	 */
-	public $child_options = null;
-
-	/**
-	 * Holds a reference to the option title
-	 */
-	public $title = null;
-
-	/**
-	 * Holds a reference to the option description
-	 */
-	public $description = null;
-
-	/**
-	 * Holds a reference to the option group status. A group option will not add the own id when saving the values
-	 */
-	public $is_layout = null;
-
-	/**
-	 * Holds a reference to the option sync status. A sync option will not add the own id when saving the values, however, it will use the sync path to save the values
-	 */
-	public $sync = null;
+	public $config = [];
 
 	/**
 	 * Main class constructor
@@ -67,23 +40,23 @@ class Option extends Stack {
 	 * @param array $option_config List of options that will be added on class instantiation
 	 */
 	public function __construct( $option_id, $option_config = [] ) {
-		$this->id = $option_id;
-
-		$ignored_properties = [
-			'child_options',
-		];
-
-		foreach ( $option_config as $key => $value ) {
-			if ( ! in_array( $key, $ignored_properties, true ) ) {
-				$this->$key = $value;
-			}
-		}
+		$this->id            = $option_id;
+		$option_config['id'] = $option_id;
+		$this->config        = $option_config;
 
 		if ( ! empty( $option_config['child_options'] ) && is_array( $option_config['child_options'] ) ) {
 			foreach ( $option_config['child_options'] as $option_id => $option_config ) {
 				$this->add_option( $option_id, $option_config );
 			}
 		}
+	}
+
+	public function get_type() {
+		return $this->config['type'];
+	}
+
+	public function get_config() {
+		return $this->config;
 	}
 
 	/**
@@ -96,6 +69,34 @@ class Option extends Stack {
 	}
 
 	public function &get_stack() {
-		return $this->child_options;
+		return $this->config['child_options'];
+	}
+
+	public function has_child_options() {
+		return ! empty( $this->config['child_options'] );
+	}
+
+	public function get_child_options() {
+		return isset( $this->config['child_options'] ) ? $this->config['child_options'] : [];
+	}
+
+	public function is_layout() {
+		return isset( $this->config['is_layout'] ) && $this->config['is_layout'];
+	}
+
+	public function has_default_value() {
+		return isset( $this->config['default'] );
+	}
+
+	public function &get_value( $value_id ) {
+		return $this->config[$value_id];
+	}
+
+	public function has_dependency() {
+		return isset( $this->config['dependency'] );
+	}
+
+	public function remove_attribute( $attribute ) {
+		unset( $this->config[$attribute] );
 	}
 }

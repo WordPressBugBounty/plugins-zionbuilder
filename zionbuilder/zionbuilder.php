@@ -3,7 +3,7 @@
 Plugin Name: Zion Builder
 Plugin URI: https://zionbuilder.io/?utm_campaign=plugin-uri&utm_medium=wp-dashboard-plugins
 Description: The page builder you always wanted. Create any design you want using live editor.
-Version: 3.6.12
+Version: 3.6.13
 Author: zionbuilder.io
 Author URI: https://zionbuilder.io/?utm_campaign=plugin-uri&utm_medium=wp-dashboard-plugins
 Text Domain: zionbuilder
@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! function_exists( 'get_plugin_data' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
-$plugin_data = get_plugin_data( __FILE__ );
+$plugin_data = get_plugin_data( __FILE__, true, false );
 
 /**
  * Load text domain.
@@ -52,7 +52,7 @@ $plugin_data = get_plugin_data( __FILE__ );
 function zionbuilder_load_textdomain() {
 	load_plugin_textdomain( 'zionbuilder' );
 }
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\zionbuilder_load_textdomain' );
+add_action( 'init', __NAMESPACE__ . '\\zionbuilder_load_textdomain' );
 
 // Set the minimum PRO compatible version
 define( 'MINIMUM_ZION_PRO_VERSION', '3.3.0' );

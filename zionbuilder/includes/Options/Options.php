@@ -160,6 +160,37 @@ class Options extends Stack {
 			$this->trigger_injection();
 		}
 
+		return $this->parse_schema_for_export( self::$schemas[$this->schema_id] );
+	}
+
+	public function parse_schema_for_export( $schema ) {
+		$new_schema = [];
+
+		// Convert schema to array
+		foreach ( $schema as $key => $value ) {
+			$new_schema[$key] = $value->config;
+
+			if ( $value->has_child_options() ) {
+				$new_schema[$key]['child_options'] = $this->parse_schema_for_export( $value->get_child_options() );
+			}
+		}
+
+		return $new_schema;
+	}
+
+	/**
+	 * Get schema instance
+	 *
+	 * Returns the current schema instance
+	 *
+	 * @return Option[] The schema stack
+	 */
+	public function get_schema_instance() {
+		if ( $this->triggered_injection === null ) {
+			$this->triggered_injection = true;
+			$this->trigger_injection();
+		}
+
 		return self::$schemas[$this->schema_id];
 	}
 
@@ -183,7 +214,7 @@ class Options extends Stack {
 	public function parse_data() {
 		$model = apply_filters( 'zionbuilder/options/model_parse', $this->model );
 
-		$this->model = $this->setup_model( $this->get_schema(), $model );
+		$this->model = $this->setup_model( $this->get_schema_instance(), $model );
 	}
 
 
@@ -209,9 +240,9 @@ class Options extends Stack {
 			}
 
 			// Group options don't store the value so we need to look at children
-			if ( isset( $option_schema->is_layout ) && $option_schema->is_layout ) {
-				if ( $option_schema->child_options ) {
-					$model = array_merge( $model, $this->setup_model( $option_schema->child_options, $model ) );
+			if ( isset( $option_schema->is_layout ) && $option_schema->is_layout() ) {
+				if ( $option_schema->has_child_options() ) {
+					$model = array_merge( $model, $this->setup_model( $option_schema->get_child_options(), $model ) );
 				}
 			} else {
 				// Set the option value to model with fallback to default
@@ -226,17 +257,17 @@ class Options extends Stack {
 					if ( $this->custom_css ) {
 						$this->custom_css->parse_options_schema( $option_schema, $model[$option_id], $index );
 					}
-				} elseif ( isset( $option_schema->default ) ) {
-					$model[$option_id] = $option_schema->default;
+				} elseif ( $option_schema->has_default_value() ) {
+					$model[$option_id] = $option_schema->get_value( 'default' );
 				}
 
 				// Check for child content
-				if ( ! empty( $option_schema->child_options ) ) {
-					if ( $option_schema->type === 'repeater' ) {
+				if ( $option_schema->has_child_options() ) {
+					if ( $option_schema->get_type() === 'repeater' ) {
 						if ( ! empty( $model[$option_id] ) && is_array( $model[$option_id] ) ) {
 							foreach ( $model[$option_id] as $index => $option_value ) {
 								$index                     = (int) $index;
-								$model[$option_id][$index] = $this->setup_model( $option_schema->child_options, $option_value, $index );
+								$model[$option_id][$index] = $this->setup_model( $option_schema->get_child_options(), $option_value, $index );
 							}
 
 							// Reset index
@@ -244,7 +275,7 @@ class Options extends Stack {
 						}
 					} else {
 						$saved_value       = isset( $model[$option_id] ) ? $model[$option_id] : [];
-						$model[$option_id] = $this->setup_model( $option_schema->child_options, $saved_value );
+						$model[$option_id] = $this->setup_model( $option_schema->get_child_options(), $saved_value );
 
 						if ( ! empty( $saved_value ) ) {
 							$model[$option_id] = $saved_value;
@@ -268,8 +299,8 @@ class Options extends Stack {
 	public function check_dependency( $option_schema, $model ) {
 		$passed_dependency = true;
 
-		if ( isset( $option_schema->dependency ) ) {
-			foreach ( $option_schema->dependency as $dependency_config ) {
+		if ( $option_schema->has_dependency() ) {
+			foreach ( $option_schema->get_value( 'dependency' ) as $dependency_config ) {
 				$passed_dependency = $this->check_single_dependency( $dependency_config, $model );
 
 				if ( ! $passed_dependency ) {
@@ -295,10 +326,8 @@ class Options extends Stack {
 
 		if ( isset( $dependency_config['option'] ) ) {
 			$value = isset( $model[$dependency_config['option']] ) ? $model[$dependency_config['option']] : null;
-		} else {
-			if ( isset( $dependency_config['option_path'] ) ) {
+		} elseif ( isset( $dependency_config['option_path'] ) ) {
 				$value = $this->get_value_from_path( $dependency_config['option_path'] );
-			}
 		}
 
 		if ( $validation_type === 'includes' && in_array( $value, $dependency_config['value'], true ) ) {
@@ -380,7 +409,7 @@ class Options extends Stack {
 				$active_model[$path_location] = [];
 			}
 
-			$i++;
+			++$i;
 		}
 	}
 }

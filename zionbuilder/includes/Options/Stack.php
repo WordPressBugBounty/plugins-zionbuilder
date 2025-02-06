@@ -56,7 +56,7 @@ class Stack {
 	 *
 	 * @param string $option_id The option ID that will be added to stack
 	 *
-	 * @return boolean True if the option was succesfully removed. False in case the option ID is not registered on the provided stack
+	 * @return boolean True if the option was successfully removed. False in case the option ID is not registered on the provided stack
 	 */
 	public function remove_option( $option_id ) {
 		$stack = &$this->get_stack();
@@ -131,15 +131,14 @@ class Stack {
 				return $stack_as_clone[$path_location];
 			}
 
-			if ( ! isset( $stack_as_clone[$path_location]->child_options ) ) {
+			if ( ! isset( $stack_as_clone[$path_location]->config['child_options'] ) ) {
 				return null;
 			}
 
-			$stack_as_clone = $stack_as_clone[$path_location]->child_options;
-			$i++;
+			$stack_as_clone = $stack_as_clone[$path_location]->config['child_options'];
+			++$i;
 		}
 
 		return null;
 	}
-
 }

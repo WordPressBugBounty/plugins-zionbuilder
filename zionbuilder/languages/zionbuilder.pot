@@ -1,15 +1,15 @@
-# Copyright (C) 2024 zionbuilder.io
+# Copyright (C) 2025 zionbuilder.io
 # This file is distributed under the GPL3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Zion Builder 3.6.12\n"
+"Project-Id-Version: Zion Builder 3.6.13\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/zionbuilder\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-09T14:59:28+00:00\n"
+"POT-Creation-Date: 2025-02-06T14:12:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: zionbuilder\n"
@@ -4111,7 +4111,7 @@ msgstr ""
 #: dist/common.js:17217
 #: dist/common.js:20849
 #: dist/common.js:20888
-#: dist/common.js:22140
+#: dist/common.js:22141
 #: dist/editor.js:716
 #: dist/editor.js:6099
 msgid "Discard changes"
@@ -4465,14 +4465,14 @@ msgstr ""
 msgid "Edit link attributes"
 msgstr ""
 
-#: dist/common.js:23122
+#: dist/common.js:23123
 #: dist/editor.js:12835
 #: dist/editor.js:13227
 #: dist/editor.js:16580
 msgid "Save"
 msgstr ""
 
-#: dist/common.js:23177
+#: dist/common.js:23178
 msgid "No icons were found in package"
 msgstr ""
 
