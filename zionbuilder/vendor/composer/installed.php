@@ -3,7 +3,7 @@
         'name' => 'zionbuilder/zionbuilder',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '2adb0cd6c6795bfdb73423e1b21ff05aebda6d7a',
+        'reference' => '6eb82fec5ae9450a0c5dfc9345aabfbbb87ab29f',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -193,7 +193,7 @@
         'zionbuilder/zionbuilder' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '2adb0cd6c6795bfdb73423e1b21ff05aebda6d7a',
+            'reference' => '6eb82fec5ae9450a0c5dfc9345aabfbbb87ab29f',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

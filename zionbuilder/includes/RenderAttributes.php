@@ -221,8 +221,8 @@ class RenderAttributes {
 	 * @return void
 	 */
 	public function parse_options_schema( $option_schema, $option_value, $index = null ) {
-		if ( isset( $option_schema->render_attribute ) && is_array( $option_schema->render_attribute ) ) {
-			foreach ( $option_schema->render_attribute as $attribute_config ) {
+		if ( $option_schema->get_value( 'render_attribute' ) && is_array( $option_schema->get_value( 'render_attribute' ) ) ) {
+			foreach ( $option_schema->get_value( 'render_attribute' ) as $attribute_config ) {
 
 				if ( ! empty( $option_value ) ) {
 					$tag_id          = isset( $attribute_config['tag_id'] ) ? $attribute_config['tag_id'] : 'wrapper';
@@ -230,7 +230,7 @@ class RenderAttributes {
 					$attribute       = isset( $attribute_config['attribute'] ) ? $attribute_config['attribute'] : 'class';
 					$attribute_value = isset( $attribute_config['value'] ) ? $attribute_config['value'] : '';
 
-					if ( property_exists( $option_schema, 'responsive_options' ) && $option_schema->responsive_options ) {
+					if ( $option_schema->get_value( 'responsive_options' ) ) {
 						$option_value = ! is_array( $option_value ) ? [ 'default' => $option_value ] : $option_value;
 						foreach ( $option_value as $device_id => $value ) {
 							if ( ! isset( self::$responsive_devices_map[$device_id] ) || ! isset( $value ) ) {

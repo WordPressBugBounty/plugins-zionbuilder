@@ -3,7 +3,7 @@ Contributors: zionbuilder
 Tags: page builder, editor, visual editor, drag and drop, website builder, front-end builder
 Requires at least: 6.0.0
 Tested up to: 6.7.1
-Stable tag: 3.6.13
+Stable tag: 3.6.14
 Requires PHP: 7.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -225,6 +225,9 @@ Zion Builder is compatible with most themes that are well constructed according 
 The answer is definitely yes. If you run any kind of commercial business based on a WordPress theme and you wish to add interactivity in your pages, then Zion Builder can serve you the best.
 
 == Changelog ==
+= 3.6.14 =
+Fixed: Fixed columns not displaying properly
+
 = 3.6.13 =
 Fixed: Elements cannot be dragged inside tree view panel
 Improved: Compatibility with latest Wordpress version
