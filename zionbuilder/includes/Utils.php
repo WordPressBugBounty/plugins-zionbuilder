@@ -6,7 +6,7 @@ use ZionBuilder\Post\BasePostType;
 use ZionBuilder\Permissions;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -17,23 +17,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class Utils {
+class Utils
+{
 	/**
 	 * Check if pro version is active
 	 *
 	 * @return boolean if zion builder pro path is defined
 	 */
-	public static function is_pro_active() {
-		return apply_filters( 'zionbuilder/utils/pro_active', class_exists( 'ZionBuilderPro\Plugin' ), false );
+	public static function is_pro_active()
+	{
+		return apply_filters('zionbuilder/utils/pro_active', class_exists('ZionBuilderPro\Plugin'), false);
 	}
 
-		/**
+	/**
 	 * Check if pro version is active
 	 *
 	 * @return boolean if zion builder pro path is defined
 	 */
-	public static function is_pro_installed() {
-		return class_exists( 'ZionBuilderPro\Plugin' );
+	public static function is_pro_installed()
+	{
+		return class_exists('ZionBuilderPro\Plugin');
 	}
 
 	/**
@@ -41,8 +44,9 @@ class Utils {
 	 *
 	 * @return boolean
 	 */
-	public static function has_valid_license() {
-		return self::is_pro_active() && class_exists( '\ZionBuilderPro\License' ) && \ZionBuilderPro\License::has_valid_license();
+	public static function has_valid_license()
+	{
+		return self::is_pro_active() && class_exists('\ZionBuilderPro\License') && \ZionBuilderPro\License::has_valid_license();
 	}
 
 	/**
@@ -52,8 +56,9 @@ class Utils {
 	 *
 	 * @return string The URL to the Page Builder logo
 	 */
-	public static function get_logo_url() {
-		return apply_filters( 'zionbuilder/utils/logo_url', self::get_file_url( 'assets/img/zion-icon-dark.svg' ) );
+	public static function get_logo_url()
+	{
+		return apply_filters('zionbuilder/utils/logo_url', self::get_file_url('assets/img/zion-icon-dark.svg'));
 	}
 
 
@@ -65,8 +70,9 @@ class Utils {
 	 *
 	 * @return string
 	 */
-	public static function generate_uid( $prepend = 'uid', $length = 12 ) {
-		return $prepend . substr( str_shuffle( MD5( microtime() ) ), 0, $length );
+	public static function generate_uid($prepend = 'uid', $length = 12)
+	{
+		return $prepend . substr(str_shuffle(MD5(microtime())), 0, $length);
 	}
 
 	/**
@@ -74,8 +80,9 @@ class Utils {
 	 *
 	 * @return string
 	 */
-	public static function get_pro_png_url() {
-		return apply_filters( 'zionbuilder/utils/pro_png_url', self::get_file_url( 'assets/img/get-pro-illustration.png' ) );
+	public static function get_pro_png_url()
+	{
+		return apply_filters('zionbuilder/utils/pro_png_url', self::get_file_url('assets/img/get-pro-illustration.png'));
 	}
 
 	/**
@@ -83,8 +90,9 @@ class Utils {
 	 *
 	 * @return string
 	 */
-	public static function get_loader_url() {
-		return apply_filters( 'zionbuilder/utils/loader_url', self::get_file_url( 'assets/img/zion-loader-slim--small.gif' ) );
+	public static function get_loader_url()
+	{
+		return apply_filters('zionbuilder/utils/loader_url', self::get_file_url('assets/img/zion-loader-slim--small.gif'));
 	}
 
 	/**
@@ -96,7 +104,8 @@ class Utils {
 	 *
 	 * @return string
 	 */
-	public static function get_file_path( $path = '' ) {
+	public static function get_file_path($path = '')
+	{
 		return Plugin::instance()->get_root_path() . $path;
 	}
 
@@ -111,8 +120,9 @@ class Utils {
 	 *
 	 * @return string
 	 */
-	public static function get_file_url( $path = '', $scheme = null ) {
-		return set_url_scheme( Plugin::instance()->get_root_url() . $path, $scheme );
+	public static function get_file_url($path = '', $scheme = null)
+	{
+		return set_url_scheme(Plugin::instance()->get_root_url() . $path, $scheme);
 	}
 
 	/**
@@ -124,17 +134,18 @@ class Utils {
 	 *
 	 * @return string
 	 */
-	public static function get_file_url_from_path( $path ) {
+	public static function get_file_url_from_path($path)
+	{
 		// Set base URI
 		$theme_base = get_template_directory();
 
 		// Normalize paths
-		$theme_base = wp_normalize_path( $theme_base );
-		$path       = wp_normalize_path( $path );
+		$theme_base = wp_normalize_path($theme_base);
+		$path       = wp_normalize_path($path);
 
 		// @phpstan-ignore-next-line
 		$directory_path = WP_CONTENT_DIR;
-		$fw_basename    = str_replace( wp_normalize_path( $directory_path ), '', $path );
+		$fw_basename    = str_replace(wp_normalize_path($directory_path), '', $path);
 
 		return content_url() . $fw_basename;
 	}
@@ -148,15 +159,16 @@ class Utils {
 	 *
 	 * @return string
 	 */
-	public static function get_file_path_from_url( $path ) {
+	public static function get_file_path_from_url($path)
+	{
 		// Set base URI
 		$theme_base = get_template_directory_uri();
-		$path       = wp_normalize_path( $path );
+		$path       = wp_normalize_path($path);
 
-		$is_theme       = preg_match( '#' . $theme_base . '#', $path );
-		$directory_path = ( $is_theme ) ? get_template_directory() : \WP_PLUGIN_DIR;
-		$directory_uri  = ( $is_theme ) ? $theme_base : plugins_url();
-		$fw_basename    = str_replace( wp_normalize_path( $directory_uri ), '', $path );
+		$is_theme       = preg_match('#' . $theme_base . '#', $path);
+		$directory_path = ($is_theme) ? get_template_directory() : \WP_PLUGIN_DIR;
+		$directory_uri  = ($is_theme) ? $theme_base : plugins_url();
+		$fw_basename    = str_replace(wp_normalize_path($directory_uri), '', $path);
 
 		return $directory_path . $fw_basename;
 	}
@@ -170,11 +182,12 @@ class Utils {
 	 *
 	 * @return string The string in camelCase format
 	 */
-	public static function camel_case( $string, $capitalize_first_letter = false ) {
-		$str = str_replace( ' ', '', ucwords( str_replace( [ '-', '_' ], ' ', $string ) ) );
+	public static function camel_case($string, $capitalize_first_letter = false)
+	{
+		$str = str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $string)));
 
-		if ( ! $capitalize_first_letter ) {
-			$str[0] = strtolower( $str[0] );
+		if (! $capitalize_first_letter) {
+			$str[0] = strtolower($str[0]);
 		}
 
 		return $str;
@@ -187,7 +200,8 @@ class Utils {
 	 *
 	 * @return int[] The list of post ids build with Zion Builder
 	 */
-	public static function get_builder_pages() {
+	public static function get_builder_pages()
+	{
 		return get_posts(
 			[
 				'post_type'              => Permissions::get_allowed_post_types(),
@@ -205,29 +219,5 @@ class Utils {
 				],
 			]
 		);
-	}
-
-	/**
-	 * Prints a message in the error log
-	 *
-	 * @param array $data
-	 * @return void
-	 */
-	public static function log( $data = [] ) {
-		// phpcs:ignore
-		error_log( var_export( $data, true ) );
-	}
-
-	/**
-	 * Prints a message in the page
-	 *
-	 * @param array $data
-	 * @return void
-	 */
-	public static function error_log( $data = [] ) {
-		// phpcs:ignore
-		echo '<pre>';
-		var_dump(  $data );
-		echo '</pre>';
 	}
 }

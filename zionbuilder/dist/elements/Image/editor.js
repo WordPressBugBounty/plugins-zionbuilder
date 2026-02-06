@@ -32,18 +32,30 @@
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", null, [
           vue.renderSlot(_ctx.$slots, "start"),
-          hasLink.value ? (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({ key: 0 }, _ctx.api.getAttributesForTag("link_styles", extraAttributes.value), {
-            class: _ctx.api.getStyleClasses("link_styles")
-          }), [
-            vue.createElementVNode("img", vue.mergeProps(_ctx.api.getAttributesForTag("image_styles"), {
-              src: imageSrc.value,
-              class: _ctx.api.getStyleClasses("image_styles")
-            }), null, 16, _hoisted_1)
-          ], 16)) : imageSrc.value ? (vue.openBlock(), vue.createElementBlock("img", vue.mergeProps({ key: 1 }, _ctx.api.getAttributesForTag("image_styles", extraAttributes.value), {
+          hasLink.value ? (vue.openBlock(), vue.createElementBlock(
+            "a",
+            vue.mergeProps({ key: 0 }, __props.api.getAttributesForTag("link_styles", extraAttributes.value), {
+              class: __props.api.getStyleClasses("link_styles")
+            }),
+            [
+              vue.createElementVNode("img", vue.mergeProps(__props.api.getAttributesForTag("image_styles"), {
+                src: imageSrc.value,
+                class: __props.api.getStyleClasses("image_styles")
+              }), null, 16, _hoisted_1)
+            ],
+            16
+            /* FULL_PROPS */
+          )) : imageSrc.value ? (vue.openBlock(), vue.createElementBlock("img", vue.mergeProps({ key: 1 }, __props.api.getAttributesForTag("image_styles", extraAttributes.value), {
             src: imageSrc.value,
-            class: _ctx.api.getStyleClasses("image_styles")
-          }), null, 16, _hoisted_2)) : vue.createCommentVNode("", true),
-          _ctx.options.show_caption ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3, vue.toDisplayString(_ctx.options.caption_text), 1)) : vue.createCommentVNode("", true),
+            class: __props.api.getStyleClasses("image_styles")
+          }), null, 16, _hoisted_2)) : vue.createCommentVNode("v-if", true),
+          __props.options.show_caption ? (vue.openBlock(), vue.createElementBlock(
+            "div",
+            _hoisted_3,
+            vue.toDisplayString(__props.options.caption_text),
+            1
+            /* TEXT */
+          )) : vue.createCommentVNode("v-if", true),
           vue.renderSlot(_ctx.$slots, "end")
         ]);
       };

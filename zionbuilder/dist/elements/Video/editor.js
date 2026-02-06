@@ -17,16 +17,13 @@ var __spreadValues = (a, b) => {
 (function(vue) {
   "use strict";
   var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
-  const freeGlobal$1 = freeGlobal;
   var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-  var root = freeGlobal$1 || freeSelf || Function("return this")();
-  const root$1 = root;
-  var Symbol$1 = root$1.Symbol;
-  const Symbol$2 = Symbol$1;
+  var root = freeGlobal || freeSelf || Function("return this")();
+  var Symbol$1 = root.Symbol;
   var objectProto$b = Object.prototype;
   var hasOwnProperty$8 = objectProto$b.hasOwnProperty;
   var nativeObjectToString$1 = objectProto$b.toString;
-  var symToStringTag$1 = Symbol$2 ? Symbol$2.toStringTag : void 0;
+  var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : void 0;
   function getRawTag(value) {
     var isOwn = hasOwnProperty$8.call(value, symToStringTag$1), tag = value[symToStringTag$1];
     try {
@@ -50,7 +47,7 @@ var __spreadValues = (a, b) => {
     return nativeObjectToString.call(value);
   }
   var nullTag = "[object Null]", undefinedTag = "[object Undefined]";
-  var symToStringTag = Symbol$2 ? Symbol$2.toStringTag : void 0;
+  var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : void 0;
   function baseGetTag(value) {
     if (value == null) {
       return value === void 0 ? undefinedTag : nullTag;
@@ -61,7 +58,6 @@ var __spreadValues = (a, b) => {
     return value != null && typeof value == "object";
   }
   var isArray = Array.isArray;
-  const isArray$1 = isArray;
   function isObject(value) {
     var type = typeof value;
     return value != null && (type == "object" || type == "function");
@@ -74,12 +70,11 @@ var __spreadValues = (a, b) => {
     var tag = baseGetTag(value);
     return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
   }
-  var coreJsData = root$1["__core-js_shared__"];
-  const coreJsData$1 = coreJsData;
-  var maskSrcKey = function() {
-    var uid = /[^.]+$/.exec(coreJsData$1 && coreJsData$1.keys && coreJsData$1.keys.IE_PROTO || "");
+  var coreJsData = root["__core-js_shared__"];
+  var maskSrcKey = (function() {
+    var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
     return uid ? "Symbol(src)_1." + uid : "";
-  }();
+  })();
   function isMasked(func) {
     return !!maskSrcKey && maskSrcKey in func;
   }
@@ -120,8 +115,7 @@ var __spreadValues = (a, b) => {
     var value = getValue(object, key);
     return baseIsNative(value) ? value : void 0;
   }
-  var WeakMap = getNative(root$1, "WeakMap");
-  const WeakMap$1 = WeakMap;
+  var WeakMap = getNative(root, "WeakMap");
   var MAX_SAFE_INTEGER$1 = 9007199254740991;
   var reIsUint = /^(?:0|[1-9]\d*)$/;
   function isIndex(value, length) {
@@ -158,22 +152,20 @@ var __spreadValues = (a, b) => {
   var objectProto$7 = Object.prototype;
   var hasOwnProperty$6 = objectProto$7.hasOwnProperty;
   var propertyIsEnumerable$1 = objectProto$7.propertyIsEnumerable;
-  var isArguments = baseIsArguments(function() {
+  var isArguments = baseIsArguments(/* @__PURE__ */ (function() {
     return arguments;
-  }()) ? baseIsArguments : function(value) {
+  })()) ? baseIsArguments : function(value) {
     return isObjectLike(value) && hasOwnProperty$6.call(value, "callee") && !propertyIsEnumerable$1.call(value, "callee");
   };
-  const isArguments$1 = isArguments;
   function stubFalse() {
     return false;
   }
   var freeExports$1 = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule$1 = freeExports$1 && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports$1 = freeModule$1 && freeModule$1.exports === freeExports$1;
-  var Buffer2 = moduleExports$1 ? root$1.Buffer : void 0;
+  var Buffer2 = moduleExports$1 ? root.Buffer : void 0;
   var nativeIsBuffer = Buffer2 ? Buffer2.isBuffer : void 0;
   var isBuffer = nativeIsBuffer || stubFalse;
-  const isBuffer$1 = isBuffer;
   var argsTag$1 = "[object Arguments]", arrayTag$1 = "[object Array]", boolTag$1 = "[object Boolean]", dateTag$1 = "[object Date]", errorTag$1 = "[object Error]", funcTag = "[object Function]", mapTag$2 = "[object Map]", numberTag$1 = "[object Number]", objectTag$2 = "[object Object]", regexpTag$1 = "[object RegExp]", setTag$2 = "[object Set]", stringTag$1 = "[object String]", weakMapTag$1 = "[object WeakMap]";
   var arrayBufferTag$1 = "[object ArrayBuffer]", dataViewTag$2 = "[object DataView]", float32Tag = "[object Float32Array]", float64Tag = "[object Float64Array]", int8Tag = "[object Int8Array]", int16Tag = "[object Int16Array]", int32Tag = "[object Int32Array]", uint8Tag = "[object Uint8Array]", uint8ClampedTag = "[object Uint8ClampedArray]", uint16Tag = "[object Uint16Array]", uint32Tag = "[object Uint32Array]";
   var typedArrayTags = {};
@@ -190,8 +182,8 @@ var __spreadValues = (a, b) => {
   var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule = freeExports && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports = freeModule && freeModule.exports === freeExports;
-  var freeProcess = moduleExports && freeGlobal$1.process;
-  var nodeUtil = function() {
+  var freeProcess = moduleExports && freeGlobal.process;
+  var nodeUtil = (function() {
     try {
       var types = freeModule && freeModule.require && freeModule.require("util").types;
       if (types) {
@@ -200,17 +192,15 @@ var __spreadValues = (a, b) => {
       return freeProcess && freeProcess.binding && freeProcess.binding("util");
     } catch (e) {
     }
-  }();
-  const nodeUtil$1 = nodeUtil;
-  var nodeIsTypedArray = nodeUtil$1 && nodeUtil$1.isTypedArray;
+  })();
+  var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
   var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
-  const isTypedArray$1 = isTypedArray;
   var objectProto$6 = Object.prototype;
   var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
   function arrayLikeKeys(value, inherited) {
-    var isArr = isArray$1(value), isArg = !isArr && isArguments$1(value), isBuff = !isArr && !isArg && isBuffer$1(value), isType = !isArr && !isArg && !isBuff && isTypedArray$1(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
+    var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer(value), isType = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
     for (var key in value) {
-      if ((inherited || hasOwnProperty$5.call(value, key)) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
+      if (hasOwnProperty$5.call(value, key) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
       (key == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
       isBuff && (key == "offset" || key == "parent") || // PhantomJS 2 has enumerable non-index properties on typed arrays.
       isType && (key == "buffer" || key == "byteLength" || key == "byteOffset") || // Skip index properties.
@@ -226,12 +216,11 @@ var __spreadValues = (a, b) => {
     };
   }
   var nativeKeys = overArg(Object.keys, Object);
-  const nativeKeys$1 = nativeKeys;
   var objectProto$5 = Object.prototype;
   var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
   function baseKeys(object) {
     if (!isPrototype(object)) {
-      return nativeKeys$1(object);
+      return nativeKeys(object);
     }
     var result = [];
     for (var key in Object(object)) {
@@ -245,9 +234,8 @@ var __spreadValues = (a, b) => {
     return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
   }
   var nativeCreate = getNative(Object, "create");
-  const nativeCreate$1 = nativeCreate;
   function hashClear() {
-    this.__data__ = nativeCreate$1 ? nativeCreate$1(null) : {};
+    this.__data__ = nativeCreate ? nativeCreate(null) : {};
     this.size = 0;
   }
   function hashDelete(key) {
@@ -260,7 +248,7 @@ var __spreadValues = (a, b) => {
   var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
   function hashGet(key) {
     var data = this.__data__;
-    if (nativeCreate$1) {
+    if (nativeCreate) {
       var result = data[key];
       return result === HASH_UNDEFINED$2 ? void 0 : result;
     }
@@ -270,13 +258,13 @@ var __spreadValues = (a, b) => {
   var hasOwnProperty$2 = objectProto$3.hasOwnProperty;
   function hashHas(key) {
     var data = this.__data__;
-    return nativeCreate$1 ? data[key] !== void 0 : hasOwnProperty$2.call(data, key);
+    return nativeCreate ? data[key] !== void 0 : hasOwnProperty$2.call(data, key);
   }
   var HASH_UNDEFINED$1 = "__lodash_hash_undefined__";
   function hashSet(key, value) {
     var data = this.__data__;
     this.size += this.has(key) ? 0 : 1;
-    data[key] = nativeCreate$1 && value === void 0 ? HASH_UNDEFINED$1 : value;
+    data[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED$1 : value;
     return this;
   }
   function Hash(entries) {
@@ -351,13 +339,12 @@ var __spreadValues = (a, b) => {
   ListCache.prototype.get = listCacheGet;
   ListCache.prototype.has = listCacheHas;
   ListCache.prototype.set = listCacheSet;
-  var Map = getNative(root$1, "Map");
-  const Map$1 = Map;
+  var Map = getNative(root, "Map");
   function mapCacheClear() {
     this.size = 0;
     this.__data__ = {
       "hash": new Hash(),
-      "map": new (Map$1 || ListCache)(),
+      "map": new (Map || ListCache)(),
       "string": new Hash()
     };
   }
@@ -426,7 +413,7 @@ var __spreadValues = (a, b) => {
     var data = this.__data__;
     if (data instanceof ListCache) {
       var pairs = data.__data__;
-      if (!Map$1 || pairs.length < LARGE_ARRAY_SIZE - 1) {
+      if (!Map || pairs.length < LARGE_ARRAY_SIZE - 1) {
         pairs.push([key, value]);
         this.size = ++data.size;
         return this;
@@ -471,25 +458,21 @@ var __spreadValues = (a, b) => {
       return propertyIsEnumerable.call(object, symbol);
     });
   };
-  const getSymbols$1 = getSymbols;
   function baseGetAllKeys(object, keysFunc, symbolsFunc) {
     var result = keysFunc(object);
-    return isArray$1(object) ? result : arrayPush(result, symbolsFunc(object));
+    return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
   }
   function getAllKeys(object) {
-    return baseGetAllKeys(object, keys, getSymbols$1);
+    return baseGetAllKeys(object, keys, getSymbols);
   }
-  var DataView = getNative(root$1, "DataView");
-  const DataView$1 = DataView;
-  var Promise$1 = getNative(root$1, "Promise");
-  const Promise$2 = Promise$1;
-  var Set = getNative(root$1, "Set");
-  const Set$1 = Set;
+  var DataView = getNative(root, "DataView");
+  var Promise$1 = getNative(root, "Promise");
+  var Set = getNative(root, "Set");
   var mapTag$1 = "[object Map]", objectTag$1 = "[object Object]", promiseTag = "[object Promise]", setTag$1 = "[object Set]", weakMapTag = "[object WeakMap]";
   var dataViewTag$1 = "[object DataView]";
-  var dataViewCtorString = toSource(DataView$1), mapCtorString = toSource(Map$1), promiseCtorString = toSource(Promise$2), setCtorString = toSource(Set$1), weakMapCtorString = toSource(WeakMap$1);
+  var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map), promiseCtorString = toSource(Promise$1), setCtorString = toSource(Set), weakMapCtorString = toSource(WeakMap);
   var getTag = baseGetTag;
-  if (DataView$1 && getTag(new DataView$1(new ArrayBuffer(1))) != dataViewTag$1 || Map$1 && getTag(new Map$1()) != mapTag$1 || Promise$2 && getTag(Promise$2.resolve()) != promiseTag || Set$1 && getTag(new Set$1()) != setTag$1 || WeakMap$1 && getTag(new WeakMap$1()) != weakMapTag) {
+  if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag$1 || Map && getTag(new Map()) != mapTag$1 || Promise$1 && getTag(Promise$1.resolve()) != promiseTag || Set && getTag(new Set()) != setTag$1 || WeakMap && getTag(new WeakMap()) != weakMapTag) {
     getTag = function(value) {
       var result = baseGetTag(value), Ctor = result == objectTag$1 ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
       if (ctorString) {
@@ -509,9 +492,7 @@ var __spreadValues = (a, b) => {
       return result;
     };
   }
-  const getTag$1 = getTag;
-  var Uint8Array2 = root$1.Uint8Array;
-  const Uint8Array$1 = Uint8Array2;
+  var Uint8Array2 = root.Uint8Array;
   var HASH_UNDEFINED = "__lodash_hash_undefined__";
   function setCacheAdd(value) {
     this.__data__.set(value, HASH_UNDEFINED);
@@ -602,7 +583,7 @@ var __spreadValues = (a, b) => {
   var COMPARE_PARTIAL_FLAG$2 = 1, COMPARE_UNORDERED_FLAG = 2;
   var boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", mapTag = "[object Map]", numberTag = "[object Number]", regexpTag = "[object RegExp]", setTag = "[object Set]", stringTag = "[object String]", symbolTag = "[object Symbol]";
   var arrayBufferTag = "[object ArrayBuffer]", dataViewTag = "[object DataView]";
-  var symbolProto = Symbol$2 ? Symbol$2.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
+  var symbolProto = Symbol$1 ? Symbol$1.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
   function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
     switch (tag) {
       case dataViewTag:
@@ -612,7 +593,7 @@ var __spreadValues = (a, b) => {
         object = object.buffer;
         other = other.buffer;
       case arrayBufferTag:
-        if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array$1(object), new Uint8Array$1(other))) {
+        if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array2(object), new Uint8Array2(other))) {
           return false;
         }
         return true;
@@ -700,12 +681,12 @@ var __spreadValues = (a, b) => {
   var objectProto = Object.prototype;
   var hasOwnProperty = objectProto.hasOwnProperty;
   function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
-    var objIsArr = isArray$1(object), othIsArr = isArray$1(other), objTag = objIsArr ? arrayTag : getTag$1(object), othTag = othIsArr ? arrayTag : getTag$1(other);
+    var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
     objTag = objTag == argsTag ? objectTag : objTag;
     othTag = othTag == argsTag ? objectTag : othTag;
     var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
-    if (isSameTag && isBuffer$1(object)) {
-      if (!isBuffer$1(other)) {
+    if (isSameTag && isBuffer(object)) {
+      if (!isBuffer(other)) {
         return false;
       }
       objIsArr = true;
@@ -713,7 +694,7 @@ var __spreadValues = (a, b) => {
     }
     if (isSameTag && !objIsObj) {
       stack || (stack = new Stack());
-      return objIsArr || isTypedArray$1(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+      return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
     }
     if (!(bitmask & COMPARE_PARTIAL_FLAG)) {
       var objIsWrapped = objIsObj && hasOwnProperty.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty.call(other, "__wrapped__");
@@ -741,22 +722,10 @@ var __spreadValues = (a, b) => {
   function isEqual(value, other) {
     return baseIsEqual(value, other);
   }
-  const _hoisted_1 = /* @__PURE__ */ vue.createElementVNode("div", { class: "zb-el-zionVideo-wrapper" }, null, -1);
-  const _hoisted_2 = /* @__PURE__ */ vue.createElementVNode("div", { class: "znpb-el-zionVideo--bgOverlay" }, null, -1);
-  const _hoisted_3 = {
+  const _hoisted_1 = {
     key: 0,
     class: "zb-el-zionVideo-play-button zion-play-filled"
   };
-  const _hoisted_4 = /* @__PURE__ */ vue.createElementVNode("svg", {
-    class: "zb-icon",
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 64 64"
-  }, [
-    /* @__PURE__ */ vue.createElementVNode("path", { d: "M55.3 32 8.7 5.1v53.8L55.3 32z" })
-  ], -1);
-  const _hoisted_5 = [
-    _hoisted_4
-  ];
   const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     __name: "Video",
     props: {
@@ -822,31 +791,63 @@ var __spreadValues = (a, b) => {
         return styles;
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2
-        }, [
-          vue.renderSlot(_ctx.$slots, "start"),
-          _hoisted_1,
-          _hoisted_2,
-          _ctx.options.use_image_overlay ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(imageOverlayTag.value), {
-            key: 0,
-            ref_key: "videoOverlay",
-            ref: videoOverlay,
-            class: "zb-el-zionVideo-overlay zb-el-zionVideo-overlay--inline",
-            style: vue.normalizeStyle(getImageOverlayStyles.value)
-          }, {
-            default: vue.withCtx(() => [
-              _ctx.options.show_play_icon ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3, _hoisted_5)) : vue.createCommentVNode("", true)
-            ]),
-            _: 1
-          }, 8, ["style"])) : vue.createCommentVNode("", true),
-          vue.renderSlot(_ctx.$slots, "end")
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2
+          },
+          [
+            vue.renderSlot(_ctx.$slots, "start"),
+            _cache[1] || (_cache[1] = vue.createElementVNode(
+              "div",
+              { class: "zb-el-zionVideo-wrapper" },
+              null,
+              -1
+              /* CACHED */
+            )),
+            _cache[2] || (_cache[2] = vue.createElementVNode(
+              "div",
+              { class: "znpb-el-zionVideo--bgOverlay" },
+              null,
+              -1
+              /* CACHED */
+            )),
+            __props.options.use_image_overlay ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(imageOverlayTag.value), {
+              key: 0,
+              ref_key: "videoOverlay",
+              ref: videoOverlay,
+              class: "zb-el-zionVideo-overlay zb-el-zionVideo-overlay--inline",
+              style: vue.normalizeStyle(getImageOverlayStyles.value)
+            }, {
+              default: vue.withCtx(() => [
+                __props.options.show_play_icon ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1, [..._cache[0] || (_cache[0] = [
+                  vue.createElementVNode(
+                    "svg",
+                    {
+                      class: "zb-icon",
+                      xmlns: "http://www.w3.org/2000/svg",
+                      viewBox: "0 0 64 64"
+                    },
+                    [
+                      vue.createElementVNode("path", { d: "M55.3 32 8.7 5.1v53.8L55.3 32z" })
+                    ],
+                    -1
+                    /* CACHED */
+                  )
+                ])])) : vue.createCommentVNode("v-if", true)
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["style"])) : vue.createCommentVNode("v-if", true),
+            vue.renderSlot(_ctx.$slots, "end")
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });
-  const Video_vue_vue_type_style_index_0_lang = "";
   window.zb.editor.registerElementComponent({
     elementType: "zion_video",
     component: _sfc_main

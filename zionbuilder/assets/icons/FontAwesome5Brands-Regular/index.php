@@ -1,2 +1,2 @@
 <?php
-echo 'Directory browsing is not allowed!';
+if (! defined('ABSPATH')) exit;

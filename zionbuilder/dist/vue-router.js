@@ -1,13 +1,18 @@
 (function(vue) {
   "use strict";
   /*!
-    * vue-router v4.2.4
-    * (c) 2023 Eduardo San Martin Morote
+    * vue-router v4.5.1
+    * (c) 2025 Eduardo San Martin Morote
     * @license MIT
     */
-  const isBrowser = typeof window !== "undefined";
+  const isBrowser = typeof document !== "undefined";
+  function isRouteComponent(component) {
+    return typeof component === "object" || "displayName" in component || "props" in component || "__vccOpts" in component;
+  }
   function isESModule(obj) {
-    return obj.__esModule || obj[Symbol.toStringTag] === "Module";
+    return obj.__esModule || obj[Symbol.toStringTag] === "Module" || // support CF with dynamic imports that do not
+    // add the Module string tag
+    obj.default && isRouteComponent(obj.default);
   }
   const assign = Object.assign;
   function applyToParams(fn, params) {
@@ -21,6 +26,45 @@
   const noop = () => {
   };
   const isArray = Array.isArray;
+  const HASH_RE = /#/g;
+  const AMPERSAND_RE = /&/g;
+  const SLASH_RE = /\//g;
+  const EQUAL_RE = /=/g;
+  const IM_RE = /\?/g;
+  const PLUS_RE = /\+/g;
+  const ENC_BRACKET_OPEN_RE = /%5B/g;
+  const ENC_BRACKET_CLOSE_RE = /%5D/g;
+  const ENC_CARET_RE = /%5E/g;
+  const ENC_BACKTICK_RE = /%60/g;
+  const ENC_CURLY_OPEN_RE = /%7B/g;
+  const ENC_PIPE_RE = /%7C/g;
+  const ENC_CURLY_CLOSE_RE = /%7D/g;
+  const ENC_SPACE_RE = /%20/g;
+  function commonEncode(text) {
+    return encodeURI("" + text).replace(ENC_PIPE_RE, "|").replace(ENC_BRACKET_OPEN_RE, "[").replace(ENC_BRACKET_CLOSE_RE, "]");
+  }
+  function encodeHash(text) {
+    return commonEncode(text).replace(ENC_CURLY_OPEN_RE, "{").replace(ENC_CURLY_CLOSE_RE, "}").replace(ENC_CARET_RE, "^");
+  }
+  function encodeQueryValue(text) {
+    return commonEncode(text).replace(PLUS_RE, "%2B").replace(ENC_SPACE_RE, "+").replace(HASH_RE, "%23").replace(AMPERSAND_RE, "%26").replace(ENC_BACKTICK_RE, "`").replace(ENC_CURLY_OPEN_RE, "{").replace(ENC_CURLY_CLOSE_RE, "}").replace(ENC_CARET_RE, "^");
+  }
+  function encodeQueryKey(text) {
+    return encodeQueryValue(text).replace(EQUAL_RE, "%3D");
+  }
+  function encodePath(text) {
+    return commonEncode(text).replace(HASH_RE, "%23").replace(IM_RE, "%3F");
+  }
+  function encodeParam(text) {
+    return text == null ? "" : encodePath(text).replace(SLASH_RE, "%2F");
+  }
+  function decode(text) {
+    try {
+      return decodeURIComponent("" + text);
+    } catch (err) {
+    }
+    return "" + text;
+  }
   const TRAILING_SLASH_RE = /\/$/;
   const removeTrailingSlash = (path) => path.replace(TRAILING_SLASH_RE, "");
   function parseURL(parseQuery2, location2, currentLocation = "/") {
@@ -44,7 +88,7 @@
       fullPath: path + (searchString && "?") + searchString + hash,
       path,
       query,
-      hash
+      hash: decode(hash)
     };
   }
   function stringifyURL(stringifyQuery2, location2) {
@@ -103,8 +147,20 @@
       } else
         break;
     }
-    return fromSegments.slice(0, position).join("/") + "/" + toSegments.slice(toPosition - (toPosition === toSegments.length ? 1 : 0)).join("/");
+    return fromSegments.slice(0, position).join("/") + "/" + toSegments.slice(toPosition).join("/");
   }
+  const START_LOCATION_NORMALIZED = {
+    path: "/",
+    // TODO: could we use a symbol in the future?
+    name: void 0,
+    params: {},
+    query: {},
+    hash: "",
+    fullPath: "/",
+    matched: [],
+    meta: {},
+    redirectedFrom: void 0
+  };
   var NavigationType;
   (function(NavigationType2) {
     NavigationType2["pop"] = "pop";
@@ -145,8 +201,8 @@
     };
   }
   const computeScrollPosition = () => ({
-    left: window.pageXOffset,
-    top: window.pageYOffset
+    left: window.scrollX,
+    top: window.scrollY
   });
   function scrollToPosition(position) {
     let scrollToOptions;
@@ -164,7 +220,7 @@
     if ("scrollBehavior" in document.documentElement.style)
       window.scrollTo(scrollToOptions);
     else {
-      window.scrollTo(scrollToOptions.left != null ? scrollToOptions.left : window.pageXOffset, scrollToOptions.top != null ? scrollToOptions.top : window.pageYOffset);
+      window.scrollTo(scrollToOptions.left != null ? scrollToOptions.left : window.scrollX, scrollToOptions.top != null ? scrollToOptions.top : window.scrollY);
     }
   }
   function getScrollKey(path, delta) {
@@ -364,17 +420,15 @@
   }
   function createMemoryHistory(base = "") {
     let listeners = [];
-    let queue = [START];
+    let queue = [[START, {}]];
     let position = 0;
     base = normalizeBase(base);
-    function setLocation(location2) {
+    function setLocation(location2, state = {}) {
       position++;
-      if (position === queue.length) {
-        queue.push(location2);
-      } else {
+      if (position !== queue.length) {
         queue.splice(position);
-        queue.push(location2);
       }
+      queue.push([location2, state]);
     }
     function triggerListeners(to, from, { direction, delta }) {
       const info = {
@@ -389,16 +443,16 @@
     const routerHistory = {
       // rewritten by Object.defineProperty
       location: START,
-      // TODO: should be kept in queue
+      // rewritten by Object.defineProperty
       state: {},
       base,
       createHref: createHref.bind(null, base),
-      replace(to) {
+      replace(to, state) {
         queue.splice(position--, 1);
-        setLocation(to);
+        setLocation(to, state);
       },
-      push(to, data) {
-        setLocation(to);
+      push(to, state) {
+        setLocation(to, state);
       },
       listen(callback) {
         listeners.push(callback);
@@ -410,7 +464,7 @@
       },
       destroy() {
         listeners = [];
-        queue = [START];
+        queue = [[START, {}]];
         position = 0;
       },
       go(delta, shouldTrigger = true) {
@@ -432,7 +486,11 @@
     };
     Object.defineProperty(routerHistory, "location", {
       enumerable: true,
-      get: () => queue[position]
+      get: () => queue[position][0]
+    });
+    Object.defineProperty(routerHistory, "state", {
+      enumerable: true,
+      get: () => queue[position][1]
     });
     return routerHistory;
   }
@@ -448,17 +506,6 @@
   function isRouteName(name) {
     return typeof name === "string" || typeof name === "symbol";
   }
-  const START_LOCATION_NORMALIZED = {
-    path: "/",
-    name: void 0,
-    params: {},
-    query: {},
-    hash: "",
-    fullPath: "/",
-    matched: [],
-    meta: {},
-    redirectedFrom: void 0
-  };
   const NavigationFailureSymbol = Symbol("");
   var NavigationFailureType;
   (function(NavigationFailureType2) {
@@ -549,7 +596,7 @@
       pattern += "/?";
     if (options.end)
       pattern += "$";
-    else if (options.strict)
+    else if (options.strict && !pattern.endsWith("/"))
       pattern += "(?:/|$)";
     const re = new RegExp(pattern, options.sensitive ? "" : "i");
     function parse(path) {
@@ -790,22 +837,24 @@
       const mainNormalizedRecord = normalizeRouteRecord(record);
       mainNormalizedRecord.aliasOf = originalRecord && originalRecord.record;
       const options = mergeOptions(globalOptions, record);
-      const normalizedRecords = [
-        mainNormalizedRecord
-      ];
+      const normalizedRecords = [mainNormalizedRecord];
       if ("alias" in record) {
         const aliases = typeof record.alias === "string" ? [record.alias] : record.alias;
         for (const alias of aliases) {
-          normalizedRecords.push(assign({}, mainNormalizedRecord, {
-            // this allows us to hold a copy of the `components` option
-            // so that async components cache is hold on the original record
-            components: originalRecord ? originalRecord.record.components : mainNormalizedRecord.components,
-            path: alias,
-            // we might be the child of an alias
-            aliasOf: originalRecord ? originalRecord.record : mainNormalizedRecord
-            // the aliases are always of the same kind as the original since they
-            // are defined on the same record
-          }));
+          normalizedRecords.push(
+            // we need to normalize again to ensure the `mods` property
+            // being non enumerable
+            normalizeRouteRecord(assign({}, mainNormalizedRecord, {
+              // this allows us to hold a copy of the `components` option
+              // so that async components cache is hold on the original record
+              components: originalRecord ? originalRecord.record.components : mainNormalizedRecord.components,
+              path: alias,
+              // we might be the child of an alias
+              aliasOf: originalRecord ? originalRecord.record : mainNormalizedRecord
+              // the aliases are always of the same kind as the original since they
+              // are defined on the same record
+            }))
+          );
         }
       }
       let matcher;
@@ -824,8 +873,12 @@
           originalMatcher = originalMatcher || matcher;
           if (originalMatcher !== matcher)
             originalMatcher.alias.push(matcher);
-          if (isRootAdd && record.name && !isAliasRecord(matcher))
+          if (isRootAdd && record.name && !isAliasRecord(matcher)) {
             removeRoute(record.name);
+          }
+        }
+        if (isMatchable(matcher)) {
+          insertMatcher(matcher);
         }
         if (mainNormalizedRecord.children) {
           const children = mainNormalizedRecord.children;
@@ -834,9 +887,6 @@
           }
         }
         originalRecord = originalRecord || matcher;
-        if (matcher.record.components && Object.keys(matcher.record.components).length || matcher.record.name || matcher.record.redirect) {
-          insertMatcher(matcher);
-        }
       }
       return originalMatcher ? () => {
         removeRoute(originalMatcher);
@@ -866,12 +916,8 @@
       return matchers;
     }
     function insertMatcher(matcher) {
-      let i = 0;
-      while (i < matchers.length && comparePathParserScore(matcher, matchers[i]) >= 0 && // Adding children with empty path should still appear before the parent
-      // https://github.com/vuejs/router/issues/1124
-      (matcher.record.path !== matchers[i].record.path || !isRecordChildOf(matcher, matchers[i])))
-        i++;
-      matchers.splice(i, 0, matcher);
+      const index = findInsertionIndex(matcher, matchers);
+      matchers.splice(index, 0, matcher);
       if (matcher.record.name && !isAliasRecord(matcher))
         matcherMap.set(matcher.record.name, matcher);
     }
@@ -892,15 +938,15 @@
           paramsFromLocation(
             currentLocation.params,
             // only keep params that exist in the resolved location
-            // TODO: only keep optional params coming from a parent record
-            matcher.keys.filter((k) => !k.optional).map((k) => k.name)
+            // only keep optional params coming from a parent record
+            matcher.keys.filter((k) => !k.optional).concat(matcher.parent ? matcher.parent.keys.filter((k) => k.optional) : []).map((k) => k.name)
           ),
           // discard any existing params in the current location that do not exist here
           // #1497 this ensures better active/exact matching
           location2.params && paramsFromLocation(location2.params, matcher.keys.map((k) => k.name))
         );
         path = matcher.stringify(params);
-      } else if ("path" in location2) {
+      } else if (location2.path != null) {
         path = location2.path;
         matcher = matchers.find((m) => m.re.test(path));
         if (matcher) {
@@ -933,7 +979,18 @@
       };
     }
     routes.forEach((route) => addRoute(route));
-    return { addRoute, resolve, removeRoute, getRoutes, getRecordMatcher };
+    function clearRoutes() {
+      matchers.length = 0;
+      matcherMap.clear();
+    }
+    return {
+      addRoute,
+      resolve,
+      removeRoute,
+      clearRoutes,
+      getRoutes,
+      getRecordMatcher
+    };
   }
   function paramsFromLocation(params, keys) {
     const newParams = {};
@@ -944,12 +1001,12 @@
     return newParams;
   }
   function normalizeRouteRecord(record) {
-    return {
+    const normalized = {
       path: record.path,
       redirect: record.redirect,
       name: record.name,
       meta: record.meta || {},
-      aliasOf: void 0,
+      aliasOf: record.aliasOf,
       beforeEnter: record.beforeEnter,
       props: normalizeRecordProps(record),
       children: record.children || [],
@@ -957,8 +1014,14 @@
       leaveGuards: /* @__PURE__ */ new Set(),
       updateGuards: /* @__PURE__ */ new Set(),
       enterCallbacks: {},
+      // must be declared afterwards
+      // mods: {},
       components: "components" in record ? record.components || null : record.component && { default: record.component }
     };
+    Object.defineProperty(normalized, "mods", {
+      value: {}
+    });
+    return normalized;
   }
   function normalizeRecordProps(record) {
     const propsObject = {};
@@ -989,47 +1052,35 @@
     }
     return options;
   }
-  function isRecordChildOf(record, parent) {
-    return parent.children.some((child) => child === record || isRecordChildOf(record, child));
-  }
-  const HASH_RE = /#/g;
-  const AMPERSAND_RE = /&/g;
-  const SLASH_RE = /\//g;
-  const EQUAL_RE = /=/g;
-  const IM_RE = /\?/g;
-  const PLUS_RE = /\+/g;
-  const ENC_BRACKET_OPEN_RE = /%5B/g;
-  const ENC_BRACKET_CLOSE_RE = /%5D/g;
-  const ENC_CARET_RE = /%5E/g;
-  const ENC_BACKTICK_RE = /%60/g;
-  const ENC_CURLY_OPEN_RE = /%7B/g;
-  const ENC_PIPE_RE = /%7C/g;
-  const ENC_CURLY_CLOSE_RE = /%7D/g;
-  const ENC_SPACE_RE = /%20/g;
-  function commonEncode(text) {
-    return encodeURI("" + text).replace(ENC_PIPE_RE, "|").replace(ENC_BRACKET_OPEN_RE, "[").replace(ENC_BRACKET_CLOSE_RE, "]");
-  }
-  function encodeHash(text) {
-    return commonEncode(text).replace(ENC_CURLY_OPEN_RE, "{").replace(ENC_CURLY_CLOSE_RE, "}").replace(ENC_CARET_RE, "^");
-  }
-  function encodeQueryValue(text) {
-    return commonEncode(text).replace(PLUS_RE, "%2B").replace(ENC_SPACE_RE, "+").replace(HASH_RE, "%23").replace(AMPERSAND_RE, "%26").replace(ENC_BACKTICK_RE, "`").replace(ENC_CURLY_OPEN_RE, "{").replace(ENC_CURLY_CLOSE_RE, "}").replace(ENC_CARET_RE, "^");
-  }
-  function encodeQueryKey(text) {
-    return encodeQueryValue(text).replace(EQUAL_RE, "%3D");
-  }
-  function encodePath(text) {
-    return commonEncode(text).replace(HASH_RE, "%23").replace(IM_RE, "%3F");
-  }
-  function encodeParam(text) {
-    return text == null ? "" : encodePath(text).replace(SLASH_RE, "%2F");
-  }
-  function decode(text) {
-    try {
-      return decodeURIComponent("" + text);
-    } catch (err) {
+  function findInsertionIndex(matcher, matchers) {
+    let lower = 0;
+    let upper = matchers.length;
+    while (lower !== upper) {
+      const mid = lower + upper >> 1;
+      const sortOrder = comparePathParserScore(matcher, matchers[mid]);
+      if (sortOrder < 0) {
+        upper = mid;
+      } else {
+        lower = mid + 1;
+      }
     }
-    return "" + text;
+    const insertionAncestor = getInsertionAncestor(matcher);
+    if (insertionAncestor) {
+      upper = matchers.lastIndexOf(insertionAncestor, upper - 1);
+    }
+    return upper;
+  }
+  function getInsertionAncestor(matcher) {
+    let ancestor = matcher;
+    while (ancestor = ancestor.parent) {
+      if (isMatchable(ancestor) && comparePathParserScore(matcher, ancestor) === 0) {
+        return ancestor;
+      }
+    }
+    return;
+  }
+  function isMatchable({ record }) {
+    return !!(record.name || record.components && Object.keys(record.components).length || record.redirect);
   }
   function parseQuery(search) {
     const query = {};
@@ -1143,7 +1194,7 @@
     }
     registerGuard(activeRecord, "updateGuards", updateGuard);
   }
-  function guardToPromiseFn(guard, to, from, record, name) {
+  function guardToPromiseFn(guard, to, from, record, name, runWithContext = (fn) => fn()) {
     const enterCallbackArray = record && // name is defined if record is because of the function overload
     (record.enterCallbacks[name] = record.enterCallbacks[name] || []);
     return () => new Promise((resolve, reject) => {
@@ -1168,14 +1219,14 @@
           resolve();
         }
       };
-      const guardReturn = guard.call(record && record.instances[name], to, from, next);
+      const guardReturn = runWithContext(() => guard.call(record && record.instances[name], to, from, next));
       let guardCall = Promise.resolve(guardReturn);
       if (guard.length < 3)
         guardCall = guardCall.then(next);
       guardCall.catch((err) => reject(err));
     });
   }
-  function extractComponentsGuards(matched, guardType, to, from) {
+  function extractComponentsGuards(matched, guardType, to, from, runWithContext = (fn) => fn()) {
     const guards = [];
     for (const record of matched) {
       for (const name in record.components) {
@@ -1185,25 +1236,23 @@
         if (isRouteComponent(rawComponent)) {
           const options = rawComponent.__vccOpts || rawComponent;
           const guard = options[guardType];
-          guard && guards.push(guardToPromiseFn(guard, to, from, record, name));
+          guard && guards.push(guardToPromiseFn(guard, to, from, record, name, runWithContext));
         } else {
           let componentPromise = rawComponent();
           guards.push(() => componentPromise.then((resolved) => {
             if (!resolved)
-              return Promise.reject(new Error(`Couldn't resolve component "${name}" at "${record.path}"`));
+              throw new Error(`Couldn't resolve component "${name}" at "${record.path}"`);
             const resolvedComponent = isESModule(resolved) ? resolved.default : resolved;
+            record.mods[name] = resolved;
             record.components[name] = resolvedComponent;
             const options = resolvedComponent.__vccOpts || resolvedComponent;
             const guard = options[guardType];
-            return guard && guardToPromiseFn(guard, to, from, record, name)();
+            return guard && guardToPromiseFn(guard, to, from, record, name, runWithContext)();
           }));
         }
       }
     }
     return guards;
-  }
-  function isRouteComponent(component) {
-    return typeof component === "object" || "displayName" in component || "props" in component || "__vccOpts" in component;
   }
   function loadRouteLocation(route) {
     return route.matched.every((record) => record.redirect) ? Promise.reject(new Error("Cannot load a route that redirects.")) : Promise.all(route.matched.map((record) => record.components && Promise.all(Object.keys(record.components).reduce((promises, name) => {
@@ -1213,6 +1262,7 @@
           if (!resolved)
             return Promise.reject(new Error(`Couldn't resolve component "${name}" at "${record.path}". Ensure you passed a function that returns a promise.`));
           const resolvedComponent = isESModule(resolved) ? resolved.default : resolved;
+          record.mods[name] = resolved;
           record.components[name] = resolvedComponent;
           return;
         }));
@@ -1223,7 +1273,10 @@
   function useLink(props) {
     const router = vue.inject(routerKey);
     const currentRoute = vue.inject(routeLocationKey);
-    const route = vue.computed(() => router.resolve(vue.unref(props.to)));
+    const route = vue.computed(() => {
+      const to = vue.unref(props.to);
+      return router.resolve(to);
+    });
     const activeRecordIndex = vue.computed(() => {
       const { matched } = route.value;
       const { length } = matched;
@@ -1248,10 +1301,14 @@
     const isExactActive = vue.computed(() => activeRecordIndex.value > -1 && activeRecordIndex.value === currentRoute.matched.length - 1 && isSameRouteLocationParams(currentRoute.params, route.value.params));
     function navigate(e = {}) {
       if (guardEvent(e)) {
-        return router[vue.unref(props.replace) ? "replace" : "push"](
+        const p = router[vue.unref(props.replace) ? "replace" : "push"](
           vue.unref(props.to)
           // avoid uncaught errors are they are logged anyway
         ).catch(noop);
+        if (props.viewTransition && typeof document !== "undefined" && "startViewTransition" in document) {
+          document.startViewTransition(() => p);
+        }
+        return p;
       }
       return Promise.resolve();
     }
@@ -1262,6 +1319,9 @@
       isExactActive,
       navigate
     };
+  }
+  function preferSingleVNode(vnodes) {
+    return vnodes.length === 1 ? vnodes[0] : vnodes;
   }
   const RouterLinkImpl = /* @__PURE__ */ vue.defineComponent({
     name: "RouterLink",
@@ -1279,7 +1339,8 @@
       ariaCurrentValue: {
         type: String,
         default: "page"
-      }
+      },
+      viewTransition: Boolean
     },
     useLink,
     setup(props, { slots }) {
@@ -1295,7 +1356,7 @@
         [getLinkClass(props.exactActiveClass, options.linkExactActiveClass, "router-link-exact-active")]: link.isExactActive
       }));
       return () => {
-        const children = slots.default && slots.default(link);
+        const children = slots.default && preferSingleVNode(slots.default(link));
         return props.custom ? children : vue.h("a", {
           "aria-current": link.isExactActive ? props.ariaCurrentValue : null,
           href: link.href,
@@ -1482,7 +1543,7 @@
         });
       }
       let matcherLocation;
-      if ("path" in rawLocation) {
+      if (rawLocation.path != null) {
         matcherLocation = assign({}, rawLocation, {
           path: parseURL(parseQuery$1, rawLocation.path, currentLocation.path).path
         });
@@ -1557,7 +1618,7 @@
           query: to.query,
           hash: to.hash,
           // avoid transferring params if the redirect has a path
-          params: "path" in newTargetLocation ? {} : to.params
+          params: newTargetLocation.path != null ? {} : to.params
         }, newTargetLocation);
       }
     }
@@ -1682,7 +1743,7 @@
         return runGuardQueue(guards);
       }).then(() => {
         to.matched.forEach((record) => record.enterCallbacks = {});
-        guards = extractComponentsGuards(enteringRecords, "beforeRouteEnter", to, from);
+        guards = extractComponentsGuards(enteringRecords, "beforeRouteEnter", to, from, runWithContext);
         guards.push(canceledNavigationCheck);
         return runGuardQueue(guards);
       }).then(() => {
@@ -1729,7 +1790,7 @@
         const toLocation = resolve(to);
         const shouldRedirect = handleRedirectRecord(toLocation);
         if (shouldRedirect) {
-          pushWithRedirect(assign(shouldRedirect, { replace: true }), toLocation).catch(noop);
+          pushWithRedirect(assign(shouldRedirect, { replace: true, force: true }), toLocation).catch(noop);
           return;
         }
         pendingLocation = toLocation;
@@ -1751,7 +1812,9 @@
             /* ErrorTypes.NAVIGATION_GUARD_REDIRECT */
           )) {
             pushWithRedirect(
-              error.to,
+              assign(locationAsObject(error.to), {
+                force: true
+              }),
               toLocation
               // avoid an uncaught rejection, let push call triggerError
             ).then((failure) => {
@@ -1798,11 +1861,11 @@
       });
     }
     let readyHandlers = useCallbacks();
-    let errorHandlers = useCallbacks();
+    let errorListeners = useCallbacks();
     let ready;
     function triggerError(error, to, from) {
       markAsReady(error);
-      const list = errorHandlers.list();
+      const list = errorListeners.list();
       if (list.length) {
         list.forEach((handler) => handler(error, to, from));
       } else {
@@ -1841,6 +1904,7 @@
       listening: true,
       addRoute,
       removeRoute,
+      clearRoutes: matcher.clearRoutes,
       hasRoute,
       getRoutes,
       resolve,
@@ -1853,7 +1917,7 @@
       beforeEach: beforeGuards.add,
       beforeResolve: beforeResolveGuards.add,
       afterEach: afterGuards.add,
-      onError: errorHandlers.add,
+      onError: errorListeners.add,
       isReady,
       install(app) {
         const router2 = this;
@@ -1927,7 +1991,7 @@
   function useRouter() {
     return vue.inject(routerKey);
   }
-  function useRoute() {
+  function useRoute(_name) {
     return vue.inject(routeLocationKey);
   }
   const VueRouter = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({

@@ -32,8 +32,20 @@
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
           vue.createElementVNode("div", _hoisted_2$2, [
-            vue.createElementVNode("h4", _hoisted_3$2, vue.toDisplayString(_ctx.title), 1),
-            vue.createElementVNode("p", _hoisted_4$1, vue.toDisplayString(_ctx.desc), 1)
+            vue.createElementVNode(
+              "h4",
+              _hoisted_3$2,
+              vue.toDisplayString(__props.title),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "p",
+              _hoisted_4$1,
+              vue.toDisplayString(__props.desc),
+              1
+              /* TEXT */
+            )
           ]),
           vue.createElementVNode("div", _hoisted_5$1, [
             vue.renderSlot(_ctx.$slots, "default")
@@ -42,7 +54,6 @@
       };
     }
   });
-  const ModalTwoColTemplate_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$1 = { class: "znpb-admin-title-block znpb-admin-title-block--heading" };
   const _hoisted_2$1 = { class: "znpb-admin-modal-title-block__title" };
   const _hoisted_3$1 = { class: "znpb-admin-modal-title-block__desc" };
@@ -52,8 +63,9 @@
       templateType: { default: "templates" }
     },
     emits: ["save-template"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const localTemplate = vue.ref({
         title: "",
         template_type: props.templateType
@@ -82,8 +94,20 @@
         }, {
           default: vue.withCtx(() => [
             vue.createElementVNode("div", _hoisted_1$1, [
-              vue.createElementVNode("h4", _hoisted_2$1, vue.toDisplayString(i18n__namespace.__("Templates", "zionbuilder")), 1),
-              vue.createElementVNode("p", _hoisted_3$1, vue.toDisplayString(i18n__namespace.__("Create a new template by choosing the template type and adding a name", "zionbuilder")), 1)
+              vue.createElementVNode(
+                "h4",
+                _hoisted_2$1,
+                vue.toDisplayString(i18n__namespace.__("Templates", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "p",
+                _hoisted_3$1,
+                vue.toDisplayString(i18n__namespace.__("Create a new template by choosing the template type and adding a name", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ]),
             vue.createVNode(_sfc_main$2, {
               title: i18n__namespace.__("Template type", "zionbuilder"),
@@ -99,6 +123,7 @@
                 }, null, 8, ["modelValue", "placeholder", "options"])
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["title", "desc"]),
             vue.createVNode(_sfc_main$2, {
               title: i18n__namespace.__("Template Name", "zionbuilder"),
@@ -113,14 +138,15 @@
                 }, null, 8, ["modelValue", "placeholder"])
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["title", "desc"])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["disabled"]);
       };
     }
   });
-  const ModalAddNewTemplate_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1 = { class: "znpb-admin-templatesBar" };
   const _hoisted_2 = { class: "znpb-admin-templatesBarInnerWrapper" };
   const _hoisted_3 = { class: "znpb-admin-templatesBarTitle" };
@@ -159,14 +185,26 @@
               vue.createElementVNode("img", {
                 src: vue.unref(EnvironmentStore).urls.logo
               }, null, 8, _hoisted_4),
-              vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Templates", "zionbuilder")), 1)
+              vue.createElementVNode(
+                "h3",
+                null,
+                vue.toDisplayString(i18n__namespace.__("Templates", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ]),
             vue.createElementVNode("div", _hoisted_5, [
-              vue.createElementVNode("a", {
-                href: "#",
-                class: "znpb-admin-templatesBarAddNew",
-                onClick: _cache[0] || (_cache[0] = ($event) => showModal.value = true)
-              }, vue.toDisplayString(i18n__namespace.__("Add new", "zionbuilder")), 1)
+              vue.createElementVNode(
+                "a",
+                {
+                  href: "#",
+                  class: "znpb-admin-templatesBarAddNew",
+                  onClick: _cache[0] || (_cache[0] = ($event) => showModal.value = true)
+                },
+                vue.toDisplayString(i18n__namespace.__("Add new", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ])
           ]),
           vue.createVNode(_component_Modal, {
@@ -184,12 +222,12 @@
               }, null, 8, ["template-type"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["show", "title"])
         ]);
       };
     }
   });
-  const App_vue_vue_type_style_index_0_lang = "";
   const appInstance = vue.createApp(_sfc_main);
   appInstance.use(window.zb.installCommonAPP);
   function insertAfter(newNode, existingNode) {

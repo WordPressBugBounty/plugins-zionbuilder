@@ -43,7 +43,7 @@ class Pages extends RestApiController {
 			[
 				'args'   => [
 					'id' => [
-						'description' => __( 'Unique identifier for the object.' ),
+						'description' => __( 'Unique identifier for the object.', 'zionbuilder' ),
 						'type'        => 'integer',
 					],
 				],
@@ -62,7 +62,7 @@ class Pages extends RestApiController {
 			[
 				'args'   => [
 					'id' => [
-						'description' => __( 'Unique identifier for the object.' ),
+						'description' => __( 'Unique identifier for the object.', 'zionbuilder' ),
 						'type'        => 'integer',
 					],
 				],

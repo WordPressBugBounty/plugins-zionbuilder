@@ -3,7 +3,7 @@
 namespace ZionBuilder;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -11,7 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class Nonces
  * @package ZionBuilder
  */
-class Nonces {
+class Nonces
+{
 
 	/**
 	 * Holds a reference to the nonce field id
@@ -52,8 +53,9 @@ class Nonces {
 	 *
 	 * @return bool|string
 	 */
-	public static function generate_nonce( $action ) {
-		return wp_create_nonce( $action );
+	public static function generate_nonce($action)
+	{
+		return wp_create_nonce($action);
 	}
 
 	/**
@@ -63,16 +65,16 @@ class Nonces {
 	 *
 	 * @return int|false
 	 */
-	public static function verify_nonce( $action ) {
-		if ( ! isset( $_REQUEST[self::NONCE_FIELD_ID] ) ) {
+	public static function verify_nonce($action)
+	{
+		if (! isset($_REQUEST[self::NONCE_FIELD_ID])) {
 			return false;
 		}
-		return wp_verify_nonce( $_REQUEST[self::NONCE_FIELD_ID], $action );
+		return wp_verify_nonce(sanitize_key($_REQUEST[self::NONCE_FIELD_ID]), $action);
 	}
 
 	/**
 	 * Nonces constructor.
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 }

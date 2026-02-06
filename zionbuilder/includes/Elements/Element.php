@@ -11,7 +11,7 @@ use ZionBuilder\RenderAttributes;
 use ZionBuilder\CustomCSS;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -20,7 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * This is the base for each page builder element. All elements should extend this base class
  */
-class Element {
+class Element
+{
 
 	/**
 	 * Holds a reference to all provided properties
@@ -167,49 +168,51 @@ class Element {
 	 *
 	 * @param array<string, mixed> $data The saved values for the current element
 	 */
-	final public function __construct( $data = array() ) {
+	final public function __construct($data = array())
+	{
 		// Allow elements creators to hook here without rewriting construct
-		$this->on_before_init( $data );
+		$this->on_before_init($data);
 
 		// Set the element data if provided
-		if ( ! empty( $data ) ) {
+		if (! empty($data)) {
 			$this->data = $data;
 			$this->init_options();
 
-			if ( isset( $data['uid'] ) ) {
+			if (isset($data['uid'])) {
 				$this->uid = $data['uid'];
 			}
 
-			if ( isset( $data['content'] ) ) {
+			if (isset($data['content'])) {
 				$this->content = $data['content'];
 			}
 
 			// Setup helpers
-			$model                   = isset( $data['options'] ) ? $data['options'] : array();
+			$model                   = isset($data['options']) ? $data['options'] : array();
 			$this->render_attributes = new RenderAttributes();
 			$this->custom_css        = new CustomCSS();
-			$this->options->set_data( $model, $this->render_attributes, $this->custom_css );
+			$this->options->set_data($model, $this->render_attributes, $this->custom_css);
 
 			// Set the custom css selector after we set the element options
-			$this->custom_css->set_css_selector( $this->get_css_selector() );
+			$this->custom_css->set_css_selector($this->get_css_selector());
 		}
 
 		// Allow elements creators to hook here without rewriting construct
-		$this->on_after_init( $data );
+		$this->on_after_init($data);
 	}
 
-	public function init_options() {
+	public function init_options()
+	{
 		$element_type         = $this->get_type();
-		$options_schema_id    = sprintf( 'zionbuilder\element\%s\options', $element_type );
-		$is_schema_registered = Options::is_schema_registered( $options_schema_id );
-		$this->options        = new Options( $options_schema_id );
+		$options_schema_id    = sprintf('zionbuilder\element\%s\options', $element_type);
+		$is_schema_registered = Options::is_schema_registered($options_schema_id);
+		$this->options        = new Options($options_schema_id);
 
-		if ( ! $is_schema_registered ) {
+		if (! $is_schema_registered) {
 			// Register element options. We only need them on class init with data
-			$this->options( $this->options );
+			$this->options($this->options);
 
 			// Trigger internal action
-			$this->trigger( 'options/schema/set' );
+			$this->trigger('options/schema/set');
 		}
 	}
 
@@ -222,7 +225,8 @@ class Element {
 	 * @param string $css_class
 	 * @return void
 	 */
-	public function add_render_body_class( $css_class ) {
+	public function add_render_body_class($css_class)
+	{
 		$this->render_body_classes[] = $css_class;
 	}
 
@@ -234,7 +238,8 @@ class Element {
 	 *
 	 * @return string[]
 	 */
-	public function get_render_body_classes() {
+	public function get_render_body_classes()
+	{
 		return $this->render_body_classes;
 	}
 
@@ -246,30 +251,33 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function on( $action_name, $callback ) {
-		if ( ! isset( $this->hooks[$action_name] ) ) {
+	public function on($action_name, $callback)
+	{
+		if (! isset($this->hooks[$action_name])) {
 			$this->hooks[$action_name] = array();
 		}
 
 		$this->hooks[$action_name][] = $callback;
 	}
 
-	public function get_clone( $data ) {
-		$element_data = array_merge( $this->data, $data );
-		return Plugin::instance()->elements_manager->get_element_instance_with_data( $element_data );
+	public function get_clone($data)
+	{
+		$element_data = array_merge($this->data, $data);
+		return Plugin::instance()->elements_manager->get_element_instance_with_data($element_data);
 	}
 
 	/**
-	 * Calls all regisred callbacks for the given action name
+	 * Calls all registered callbacks for the given action name
 	 *
 	 * @param string $action_name
 	 *
 	 * @return void
 	 */
-	public function trigger( $action_name ) {
-		if ( isset( $this->hooks[$action_name] ) ) {
-			foreach ( $this->hooks[$action_name] as $callback ) {
-				call_user_func( $callback );
+	public function trigger($action_name)
+	{
+		if (isset($this->hooks[$action_name])) {
+			foreach ($this->hooks[$action_name] as $callback) {
+				call_user_func($callback);
 			}
 		}
 	}
@@ -279,26 +287,27 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function apply_custom_classes_to_render_tags() {
+	public function apply_custom_classes_to_render_tags()
+	{
 		// Set the custom css classes for element
-		$element_saved_styles = $this->options->get_value( '_styles', array() );
+		$element_saved_styles = $this->options->get_value('_styles', array());
 		$styles_config        = $this->get_style_elements_for_editor();
 
-		foreach ( $element_saved_styles as $style_config_id => $style_value ) {
-			if ( isset( $styles_config[$style_config_id] ) ) {
+		foreach ($element_saved_styles as $style_config_id => $style_value) {
+			if (isset($styles_config[$style_config_id])) {
 				$style_config = $styles_config[$style_config_id];
-				$render_tag   = isset( $style_config['render_tag'] ) ? $style_config['render_tag'] : $style_config_id;
+				$render_tag   = isset($style_config['render_tag']) ? $style_config['render_tag'] : $style_config_id;
 
-				if ( isset( $style_value['classes'] ) && is_array( $style_value['classes'] ) ) {
-					foreach ( $style_value['classes'] as $css_class_uid_or_selector ) {
-						$this->render_attributes->add( $render_tag, 'class', CSSClasses::get_css_class_by_uid( $css_class_uid_or_selector ) );
+				if (isset($style_value['classes']) && is_array($style_value['classes'])) {
+					foreach ($style_value['classes'] as $css_class_uid_or_selector) {
+						$this->render_attributes->add($render_tag, 'class', CSSClasses::get_css_class_by_uid($css_class_uid_or_selector));
 					}
 				}
 
 				// Assign static classes
-				if ( isset( $style_value['static_classes'] ) && is_array( $style_value['static_classes'] ) ) {
-					foreach ( $style_value['static_classes'] as $css_class ) {
-						$this->render_attributes->add( $render_tag, 'class', $css_class );
+				if (isset($style_value['static_classes']) && is_array($style_value['static_classes'])) {
+					foreach ($style_value['static_classes'] as $css_class) {
+						$this->render_attributes->add($render_tag, 'class', $css_class);
 					}
 				}
 			}
@@ -310,15 +319,16 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function apply_custom_attributes_to_render_tags() {
-		$styles_attrs = $this->options->get_value( '_styles', array() );
+	public function apply_custom_attributes_to_render_tags()
+	{
+		$styles_attrs = $this->options->get_value('_styles', array());
 
-		foreach ( $styles_attrs as $id => $style_values ) {
-			if ( isset( $style_values['attributes'] ) && is_array( $style_values['attributes'] ) ) {
-				foreach ( $style_values['attributes'] as $attributes ) {
-					if ( ! empty( $attributes['attribute_name'] ) ) {
-						$attribute_value = isset( $attributes['attribute_value'] ) ? $attributes['attribute_value'] : '';
-						$this->render_attributes->add( $id, $attributes['attribute_name'], esc_attr( $attribute_value ) );
+		foreach ($styles_attrs as $id => $style_values) {
+			if (isset($style_values['attributes']) && is_array($style_values['attributes'])) {
+				foreach ($style_values['attributes'] as $attributes) {
+					if (! empty($attributes['attribute_name'])) {
+						$attribute_value = isset($attributes['attribute_value']) ? $attributes['attribute_value'] : '';
+						$this->render_attributes->add($id, $attributes['attribute_name'], esc_attr($attribute_value));
 					}
 				}
 			}
@@ -330,8 +340,9 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_css_selector() {
-		return ! empty( $this->element_css_selector ) ? $this->element_css_selector : sprintf( '#%s', $this->get_element_css_id() );
+	public function get_css_selector()
+	{
+		return ! empty($this->element_css_selector) ? $this->element_css_selector : sprintf('#%s', $this->get_element_css_id());
 	}
 
 	/**
@@ -341,9 +352,10 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_type() {
+	public function get_type()
+	{
 		$element_class = $this->get_class_name();
-		throw new \Exception( 'The Element should implement the get_type() method and it should return the element unique id. Found in ' . $element_class );
+		throw new \Exception('The Element should implement the get_type() method and it should return the element unique id. Found in ' . esc_html($element_class));
 	}
 
 	/**
@@ -353,19 +365,21 @@ class Element {
 	 *
 	 * @return boolean The element icon
 	 */
-	public function is_wrapper() {
+	public function is_wrapper()
+	{
 		return false;
 	}
 
 	/**
 	 * Dynamic options form
 	 *
-	 * Using this method you can have dinamically created options.
+	 * Using this method you can have dynamically created options.
 	 * This must be used in conjunction with the wp_widget option type
 	 *
 	 * @return string The list of options to send to editor
 	 */
-	public function dynamic_options_form() {
+	public function dynamic_options_form()
+	{
 		return 'The dynamic_options_form() method must be implemented in child class';
 	}
 
@@ -376,7 +390,8 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_category() {
+	public function get_category()
+	{
 		return 'content';
 	}
 
@@ -387,9 +402,10 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name()
+	{
 		$element_class = $this->get_class_name();
-		throw new \Exception( 'The Element should implement the get_name() method and it should return the element name. Found in ' . $element_class );
+		throw new \Exception('The Element should implement the get_name() method and it should return the element name. Found in ' . esc_html($element_class));
 	}
 
 	/**
@@ -399,7 +415,8 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_element_icon() {
+	public function get_element_icon()
+	{
 		return '';
 	}
 
@@ -410,7 +427,8 @@ class Element {
 	 *
 	 * @return array<string> The keywords list
 	 */
-	public function get_keywords() {
+	public function get_keywords()
+	{
 		return array();
 	}
 
@@ -421,12 +439,13 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_element_image() {
+	public function get_element_image()
+	{
 		$image = '';
-		if ( is_file( $this->get_path( 'icon.png' ) ) ) {
-			$image = $this->get_url( 'icon.png' );
-		} elseif ( is_file( $this->get_path( 'icon.svg' ) ) ) {
-			$image = $this->get_url( 'icon.svg' );
+		if (is_file($this->get_path('icon.png'))) {
+			$image = $this->get_url('icon.png');
+		} elseif (is_file($this->get_path('icon.svg'))) {
+			$image = $this->get_url('icon.svg');
 		}
 
 		return $image;
@@ -439,8 +458,7 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function options( $options ) {
-	}
+	public function options($options) {}
 
 
 
@@ -453,8 +471,7 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function on_after_init( $data = array() ) {
-	}
+	public function on_after_init($data = array()) {}
 
 	/**
 	 * On before init
@@ -465,8 +482,7 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function on_before_init( $data = array() ) {
-	}
+	public function on_before_init($data = array()) {}
 
 
 	/**
@@ -474,14 +490,16 @@ class Element {
 	 *
 	 * @return boolean
 	 */
-	protected function can_render() {
+	protected function can_render()
+	{
 		return true;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function css() {
+	public function css()
+	{
 		return '';
 	}
 
@@ -490,7 +508,8 @@ class Element {
 	 *
 	 * @return boolean
 	 */
-	public function is_deprecated() {
+	public function is_deprecated()
+	{
 		return false;
 	}
 
@@ -500,7 +519,8 @@ class Element {
 	 *
 	 * @return array<string, mixed> The element config
 	 */
-	public function internal_get_config_for_editor() {
+	public function internal_get_config_for_editor()
+	{
 		$show_in_ui = $this->is_child() ? false : $this->show_in_ui();
 
 		// Init options
@@ -526,19 +546,19 @@ class Element {
 
 		// Add extra data
 		$extra_data = $this->extra_data();
-		if ( ! empty( $extra_data ) ) {
+		if (! empty($extra_data)) {
 			$config['extra_data'] = $extra_data;
 		}
 
 		$icon = $this->get_element_icon();
 
-		if ( ! empty( $icon ) ) {
+		if (! empty($icon)) {
 			$config['icon'] = $icon;
 		} else {
 			$config['thumb'] = $this->get_element_image();
 		}
 
-		return wp_parse_args( $this->get_config_for_editor(), $config );
+		return wp_parse_args($this->get_config_for_editor(), $config);
 	}
 
 
@@ -550,7 +570,8 @@ class Element {
 	 *
 	 * @return array<string, array<string, mixed>> The style option config
 	 */
-	public function get_style_elements_for_editor() {
+	public function get_style_elements_for_editor()
+	{
 		$this->register_wrapper_style_options();
 
 		// Register element style options
@@ -568,7 +589,8 @@ class Element {
 	 *
 	 * @return boolean True if the element will appear in elements list in editor
 	 */
-	public function show_in_ui() {
+	public function show_in_ui()
+	{
 		return true;
 	}
 
@@ -580,7 +602,8 @@ class Element {
 	 *
 	 * @return boolean True in case this element is a child of another element
 	 */
-	public function is_child() {
+	public function is_child()
+	{
 		return false;
 	}
 
@@ -589,11 +612,12 @@ class Element {
 	 *
 	 * @return void
 	 */
-	private function register_wrapper_style_options() {
+	private function register_wrapper_style_options()
+	{
 		$this->register_style_options_element(
 			'wrapper',
 			array(
-				'title'      => esc_html__( 'Wrapper', 'zionbuilder' ),
+				'title'      => esc_html__('Wrapper', 'zionbuilder'),
 				'selector'   => '{{ELEMENT}}',
 				'config'     => array(
 					'show_background_video' => true,
@@ -609,7 +633,8 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_label() {
+	public function get_label()
+	{
 		return '';
 	}
 
@@ -622,8 +647,7 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function on_register_styles() {
-	}
+	public function on_register_styles() {}
 
 
 	/**
@@ -634,7 +658,8 @@ class Element {
 	 *
 	 * @return void
 	 */
-	protected function register_style_options_element( $id, $config ) {
+	protected function register_style_options_element($id, $config)
+	{
 		$this->registered_style_options[$id] = $config;
 	}
 
@@ -646,7 +671,8 @@ class Element {
 	 *
 	 * @return array<string, mixed> Extra element configuration that will be added to the element in edit mode
 	 */
-	public function get_config_for_editor() {
+	public function get_config_for_editor()
+	{
 		return array();
 	}
 
@@ -657,7 +683,8 @@ class Element {
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function extra_data() {
+	public function extra_data()
+	{
 		return array();
 	}
 
@@ -666,7 +693,8 @@ class Element {
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function content_composition() {
+	public function content_composition()
+	{
 		return array();
 	}
 
@@ -679,13 +707,14 @@ class Element {
 	 *
 	 * @return string
 	 */
-	final public function get_url( $path = '' ) {
-		if ( null === $this->element_base_url ) {
+	final public function get_url($path = '')
+	{
+		if (null === $this->element_base_url) {
 			// set the base url
-			$this->element_base_url = trailingslashit( Utils::get_file_url_from_path( $this->get_path() ) );
+			$this->element_base_url = trailingslashit(Utils::get_file_url_from_path($this->get_path()));
 		}
 
-		return esc_url( $this->element_base_url . wp_normalize_path( $path ) );
+		return esc_url($this->element_base_url . wp_normalize_path($path));
 	}
 
 	/**
@@ -697,17 +726,18 @@ class Element {
 	 *
 	 * @return string
 	 */
-	final public function get_path( $path = '' ) {
-		if ( null === $this->element_base_path ) {
-			$reflection_class = new \ReflectionClass( get_class( $this ) );
+	final public function get_path($path = '')
+	{
+		if (null === $this->element_base_path) {
+			$reflection_class = new \ReflectionClass(get_class($this));
 			// Set the base path
 			$filename = $reflection_class->getFileName();
-			if ( $filename ) {
-				$this->element_base_path = trailingslashit( dirname( $filename ) );
+			if ($filename) {
+				$this->element_base_path = trailingslashit(dirname($filename));
 			}
 		}
 
-		return $this->element_base_path . wp_normalize_path( $path );
+		return $this->element_base_path . wp_normalize_path($path);
 	}
 
 	/**
@@ -717,9 +747,10 @@ class Element {
 	 *
 	 * @return void The method should print the element
 	 */
-	public function render( $options ) {
+	public function render($options)
+	{
 		// Show an error in development mode
-		throw new \Exception( 'The Element should implement the render() method and it should return the element unique id.' );
+		throw new \Exception('The Element should implement the render() method and it should return the element unique id.');
 	}
 
 	/**
@@ -727,9 +758,10 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function server_render( $request ) {
+	public function server_render($request)
+	{
 		$this->options->parse_data();
-		$this->render( $this->options );
+		$this->render($this->options);
 	}
 
 	/**
@@ -739,8 +771,7 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function before_render( $options ) {
-	}
+	public function before_render($options) {}
 
 	/**
 	 * Allows for functionality injection after rendering
@@ -749,8 +780,7 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function after_render( $options ) {
-	}
+	public function after_render($options) {}
 
 	/**
 	 * Private render function that will be used by us to render the element
@@ -759,46 +789,50 @@ class Element {
 	 *
 	 * @return void
 	 */
-	final public function render_element( $extra_render_data ) {
+	final public function render_element($extra_render_data)
+	{
 		// We need to parse data only on actual render
 		$this->options->parse_data();
 
-		if ( ! $this->element_is_allowed_render() ) {
+		if (! $this->element_is_allowed_render()) {
 			return;
 		}
 
-		do_action( 'zionbuilder/element/before_custom_render', $this );
+		do_action('zionbuilder/element/before_custom_render', $this);
 
 		// Check to see if the element is hidden
-		if ( ! $this->options->get_value( '_isVisible', true ) ) {
+		if (! $this->options->get_value('_isVisible', true)) {
 			return;
 		}
 
 		/**
 		 * Allows you to create a different renderer
 		 */
-		$custom_renderer = apply_filters( 'zionbuilder/renderer/custom_renderer', null, $this );
-		if ( $custom_renderer ) {
-			$custom_renderer->render_element( $extra_render_data, $this );
-
+		$custom_renderer = apply_filters('zionbuilder/renderer/custom_renderer', null, $this);
+		if ($custom_renderer) {
+			$custom_renderer->render_element($extra_render_data, $this);
 		} else {
-			$this->do_element_render( $extra_render_data );
+			$this->do_element_render($extra_render_data);
 		}
 
-		do_action( 'zionbuilder/element/after_custom_render', $this );
+		$this->enqueue_all_extra_scripts();
+
+		do_action('zionbuilder/element/after_custom_render', $this);
 	}
 
-	public function get_custom_css() {
-		$custom_css = $this->options->get_value( '_advanced_options._custom_css' );
+	public function get_custom_css()
+	{
+		$custom_css = $this->options->get_value('_advanced_options._custom_css');
 
-		if ( ! empty( $custom_css ) ) {
-			return str_replace( '[ELEMENT]', '#' . $this->get_element_css_id(), $custom_css );
+		if (! empty($custom_css)) {
+			return str_replace('[ELEMENT]', '#' . $this->get_element_css_id(), $custom_css);
 		}
 
 		return '';
 	}
 
-	final public function do_element_render( $extra_render_data ) {
+	final public function do_element_render($extra_render_data)
+	{
 		// Setup render tags custom css classes
 		$this->apply_custom_classes_to_render_tags();
 
@@ -807,58 +841,60 @@ class Element {
 
 		$this->extra_render_data = $extra_render_data;
 
-		$this->before_render( $this->options );
-		do_action( 'zionbuilder/element/before_render', $this, $extra_render_data );
+		$this->before_render($this->options);
+		do_action('zionbuilder/element/before_render', $this, $extra_render_data);
 
-		$element_type_css_class = Utils::camel_case( $this->get_type() );
+		$element_type_css_class = Utils::camel_case($this->get_type());
 
 		// Add default class for element
-		$this->render_attributes->add( 'wrapper', 'class', sprintf( 'zb-element zb-el-%s', $element_type_css_class ) );
+		$this->render_attributes->add('wrapper', 'class', sprintf('zb-element zb-el-%s', $element_type_css_class));
 
 		// Add animation attributes
-		$appear_animation = $this->options->get_value( '_advanced_options._appear_animation', false );
+		$appear_animation = $this->options->get_value('_advanced_options._appear_animation', false);
 
-		if ( ! empty( $appear_animation ) ) {
-			$this->render_attributes->add( 'wrapper', 'class', 'ajs__element' );
-			$this->render_attributes->add( 'wrapper', 'data-ajs-animation', $appear_animation );
+		if (! empty($appear_animation)) {
+			$this->render_attributes->add('wrapper', 'class', 'ajs__element');
+			$this->render_attributes->add('wrapper', 'data-ajs-animation', $appear_animation);
 		}
 
 		// Add video BG
-		$background_video_options = $this->options->get_value( '_styles.wrapper.styles.default.default.background-video' );
+		$background_video_options = $this->options->get_value('_styles.wrapper.styles.default.default.background-video');
 
-		if ( ! empty( self::has_video_background( $background_video_options ) ) ) {
-			wp_enqueue_script( 'zb-video' );
+		if (! empty(self::has_video_background($background_video_options))) {
+			wp_enqueue_script('zb-video');
 		}
 
-		$wrapper_tag = $this->get_wrapper_tag( $this->options );
+		// Make sure the wrapper tag is actually a tag and not exploitable with xss attacks
+		$wrapper_tag = wp_kses_post($this->get_wrapper_tag($this->options));
+		$wrapper_tag = preg_replace('/[^a-zA-Z0-9]/', '', $wrapper_tag);
 
-		if ( $this->render_attributes->has_attribute( 'wrapper', 'id' ) ) {
-			$html_id    = $this->render_attributes->get_attributes( 'wrapper', 'id' );
-			$wrapper_id = end( $html_id );
+		if ($this->render_attributes->has_attribute('wrapper', 'id')) {
+			$html_id    = $this->render_attributes->get_attributes('wrapper', 'id');
+			$wrapper_id = end($html_id);
 		} else {
 			$wrapper_id = $this->get_element_css_id();
 		}
 
 		// Add wrapper attributes
-		$attributes = $this->render_attributes->get_attributes_as_string( 'wrapper' );
+		$attributes = $this->render_attributes->get_attributes_as_string('wrapper');
 
 		// Render element
 		// The attributes are already escaped in RenderAttributes::get_attributes_as_string()
-		printf( '<%s id="%s" %s>', esc_html( $wrapper_tag ), esc_attr( $wrapper_id ), $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput
+		printf('<%s id="%s" %s>', $wrapper_tag, esc_attr($wrapper_id), $attributes); // phpcs:ignore WordPress.Security.EscapeOutput
 
 		// Render video background
-		$video_config = $this->options->get_value( '_styles.wrapper.styles.default.default.background-video', false );
-		self::render_video_background( $video_config );
+		$video_config = $this->options->get_value('_styles.wrapper.styles.default.default.background-video', false);
+		self::render_video_background($video_config);
 
 		// Render element
-		$this->render( $this->options );
-		printf( '</%s>', esc_html( $wrapper_tag ) );
+		$this->render($this->options);
+		printf('</%s>', $wrapper_tag);
 
-		$this->after_render( $this->options );
+		$this->after_render($this->options);
 
 		// Reset provides
 		$this->reset_provides();
-		do_action( 'zionbuilder/element/after_render', $this, $extra_render_data );
+		do_action('zionbuilder/element/after_render', $this, $extra_render_data);
 	}
 
 	/**
@@ -868,15 +904,16 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public static function render_video_background( $options ) {
-		if ( self::has_video_background( $options ) ) {
+	public static function render_video_background($options)
+	{
+		if (self::has_video_background($options)) {
 			$video_options = array_merge(
 				$options,
 				[
 					'isBackgroundVideo' => true,
 				]
 			);
-			printf( '<div class="zb__videoBackground-wrapper zbjs_video_background" data-zion-video=\'%s\'></div>', wp_json_encode( $video_options ) );
+			printf('<div class="zb__videoBackground-wrapper zbjs_video_background" data-zion-video=\'%s\'></div>', wp_json_encode($video_options));
 		}
 	}
 
@@ -887,14 +924,15 @@ class Element {
 	 *
 	 * @return boolean
 	 */
-	public static function has_video_background( $options ) {
-		$video_source = ! empty( $options['videoSource'] ) ? $options['videoSource'] : 'local';
-		if ( $video_source === 'local' && ! empty( $options['mp4'] ) ) {
+	public static function has_video_background($options)
+	{
+		$video_source = ! empty($options['videoSource']) ? $options['videoSource'] : 'local';
+		if ($video_source === 'local' && ! empty($options['mp4'])) {
 			return true;
-		} elseif ( $video_source === 'youtube' && ! empty( $options['youtubeURL'] ) ) {
-				return true;
-		} elseif ( $video_source === 'vimeo' && ! empty( $options['vimeoURL'] ) ) {
-				return true;
+		} elseif ($video_source === 'youtube' && ! empty($options['youtubeURL'])) {
+			return true;
+		} elseif ($video_source === 'vimeo' && ! empty($options['vimeoURL'])) {
+			return true;
 		}
 
 		return false;
@@ -910,9 +948,10 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function render_tag( $html_tag_type, $tag_id, $content = '', $attributes = array() ) {
+	public function render_tag($html_tag_type, $tag_id, $content = '', $attributes = array())
+	{
 		// Attributes are already escaped, the content must be escaped by the element creator
-		echo $this->get_render_tag( $html_tag_type, $tag_id, $content, $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput
+		echo $this->get_render_tag($html_tag_type, $tag_id, $content, $attributes); // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 
 
@@ -926,10 +965,11 @@ class Element {
 	 *
 	 * @return string The HTML tag
 	 */
-	public function get_render_tag( $html_tag_type, $tag_id, $content = '', $attributes = array() ) {
-		$attributes = $this->render_attributes->get_attributes_as_string( $tag_id, $attributes );
-		$content    = is_array( $content ) ? implode( '', $content ) : $content;
-		return sprintf( '<%s %s>%s</%1$s>', esc_attr( $html_tag_type ), $attributes, $content );
+	public function get_render_tag($html_tag_type, $tag_id, $content = '', $attributes = array())
+	{
+		$attributes = $this->render_attributes->get_attributes_as_string($tag_id, $attributes);
+		$content    = is_array($content) ? implode('', $content) : $content;
+		return sprintf('<%s %s>%s</%1$s>', esc_attr($html_tag_type), $attributes, $content);
 	}
 
 	/**
@@ -944,21 +984,22 @@ class Element {
 	 *
 	 * @return void
 	 */
-	final public function render_tag_group( $html_tag_type, $option_id, $tag_id, $tag_config ) {
-		$tag_list = $this->options->get_value( $option_id, array() );
+	final public function render_tag_group($html_tag_type, $option_id, $tag_id, $tag_config)
+	{
+		$tag_list = $this->options->get_value($option_id, array());
 
-		foreach ( $tag_list as $index => $value ) {
+		foreach ($tag_list as $index => $value) {
 			// Check if the render has extra tags
-			if ( is_array( $tag_config['attributes'] ) ) {
-				foreach ( $tag_config['attributes'] as $attribute_type => $attribute_value ) {
-					$compiled_value          = str_replace( '{{INDEX}}', $index, $attribute_value );
-					$compiled_attribute_type = str_replace( '{{INDEX}}', $index, $attribute_type );
-					$this->render_attributes->add( $tag_id . $index, $compiled_attribute_type, $compiled_value );
+			if (is_array($tag_config['attributes'])) {
+				foreach ($tag_config['attributes'] as $attribute_type => $attribute_value) {
+					$compiled_value          = str_replace('{{INDEX}}', $index, $attribute_value);
+					$compiled_attribute_type = str_replace('{{INDEX}}', $index, $attribute_type);
+					$this->render_attributes->add($tag_id . $index, $compiled_attribute_type, $compiled_value);
 				}
 			}
 
-			$content = isset( $tag_config['render_callback'] ) ? call_user_func( $tag_config['render_callback'], $value, $index ) : '';
-			$this->render_tag( $html_tag_type, array( $tag_id, $tag_id . $index ), $content );
+			$content = isset($tag_config['render_callback']) ? call_user_func($tag_config['render_callback'], $value, $index) : '';
+			$this->render_tag($html_tag_type, array($tag_id, $tag_id . $index), $content);
 		}
 	}
 
@@ -970,18 +1011,19 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public static function get_icon_markup( $icon, $content = '', $attributes = [] ) {
-		$icon_attributes = Icons::get_icon_attributes( $icon );
-		$attributes      = array_merge( $attributes, $icon_attributes );
+	public static function get_icon_markup($icon, $content = '', $attributes = [])
+	{
+		$icon_attributes = Icons::get_icon_attributes($icon);
+		$attributes      = array_merge($attributes, $icon_attributes);
 
 		$attribute_list = [];
-		foreach ( $attributes as $attribute_name => $attribute_value ) {
+		foreach ($attributes as $attribute_name => $attribute_value) {
 
-			$attribute_value  = is_array( $attribute_value ) ? implode( ' ', $attribute_value ) : $attribute_value;
+			$attribute_value  = is_array($attribute_value) ? implode(' ', $attribute_value) : $attribute_value;
 			$attribute_list[] = "{$attribute_name}='{$attribute_value}'";
 		}
 
-		$attributes_as_string = join( ' ', $attribute_list );
+		$attributes_as_string = join(' ', $attribute_list);
 		return "<span {$attributes_as_string}>{$content}</span>";
 	}
 
@@ -995,13 +1037,14 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function attach_icon_attributes( $tag_id, $icon ) {
-		$icon_attributes = Icons::get_icon_attributes( $icon );
+	public function attach_icon_attributes($tag_id, $icon)
+	{
+		$icon_attributes = Icons::get_icon_attributes($icon);
 
 		// Attach icon attributes
-		if ( $icon_attributes ) {
-			foreach ( $icon_attributes as $attribute_key => $attribute_value ) {
-				$this->render_attributes->add( $tag_id, $attribute_key, $attribute_value, true );
+		if ($icon_attributes) {
+			foreach ($icon_attributes as $attribute_key => $attribute_value) {
+				$this->render_attributes->add($tag_id, $attribute_key, $attribute_value, true);
 			}
 		}
 	}
@@ -1016,24 +1059,25 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function attach_link_attributes( $tag_id, $link ) {
-		if ( isset( $link['link'] ) ) {
-			$this->render_attributes->add( $tag_id, 'href', $link['link'] );
+	public function attach_link_attributes($tag_id, $link)
+	{
+		if (isset($link['link'])) {
+			$this->render_attributes->add($tag_id, 'href', $link['link']);
 		}
 
-		if ( isset( $link['target'] ) ) {
-			$this->render_attributes->add( $tag_id, 'target', $link['target'] );
+		if (isset($link['target'])) {
+			$this->render_attributes->add($tag_id, 'target', $link['target']);
 		}
 
-		if ( isset( $link['title'] ) ) {
-			$this->render_attributes->add( $tag_id, 'title', $link['title'] );
+		if (isset($link['title'])) {
+			$this->render_attributes->add($tag_id, 'title', $link['title']);
 		}
 
-		if ( isset( $link['attributes'] ) && is_array( $link['attributes'] ) ) {
-			foreach ( $link['attributes'] as $attribute_config ) {
-				if ( ! empty( $attribute_config['key'] ) ) {
-					$attribute_value = isset( $attribute_config['value'] ) ? $attribute_config['value'] : null;
-					$this->render_attributes->add( $tag_id, $attribute_config['key'], $attribute_value );
+		if (isset($link['attributes']) && is_array($link['attributes'])) {
+			foreach ($link['attributes'] as $attribute_config) {
+				if (! empty($attribute_config['key'])) {
+					$attribute_value = isset($attribute_config['value']) ? $attribute_config['value'] : null;
+					$this->render_attributes->add($tag_id, $attribute_config['key'], $attribute_value);
 				}
 			}
 		}
@@ -1044,7 +1088,8 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_wrapper_tag( $options ) {
+	public function get_wrapper_tag($options)
+	{
 		return $this->wrapper_tag;
 	}
 
@@ -1055,28 +1100,30 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function set_wrapper_tag( $tag ) {
+	public function set_wrapper_tag($tag)
+	{
 		$this->wrapper_tag = $tag;
 	}
 
 	/**
 	 * @return bool
 	 */
-	private function element_is_allowed_render() {
+	private function element_is_allowed_render()
+	{
 		// Check user generated render allowed
-		if ( ! $this->can_render() ) {
+		if (! $this->can_render()) {
 			return false;
 		}
 
 		// Check element permissions settings
-		$element_visibility = $this->options->get_value( '_advanced_options._element_visibility', 'all' );
-		if ( 'logged_in' === $element_visibility && ! is_user_logged_in() ) {
+		$element_visibility = $this->options->get_value('_advanced_options._element_visibility', 'all');
+		if ('logged_in' === $element_visibility && ! is_user_logged_in()) {
 			return false;
-		} elseif ( 'logged_out' === $element_visibility && is_user_logged_in() ) {
+		} elseif ('logged_out' === $element_visibility && is_user_logged_in()) {
 			return false;
 		}
 
-		return apply_filters( 'zionbuilder/element/can_render', true, $this );
+		return apply_filters('zionbuilder/element/can_render', true, $this);
 	}
 
 	/**
@@ -1087,12 +1134,13 @@ class Element {
 	 *
 	 * @return string
 	 */
-	final public function get_style_classes_as_string( $style_id, $extra_classes = array() ) {
-		$option_path = sprintf( '_styles.%s.classes', $style_id );
-		$css_classes = $this->options->get_value( $option_path, array() );
-		$css_classes = array_merge( $css_classes, $extra_classes );
+	final public function get_style_classes_as_string($style_id, $extra_classes = array())
+	{
+		$option_path = sprintf('_styles.%s.classes', $style_id);
+		$css_classes = $this->options->get_value($option_path, array());
+		$css_classes = array_merge($css_classes, $extra_classes);
 
-		return implode( ' ', $css_classes );
+		return implode(' ', $css_classes);
 	}
 
 	/**
@@ -1100,9 +1148,10 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_element_css_id() {
+	public function get_element_css_id()
+	{
 		$options = $this->options->get_model();
-		return isset( $options['_advanced_options']['_element_id'] ) ? $options['_advanced_options']['_element_id'] : $this->get_uid();
+		return isset($options['_advanced_options']['_element_id']) ? $options['_advanced_options']['_element_id'] : $this->get_uid();
 	}
 
 	/**
@@ -1110,7 +1159,8 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_uid() {
+	public function get_uid()
+	{
 		return $this->uid;
 	}
 
@@ -1119,7 +1169,8 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function enqueue_all_extra_scripts() {
+	public function enqueue_all_extra_scripts()
+	{
 		$this->do_enqueue_scripts();
 		$this->do_enqueue_styles();
 	}
@@ -1131,14 +1182,14 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function enqueue_scripts() {
-	}
+	public function enqueue_scripts() {}
 
-	public function do_enqueue_scripts() {
+	public function do_enqueue_scripts()
+	{
 		// Check for animation
 		$options = $this->options->get_model();
-		if ( isset( $options['_advanced_options']['_appear_animation'] ) && ! empty( $options['_advanced_options']['_appear_animation'] ) ) {
-			wp_enqueue_script( 'zionbuilder-animatejs' );
+		if (isset($options['_advanced_options']['_appear_animation']) && ! empty($options['_advanced_options']['_appear_animation'])) {
+			wp_enqueue_script('zionbuilder-animatejs');
 		}
 
 		$this->enqueue_scripts();
@@ -1151,14 +1202,14 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function enqueue_styles() {
-	}
+	public function enqueue_styles() {}
 
-	public function do_enqueue_styles() {
+	public function do_enqueue_styles()
+	{
 		// Check for animation
 		$options = $this->options->get_model();
-		if ( isset( $options['_advanced_options']['_appear_animation'] ) && ! empty( $options['_advanced_options']['_appear_animation'] ) ) {
-			wp_enqueue_style( 'zion-frontend-animations' );
+		if (isset($options['_advanced_options']['_appear_animation']) && ! empty($options['_advanced_options']['_appear_animation'])) {
+			wp_enqueue_style('zion-frontend-animations');
 		}
 
 		$this->enqueue_styles();
@@ -1171,8 +1222,9 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function enqueue_editor_script( $script_url ) {
-		if ( ! in_array( $script_url, $this->editor_scripts, true ) ) {
+	public function enqueue_editor_script($script_url)
+	{
+		if (! in_array($script_url, $this->editor_scripts, true)) {
 			$this->editor_scripts[] = $script_url;
 		}
 	}
@@ -1188,8 +1240,9 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function enqueue_element_script( $script_url ) {
-		if ( ! in_array( $script_url, $this->element_scripts, true ) ) {
+	public function enqueue_element_script($script_url)
+	{
+		if (! in_array($script_url, $this->element_scripts, true)) {
 			$this->element_scripts[] = $script_url;
 		}
 	}
@@ -1202,8 +1255,9 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function enqueue_editor_style( $style_url ) {
-		if ( ! in_array( $style_url, $this->editor_styles, true ) ) {
+	public function enqueue_editor_style($style_url)
+	{
+		if (! in_array($style_url, $this->editor_styles, true)) {
 			$this->editor_styles[] = $style_url;
 		}
 	}
@@ -1219,8 +1273,9 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function enqueue_element_style( $style_url ) {
-		if ( ! in_array( $style_url, $this->element_styles, true ) ) {
+	public function enqueue_element_style($style_url)
+	{
+		if (! in_array($style_url, $this->element_styles, true)) {
 			$this->element_styles[] = $style_url;
 		}
 	}
@@ -1236,17 +1291,18 @@ class Element {
 	 *
 	 * @return string
 	 */
-	private function compile_script_url( $handle, $src, $base_url, $content_url, $ver ) {
-		if ( ! preg_match( '|^(https?:)?//|', $src ) && ! ( $content_url && 0 === strpos( $src, $content_url ) ) ) {
+	private function compile_script_url($handle, $src, $base_url, $content_url, $ver)
+	{
+		if (! preg_match('|^(https?:)?//|', $src) && ! ($content_url && 0 === strpos($src, $content_url))) {
 			$src = $base_url . $src;
 		}
 
-		if ( ! empty( $ver ) ) {
-			$src = add_query_arg( 'ver', $ver, $src );
+		if (! empty($ver)) {
+			$src = add_query_arg('ver', $ver, $src);
 		}
 
 		/* This filter is documented in wp-includes/class.wp-scripts.php */
-		return esc_url( apply_filters( 'script_loader_src', $src, $handle ) );
+		return esc_url(apply_filters('script_loader_src', $src, $handle));
 	}
 
 	/**
@@ -1256,22 +1312,23 @@ class Element {
 	 *
 	 * @return array<string, mixed>
 	 */
-	private function get_dependency_config( $manager ) {
+	private function get_dependency_config($manager)
+	{
 		$scripts = array();
 
 		// Set all scripts
-		$manager->all_deps( $manager->queue );
-		foreach ( $manager->to_do as $handle ) {
+		$manager->all_deps($manager->queue);
+		foreach ($manager->to_do as $handle) {
 			// Don't proceed if the script was not registered
-			if ( ! isset( $manager->registered[$handle] ) ) {
+			if (! isset($manager->registered[$handle])) {
 				continue;
 			}
 
 			$obj = $manager->registered[$handle];
 			$src = $obj->src;
 
-			if ( $src ) {
-				$scripts[$handle] = $this->prepare_script_data( $handle, $obj, $manager );
+			if ($src) {
+				$scripts[$handle] = $this->prepare_script_data($handle, $obj, $manager);
 			}
 		}
 
@@ -1283,7 +1340,8 @@ class Element {
 	 *
 	 * @return array<string, array<string, string>>
 	 */
-	private function get_element_styles_for_editor() {
+	private function get_element_styles_for_editor()
+	{
 		global $wp_styles;
 
 		// Preserve a copy of styles queue
@@ -1299,7 +1357,7 @@ class Element {
 
 		$this->enqueue_styles();
 
-		$scripts = $this->get_dependency_config( $wp_styles );
+		$scripts = $this->get_dependency_config($wp_styles);
 
 		$wp_styles->queue  = $old_queue;
 		$wp_styles->to_do  = $old_todo;
@@ -1307,13 +1365,13 @@ class Element {
 		$wp_styles->groups = $old_groups;
 
 		// Add editor script
-		foreach ( $this->editor_styles as $key => $element_style_url ) {
+		foreach ($this->editor_styles as $key => $element_style_url) {
 			$scripts[$this->get_type() . '-editor-style-' . $key] = array(
 				'src' => $element_style_url,
 			);
 		}
 
-		foreach ( $this->element_styles as $key => $element_style_url ) {
+		foreach ($this->element_styles as $key => $element_style_url) {
 			$scripts[$this->get_type() . '-element-style-' . $key] = array(
 				'src' => $element_style_url,
 			);
@@ -1328,7 +1386,8 @@ class Element {
 	 *
 	 * @return string
 	 */
-	public function get_sortable_content_orientation() {
+	public function get_sortable_content_orientation()
+	{
 		return 'horizontal';
 	}
 
@@ -1339,7 +1398,8 @@ class Element {
 	 *
 	 * @return array<string, array<string, string>>
 	 */
-	public function get_element_scripts_for_editor() {
+	public function get_element_scripts_for_editor()
+	{
 		global $wp_scripts;
 
 		// Preserve a copy of wp scripts info
@@ -1354,7 +1414,7 @@ class Element {
 		$wp_scripts->done   = array();
 		$wp_scripts->groups = array();
 		$this->enqueue_scripts();
-		$scripts = $this->get_dependency_config( $wp_scripts );
+		$scripts = $this->get_dependency_config($wp_scripts);
 
 		// Put back script info
 		$wp_scripts->queue  = $old_queue;
@@ -1363,13 +1423,13 @@ class Element {
 		$wp_scripts->groups = $old_groups;
 
 		// Add editor script
-		foreach ( $this->editor_scripts as $key => $editor_script_url ) {
+		foreach ($this->editor_scripts as $key => $editor_script_url) {
 			$scripts[$this->get_type() . '-editor-script-' . $key] = array(
 				'src' => $editor_script_url,
 			);
 		}
 
-		foreach ( $this->element_scripts as $key => $element_script_url ) {
+		foreach ($this->element_scripts as $key => $element_script_url) {
 			$scripts[$this->get_type() . '-element-script-' . $key] = array(
 				'src' => $element_script_url,
 			);
@@ -1383,7 +1443,8 @@ class Element {
 	 *
 	 * @return array<int, string> The element scripts
 	 */
-	public function get_element_scripts() {
+	public function get_element_scripts()
+	{
 		return $this->element_scripts;
 	}
 
@@ -1392,7 +1453,8 @@ class Element {
 	 *
 	 * @return array<int, string> The element scripts
 	 */
-	public function get_element_styles() {
+	public function get_element_styles()
+	{
 		return $this->element_styles;
 	}
 
@@ -1405,14 +1467,15 @@ class Element {
 	 *
 	 * @return array<string, mixed>
 	 */
-	private function prepare_script_data( $handle, $obj, $manager ) {
-		if ( null === $obj->ver ) {
+	private function prepare_script_data($handle, $obj, $manager)
+	{
+		if (null === $obj->ver) {
 			$ver = '';
 		} else {
-			$ver = $obj->ver ? $obj->ver : get_bloginfo( 'version' );
+			$ver = $obj->ver ? $obj->ver : get_bloginfo('version');
 		}
 
-		if ( isset( $manager->args[$handle] ) ) {
+		if (isset($manager->args[$handle])) {
 			$ver = $ver ? $ver . '&amp;' . $manager->args[$handle] : $manager->args[$handle];
 		}
 
@@ -1426,9 +1489,9 @@ class Element {
 				$ver
 			),
 
-			'data'   => $manager->get_data( $handle, 'data' ),
-			'before' => $manager->get_data( $handle, 'before' ),
-			'after'  => $manager->get_data( $handle, 'after' ),
+			'data'   => $manager->get_data($handle, 'data'),
+			'before' => $manager->get_data($handle, 'before'),
+			'after'  => $manager->get_data($handle, 'after'),
 		);
 	}
 
@@ -1440,7 +1503,8 @@ class Element {
 	 *
 	 * @return string The current class name
 	 */
-	final public function get_class_name() {
+	final public function get_class_name()
+	{
 		return get_called_class();
 	}
 
@@ -1449,8 +1513,9 @@ class Element {
 	 *
 	 * @return void
 	 */
-	public function render_children() {
-		Plugin::$instance->renderer->render_children( $this->get_children() );
+	public function render_children()
+	{
+		Plugin::$instance->renderer->render_children($this->get_children());
 	}
 
 	/**
@@ -1458,9 +1523,10 @@ class Element {
 	 *
 	 * @return string|false
 	 */
-	public function get_children_for_render() {
+	public function get_children_for_render()
+	{
 		ob_start();
-		Plugin::$instance->renderer->render_children( $this->get_children() );
+		Plugin::$instance->renderer->render_children($this->get_children());
 		return ob_get_clean();
 	}
 
@@ -1471,8 +1537,9 @@ class Element {
 	 * @param mixed $value The value provided
 	 * @return void
 	 */
-	public function provide( $key, $value ) {
-		if ( ! isset( self::$provides[$key] ) || ! is_array( self::$provides[$key] ) ) {
+	public function provide($key, $value)
+	{
+		if (! isset(self::$provides[$key]) || ! is_array(self::$provides[$key])) {
 			self::$provides[$key] = array();
 		}
 
@@ -1487,15 +1554,17 @@ class Element {
 	 * @param string $key
 	 * @return null|mixed
 	 */
-	public function inject( $key ) {
-		if ( isset( self::$provides[$key] ) && is_array( self::$provides[$key] ) ) {
-			return end( self::$provides[$key] );
+	public function inject($key)
+	{
+		if (isset(self::$provides[$key]) && is_array(self::$provides[$key])) {
+			return end(self::$provides[$key]);
 		}
 	}
 
-	public function reset_provides() {
-		foreach ( $this->current_provides as $provide_key ) {
-			array_pop( self::$provides[$provide_key] );
+	public function reset_provides()
+	{
+		foreach ($this->current_provides as $provide_key) {
+			array_pop(self::$provides[$provide_key]);
 		}
 	}
 
@@ -1508,11 +1577,12 @@ class Element {
 	 *
 	 * @return array<int, mixed>
 	 */
-	public function get_children() {
+	public function get_children()
+	{
 		$child_elements_data = array();
 
-		if ( ! empty( $this->content ) && is_array( $this->content ) ) {
-			foreach ( $this->content as $child_content_data ) {
+		if (! empty($this->content) && is_array($this->content)) {
+			foreach ($this->content as $child_content_data) {
 				$child_elements_data[] = $child_content_data;
 			}
 		}
@@ -1520,97 +1590,36 @@ class Element {
 		return $child_elements_data;
 	}
 
-	public function render_placeholder_info( $config ) {
+	public function render_placeholder_info($config)
+	{
 		// Only render the placeholder in server render
-		if ( ! current_user_can( 'administrator' ) ) {
+		if (! current_user_can('administrator')) {
 			return;
 		}
 
 		$config = wp_parse_args(
 			$config,
 			array(
-				'title'       => esc_html__( 'Heads up!', 'zionbuilder' ),
+				'title'       => esc_html__('Heads up!', 'zionbuilder'),
 				'description' => '',
 			)
 		);
 
-		?>
-			<div class="znpb-el-notice">
-				<span class="znpb-editor-icon-wrapper">
-					<svg class="zion-svg-inline znpb-editor-icon zion-icon zion-desktop" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 50 50" preserveAspectRatio=""><path d="M25.0001 0C31.6306 0 37.9892 2.63403 42.6777 7.32234C47.3664 12.0106 50 18.37 50 24.9999V50H25C18.3698 50 12.0108 47.366 7.32234 42.6777C2.63404 37.9894 1.50167e-06 31.63 1.50167e-06 25C1.50167e-06 18.3701 2.63404 12.0109 7.32234 7.32243C12.011 2.63413 18.37 9.9152e-05 25 9.9152e-05L25.0001 0ZM22.6474 39.1479C22.6474 39.2959 22.7063 39.4382 22.8109 39.5428C22.9155 39.6474 23.0578 39.7063 23.2058 39.7063H26.7951C27.1036 39.7063 27.3535 39.4564 27.3535 39.1479V21.4336C27.3535 21.1255 27.1036 20.8755 26.7951 20.8755H23.2058C23.0578 20.8755 22.9155 20.9344 22.8109 21.0391C22.7063 21.1437 22.6474 21.2855 22.6474 21.4336V39.1479ZM22.6474 15.3344C22.6474 15.4824 22.7063 15.6242 22.8109 15.7292C22.9155 15.8339 23.0578 15.8924 23.2058 15.8924H26.7951C27.1036 15.8924 27.3535 15.6428 27.3535 15.3344V10.8518C27.3535 10.5437 27.1036 10.2938 26.7951 10.2938H23.2058C23.0578 10.2938 22.9155 10.3523 22.8109 10.4573C22.7063 10.5619 22.6474 10.7038 22.6474 10.8518V15.3344Z"/></svg>
-				</span>
-				<h3><?php echo $config['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
-				<p>
-				<?php echo $config['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</p>
-
-				<style>
-					.znpb-el-notice {
-						color: #fff;
-						font-size: 13px;
-						position: relative;
-						background-color: rgba(40, 40, 44, 0.6);
-						border-radius: 4px;
-						padding: 20px 20px 20px 56px;
-						width: 100%;
-						margin: 20px;
-					}
-
-					.znpb-el-notice h3 {
-						font-size: 15px !important;
-						margin: 0 0 5px !important;
-					}
-
-					.znpb-el-notice a {
-						font-weight: 700;
-					}
-
-					.znpb-el-notice .znpb-editor-icon-wrapper {
-						color: rgba(255, 255, 255, 0.4);
-						position: absolute;
-						font-size: 26px;
-						margin-left: -36px;
-					}
-
-					.znpb-el-notice .znpb-editor-icon-wrapper svg {
-						fill: currentColor;
-						width: 1em;
-						height: 1em;
-						display: block;
-					}
-				</style>
-			</div>
-		<?php
-	}
-
-	public function render_admin_info_text( $config ) {
-		// Only render the placeholder in server render
-		if ( ! current_user_can( 'administrator' ) ) {
-			return;
-		}
-
-		$config = wp_parse_args(
-			$config,
-			array(
-				'title'       => esc_html__( 'Heads up!', 'zionbuilder' ),
-				'description' => '',
-				'type'        => 'info',
-			)
-		);
-
-		?>
-			<div class="znpb-el-notice znpb-el-notice--<?php echo $config['type']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
-				<span class="znpb-editor-icon-wrapper">
-					<svg class="zion-svg-inline znpb-editor-icon zion-icon zion-desktop" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 50 50" preserveAspectRatio=""><path d="M25.0001 0C31.6306 0 37.9892 2.63403 42.6777 7.32234C47.3664 12.0106 50 18.37 50 24.9999V50H25C18.3698 50 12.0108 47.366 7.32234 42.6777C2.63404 37.9894 1.50167e-06 31.63 1.50167e-06 25C1.50167e-06 18.3701 2.63404 12.0109 7.32234 7.32243C12.011 2.63413 18.37 9.9152e-05 25 9.9152e-05L25.0001 0ZM22.6474 39.1479C22.6474 39.2959 22.7063 39.4382 22.8109 39.5428C22.9155 39.6474 23.0578 39.7063 23.2058 39.7063H26.7951C27.1036 39.7063 27.3535 39.4564 27.3535 39.1479V21.4336C27.3535 21.1255 27.1036 20.8755 26.7951 20.8755H23.2058C23.0578 20.8755 22.9155 20.9344 22.8109 21.0391C22.7063 21.1437 22.6474 21.2855 22.6474 21.4336V39.1479ZM22.6474 15.3344C22.6474 15.4824 22.7063 15.6242 22.8109 15.7292C22.9155 15.8339 23.0578 15.8924 23.2058 15.8924H26.7951C27.1036 15.8924 27.3535 15.6428 27.3535 15.3344V10.8518C27.3535 10.5437 27.1036 10.2938 26.7951 10.2938H23.2058C23.0578 10.2938 22.9155 10.3523 22.8109 10.4573C22.7063 10.5619 22.6474 10.7038 22.6474 10.8518V15.3344Z"/></svg>
-				</span>
-				<h3><?php echo $config['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
-				<p>
-				<?php echo $config['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</p>
-			</div>
+?>
+		<div class="znpb-el-notice">
+			<span class="znpb-editor-icon-wrapper">
+				<svg class="zion-svg-inline znpb-editor-icon zion-icon zion-desktop" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 50 50" preserveAspectRatio="">
+					<path d="M25.0001 0C31.6306 0 37.9892 2.63403 42.6777 7.32234C47.3664 12.0106 50 18.37 50 24.9999V50H25C18.3698 50 12.0108 47.366 7.32234 42.6777C2.63404 37.9894 1.50167e-06 31.63 1.50167e-06 25C1.50167e-06 18.3701 2.63404 12.0109 7.32234 7.32243C12.011 2.63413 18.37 9.9152e-05 25 9.9152e-05L25.0001 0ZM22.6474 39.1479C22.6474 39.2959 22.7063 39.4382 22.8109 39.5428C22.9155 39.6474 23.0578 39.7063 23.2058 39.7063H26.7951C27.1036 39.7063 27.3535 39.4564 27.3535 39.1479V21.4336C27.3535 21.1255 27.1036 20.8755 26.7951 20.8755H23.2058C23.0578 20.8755 22.9155 20.9344 22.8109 21.0391C22.7063 21.1437 22.6474 21.2855 22.6474 21.4336V39.1479ZM22.6474 15.3344C22.6474 15.4824 22.7063 15.6242 22.8109 15.7292C22.9155 15.8339 23.0578 15.8924 23.2058 15.8924H26.7951C27.1036 15.8924 27.3535 15.6428 27.3535 15.3344V10.8518C27.3535 10.5437 27.1036 10.2938 26.7951 10.2938H23.2058C23.0578 10.2938 22.9155 10.3523 22.8109 10.4573C22.7063 10.5619 22.6474 10.7038 22.6474 10.8518V15.3344Z" />
+				</svg>
+			</span>
+			<h3><?php echo $config['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				?></h3>
+			<p>
+				<?php echo $config['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				?>
+			</p>
 
 			<style>
-
 				.znpb-el-notice {
 					color: #fff;
 					font-size: 13px;
@@ -1620,10 +1629,6 @@ class Element {
 					padding: 20px 20px 20px 56px;
 					width: 100%;
 					margin: 20px;
-				}
-
-				.znpb-el-notice--error {
-					background-color: #e84655;
 				}
 
 				.znpb-el-notice h3 {
@@ -1648,8 +1653,82 @@ class Element {
 					height: 1em;
 					display: block;
 				}
-
 			</style>
-		<?php
+		</div>
+	<?php
+	}
+
+	public function render_admin_info_text($config)
+	{
+		// Only render the placeholder in server render
+		if (! current_user_can('administrator')) {
+			return;
+		}
+
+		$config = wp_parse_args(
+			$config,
+			array(
+				'title'       => esc_html__('Heads up!', 'zionbuilder'),
+				'description' => '',
+				'type'        => 'info',
+			)
+		);
+
+	?>
+		<div class="znpb-el-notice znpb-el-notice--<?php echo $config['type']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+													?>">
+			<span class="znpb-editor-icon-wrapper">
+				<svg class="zion-svg-inline znpb-editor-icon zion-icon zion-desktop" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 50 50" preserveAspectRatio="">
+					<path d="M25.0001 0C31.6306 0 37.9892 2.63403 42.6777 7.32234C47.3664 12.0106 50 18.37 50 24.9999V50H25C18.3698 50 12.0108 47.366 7.32234 42.6777C2.63404 37.9894 1.50167e-06 31.63 1.50167e-06 25C1.50167e-06 18.3701 2.63404 12.0109 7.32234 7.32243C12.011 2.63413 18.37 9.9152e-05 25 9.9152e-05L25.0001 0ZM22.6474 39.1479C22.6474 39.2959 22.7063 39.4382 22.8109 39.5428C22.9155 39.6474 23.0578 39.7063 23.2058 39.7063H26.7951C27.1036 39.7063 27.3535 39.4564 27.3535 39.1479V21.4336C27.3535 21.1255 27.1036 20.8755 26.7951 20.8755H23.2058C23.0578 20.8755 22.9155 20.9344 22.8109 21.0391C22.7063 21.1437 22.6474 21.2855 22.6474 21.4336V39.1479ZM22.6474 15.3344C22.6474 15.4824 22.7063 15.6242 22.8109 15.7292C22.9155 15.8339 23.0578 15.8924 23.2058 15.8924H26.7951C27.1036 15.8924 27.3535 15.6428 27.3535 15.3344V10.8518C27.3535 10.5437 27.1036 10.2938 26.7951 10.2938H23.2058C23.0578 10.2938 22.9155 10.3523 22.8109 10.4573C22.7063 10.5619 22.6474 10.7038 22.6474 10.8518V15.3344Z" />
+				</svg>
+			</span>
+			<h3><?php echo $config['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				?></h3>
+			<p>
+				<?php echo $config['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				?>
+			</p>
+		</div>
+
+		<style>
+			.znpb-el-notice {
+				color: #fff;
+				font-size: 13px;
+				position: relative;
+				background-color: rgba(40, 40, 44, 0.6);
+				border-radius: 4px;
+				padding: 20px 20px 20px 56px;
+				width: 100%;
+				margin: 20px;
+			}
+
+			.znpb-el-notice--error {
+				background-color: #e84655;
+			}
+
+			.znpb-el-notice h3 {
+				font-size: 15px !important;
+				margin: 0 0 5px !important;
+			}
+
+			.znpb-el-notice a {
+				font-weight: 700;
+			}
+
+			.znpb-el-notice .znpb-editor-icon-wrapper {
+				color: rgba(255, 255, 255, 0.4);
+				position: absolute;
+				font-size: 26px;
+				margin-left: -36px;
+			}
+
+			.znpb-el-notice .znpb-editor-icon-wrapper svg {
+				fill: currentColor;
+				width: 1em;
+				height: 1em;
+				display: block;
+			}
+		</style>
+<?php
 	}
 }

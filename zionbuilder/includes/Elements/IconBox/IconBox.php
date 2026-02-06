@@ -141,7 +141,7 @@ class IconBox extends Element {
 			'title',
 			[
 				'type'        => 'text',
-				'description' => esc_html__( 'Set the desired title.' ),
+				'description' => esc_html__( 'Set the desired title.', 'zionbuilder' ),
 				'title'       => esc_html__( 'Title', 'zionbuilder' ),
 				'default'     => esc_html__( 'Just a sample title.', 'zionbuilder' ),
 			]

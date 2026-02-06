@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit974640d6bd11d231c4c399225299652a
+class ComposerStaticInit58a1a86e78331156f3439a1510e3dedc
 {
     public static $prefixLengthsPsr4 = array (
         'Z' => 
@@ -144,6 +144,7 @@ class ComposerStaticInit974640d6bd11d231c4c399225299652a
         'ZionBuilder\\Settings' => __DIR__ . '/../..' . '/includes/Settings.php',
         'ZionBuilder\\Shortcodes' => __DIR__ . '/../..' . '/includes/Shortcodes.php',
         'ZionBuilder\\Templates' => __DIR__ . '/../..' . '/includes/Templates.php',
+        'ZionBuilder\\ThemeStyles' => __DIR__ . '/../..' . '/includes/ThemeStyles.php',
         'ZionBuilder\\Uninstall' => __DIR__ . '/../..' . '/includes/Uninstall.php',
         'ZionBuilder\\Upgrade\\Upgrader' => __DIR__ . '/../..' . '/includes/Upgrade/Upgrader.php',
         'ZionBuilder\\Upgrade\\Upgrades' => __DIR__ . '/../..' . '/includes/Upgrade/Upgrades.php',
@@ -156,9 +157,9 @@ class ComposerStaticInit974640d6bd11d231c4c399225299652a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit974640d6bd11d231c4c399225299652a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit974640d6bd11d231c4c399225299652a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit974640d6bd11d231c4c399225299652a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit58a1a86e78331156f3439a1510e3dedc::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit58a1a86e78331156f3439a1510e3dedc::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit58a1a86e78331156f3439a1510e3dedc::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -3,7 +3,7 @@
 Plugin Name: Zion Builder
 Plugin URI: https://zionbuilder.io/?utm_campaign=plugin-uri&utm_medium=wp-dashboard-plugins
 Description: The page builder you always wanted. Create any design you want using live editor.
-Version: 3.6.14
+Version: 3.6.17
 Author: zionbuilder.io
 Author URI: https://zionbuilder.io/?utm_campaign=plugin-uri&utm_medium=wp-dashboard-plugins
 Text Domain: zionbuilder
@@ -30,15 +30,15 @@ use ZionBuilder\Plugin;
 use ZionBuilder\Install;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
 // Get the info for this plugin
-if ( ! function_exists( 'get_plugin_data' ) ) {
+if (! function_exists('get_plugin_data')) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
-$plugin_data = get_plugin_data( __FILE__, true, false );
+$zionbuilder_plugin_data = get_plugin_data(__FILE__, true, false);
 
 /**
  * Load text domain.
@@ -49,34 +49,35 @@ $plugin_data = get_plugin_data( __FILE__, true, false );
  *
  * @return void
  */
-function zionbuilder_load_textdomain() {
-	load_plugin_textdomain( 'zionbuilder' );
+function zionbuilder_load_textdomain()
+{
+	load_plugin_textdomain('zionbuilder');
 }
-add_action( 'init', __NAMESPACE__ . '\\zionbuilder_load_textdomain' );
+add_action('init', __NAMESPACE__ . '\\zionbuilder_load_textdomain');
 
 // Set the minimum PRO compatible version
-define( 'MINIMUM_ZION_PRO_VERSION', '3.3.0' );
+define('MINIMUM_ZION_PRO_VERSION', '3.3.0');
 
 /*
  * Check to see if the minimum requirements are meet
  */
-if ( \version_compare( PHP_VERSION, '5.6.20', '<' ) ) {
-	define( 'ZIONBUILDER_REQUIREMENTS_FAILED', true );
-	add_action( 'admin_notices', __NAMESPACE__ . '\\zionbuilder_fail_php_version' );
-} elseif ( version_compare( get_bloginfo( 'version' ), '5.0', '<' ) ) {
-	define( 'ZIONBUILDER_REQUIREMENTS_FAILED', true );
-	add_action( 'admin_notices', __NAMESPACE__ . '\\zionbuilder_fail_wp_version' );
+if (\version_compare(PHP_VERSION, '5.6.20', '<')) {
+	define('ZIONBUILDER_REQUIREMENTS_FAILED', true);
+	add_action('admin_notices', __NAMESPACE__ . '\\zionbuilder_fail_php_version');
+} elseif (version_compare(get_bloginfo('version'), '5.0', '<')) {
+	define('ZIONBUILDER_REQUIREMENTS_FAILED', true);
+	add_action('admin_notices', __NAMESPACE__ . '\\zionbuilder_fail_wp_version');
 } else {
 	// Load auto loader
 	require __DIR__ . '/vendor/autoload.php';
 
-	\register_activation_hook( __FILE__, [ Install::class, 'activate' ] );
+	\register_activation_hook(__FILE__, [Install::class, 'activate']);
 
 	// Load main plugin
 	require __DIR__ . '/includes/Plugin.php';
 
 	// Fire up the plugin
-	$manager = new Plugin( trailingslashit( __DIR__ ), plugin_dir_url( __FILE__ ), $plugin_data['Version'] );
+	new Plugin(trailingslashit(__DIR__), plugin_dir_url(__FILE__), $zionbuilder_plugin_data['Version']);
 }
 
 /**
@@ -88,10 +89,11 @@ if ( \version_compare( PHP_VERSION, '5.6.20', '<' ) ) {
  *
  * @return void
  */
-function zionbuilder_fail_php_version() {
+function zionbuilder_fail_php_version()
+{
 	/* translators: %s: Minimum PHP version */
-	$message = sprintf( esc_html__( 'Zion Builder requires at least PHP version %s. Please contact your hosting provider and ask them to update the PHP version used on your server. Zion builder will not be activated until the minimum PHP version is installed.', 'zionbuilder' ), '5.4' );
-	printf( '<div class="notice notice-error is-dismissible"><p>%s</p></div>', wp_kses_post( $message ) );
+	$message = sprintf(esc_html__('Zion Builder requires at least PHP version %s. Please contact your hosting provider and ask them to update the PHP version used on your server. Zion builder will not be activated until the minimum PHP version is installed.', 'zionbuilder'), '5.4');
+	printf('<div class="notice notice-error is-dismissible"><p>%s</p></div>', wp_kses_post($message));
 }
 
 
@@ -104,23 +106,24 @@ function zionbuilder_fail_php_version() {
  *
  * @return void
  */
-function zionbuilder_fail_wp_version() {
+function zionbuilder_fail_wp_version()
+{
 	$button = '';
 	$screen = get_current_screen();
 
 	// Don't show the notice on WordPress core update page
-	if ( isset( $screen->id ) && 'update-core' === $screen->id ) {
+	if (isset($screen->id) && 'update-core' === $screen->id) {
 		return;
 	}
 
-	$update_url = wp_nonce_url( self_admin_url( 'update-core.php' ) );
+	$update_url = wp_nonce_url(self_admin_url('update-core.php'));
 
 	// Show update button if the current user can update WordPress
-	if ( current_user_can( 'update_core' ) ) {
-		$button = sprintf( '<p><a href="%s" class="button-primary">%s</a></p>', $update_url, __( 'Update WordPress', 'zionbuilder' ) );
+	if (current_user_can('update_core')) {
+		$button = sprintf('<p><a href="%s" class="button-primary">%s</a></p>', $update_url, __('Update WordPress', 'zionbuilder'));
 	}
 
 	/* translators: %s: Minimum WordPress version */
-	$message = sprintf( esc_html__( 'Zion Builder requires at least WordPress version %s. Please update WordPress to the latest version. Zion Builder will not be activated until the minimum WordPress version is installed.', 'zionbuilder' ), '4.9' );
-	echo wp_kses_post( sprintf( '<div class="notice notice-error is-dismissible"><p>%s</p>%s</div>', $message, $button ) );
+	$message = sprintf(esc_html__('Zion Builder requires at least WordPress version %s. Please update WordPress to the latest version. Zion Builder will not be activated until the minimum WordPress version is installed.', 'zionbuilder'), '4.9');
+	echo wp_kses_post(sprintf('<div class="notice notice-error is-dismissible"><p>%s</p>%s</div>', $message, $button));
 }

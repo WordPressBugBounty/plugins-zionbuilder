@@ -1,6 +1,5 @@
 (function() {
   "use strict";
-  const main = "";
   window.zbScripts = window.zbScripts || {};
   class ProgressBars {
     constructor(domNode) {

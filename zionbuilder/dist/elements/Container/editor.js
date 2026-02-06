@@ -19,7 +19,7 @@
       return (_ctx, _cache) => {
         const _component_SortableContent = vue.resolveComponent("SortableContent");
         return vue.openBlock(), vue.createBlock(_component_SortableContent, vue.mergeProps({
-          element: _ctx.element,
+          element: __props.element,
           tag: htmlTag.value
         }, extraAttributes.value), {
           start: vue.withCtx(() => [
@@ -29,6 +29,7 @@
             vue.renderSlot(_ctx.$slots, "end")
           ]),
           _: 3
+          /* FORWARDED */
         }, 16, ["element", "tag"]);
       };
     }

@@ -3,7 +3,7 @@
 namespace ZionBuilder;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @throws \LogicException if manifest file is not found
  */
-class Environment {
+class Environment
+{
 	const MANIFEST_FILENAME = 'manifest.json';
 
 	/**
@@ -30,14 +31,15 @@ class Environment {
 	 *
 	 * @return array<string, mixed> The manifest configuration
 	 */
-	public static function get_config() {
-		if ( null === self::$config ) {
-			if ( ! file_exists( Utils::get_file_path( self::MANIFEST_FILENAME ) ) ) {
-				throw new \LogicException( sprintf( 'Manifest %s does not exist.', Utils::get_file_path( self::MANIFEST_FILENAME ) ) );
+	public static function get_config()
+	{
+		if (null === self::$config) {
+			if (! file_exists(Utils::get_file_path(self::MANIFEST_FILENAME))) {
+				throw new \LogicException(sprintf('Manifest %s does not exist.', esc_html(Utils::get_file_path(self::MANIFEST_FILENAME))));
 			}
 
-			$file_data = \json_decode( FileSystem::get_file_system()->get_contents( Utils::get_file_path( self::MANIFEST_FILENAME ) ), true );
-			if ( $file_data ) {
+			$file_data = \json_decode(FileSystem::get_file_system()->get_contents(Utils::get_file_path(self::MANIFEST_FILENAME)), true);
+			if ($file_data) {
 				self::$config = $file_data;
 			} else {
 				self::$config = [
@@ -59,10 +61,11 @@ class Environment {
 	 *
 	 * @return mixed The value for the requested id
 	 */
-	public static function get_value( $id, $fallback = null ) {
+	public static function get_value($id, $fallback = null)
+	{
 		$config = self::get_config();
 
-		if ( isset( $config[$id] ) ) {
+		if (isset($config[$id])) {
 			return $config[$id];
 		}
 
@@ -77,7 +80,8 @@ class Environment {
 	 *
 	 * @return boolean
 	 */
-	public static function is_debug() {
-		return self::get_value( 'debug' );
+	public static function is_debug()
+	{
+		return self::get_value('debug');
 	}
 }

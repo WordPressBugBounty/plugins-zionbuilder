@@ -129,6 +129,7 @@ return array(
     'ZionBuilder\\Settings' => $baseDir . '/includes/Settings.php',
     'ZionBuilder\\Shortcodes' => $baseDir . '/includes/Shortcodes.php',
     'ZionBuilder\\Templates' => $baseDir . '/includes/Templates.php',
+    'ZionBuilder\\ThemeStyles' => $baseDir . '/includes/ThemeStyles.php',
     'ZionBuilder\\Uninstall' => $baseDir . '/includes/Uninstall.php',
     'ZionBuilder\\Upgrade\\Upgrader' => $baseDir . '/includes/Upgrade/Upgrader.php',
     'ZionBuilder\\Upgrade\\Upgrades' => $baseDir . '/includes/Upgrade/Upgrades.php',

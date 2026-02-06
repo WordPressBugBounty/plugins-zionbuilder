@@ -1,6 +1,5 @@
 (function() {
   "use strict";
-  const main = "";
   document.addEventListener("click", onAccordionClick);
   document.addEventListener("keydown", onAccordionKeydown);
   function onAccordionClick(event) {

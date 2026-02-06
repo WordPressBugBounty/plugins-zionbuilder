@@ -35,7 +35,7 @@ class Advanced extends BaseSchema {
 			'_element_name',
 			[
 				'type'        => 'text',
-				'description' => __( 'Set the desired name for this element. Will only appear in edit mode.' ),
+				'description' => __( 'Set the desired name for this element. Will only appear in edit mode.', 'zionbuilder' ),
 				'title'       => __( 'Element name', 'zionbuilder' ),
 				'placeholder' => '%%ELEMENT_TYPE%%',
 				'save_path'   => 'name',
@@ -46,7 +46,7 @@ class Advanced extends BaseSchema {
 			'_element_id',
 			[
 				'type'        => 'text',
-				'description' => __( 'Set the desired element id. Please note that the id must be unique accross your page' ),
+				'description' => __( 'Set the desired element id. Please note that the id must be unique accross your page', 'zionbuilder' ),
 				'title'       => __( 'Element unique id', 'zionbuilder' ),
 				'placeholder' => '%%ELEMENT_UID%%',
 				'save_path'   => 'uid',
@@ -57,7 +57,7 @@ class Advanced extends BaseSchema {
 			'_element_visibility',
 			[
 				'type'        => 'custom_selector',
-				'description' => __( 'Set the visibility for this element.' ),
+				'description' => __( 'Set the visibility for this element.', 'zionbuilder' ),
 				'title'       => __( 'Element visibility', 'zionbuilder' ),
 				'default'     => 'all',
 				'options'     => [
@@ -90,7 +90,7 @@ class Advanced extends BaseSchema {
 			'_appear_animation',
 			[
 				'type'             => 'radio_image',
-				'description'      => __( 'Set the desired appear animation when the element becomes visible in the viewport.' ),
+				'description'      => __( 'Set the desired appear animation when the element becomes visible in the viewport.', 'zionbuilder' ),
 				'title'            => __( 'Appear animation', 'zionbuilder' ),
 				'default'          => '',
 				'columns'          => 3,
@@ -110,7 +110,7 @@ class Advanced extends BaseSchema {
 			'_appear_duration',
 			[
 				'type'        => 'dynamic_slider',
-				'description' => esc_html__( 'Set the desired appear animation duration (in milliseconds).' ),
+				'description' => esc_html__( 'Set the desired appear animation duration (in milliseconds).', 'zionbuilder' ),
 				'title'       => esc_html__( 'Appear duration', 'zionbuilder' ),
 				'default'     => '1000ms',
 				'content'     => 'ms',

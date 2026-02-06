@@ -52,21 +52,22 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
               color: topMask.value["color"],
               flip: topMask.value["flip"],
               position: "top"
-            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("", true),
+            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("v-if", true),
             bottomMask.value !== void 0 && bottomMask.value.shape ? (vue.openBlock(), vue.createBlock(_component_SvgMask, {
               key: 1,
               "shape-path": bottomMask.value["shape"],
               color: bottomMask.value["color"],
               flip: bottomMask.value["flip"],
               position: "bottom"
-            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("", true),
-            vue.createVNode(_component_SortableContent, vue.mergeProps(_ctx.api.getAttributesForTag("inner_content_styles"), {
-              element: _ctx.element,
-              class: ["zb-section__innerWrapper", _ctx.api.getStyleClasses("inner_content_styles")]
+            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("v-if", true),
+            vue.createVNode(_component_SortableContent, vue.mergeProps(__props.api.getAttributesForTag("inner_content_styles"), {
+              element: __props.element,
+              class: ["zb-section__innerWrapper", __props.api.getStyleClasses("inner_content_styles")]
             }), null, 16, ["element", "class"]),
             vue.renderSlot(_ctx.$slots, "end")
           ]),
           _: 3
+          /* FORWARDED */
         });
       };
     }

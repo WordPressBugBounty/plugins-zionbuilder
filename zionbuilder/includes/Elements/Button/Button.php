@@ -162,7 +162,7 @@ class Button extends Element {
 			[
 				'type'             => 'custom_selector',
 				'title'            => __( 'Button shape', 'zionbuilder' ),
-				'description'      => __( 'Choose button shape.' ),
+				'description'      => __( 'Choose button shape.', 'zionbuilder' ),
 				'default'          => 'left',
 				'columns'          => 3,
 				'options'          => [
@@ -194,7 +194,7 @@ class Button extends Element {
 			[
 				'type'             => 'custom_selector',
 				'title'            => __( 'Button size', 'zionbuilder' ),
-				'description'      => __( 'Choose button size.' ),
+				'description'      => __( 'Choose button size.', 'zionbuilder' ),
 				'default'          => 'normal',
 				'columns'          => 2,
 				'options'          => [
@@ -247,7 +247,7 @@ class Button extends Element {
 			[
 				'type'               => 'custom_selector',
 				'title'              => __( 'Button position', 'zionbuilder' ),
-				'description'        => __( 'Choose button position.' ),
+				'description'        => __( 'Choose button position.', 'zionbuilder' ),
 				'columns'            => 3,
 				'options'            => [
 					[
@@ -285,7 +285,7 @@ class Button extends Element {
 			[
 				'type'             => 'custom_selector',
 				'title'            => __( 'Icon position', 'zionbuilder' ),
-				'description'      => __( 'Choose icon position.' ),
+				'description'      => __( 'Choose icon position.', 'zionbuilder' ),
 				'default'          => 'left',
 				'columns'          => 2,
 				'options'          => [

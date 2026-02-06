@@ -311,6 +311,7 @@ class Admin {
 
 		$post_instance = Plugin::$instance->post_manager->get_post_instance( $post->ID );
 		if ( $post_instance->is_built_with_zion() ) {
+			/* translators: plugin whitelabel name */
 			$whitelabel_title = sprintf( __( 'Edit with %s', 'zionbuilder' ), Whitelabel::get_title() );
 
 			$actions['zionbuilder_edit_link'] = '<a href="' . $post_instance->get_edit_url() . '">' . $whitelabel_title . '</a>';

@@ -129,7 +129,7 @@ class Gutenberg implements IBaseIntegration {
 			return;
 		}
 
-		global $post;
+		$post = get_post();
 		if ( $post instanceof WP_Post ) {
 			?>
 			<script id="zionbuilder-gutenberg-buttons" type="text/html">

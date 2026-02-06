@@ -31,7 +31,7 @@
         const _component_SortableContent = vue.resolveComponent("SortableContent");
         return vue.openBlock(), vue.createBlock(_component_SortableContent, vue.mergeProps({
           class: "zb-column",
-          element: _ctx.element,
+          element: __props.element,
           tag: htmlTag.value
         }, extraAttributes.value), {
           start: vue.withCtx(() => [
@@ -42,19 +42,20 @@
               color: topMask.value["color"],
               flip: topMask.value["flip"],
               position: "top"
-            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("", true),
+            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("v-if", true),
             bottomMask.value !== void 0 && bottomMask.value.shape ? (vue.openBlock(), vue.createBlock(_component_SvgMask, {
               key: 1,
               "shape-path": bottomMask.value["shape"],
               color: bottomMask.value["color"],
               flip: bottomMask.value["flip"],
               position: "bottom"
-            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("", true)
+            }, null, 8, ["shape-path", "color", "flip"])) : vue.createCommentVNode("v-if", true)
           ]),
           end: vue.withCtx(() => [
             vue.renderSlot(_ctx.$slots, "end")
           ]),
           _: 3
+          /* FORWARDED */
         }, 16, ["element", "tag"]);
       };
     }

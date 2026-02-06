@@ -17,27 +17,34 @@
         const _component_ElementIcon = vue.resolveComponent("ElementIcon");
         return vue.openBlock(), vue.createElementBlock("div", null, [
           vue.renderSlot(_ctx.$slots, "start"),
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(iconListConfig.value, (item, index) => {
-            return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(item.link && item.link.link ? "a" : "span"), vue.mergeProps({
-              key: index,
-              class: ["zb-el-iconList__item", [`zb-el-iconList__item--${index} `, _ctx.api.getStyleClasses("item_styles")]]
-            }, _ctx.api.getAttributesForTag("item_styles")), {
-              default: vue.withCtx(() => [
-                vue.createVNode(_component_ElementIcon, vue.mergeProps({
-                  class: ["zb-el-iconList__itemIcon", _ctx.api.getStyleClasses("icon_styles")]
-                }, _ctx.api.getAttributesForTag("icon_styles"), {
-                  "icon-config": item.icon
-                }), null, 16, ["class", "icon-config"]),
-                item.text ? (vue.openBlock(), vue.createElementBlock("span", vue.mergeProps({
-                  key: 0,
-                  class: ["zb-el-iconList__itemText", _ctx.api.getStyleClasses("text_styles")]
-                }, _ctx.api.getAttributesForTag("text_styles"), {
-                  innerHTML: item.text
-                }), null, 16, _hoisted_1)) : vue.createCommentVNode("", true)
-              ]),
-              _: 2
-            }, 1040, ["class"]);
-          }), 128)),
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(iconListConfig.value, (item, index) => {
+              return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(item.link && item.link.link ? "a" : "span"), vue.mergeProps({
+                key: index,
+                class: ["zb-el-iconList__item", [`zb-el-iconList__item--${index} `, __props.api.getStyleClasses("item_styles")]]
+              }, { ref_for: true }, __props.api.getAttributesForTag("item_styles")), {
+                default: vue.withCtx(() => [
+                  vue.createVNode(_component_ElementIcon, vue.mergeProps({
+                    class: ["zb-el-iconList__itemIcon", __props.api.getStyleClasses("icon_styles")]
+                  }, { ref_for: true }, __props.api.getAttributesForTag("icon_styles"), {
+                    "icon-config": item.icon
+                  }), null, 16, ["class", "icon-config"]),
+                  item.text ? (vue.openBlock(), vue.createElementBlock("span", vue.mergeProps({
+                    key: 0,
+                    class: ["zb-el-iconList__itemText", __props.api.getStyleClasses("text_styles")]
+                  }, { ref_for: true }, __props.api.getAttributesForTag("text_styles"), {
+                    innerHTML: item.text
+                  }), null, 16, _hoisted_1)) : vue.createCommentVNode("v-if", true)
+                ]),
+                _: 2
+                /* DYNAMIC */
+              }, 1040, ["class"]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          )),
           vue.renderSlot(_ctx.$slots, "end")
         ]);
       };

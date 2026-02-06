@@ -6,7 +6,6 @@
     class: "zb-el-imageBox-imageWrapper"
   };
   const _hoisted_3 = ["src"];
-  const _hoisted_4 = /* @__PURE__ */ vue.createElementVNode("span", { class: "zb-el-imageBox-spacer" }, null, -1);
   const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     __name: "ImageBox",
     props: {
@@ -30,30 +29,48 @@
             vue.createElementVNode("img", vue.mergeProps({
               class: "zb-el-imageBox-image",
               src: imageSrc.value
-            }, _ctx.api.getAttributesForTag("image_styles"), {
-              class: _ctx.api.getStyleClasses("image_styles")
+            }, __props.api.getAttributesForTag("image_styles"), {
+              class: __props.api.getStyleClasses("image_styles")
             }), null, 16, _hoisted_3)
-          ])) : vue.createCommentVNode("", true),
-          _hoisted_4,
-          vue.createElementVNode("div", {
-            class: "zb-el-imageBox-text",
-            style: vue.normalizeStyle({
-              "text-align": _ctx.options.align
-            })
-          }, [
-            _ctx.options.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(titleTag.value), vue.mergeProps({
-              key: 0,
-              class: ["zb-el-imageBox-title", _ctx.api.getStyleClasses("title_styles")]
-            }, _ctx.api.getAttributesForTag("title_styles"), {
-              innerHTML: _ctx.options.title
-            }), null, 16, ["class", "innerHTML"])) : vue.createCommentVNode("", true),
-            _ctx.options.description ? (vue.openBlock(), vue.createElementBlock("div", vue.mergeProps({
-              key: 1,
-              class: ["zb-el-imageBox-description", _ctx.api.getStyleClasses("description_styles")]
-            }, _ctx.api.getAttributesForTag("description_styles")), [
-              vue.createVNode(_component_RenderValue, { option: "description" })
-            ], 16)) : vue.createCommentVNode("", true)
-          ], 4),
+          ])) : vue.createCommentVNode("v-if", true),
+          _cache[0] || (_cache[0] = vue.createElementVNode(
+            "span",
+            { class: "zb-el-imageBox-spacer" },
+            null,
+            -1
+            /* CACHED */
+          )),
+          vue.createElementVNode(
+            "div",
+            {
+              class: "zb-el-imageBox-text",
+              style: vue.normalizeStyle({
+                "text-align": __props.options.align
+              })
+            },
+            [
+              __props.options.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(titleTag.value), vue.mergeProps({
+                key: 0,
+                class: ["zb-el-imageBox-title", __props.api.getStyleClasses("title_styles")]
+              }, __props.api.getAttributesForTag("title_styles"), {
+                innerHTML: __props.options.title
+              }), null, 16, ["class", "innerHTML"])) : vue.createCommentVNode("v-if", true),
+              __props.options.description ? (vue.openBlock(), vue.createElementBlock(
+                "div",
+                vue.mergeProps({
+                  key: 1,
+                  class: ["zb-el-imageBox-description", __props.api.getStyleClasses("description_styles")]
+                }, __props.api.getAttributesForTag("description_styles")),
+                [
+                  vue.createVNode(_component_RenderValue, { option: "description" })
+                ],
+                16
+                /* FULL_PROPS */
+              )) : vue.createCommentVNode("v-if", true)
+            ],
+            4
+            /* STYLE */
+          ),
           vue.renderSlot(_ctx.$slots, "start")
         ]);
       };

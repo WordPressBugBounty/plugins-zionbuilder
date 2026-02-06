@@ -23,6 +23,7 @@ use ZionBuilder\Performance;
 use ZionBuilder\Responsive;
 use ZionBuilder\Assets;
 use ZionBuilder\Modules\Modules;
+use ZionBuilder\ThemeStyles;
 
 // Prevent direct access
 if ( ! defined( 'ABSPATH' ) ) {
@@ -165,6 +166,7 @@ class Plugin {
 	 * @see Plugin::init()
 	 */
 	public $api = null;
+
 	/**
 	 * Holds the reference to the instance of the \ZionBuilder\FontsManager\FontsManager class
 	 *
@@ -173,6 +175,7 @@ class Plugin {
 	 * @see Plugin::init()
 	 */
 	public $fonts_manager = null;
+
 	/**
 	 * Holds the reference to the instance of the \ZionBuilder\ImportExport class
 	 *
@@ -181,6 +184,15 @@ class Plugin {
 	 * @see Plugin::init()
 	 */
 	public $import_export = null;
+
+	/**
+	 * Holds the reference to the instance of the \ZionBuilder\ThemeStyles class
+	 *
+	 * @var ThemeStyles
+	 *
+	 * @see Plugin::init()
+	 */
+	public $theme_styles = null;
 
 
 	/**
@@ -251,6 +263,7 @@ class Plugin {
 		$this->icons            = new Icons();
 		$this->templates        = new Templates();
 		$this->library          = new Library();
+		$this->theme_styles     = new ThemeStyles();
 
 		new Shortcodes();
 		new CommonJS();

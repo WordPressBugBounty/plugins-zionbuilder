@@ -36,7 +36,7 @@ class Shortcodes {
 			return __( 'Template id missing', 'zionbuilder' );
 		}
 
-		$post_id            = apply_filters( 'zionbuilder/shortcode/post_id', $attrs['id'] );
+		$post_id       = apply_filters( 'zionbuilder/shortcode/post_id', $attrs['id'] );
 		$post_instance = Plugin::$instance->post_manager->get_post_instance( $post_id );
 
 		if ( ! $post_instance ) {
@@ -53,12 +53,11 @@ class Shortcodes {
 
 		// Register the elements
 		$post_template_data = $post_instance->get_template_data();
-		
-		
 		Plugin::$instance->renderer->register_area( $post_id, $post_template_data );
 
 		$content = Plugin::$instance->renderer->get_content( $post_id );
-		Assets::enqueue_assets_for_post( $post_id );
+		// Generate or load the css for the post
+		Assets::enqueue_assets_for_post_id( $post_id );
 		Assets::enqueue_scripts_for_elements( $post_template_data );
 
 		return $content;

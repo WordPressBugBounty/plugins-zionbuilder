@@ -11,14 +11,14 @@
     setup(__props) {
       return (_ctx, _cache) => {
         const _component_RenderValue = vue.resolveComponent("RenderValue");
-        return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.options.tag || "h1"), null, {
+        return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(__props.options.tag || "h1"), null, {
           default: vue.withCtx(() => [
             vue.renderSlot(_ctx.$slots, "start"),
-            _ctx.options.link && _ctx.options.link.link ? (vue.openBlock(), vue.createElementBlock("a", {
+            __props.options.link && __props.options.link.link ? (vue.openBlock(), vue.createElementBlock("a", {
               key: 0,
-              href: _ctx.options.link.link,
-              title: _ctx.options.link.title,
-              target: _ctx.options.link.target,
+              href: __props.options.link.link,
+              title: __props.options.link.title,
+              target: __props.options.link.target,
               onClick: _cache[0] || (_cache[0] = vue.withModifiers(
                 (e) => {
                   e.preventDefault();
@@ -38,6 +38,7 @@
             vue.renderSlot(_ctx.$slots, "end")
           ]),
           _: 3
+          /* FORWARDED */
         });
       };
     }

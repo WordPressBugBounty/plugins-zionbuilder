@@ -4,6 +4,10 @@ var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
 var __getOwnPropSymbols = Object.getOwnPropertySymbols;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __knownSymbol = (name, symbol) => (symbol = Symbol[name]) ? symbol : Symbol.for("Symbol." + name);
+var __typeError = (msg) => {
+  throw TypeError(msg);
+};
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __spreadValues = (a, b) => {
   for (var prop in b || (b = {}))
@@ -29,10 +33,7 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -53,7 +54,51 @@ var __async = (__this, __arguments, generator) => {
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
-(function(pinia, vue, i18n) {
+var __await = function(promise, isYieldStar) {
+  this[0] = promise;
+  this[1] = isYieldStar;
+};
+var __asyncGenerator = (__this, __arguments, generator) => {
+  var resume = (k, v, yes, no) => {
+    try {
+      var x = generator[k](v), isAwait = (v = x.value) instanceof __await, done = x.done;
+      Promise.resolve(isAwait ? v[0] : v).then((y) => isAwait ? resume(k === "return" ? k : "next", v[1] ? { done: y.done, value: y.value } : y, yes, no) : yes({ value: y, done })).catch((e) => resume("throw", e, yes, no));
+    } catch (e) {
+      no(e);
+    }
+  }, method = (k) => it[k] = (x) => new Promise((yes, no) => resume(k, x, yes, no)), it = {};
+  return generator = generator.apply(__this, __arguments), it[__knownSymbol("asyncIterator")] = () => it, method("next"), method("throw"), method("return"), it;
+};
+var __yieldStar = (value) => {
+  var obj = value[__knownSymbol("asyncIterator")], isAwait = false, method, it = {};
+  if (obj == null) {
+    obj = value[__knownSymbol("iterator")]();
+    method = (k) => it[k] = (x) => obj[k](x);
+  } else {
+    obj = obj.call(value);
+    method = (k) => it[k] = (v) => {
+      if (isAwait) {
+        isAwait = false;
+        if (k === "throw") throw v;
+        return v;
+      }
+      isAwait = true;
+      return {
+        done: false,
+        value: new __await(new Promise((resolve) => {
+          var x = obj[k](v);
+          if (!(x instanceof Object)) __typeError("Object expected");
+          resolve(x);
+        }), 1)
+      };
+    };
+  }
+  return it[__knownSymbol("iterator")] = () => it, method("next"), "throw" in obj ? method("throw") : it.throw = (x) => {
+    throw x;
+  }, "return" in obj && method("return"), it;
+};
+var __forAwait = (obj, it, method) => (it = obj[__knownSymbol("asyncIterator")]) ? it.call(obj) : (obj = obj[__knownSymbol("iterator")](), it = {}, method = (key, fn) => (fn = obj[key]) && (it[key] = (arg) => new Promise((yes, no, done) => (arg = fn.call(obj, arg), done = arg.done, Promise.resolve(arg.value).then((value) => yes({ value, done }), no)))), method("next"), method("return"), it);
+(function(vue, pinia, i18n) {
   "use strict";
   function _interopNamespaceDefault(e) {
     const n = Object.create(null, { [Symbol.toStringTag]: { value: "Module" } });
@@ -72,7 +117,6 @@ var __async = (__this, __arguments, generator) => {
     return Object.freeze(n);
   }
   const i18n__namespace = /* @__PURE__ */ _interopNamespaceDefault(i18n);
-  const index = "";
   window.addEventListener("load", () => {
     const wp3 = window.wp;
     const Library = wp3.media.controller.Library;
@@ -170,7 +214,8 @@ var __async = (__this, __arguments, generator) => {
   }
   const { toString: toString$1 } = Object.prototype;
   const { getPrototypeOf } = Object;
-  const kindOf = ((cache2) => (thing) => {
+  const { iterator, toStringTag } = Symbol;
+  const kindOf = /* @__PURE__ */ ((cache2) => (thing) => {
     const str = toString$1.call(thing);
     return cache2[str] || (cache2[str] = str.slice(8, -1).toLowerCase());
   })(/* @__PURE__ */ Object.create(null));
@@ -179,10 +224,10 @@ var __async = (__this, __arguments, generator) => {
     return (thing) => kindOf(thing) === type;
   };
   const typeOfTest = (type) => (thing) => typeof thing === type;
-  const { isArray: isArray$2 } = Array;
+  const { isArray: isArray$1 } = Array;
   const isUndefined = typeOfTest("undefined");
-  function isBuffer$2(val) {
-    return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor) && isFunction$1(val.constructor.isBuffer) && val.constructor.isBuffer(val);
+  function isBuffer$1(val) {
+    return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor) && isFunction$2(val.constructor.isBuffer) && val.constructor.isBuffer(val);
   }
   const isArrayBuffer = kindOfTest("ArrayBuffer");
   function isArrayBufferView(val) {
@@ -195,7 +240,7 @@ var __async = (__this, __arguments, generator) => {
     return result;
   }
   const isString = typeOfTest("string");
-  const isFunction$1 = typeOfTest("function");
+  const isFunction$2 = typeOfTest("function");
   const isNumber = typeOfTest("number");
   const isObject$1 = (thing) => thing !== null && typeof thing === "object";
   const isBoolean = (thing) => thing === true || thing === false;
@@ -204,19 +249,30 @@ var __async = (__this, __arguments, generator) => {
       return false;
     }
     const prototype2 = getPrototypeOf(val);
-    return (prototype2 === null || prototype2 === Object.prototype || Object.getPrototypeOf(prototype2) === null) && !(Symbol.toStringTag in val) && !(Symbol.iterator in val);
+    return (prototype2 === null || prototype2 === Object.prototype || Object.getPrototypeOf(prototype2) === null) && !(toStringTag in val) && !(iterator in val);
+  };
+  const isEmptyObject = (val) => {
+    if (!isObject$1(val) || isBuffer$1(val)) {
+      return false;
+    }
+    try {
+      return Object.keys(val).length === 0 && Object.getPrototypeOf(val) === Object.prototype;
+    } catch (e) {
+      return false;
+    }
   };
   const isDate = kindOfTest("Date");
   const isFile = kindOfTest("File");
   const isBlob = kindOfTest("Blob");
   const isFileList = kindOfTest("FileList");
-  const isStream = (val) => isObject$1(val) && isFunction$1(val.pipe);
+  const isStream = (val) => isObject$1(val) && isFunction$2(val.pipe);
   const isFormData = (thing) => {
     let kind;
-    return thing && (typeof FormData === "function" && thing instanceof FormData || isFunction$1(thing.append) && ((kind = kindOf(thing)) === "formdata" || // detect form-data instance
-    kind === "object" && isFunction$1(thing.toString) && thing.toString() === "[object FormData]"));
+    return thing && (typeof FormData === "function" && thing instanceof FormData || isFunction$2(thing.append) && ((kind = kindOf(thing)) === "formdata" || // detect form-data instance
+    kind === "object" && isFunction$2(thing.toString) && thing.toString() === "[object FormData]"));
   };
   const isURLSearchParams = kindOfTest("URLSearchParams");
+  const [isReadableStream, isRequest, isResponse, isHeaders] = ["ReadableStream", "Request", "Response", "Headers"].map(kindOfTest);
   const trim = (str) => str.trim ? str.trim() : str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
   function forEach(obj, fn, { allOwnKeys = false } = {}) {
     if (obj === null || typeof obj === "undefined") {
@@ -227,11 +283,14 @@ var __async = (__this, __arguments, generator) => {
     if (typeof obj !== "object") {
       obj = [obj];
     }
-    if (isArray$2(obj)) {
+    if (isArray$1(obj)) {
       for (i = 0, l = obj.length; i < l; i++) {
         fn.call(null, obj[i], i, obj);
       }
     } else {
+      if (isBuffer$1(obj)) {
+        return;
+      }
       const keys2 = allOwnKeys ? Object.getOwnPropertyNames(obj) : Object.keys(obj);
       const len = keys2.length;
       let key;
@@ -242,6 +301,9 @@ var __async = (__this, __arguments, generator) => {
     }
   }
   function findKey(obj, key) {
+    if (isBuffer$1(obj)) {
+      return null;
+    }
     key = key.toLowerCase();
     const keys2 = Object.keys(obj);
     let i = keys2.length;
@@ -255,23 +317,22 @@ var __async = (__this, __arguments, generator) => {
     return null;
   }
   const _global = (() => {
-    if (typeof globalThis !== "undefined")
-      return globalThis;
+    if (typeof globalThis !== "undefined") return globalThis;
     return typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : global;
   })();
   const isContextDefined = (context) => !isUndefined(context) && context !== _global;
-  function merge$2() {
-    const { caseless } = isContextDefined(this) && this || {};
+  function merge$1() {
+    const { caseless, skipUndefined } = isContextDefined(this) && this || {};
     const result = {};
     const assignValue2 = (val, key) => {
       const targetKey = caseless && findKey(result, key) || key;
       if (isPlainObject$1(result[targetKey]) && isPlainObject$1(val)) {
-        result[targetKey] = merge$2(result[targetKey], val);
+        result[targetKey] = merge$1(result[targetKey], val);
       } else if (isPlainObject$1(val)) {
-        result[targetKey] = merge$2({}, val);
-      } else if (isArray$2(val)) {
+        result[targetKey] = merge$1({}, val);
+      } else if (isArray$1(val)) {
         result[targetKey] = val.slice();
-      } else {
+      } else if (!skipUndefined || !isUndefined(val)) {
         result[targetKey] = val;
       }
     };
@@ -282,7 +343,7 @@ var __async = (__this, __arguments, generator) => {
   }
   const extend = (a, b, thisArg, { allOwnKeys } = {}) => {
     forEach(b, (val, key) => {
-      if (thisArg && isFunction$1(val)) {
+      if (thisArg && isFunction$2(val)) {
         a[key] = bind(val, thisArg);
       } else {
         a[key] = val;
@@ -310,8 +371,7 @@ var __async = (__this, __arguments, generator) => {
     let prop;
     const merged = {};
     destObj = destObj || {};
-    if (sourceObj == null)
-      return destObj;
+    if (sourceObj == null) return destObj;
     do {
       props = Object.getOwnPropertyNames(sourceObj);
       i = props.length;
@@ -336,29 +396,26 @@ var __async = (__this, __arguments, generator) => {
     return lastIndex !== -1 && lastIndex === position;
   };
   const toArray = (thing) => {
-    if (!thing)
-      return null;
-    if (isArray$2(thing))
-      return thing;
+    if (!thing) return null;
+    if (isArray$1(thing)) return thing;
     let i = thing.length;
-    if (!isNumber(i))
-      return null;
+    if (!isNumber(i)) return null;
     const arr = new Array(i);
     while (i-- > 0) {
       arr[i] = thing[i];
     }
     return arr;
   };
-  const isTypedArray$2 = ((TypedArray) => {
+  const isTypedArray$1 = /* @__PURE__ */ ((TypedArray) => {
     return (thing) => {
       return TypedArray && thing instanceof TypedArray;
     };
   })(typeof Uint8Array !== "undefined" && getPrototypeOf(Uint8Array));
   const forEachEntry = (obj, fn) => {
-    const generator = obj && obj[Symbol.iterator];
-    const iterator = generator.call(obj);
+    const generator = obj && obj[iterator];
+    const _iterator = generator.call(obj);
     let result;
-    while ((result = iterator.next()) && !result.done) {
+    while ((result = _iterator.next()) && !result.done) {
       const pair = result.value;
       fn.call(obj, pair[0], pair[1]);
     }
@@ -386,20 +443,20 @@ var __async = (__this, __arguments, generator) => {
     const descriptors2 = Object.getOwnPropertyDescriptors(obj);
     const reducedDescriptors = {};
     forEach(descriptors2, (descriptor, name) => {
-      if (reducer(descriptor, name, obj) !== false) {
-        reducedDescriptors[name] = descriptor;
+      let ret;
+      if ((ret = reducer(descriptor, name, obj)) !== false) {
+        reducedDescriptors[name] = ret || descriptor;
       }
     });
     Object.defineProperties(obj, reducedDescriptors);
   };
   const freezeMethods = (obj) => {
     reduceDescriptors(obj, (descriptor, name) => {
-      if (isFunction$1(obj) && ["arguments", "caller", "callee"].indexOf(name) !== -1) {
+      if (isFunction$2(obj) && ["arguments", "caller", "callee"].indexOf(name) !== -1) {
         return false;
       }
       const value = obj[name];
-      if (!isFunction$1(value))
-        return;
+      if (!isFunction$2(value)) return;
       descriptor.enumerable = false;
       if ("writable" in descriptor) {
         descriptor.writable = false;
@@ -419,32 +476,16 @@ var __async = (__this, __arguments, generator) => {
         obj[value] = true;
       });
     };
-    isArray$2(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
+    isArray$1(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
     return obj;
   };
   const noop$1 = () => {
   };
   const toFiniteNumber = (value, defaultValue) => {
-    value = +value;
-    return Number.isFinite(value) ? value : defaultValue;
-  };
-  const ALPHA = "abcdefghijklmnopqrstuvwxyz";
-  const DIGIT = "0123456789";
-  const ALPHABET = {
-    DIGIT,
-    ALPHA,
-    ALPHA_DIGIT: ALPHA + ALPHA.toUpperCase() + DIGIT
-  };
-  const generateString = (size = 16, alphabet = ALPHABET.ALPHA_DIGIT) => {
-    let str = "";
-    const { length } = alphabet;
-    while (size--) {
-      str += alphabet[Math.random() * length | 0];
-    }
-    return str;
+    return value != null && Number.isFinite(value = +value) ? value : defaultValue;
   };
   function isSpecCompliantForm(thing) {
-    return !!(thing && isFunction$1(thing.append) && thing[Symbol.toStringTag] === "FormData" && thing[Symbol.iterator]);
+    return !!(thing && isFunction$2(thing.append) && thing[toStringTag] === "FormData" && thing[iterator]);
   }
   const toJSONObject = (obj) => {
     const stack = new Array(10);
@@ -453,9 +494,12 @@ var __async = (__this, __arguments, generator) => {
         if (stack.indexOf(source) >= 0) {
           return;
         }
+        if (isBuffer$1(source)) {
+          return source;
+        }
         if (!("toJSON" in source)) {
           stack[i] = source;
-          const target = isArray$2(source) ? [] : {};
+          const target = isArray$1(source) ? [] : {};
           forEach(source, (value, key) => {
             const reducedValue = visit(value, i + 1);
             !isUndefined(reducedValue) && (target[key] = reducedValue);
@@ -469,11 +513,32 @@ var __async = (__this, __arguments, generator) => {
     return visit(obj, 0);
   };
   const isAsyncFn = kindOfTest("AsyncFunction");
-  const isThenable = (thing) => thing && (isObject$1(thing) || isFunction$1(thing)) && isFunction$1(thing.then) && isFunction$1(thing.catch);
-  const utils$1 = {
-    isArray: isArray$2,
+  const isThenable = (thing) => thing && (isObject$1(thing) || isFunction$2(thing)) && isFunction$2(thing.then) && isFunction$2(thing.catch);
+  const _setImmediate = ((setImmediateSupported, postMessageSupported) => {
+    if (setImmediateSupported) {
+      return setImmediate;
+    }
+    return postMessageSupported ? ((token, callbacks) => {
+      _global.addEventListener("message", ({ source, data }) => {
+        if (source === _global && data === token) {
+          callbacks.length && callbacks.shift()();
+        }
+      }, false);
+      return (cb) => {
+        callbacks.push(cb);
+        _global.postMessage(token, "*");
+      };
+    })(`axios@${Math.random()}`, []) : (cb) => setTimeout(cb);
+  })(
+    typeof setImmediate === "function",
+    isFunction$2(_global.postMessage)
+  );
+  const asap = typeof queueMicrotask !== "undefined" ? queueMicrotask.bind(_global) : typeof process !== "undefined" && process.nextTick || _setImmediate;
+  const isIterable = (thing) => thing != null && isFunction$2(thing[iterator]);
+  const utils$2 = {
+    isArray: isArray$1,
     isArrayBuffer,
-    isBuffer: isBuffer$2,
+    isBuffer: isBuffer$1,
     isFormData,
     isArrayBufferView,
     isString,
@@ -481,18 +546,23 @@ var __async = (__this, __arguments, generator) => {
     isBoolean,
     isObject: isObject$1,
     isPlainObject: isPlainObject$1,
+    isEmptyObject,
+    isReadableStream,
+    isRequest,
+    isResponse,
+    isHeaders,
     isUndefined,
     isDate,
     isFile,
     isBlob,
     isRegExp,
-    isFunction: isFunction$1,
+    isFunction: isFunction$2,
     isStream,
     isURLSearchParams,
-    isTypedArray: isTypedArray$2,
+    isTypedArray: isTypedArray$1,
     isFileList,
     forEach,
-    merge: merge$2,
+    merge: merge$1,
     extend,
     trim,
     stripBOM,
@@ -517,14 +587,15 @@ var __async = (__this, __arguments, generator) => {
     findKey,
     global: _global,
     isContextDefined,
-    ALPHABET,
-    generateString,
     isSpecCompliantForm,
     toJSONObject,
     isAsyncFn,
-    isThenable
+    isThenable,
+    setImmediate: _setImmediate,
+    asap,
+    isIterable
   };
-  function AxiosError(message, code, config, request, response) {
+  function AxiosError$1(message, code, config, request, response) {
     Error.call(this);
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor);
@@ -536,9 +607,12 @@ var __async = (__this, __arguments, generator) => {
     code && (this.code = code);
     config && (this.config = config);
     request && (this.request = request);
-    response && (this.response = response);
+    if (response) {
+      this.response = response;
+      this.status = response.status ? response.status : null;
+    }
   }
-  utils$1.inherits(AxiosError, Error, {
+  utils$2.inherits(AxiosError$1, Error, {
     toJSON: function toJSON() {
       return {
         // Standard
@@ -553,13 +627,13 @@ var __async = (__this, __arguments, generator) => {
         columnNumber: this.columnNumber,
         stack: this.stack,
         // Axios
-        config: utils$1.toJSONObject(this.config),
+        config: utils$2.toJSONObject(this.config),
         code: this.code,
-        status: this.response && this.response.status ? this.response.status : null
+        status: this.status
       };
     }
   });
-  const prototype$1 = AxiosError.prototype;
+  const prototype$1 = AxiosError$1.prototype;
   const descriptors = {};
   [
     "ERR_BAD_OPTION_VALUE",
@@ -578,73 +652,78 @@ var __async = (__this, __arguments, generator) => {
   ].forEach((code) => {
     descriptors[code] = { value: code };
   });
-  Object.defineProperties(AxiosError, descriptors);
+  Object.defineProperties(AxiosError$1, descriptors);
   Object.defineProperty(prototype$1, "isAxiosError", { value: true });
-  AxiosError.from = (error, code, config, request, response, customProps) => {
+  AxiosError$1.from = (error, code, config, request, response, customProps) => {
     const axiosError = Object.create(prototype$1);
-    utils$1.toFlatObject(error, axiosError, function filter(obj) {
+    utils$2.toFlatObject(error, axiosError, function filter(obj) {
       return obj !== Error.prototype;
     }, (prop) => {
       return prop !== "isAxiosError";
     });
-    AxiosError.call(axiosError, error.message, code, config, request, response);
-    axiosError.cause = error;
-    axiosError.name = error.name;
+    const msg = error && error.message ? error.message : "Error";
+    const errCode = code == null && error ? error.code : code;
+    AxiosError$1.call(axiosError, msg, errCode, config, request, response);
+    if (error && axiosError.cause == null) {
+      Object.defineProperty(axiosError, "cause", { value: error, configurable: true });
+    }
+    axiosError.name = error && error.name || "Error";
     customProps && Object.assign(axiosError, customProps);
     return axiosError;
   };
   const httpAdapter = null;
   function isVisitable(thing) {
-    return utils$1.isPlainObject(thing) || utils$1.isArray(thing);
+    return utils$2.isPlainObject(thing) || utils$2.isArray(thing);
   }
   function removeBrackets(key) {
-    return utils$1.endsWith(key, "[]") ? key.slice(0, -2) : key;
+    return utils$2.endsWith(key, "[]") ? key.slice(0, -2) : key;
   }
   function renderKey(path, key, dots) {
-    if (!path)
-      return key;
+    if (!path) return key;
     return path.concat(key).map(function each(token, i) {
       token = removeBrackets(token);
       return !dots && i ? "[" + token + "]" : token;
     }).join(dots ? "." : "");
   }
   function isFlatArray(arr) {
-    return utils$1.isArray(arr) && !arr.some(isVisitable);
+    return utils$2.isArray(arr) && !arr.some(isVisitable);
   }
-  const predicates = utils$1.toFlatObject(utils$1, {}, null, function filter(prop) {
+  const predicates = utils$2.toFlatObject(utils$2, {}, null, function filter(prop) {
     return /^is[A-Z]/.test(prop);
   });
-  function toFormData(obj, formData, options2) {
-    if (!utils$1.isObject(obj)) {
+  function toFormData$1(obj, formData, options2) {
+    if (!utils$2.isObject(obj)) {
       throw new TypeError("target must be an object");
     }
     formData = formData || new FormData();
-    options2 = utils$1.toFlatObject(options2, {
+    options2 = utils$2.toFlatObject(options2, {
       metaTokens: true,
       dots: false,
       indexes: false
     }, false, function defined(option, source) {
-      return !utils$1.isUndefined(source[option]);
+      return !utils$2.isUndefined(source[option]);
     });
     const metaTokens = options2.metaTokens;
     const visitor = options2.visitor || defaultVisitor;
     const dots = options2.dots;
     const indexes = options2.indexes;
     const _Blob = options2.Blob || typeof Blob !== "undefined" && Blob;
-    const useBlob = _Blob && utils$1.isSpecCompliantForm(formData);
-    if (!utils$1.isFunction(visitor)) {
+    const useBlob = _Blob && utils$2.isSpecCompliantForm(formData);
+    if (!utils$2.isFunction(visitor)) {
       throw new TypeError("visitor must be a function");
     }
     function convertValue(value) {
-      if (value === null)
-        return "";
-      if (utils$1.isDate(value)) {
+      if (value === null) return "";
+      if (utils$2.isDate(value)) {
         return value.toISOString();
       }
-      if (!useBlob && utils$1.isBlob(value)) {
-        throw new AxiosError("Blob is not supported. Use a Buffer instead.");
+      if (utils$2.isBoolean(value)) {
+        return value.toString();
       }
-      if (utils$1.isArrayBuffer(value) || utils$1.isTypedArray(value)) {
+      if (!useBlob && utils$2.isBlob(value)) {
+        throw new AxiosError$1("Blob is not supported. Use a Buffer instead.");
+      }
+      if (utils$2.isArrayBuffer(value) || utils$2.isTypedArray(value)) {
         return useBlob && typeof Blob === "function" ? new Blob([value]) : Buffer.from(value);
       }
       return value;
@@ -652,15 +731,15 @@ var __async = (__this, __arguments, generator) => {
     function defaultVisitor(value, key, path) {
       let arr = value;
       if (value && !path && typeof value === "object") {
-        if (utils$1.endsWith(key, "{}")) {
+        if (utils$2.endsWith(key, "{}")) {
           key = metaTokens ? key : key.slice(0, -2);
           value = JSON.stringify(value);
-        } else if (utils$1.isArray(value) && isFlatArray(value) || (utils$1.isFileList(value) || utils$1.endsWith(key, "[]")) && (arr = utils$1.toArray(value))) {
+        } else if (utils$2.isArray(value) && isFlatArray(value) || (utils$2.isFileList(value) || utils$2.endsWith(key, "[]")) && (arr = utils$2.toArray(value))) {
           key = removeBrackets(key);
-          arr.forEach(function each(el, index2) {
-            !(utils$1.isUndefined(el) || el === null) && formData.append(
+          arr.forEach(function each(el, index) {
+            !(utils$2.isUndefined(el) || el === null) && formData.append(
               // eslint-disable-next-line no-nested-ternary
-              indexes === true ? renderKey([key], index2, dots) : indexes === null ? key : key + "[]",
+              indexes === true ? renderKey([key], index, dots) : indexes === null ? key : key + "[]",
               convertValue(el)
             );
           });
@@ -680,17 +759,16 @@ var __async = (__this, __arguments, generator) => {
       isVisitable
     });
     function build(value, path) {
-      if (utils$1.isUndefined(value))
-        return;
+      if (utils$2.isUndefined(value)) return;
       if (stack.indexOf(value) !== -1) {
         throw Error("Circular reference detected in " + path.join("."));
       }
       stack.push(value);
-      utils$1.forEach(value, function each(el, key) {
-        const result = !(utils$1.isUndefined(el) || el === null) && visitor.call(
+      utils$2.forEach(value, function each(el, key) {
+        const result = !(utils$2.isUndefined(el) || el === null) && visitor.call(
           formData,
           el,
-          utils$1.isString(key) ? key.trim() : key,
+          utils$2.isString(key) ? key.trim() : key,
           path,
           exposedHelpers
         );
@@ -700,7 +778,7 @@ var __async = (__this, __arguments, generator) => {
       });
       stack.pop();
     }
-    if (!utils$1.isObject(obj)) {
+    if (!utils$2.isObject(obj)) {
       throw new TypeError("data must be an object");
     }
     build(obj);
@@ -722,7 +800,7 @@ var __async = (__this, __arguments, generator) => {
   }
   function AxiosURLSearchParams(params, options2) {
     this._pairs = [];
-    params && toFormData(params, this, options2);
+    params && toFormData$1(params, this, options2);
   }
   const prototype = AxiosURLSearchParams.prototype;
   prototype.append = function append(name, value) {
@@ -737,19 +815,24 @@ var __async = (__this, __arguments, generator) => {
     }, "").join("&");
   };
   function encode(val) {
-    return encodeURIComponent(val).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
+    return encodeURIComponent(val).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+");
   }
   function buildURL(url, params, options2) {
     if (!params) {
       return url;
     }
     const _encode = options2 && options2.encode || encode;
+    if (utils$2.isFunction(options2)) {
+      options2 = {
+        serialize: options2
+      };
+    }
     const serializeFn = options2 && options2.serialize;
     let serializedParams;
     if (serializeFn) {
       serializedParams = serializeFn(params, options2);
     } else {
-      serializedParams = utils$1.isURLSearchParams(params) ? params.toString() : new AxiosURLSearchParams(params, options2).toString(_encode);
+      serializedParams = utils$2.isURLSearchParams(params) ? params.toString() : new AxiosURLSearchParams(params, options2).toString(_encode);
     }
     if (serializedParams) {
       const hashmarkIndex = url.indexOf("#");
@@ -814,14 +897,13 @@ var __async = (__this, __arguments, generator) => {
      * @returns {void}
      */
     forEach(fn) {
-      utils$1.forEach(this.handlers, function forEachHandler(h) {
+      utils$2.forEach(this.handlers, function forEachHandler(h) {
         if (h !== null) {
           fn(h);
         }
       });
     }
   }
-  const InterceptorManager$1 = InterceptorManager;
   const transitionalDefaults = {
     silentJSONParsing: true,
     forcedJSONParsing: true,
@@ -830,32 +912,36 @@ var __async = (__this, __arguments, generator) => {
   const URLSearchParams$1 = typeof URLSearchParams !== "undefined" ? URLSearchParams : AxiosURLSearchParams;
   const FormData$1 = typeof FormData !== "undefined" ? FormData : null;
   const Blob$1 = typeof Blob !== "undefined" ? Blob : null;
-  const isStandardBrowserEnv = (() => {
-    let product;
-    if (typeof navigator !== "undefined" && ((product = navigator.product) === "ReactNative" || product === "NativeScript" || product === "NS")) {
-      return false;
-    }
-    return typeof window !== "undefined" && typeof document !== "undefined";
-  })();
-  const isStandardBrowserWebWorkerEnv = (() => {
-    return typeof WorkerGlobalScope !== "undefined" && // eslint-disable-next-line no-undef
-    self instanceof WorkerGlobalScope && typeof self.importScripts === "function";
-  })();
-  const platform = {
+  const platform$1 = {
     isBrowser: true,
     classes: {
       URLSearchParams: URLSearchParams$1,
       FormData: FormData$1,
       Blob: Blob$1
     },
-    isStandardBrowserEnv,
-    isStandardBrowserWebWorkerEnv,
     protocols: ["http", "https", "file", "blob", "url", "data"]
   };
+  const hasBrowserEnv = typeof window !== "undefined" && typeof document !== "undefined";
+  const _navigator = typeof navigator === "object" && navigator || void 0;
+  const hasStandardBrowserEnv = hasBrowserEnv && (!_navigator || ["ReactNative", "NativeScript", "NS"].indexOf(_navigator.product) < 0);
+  const hasStandardBrowserWebWorkerEnv = (() => {
+    return typeof WorkerGlobalScope !== "undefined" && // eslint-disable-next-line no-undef
+    self instanceof WorkerGlobalScope && typeof self.importScripts === "function";
+  })();
+  const origin = hasBrowserEnv && window.location.href || "http://localhost";
+  const utils$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    hasBrowserEnv,
+    hasStandardBrowserEnv,
+    hasStandardBrowserWebWorkerEnv,
+    navigator: _navigator,
+    origin
+  }, Symbol.toStringTag, { value: "Module" }));
+  const platform = __spreadValues(__spreadValues({}, utils$1), platform$1);
   function toURLEncodedForm(data, options2) {
-    return toFormData(data, new platform.classes.URLSearchParams(), Object.assign({
+    return toFormData$1(data, new platform.classes.URLSearchParams(), __spreadValues({
       visitor: function(value, key, path, helpers) {
-        if (platform.isNode && utils$1.isBuffer(value)) {
+        if (platform.isNode && utils$2.isBuffer(value)) {
           this.append(key, value.toString("base64"));
           return false;
         }
@@ -864,7 +950,7 @@ var __async = (__this, __arguments, generator) => {
     }, options2));
   }
   function parsePropPath(name) {
-    return utils$1.matchAll(/\w+|\[(\w*)]/g, name).map((match) => {
+    return utils$2.matchAll(/\w+|\[(\w*)]/g, name).map((match) => {
       return match[0] === "[]" ? "" : match[1] || match[0];
     });
   }
@@ -881,45 +967,43 @@ var __async = (__this, __arguments, generator) => {
     return obj;
   }
   function formDataToJSON(formData) {
-    function buildPath(path, value, target, index2) {
-      let name = path[index2++];
+    function buildPath(path, value, target, index) {
+      let name = path[index++];
+      if (name === "__proto__") return true;
       const isNumericKey = Number.isFinite(+name);
-      const isLast = index2 >= path.length;
-      name = !name && utils$1.isArray(target) ? target.length : name;
+      const isLast = index >= path.length;
+      name = !name && utils$2.isArray(target) ? target.length : name;
       if (isLast) {
-        if (utils$1.hasOwnProp(target, name)) {
+        if (utils$2.hasOwnProp(target, name)) {
           target[name] = [target[name], value];
         } else {
           target[name] = value;
         }
         return !isNumericKey;
       }
-      if (!target[name] || !utils$1.isObject(target[name])) {
+      if (!target[name] || !utils$2.isObject(target[name])) {
         target[name] = [];
       }
-      const result = buildPath(path, value, target[name], index2);
-      if (result && utils$1.isArray(target[name])) {
+      const result = buildPath(path, value, target[name], index);
+      if (result && utils$2.isArray(target[name])) {
         target[name] = arrayToObject(target[name]);
       }
       return !isNumericKey;
     }
-    if (utils$1.isFormData(formData) && utils$1.isFunction(formData.entries)) {
+    if (utils$2.isFormData(formData) && utils$2.isFunction(formData.entries)) {
       const obj = {};
-      utils$1.forEachEntry(formData, (name, value) => {
+      utils$2.forEachEntry(formData, (name, value) => {
         buildPath(parsePropPath(name), value, obj, 0);
       });
       return obj;
     }
     return null;
   }
-  const DEFAULT_CONTENT_TYPE = {
-    "Content-Type": void 0
-  };
   function stringifySafely(rawValue, parser, encoder) {
-    if (utils$1.isString(rawValue)) {
+    if (utils$2.isString(rawValue)) {
       try {
         (parser || JSON.parse)(rawValue);
-        return utils$1.trim(rawValue);
+        return utils$2.trim(rawValue);
       } catch (e) {
         if (e.name !== "SyntaxError") {
           throw e;
@@ -930,28 +1014,25 @@ var __async = (__this, __arguments, generator) => {
   }
   const defaults = {
     transitional: transitionalDefaults,
-    adapter: ["xhr", "http"],
+    adapter: ["xhr", "http", "fetch"],
     transformRequest: [function transformRequest(data, headers) {
       const contentType = headers.getContentType() || "";
       const hasJSONContentType = contentType.indexOf("application/json") > -1;
-      const isObjectPayload = utils$1.isObject(data);
-      if (isObjectPayload && utils$1.isHTMLForm(data)) {
+      const isObjectPayload = utils$2.isObject(data);
+      if (isObjectPayload && utils$2.isHTMLForm(data)) {
         data = new FormData(data);
       }
-      const isFormData2 = utils$1.isFormData(data);
+      const isFormData2 = utils$2.isFormData(data);
       if (isFormData2) {
-        if (!hasJSONContentType) {
-          return data;
-        }
         return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
       }
-      if (utils$1.isArrayBuffer(data) || utils$1.isBuffer(data) || utils$1.isStream(data) || utils$1.isFile(data) || utils$1.isBlob(data)) {
+      if (utils$2.isArrayBuffer(data) || utils$2.isBuffer(data) || utils$2.isStream(data) || utils$2.isFile(data) || utils$2.isBlob(data) || utils$2.isReadableStream(data)) {
         return data;
       }
-      if (utils$1.isArrayBufferView(data)) {
+      if (utils$2.isArrayBufferView(data)) {
         return data.buffer;
       }
-      if (utils$1.isURLSearchParams(data)) {
+      if (utils$2.isURLSearchParams(data)) {
         headers.setContentType("application/x-www-form-urlencoded;charset=utf-8", false);
         return data.toString();
       }
@@ -960,9 +1041,9 @@ var __async = (__this, __arguments, generator) => {
         if (contentType.indexOf("application/x-www-form-urlencoded") > -1) {
           return toURLEncodedForm(data, this.formSerializer).toString();
         }
-        if ((isFileList2 = utils$1.isFileList(data)) || contentType.indexOf("multipart/form-data") > -1) {
+        if ((isFileList2 = utils$2.isFileList(data)) || contentType.indexOf("multipart/form-data") > -1) {
           const _FormData = this.env && this.env.FormData;
-          return toFormData(
+          return toFormData$1(
             isFileList2 ? { "files[]": data } : data,
             _FormData && new _FormData(),
             this.formSerializer
@@ -979,15 +1060,18 @@ var __async = (__this, __arguments, generator) => {
       const transitional = this.transitional || defaults.transitional;
       const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
       const JSONRequested = this.responseType === "json";
-      if (data && utils$1.isString(data) && (forcedJSONParsing && !this.responseType || JSONRequested)) {
+      if (utils$2.isResponse(data) || utils$2.isReadableStream(data)) {
+        return data;
+      }
+      if (data && utils$2.isString(data) && (forcedJSONParsing && !this.responseType || JSONRequested)) {
         const silentJSONParsing = transitional && transitional.silentJSONParsing;
         const strictJSONParsing = !silentJSONParsing && JSONRequested;
         try {
-          return JSON.parse(data);
+          return JSON.parse(data, this.parseReviver);
         } catch (e) {
           if (strictJSONParsing) {
             if (e.name === "SyntaxError") {
-              throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+              throw AxiosError$1.from(e, AxiosError$1.ERR_BAD_RESPONSE, this, null, this.response);
             }
             throw e;
           }
@@ -1013,18 +1097,15 @@ var __async = (__this, __arguments, generator) => {
     },
     headers: {
       common: {
-        "Accept": "application/json, text/plain, */*"
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": void 0
       }
     }
   };
-  utils$1.forEach(["delete", "get", "head"], function forEachMethodNoData(method) {
+  utils$2.forEach(["delete", "get", "head", "post", "put", "patch"], (method) => {
     defaults.headers[method] = {};
   });
-  utils$1.forEach(["post", "put", "patch"], function forEachMethodWithData(method) {
-    defaults.headers[method] = utils$1.merge(DEFAULT_CONTENT_TYPE);
-  });
-  const defaults$1 = defaults;
-  const ignoreDuplicateOf = utils$1.toObjectSet([
+  const ignoreDuplicateOf = utils$2.toObjectSet([
     "age",
     "authorization",
     "content-length",
@@ -1075,7 +1156,7 @@ var __async = (__this, __arguments, generator) => {
     if (value === false || value == null) {
       return value;
     }
-    return utils$1.isArray(value) ? value.map(normalizeValue) : String(value);
+    return utils$2.isArray(value) ? value.map(normalizeValue) : String(value);
   }
   function parseTokens(str) {
     const tokens = /* @__PURE__ */ Object.create(null);
@@ -1088,18 +1169,17 @@ var __async = (__this, __arguments, generator) => {
   }
   const isValidHeaderName = (str) => /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(str.trim());
   function matchHeaderValue(context, value, header, filter, isHeaderNameFilter) {
-    if (utils$1.isFunction(filter)) {
+    if (utils$2.isFunction(filter)) {
       return filter.call(this, value, header);
     }
     if (isHeaderNameFilter) {
       value = header;
     }
-    if (!utils$1.isString(value))
-      return;
-    if (utils$1.isString(filter)) {
+    if (!utils$2.isString(value)) return;
+    if (utils$2.isString(filter)) {
       return value.indexOf(filter) !== -1;
     }
-    if (utils$1.isRegExp(filter)) {
+    if (utils$2.isRegExp(filter)) {
       return filter.test(value);
     }
   }
@@ -1109,7 +1189,7 @@ var __async = (__this, __arguments, generator) => {
     });
   }
   function buildAccessors(obj, header) {
-    const accessorName = utils$1.toCamelCase(" " + header);
+    const accessorName = utils$2.toCamelCase(" " + header);
     ["get", "set", "has"].forEach((methodName) => {
       Object.defineProperty(obj, methodName + accessorName, {
         value: function(arg1, arg2, arg3) {
@@ -1119,7 +1199,7 @@ var __async = (__this, __arguments, generator) => {
       });
     });
   }
-  class AxiosHeaders {
+  let AxiosHeaders$1 = class AxiosHeaders {
     constructor(headers) {
       headers && this.set(headers);
     }
@@ -1130,16 +1210,25 @@ var __async = (__this, __arguments, generator) => {
         if (!lHeader) {
           throw new Error("header name must be a non-empty string");
         }
-        const key = utils$1.findKey(self2, lHeader);
+        const key = utils$2.findKey(self2, lHeader);
         if (!key || self2[key] === void 0 || _rewrite === true || _rewrite === void 0 && self2[key] !== false) {
           self2[key || _header] = normalizeValue(_value);
         }
       }
-      const setHeaders = (headers, _rewrite) => utils$1.forEach(headers, (_value, _header) => setHeader(_value, _header, _rewrite));
-      if (utils$1.isPlainObject(header) || header instanceof this.constructor) {
+      const setHeaders = (headers, _rewrite) => utils$2.forEach(headers, (_value, _header) => setHeader(_value, _header, _rewrite));
+      if (utils$2.isPlainObject(header) || header instanceof this.constructor) {
         setHeaders(header, valueOrRewrite);
-      } else if (utils$1.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
+      } else if (utils$2.isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
         setHeaders(parseHeaders(header), valueOrRewrite);
+      } else if (utils$2.isObject(header) && utils$2.isIterable(header)) {
+        let obj = {}, dest, key;
+        for (const entry of header) {
+          if (!utils$2.isArray(entry)) {
+            throw TypeError("Object iterator must return a key-value pair");
+          }
+          obj[key = entry[0]] = (dest = obj[key]) ? utils$2.isArray(dest) ? [...dest, entry[1]] : [dest, entry[1]] : entry[1];
+        }
+        setHeaders(obj, valueOrRewrite);
       } else {
         header != null && setHeader(valueOrRewrite, header, rewrite);
       }
@@ -1148,7 +1237,7 @@ var __async = (__this, __arguments, generator) => {
     get(header, parser) {
       header = normalizeHeader(header);
       if (header) {
-        const key = utils$1.findKey(this, header);
+        const key = utils$2.findKey(this, header);
         if (key) {
           const value = this[key];
           if (!parser) {
@@ -1157,10 +1246,10 @@ var __async = (__this, __arguments, generator) => {
           if (parser === true) {
             return parseTokens(value);
           }
-          if (utils$1.isFunction(parser)) {
+          if (utils$2.isFunction(parser)) {
             return parser.call(this, value, key);
           }
-          if (utils$1.isRegExp(parser)) {
+          if (utils$2.isRegExp(parser)) {
             return parser.exec(value);
           }
           throw new TypeError("parser must be boolean|regexp|function");
@@ -1170,7 +1259,7 @@ var __async = (__this, __arguments, generator) => {
     has(header, matcher) {
       header = normalizeHeader(header);
       if (header) {
-        const key = utils$1.findKey(this, header);
+        const key = utils$2.findKey(this, header);
         return !!(key && this[key] !== void 0 && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
       }
       return false;
@@ -1181,14 +1270,14 @@ var __async = (__this, __arguments, generator) => {
       function deleteHeader(_header) {
         _header = normalizeHeader(_header);
         if (_header) {
-          const key = utils$1.findKey(self2, _header);
+          const key = utils$2.findKey(self2, _header);
           if (key && (!matcher || matchHeaderValue(self2, self2[key], key, matcher))) {
             delete self2[key];
             deleted = true;
           }
         }
       }
-      if (utils$1.isArray(header)) {
+      if (utils$2.isArray(header)) {
         header.forEach(deleteHeader);
       } else {
         deleteHeader(header);
@@ -1211,8 +1300,8 @@ var __async = (__this, __arguments, generator) => {
     normalize(format) {
       const self2 = this;
       const headers = {};
-      utils$1.forEach(this, (value, header) => {
-        const key = utils$1.findKey(headers, header);
+      utils$2.forEach(this, (value, header) => {
+        const key = utils$2.findKey(headers, header);
         if (key) {
           self2[key] = normalizeValue(value);
           delete self2[header];
@@ -1232,8 +1321,8 @@ var __async = (__this, __arguments, generator) => {
     }
     toJSON(asStrings) {
       const obj = /* @__PURE__ */ Object.create(null);
-      utils$1.forEach(this, (value, header) => {
-        value != null && value !== false && (obj[header] = asStrings && utils$1.isArray(value) ? value.join(", ") : value);
+      utils$2.forEach(this, (value, header) => {
+        value != null && value !== false && (obj[header] = asStrings && utils$2.isArray(value) ? value.join(", ") : value);
       });
       return obj;
     }
@@ -1242,6 +1331,9 @@ var __async = (__this, __arguments, generator) => {
     }
     toString() {
       return Object.entries(this.toJSON()).map(([header, value]) => header + ": " + value).join("\n");
+    }
+    getSetCookie() {
+      return this.get("set-cookie") || [];
     }
     get [Symbol.toStringTag]() {
       return "AxiosHeaders";
@@ -1267,33 +1359,40 @@ var __async = (__this, __arguments, generator) => {
           accessors[lHeader] = true;
         }
       }
-      utils$1.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
+      utils$2.isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
       return this;
     }
-  }
-  AxiosHeaders.accessor(["Content-Type", "Content-Length", "Accept", "Accept-Encoding", "User-Agent", "Authorization"]);
-  utils$1.freezeMethods(AxiosHeaders.prototype);
-  utils$1.freezeMethods(AxiosHeaders);
-  const AxiosHeaders$1 = AxiosHeaders;
+  };
+  AxiosHeaders$1.accessor(["Content-Type", "Content-Length", "Accept", "Accept-Encoding", "User-Agent", "Authorization"]);
+  utils$2.reduceDescriptors(AxiosHeaders$1.prototype, ({ value }, key) => {
+    let mapped = key[0].toUpperCase() + key.slice(1);
+    return {
+      get: () => value,
+      set(headerValue) {
+        this[mapped] = headerValue;
+      }
+    };
+  });
+  utils$2.freezeMethods(AxiosHeaders$1);
   function transformData(fns, response) {
-    const config = this || defaults$1;
+    const config = this || defaults;
     const context = response || config;
     const headers = AxiosHeaders$1.from(context.headers);
     let data = context.data;
-    utils$1.forEach(fns, function transform(fn) {
+    utils$2.forEach(fns, function transform(fn) {
       data = fn.call(config, data, headers.normalize(), response ? response.status : void 0);
     });
     headers.normalize();
     return data;
   }
-  function isCancel(value) {
+  function isCancel$1(value) {
     return !!(value && value.__CANCEL__);
   }
-  function CanceledError(message, config, request) {
-    AxiosError.call(this, message == null ? "canceled" : message, AxiosError.ERR_CANCELED, config, request);
+  function CanceledError$1(message, config, request) {
+    AxiosError$1.call(this, message == null ? "canceled" : message, AxiosError$1.ERR_CANCELED, config, request);
     this.name = "CanceledError";
   }
-  utils$1.inherits(CanceledError, AxiosError, {
+  utils$2.inherits(CanceledError$1, AxiosError$1, {
     __CANCEL__: true
   });
   function settle(resolve, reject, response) {
@@ -1301,110 +1400,15 @@ var __async = (__this, __arguments, generator) => {
     if (!response.status || !validateStatus || validateStatus(response.status)) {
       resolve(response);
     } else {
-      reject(new AxiosError(
+      reject(new AxiosError$1(
         "Request failed with status code " + response.status,
-        [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
+        [AxiosError$1.ERR_BAD_REQUEST, AxiosError$1.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
         response.config,
         response.request,
         response
       ));
     }
   }
-  const cookies = platform.isStandardBrowserEnv ? (
-    // Standard browser envs support document.cookie
-    function standardBrowserEnv() {
-      return {
-        write: function write2(name, value, expires, path, domain, secure) {
-          const cookie = [];
-          cookie.push(name + "=" + encodeURIComponent(value));
-          if (utils$1.isNumber(expires)) {
-            cookie.push("expires=" + new Date(expires).toGMTString());
-          }
-          if (utils$1.isString(path)) {
-            cookie.push("path=" + path);
-          }
-          if (utils$1.isString(domain)) {
-            cookie.push("domain=" + domain);
-          }
-          if (secure === true) {
-            cookie.push("secure");
-          }
-          document.cookie = cookie.join("; ");
-        },
-        read: function read2(name) {
-          const match = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
-          return match ? decodeURIComponent(match[3]) : null;
-        },
-        remove: function remove(name) {
-          this.write(name, "", Date.now() - 864e5);
-        }
-      };
-    }()
-  ) : (
-    // Non standard browser env (web workers, react-native) lack needed support.
-    function nonStandardBrowserEnv() {
-      return {
-        write: function write2() {
-        },
-        read: function read2() {
-          return null;
-        },
-        remove: function remove() {
-        }
-      };
-    }()
-  );
-  function isAbsoluteURL(url) {
-    return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
-  }
-  function combineURLs(baseURL, relativeURL) {
-    return relativeURL ? baseURL.replace(/\/+$/, "") + "/" + relativeURL.replace(/^\/+/, "") : baseURL;
-  }
-  function buildFullPath(baseURL, requestedURL) {
-    if (baseURL && !isAbsoluteURL(requestedURL)) {
-      return combineURLs(baseURL, requestedURL);
-    }
-    return requestedURL;
-  }
-  const isURLSameOrigin = platform.isStandardBrowserEnv ? (
-    // Standard browser envs have full support of the APIs needed to test
-    // whether the request URL is of the same origin as current location.
-    function standardBrowserEnv() {
-      const msie = /(msie|trident)/i.test(navigator.userAgent);
-      const urlParsingNode = document.createElement("a");
-      let originURL;
-      function resolveURL(url) {
-        let href = url;
-        if (msie) {
-          urlParsingNode.setAttribute("href", href);
-          href = urlParsingNode.href;
-        }
-        urlParsingNode.setAttribute("href", href);
-        return {
-          href: urlParsingNode.href,
-          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, "") : "",
-          host: urlParsingNode.host,
-          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, "") : "",
-          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, "") : "",
-          hostname: urlParsingNode.hostname,
-          port: urlParsingNode.port,
-          pathname: urlParsingNode.pathname.charAt(0) === "/" ? urlParsingNode.pathname : "/" + urlParsingNode.pathname
-        };
-      }
-      originURL = resolveURL(window.location.href);
-      return function isURLSameOrigin2(requestURL) {
-        const parsed = utils$1.isString(requestURL) ? resolveURL(requestURL) : requestURL;
-        return parsed.protocol === originURL.protocol && parsed.host === originURL.host;
-      };
-    }()
-  ) : (
-    // Non standard browser envs (web workers, react-native) lack needed support.
-    function nonStandardBrowserEnv() {
-      return function isURLSameOrigin2() {
-        return true;
-      };
-    }()
-  );
   function parseProtocol(url) {
     const match = /^([-+\w]{1,25})(:?\/\/|:)/.exec(url);
     return match && match[1] || "";
@@ -1442,10 +1446,42 @@ var __async = (__this, __arguments, generator) => {
       return passed ? Math.round(bytesCount * 1e3 / passed) : void 0;
     };
   }
-  function progressEventReducer(listener, isDownloadStream) {
+  function throttle(fn, freq) {
+    let timestamp = 0;
+    let threshold = 1e3 / freq;
+    let lastArgs;
+    let timer;
+    const invoke = (args, now2 = Date.now()) => {
+      timestamp = now2;
+      lastArgs = null;
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      fn(...args);
+    };
+    const throttled = (...args) => {
+      const now2 = Date.now();
+      const passed = now2 - timestamp;
+      if (passed >= threshold) {
+        invoke(args, now2);
+      } else {
+        lastArgs = args;
+        if (!timer) {
+          timer = setTimeout(() => {
+            timer = null;
+            invoke(lastArgs);
+          }, threshold - passed);
+        }
+      }
+    };
+    const flush = () => lastArgs && invoke(lastArgs);
+    return [throttled, flush];
+  }
+  const progressEventReducer = (listener, isDownloadStream, freq = 3) => {
     let bytesNotified = 0;
     const _speedometer = speedometer(50, 250);
-    return (e) => {
+    return throttle((e) => {
       const loaded = e.loaded;
       const total = e.lengthComputable ? e.total : void 0;
       const progressBytes = loaded - bytesNotified;
@@ -1459,43 +1495,205 @@ var __async = (__this, __arguments, generator) => {
         bytes: progressBytes,
         rate: rate ? rate : void 0,
         estimated: rate && total && inRange ? (total - loaded) / rate : void 0,
-        event: e
+        event: e,
+        lengthComputable: total != null,
+        [isDownloadStream ? "download" : "upload"]: true
       };
-      data[isDownloadStream ? "download" : "upload"] = true;
       listener(data);
-    };
+    }, freq);
+  };
+  const progressEventDecorator = (total, throttled) => {
+    const lengthComputable = total != null;
+    return [(loaded) => throttled[0]({
+      lengthComputable,
+      total,
+      loaded
+    }), throttled[1]];
+  };
+  const asyncDecorator = (fn) => (...args) => utils$2.asap(() => fn(...args));
+  const isURLSameOrigin = platform.hasStandardBrowserEnv ? /* @__PURE__ */ ((origin2, isMSIE) => (url) => {
+    url = new URL(url, platform.origin);
+    return origin2.protocol === url.protocol && origin2.host === url.host && (isMSIE || origin2.port === url.port);
+  })(
+    new URL(platform.origin),
+    platform.navigator && /(msie|trident)/i.test(platform.navigator.userAgent)
+  ) : () => true;
+  const cookies = platform.hasStandardBrowserEnv ? (
+    // Standard browser envs support document.cookie
+    {
+      write(name, value, expires, path, domain, secure) {
+        const cookie = [name + "=" + encodeURIComponent(value)];
+        utils$2.isNumber(expires) && cookie.push("expires=" + new Date(expires).toGMTString());
+        utils$2.isString(path) && cookie.push("path=" + path);
+        utils$2.isString(domain) && cookie.push("domain=" + domain);
+        secure === true && cookie.push("secure");
+        document.cookie = cookie.join("; ");
+      },
+      read(name) {
+        const match = document.cookie.match(new RegExp("(^|;\\s*)(" + name + ")=([^;]*)"));
+        return match ? decodeURIComponent(match[3]) : null;
+      },
+      remove(name) {
+        this.write(name, "", Date.now() - 864e5);
+      }
+    }
+  ) : (
+    // Non-standard browser env (web workers, react-native) lack needed support.
+    {
+      write() {
+      },
+      read() {
+        return null;
+      },
+      remove() {
+      }
+    }
+  );
+  function isAbsoluteURL(url) {
+    return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
   }
+  function combineURLs(baseURL, relativeURL) {
+    return relativeURL ? baseURL.replace(/\/?\/$/, "") + "/" + relativeURL.replace(/^\/+/, "") : baseURL;
+  }
+  function buildFullPath(baseURL, requestedURL, allowAbsoluteUrls) {
+    let isRelativeUrl = !isAbsoluteURL(requestedURL);
+    if (baseURL && (isRelativeUrl || allowAbsoluteUrls == false)) {
+      return combineURLs(baseURL, requestedURL);
+    }
+    return requestedURL;
+  }
+  const headersToObject = (thing) => thing instanceof AxiosHeaders$1 ? __spreadValues({}, thing) : thing;
+  function mergeConfig$1(config1, config2) {
+    config2 = config2 || {};
+    const config = {};
+    function getMergedValue(target, source, prop, caseless) {
+      if (utils$2.isPlainObject(target) && utils$2.isPlainObject(source)) {
+        return utils$2.merge.call({ caseless }, target, source);
+      } else if (utils$2.isPlainObject(source)) {
+        return utils$2.merge({}, source);
+      } else if (utils$2.isArray(source)) {
+        return source.slice();
+      }
+      return source;
+    }
+    function mergeDeepProperties(a, b, prop, caseless) {
+      if (!utils$2.isUndefined(b)) {
+        return getMergedValue(a, b, prop, caseless);
+      } else if (!utils$2.isUndefined(a)) {
+        return getMergedValue(void 0, a, prop, caseless);
+      }
+    }
+    function valueFromConfig2(a, b) {
+      if (!utils$2.isUndefined(b)) {
+        return getMergedValue(void 0, b);
+      }
+    }
+    function defaultToConfig2(a, b) {
+      if (!utils$2.isUndefined(b)) {
+        return getMergedValue(void 0, b);
+      } else if (!utils$2.isUndefined(a)) {
+        return getMergedValue(void 0, a);
+      }
+    }
+    function mergeDirectKeys(a, b, prop) {
+      if (prop in config2) {
+        return getMergedValue(a, b);
+      } else if (prop in config1) {
+        return getMergedValue(void 0, a);
+      }
+    }
+    const mergeMap = {
+      url: valueFromConfig2,
+      method: valueFromConfig2,
+      data: valueFromConfig2,
+      baseURL: defaultToConfig2,
+      transformRequest: defaultToConfig2,
+      transformResponse: defaultToConfig2,
+      paramsSerializer: defaultToConfig2,
+      timeout: defaultToConfig2,
+      timeoutMessage: defaultToConfig2,
+      withCredentials: defaultToConfig2,
+      withXSRFToken: defaultToConfig2,
+      adapter: defaultToConfig2,
+      responseType: defaultToConfig2,
+      xsrfCookieName: defaultToConfig2,
+      xsrfHeaderName: defaultToConfig2,
+      onUploadProgress: defaultToConfig2,
+      onDownloadProgress: defaultToConfig2,
+      decompress: defaultToConfig2,
+      maxContentLength: defaultToConfig2,
+      maxBodyLength: defaultToConfig2,
+      beforeRedirect: defaultToConfig2,
+      transport: defaultToConfig2,
+      httpAgent: defaultToConfig2,
+      httpsAgent: defaultToConfig2,
+      cancelToken: defaultToConfig2,
+      socketPath: defaultToConfig2,
+      responseEncoding: defaultToConfig2,
+      validateStatus: mergeDirectKeys,
+      headers: (a, b, prop) => mergeDeepProperties(headersToObject(a), headersToObject(b), prop, true)
+    };
+    utils$2.forEach(Object.keys(__spreadValues(__spreadValues({}, config1), config2)), function computeConfigValue(prop) {
+      const merge2 = mergeMap[prop] || mergeDeepProperties;
+      const configValue = merge2(config1[prop], config2[prop], prop);
+      utils$2.isUndefined(configValue) && merge2 !== mergeDirectKeys || (config[prop] = configValue);
+    });
+    return config;
+  }
+  const resolveConfig = (config) => {
+    const newConfig = mergeConfig$1({}, config);
+    let { data, withXSRFToken, xsrfHeaderName, xsrfCookieName, headers, auth } = newConfig;
+    newConfig.headers = headers = AxiosHeaders$1.from(headers);
+    newConfig.url = buildURL(buildFullPath(newConfig.baseURL, newConfig.url, newConfig.allowAbsoluteUrls), config.params, config.paramsSerializer);
+    if (auth) {
+      headers.set(
+        "Authorization",
+        "Basic " + btoa((auth.username || "") + ":" + (auth.password ? unescape(encodeURIComponent(auth.password)) : ""))
+      );
+    }
+    if (utils$2.isFormData(data)) {
+      if (platform.hasStandardBrowserEnv || platform.hasStandardBrowserWebWorkerEnv) {
+        headers.setContentType(void 0);
+      } else if (utils$2.isFunction(data.getHeaders)) {
+        const formHeaders = data.getHeaders();
+        const allowedHeaders = ["content-type", "content-length"];
+        Object.entries(formHeaders).forEach(([key, val]) => {
+          if (allowedHeaders.includes(key.toLowerCase())) {
+            headers.set(key, val);
+          }
+        });
+      }
+    }
+    if (platform.hasStandardBrowserEnv) {
+      withXSRFToken && utils$2.isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(newConfig));
+      if (withXSRFToken || withXSRFToken !== false && isURLSameOrigin(newConfig.url)) {
+        const xsrfValue = xsrfHeaderName && xsrfCookieName && cookies.read(xsrfCookieName);
+        if (xsrfValue) {
+          headers.set(xsrfHeaderName, xsrfValue);
+        }
+      }
+    }
+    return newConfig;
+  };
   const isXHRAdapterSupported = typeof XMLHttpRequest !== "undefined";
   const xhrAdapter = isXHRAdapterSupported && function(config) {
     return new Promise(function dispatchXhrRequest(resolve, reject) {
-      let requestData = config.data;
-      const requestHeaders = AxiosHeaders$1.from(config.headers).normalize();
-      const responseType = config.responseType;
+      const _config = resolveConfig(config);
+      let requestData = _config.data;
+      const requestHeaders = AxiosHeaders$1.from(_config.headers).normalize();
+      let { responseType, onUploadProgress, onDownloadProgress } = _config;
       let onCanceled;
+      let uploadThrottled, downloadThrottled;
+      let flushUpload, flushDownload;
       function done() {
-        if (config.cancelToken) {
-          config.cancelToken.unsubscribe(onCanceled);
-        }
-        if (config.signal) {
-          config.signal.removeEventListener("abort", onCanceled);
-        }
-      }
-      if (utils$1.isFormData(requestData)) {
-        if (platform.isStandardBrowserEnv || platform.isStandardBrowserWebWorkerEnv) {
-          requestHeaders.setContentType(false);
-        } else {
-          requestHeaders.setContentType("multipart/form-data;", false);
-        }
+        flushUpload && flushUpload();
+        flushDownload && flushDownload();
+        _config.cancelToken && _config.cancelToken.unsubscribe(onCanceled);
+        _config.signal && _config.signal.removeEventListener("abort", onCanceled);
       }
       let request = new XMLHttpRequest();
-      if (config.auth) {
-        const username = config.auth.username || "";
-        const password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : "";
-        requestHeaders.set("Authorization", "Basic " + btoa(username + ":" + password));
-      }
-      const fullPath = buildFullPath(config.baseURL, config.url);
-      request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
-      request.timeout = config.timeout;
+      request.open(_config.method.toUpperCase(), _config.url, true);
+      request.timeout = _config.timeout;
       function onloadend() {
         if (!request) {
           return;
@@ -1538,78 +1736,415 @@ var __async = (__this, __arguments, generator) => {
         if (!request) {
           return;
         }
-        reject(new AxiosError("Request aborted", AxiosError.ECONNABORTED, config, request));
+        reject(new AxiosError$1("Request aborted", AxiosError$1.ECONNABORTED, config, request));
         request = null;
       };
-      request.onerror = function handleError() {
-        reject(new AxiosError("Network Error", AxiosError.ERR_NETWORK, config, request));
+      request.onerror = function handleError(event2) {
+        const msg = event2 && event2.message ? event2.message : "Network Error";
+        const err = new AxiosError$1(msg, AxiosError$1.ERR_NETWORK, config, request);
+        err.event = event2 || null;
+        reject(err);
         request = null;
       };
       request.ontimeout = function handleTimeout() {
-        let timeoutErrorMessage = config.timeout ? "timeout of " + config.timeout + "ms exceeded" : "timeout exceeded";
-        const transitional = config.transitional || transitionalDefaults;
-        if (config.timeoutErrorMessage) {
-          timeoutErrorMessage = config.timeoutErrorMessage;
+        let timeoutErrorMessage = _config.timeout ? "timeout of " + _config.timeout + "ms exceeded" : "timeout exceeded";
+        const transitional = _config.transitional || transitionalDefaults;
+        if (_config.timeoutErrorMessage) {
+          timeoutErrorMessage = _config.timeoutErrorMessage;
         }
-        reject(new AxiosError(
+        reject(new AxiosError$1(
           timeoutErrorMessage,
-          transitional.clarifyTimeoutError ? AxiosError.ETIMEDOUT : AxiosError.ECONNABORTED,
+          transitional.clarifyTimeoutError ? AxiosError$1.ETIMEDOUT : AxiosError$1.ECONNABORTED,
           config,
           request
         ));
         request = null;
       };
-      if (platform.isStandardBrowserEnv) {
-        const xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName && cookies.read(config.xsrfCookieName);
-        if (xsrfValue) {
-          requestHeaders.set(config.xsrfHeaderName, xsrfValue);
-        }
-      }
       requestData === void 0 && requestHeaders.setContentType(null);
       if ("setRequestHeader" in request) {
-        utils$1.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
+        utils$2.forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
           request.setRequestHeader(key, val);
         });
       }
-      if (!utils$1.isUndefined(config.withCredentials)) {
-        request.withCredentials = !!config.withCredentials;
+      if (!utils$2.isUndefined(_config.withCredentials)) {
+        request.withCredentials = !!_config.withCredentials;
       }
       if (responseType && responseType !== "json") {
-        request.responseType = config.responseType;
+        request.responseType = _config.responseType;
       }
-      if (typeof config.onDownloadProgress === "function") {
-        request.addEventListener("progress", progressEventReducer(config.onDownloadProgress, true));
+      if (onDownloadProgress) {
+        [downloadThrottled, flushDownload] = progressEventReducer(onDownloadProgress, true);
+        request.addEventListener("progress", downloadThrottled);
       }
-      if (typeof config.onUploadProgress === "function" && request.upload) {
-        request.upload.addEventListener("progress", progressEventReducer(config.onUploadProgress));
+      if (onUploadProgress && request.upload) {
+        [uploadThrottled, flushUpload] = progressEventReducer(onUploadProgress);
+        request.upload.addEventListener("progress", uploadThrottled);
+        request.upload.addEventListener("loadend", flushUpload);
       }
-      if (config.cancelToken || config.signal) {
+      if (_config.cancelToken || _config.signal) {
         onCanceled = (cancel) => {
           if (!request) {
             return;
           }
-          reject(!cancel || cancel.type ? new CanceledError(null, config, request) : cancel);
+          reject(!cancel || cancel.type ? new CanceledError$1(null, config, request) : cancel);
           request.abort();
           request = null;
         };
-        config.cancelToken && config.cancelToken.subscribe(onCanceled);
-        if (config.signal) {
-          config.signal.aborted ? onCanceled() : config.signal.addEventListener("abort", onCanceled);
+        _config.cancelToken && _config.cancelToken.subscribe(onCanceled);
+        if (_config.signal) {
+          _config.signal.aborted ? onCanceled() : _config.signal.addEventListener("abort", onCanceled);
         }
       }
-      const protocol = parseProtocol(fullPath);
+      const protocol = parseProtocol(_config.url);
       if (protocol && platform.protocols.indexOf(protocol) === -1) {
-        reject(new AxiosError("Unsupported protocol " + protocol + ":", AxiosError.ERR_BAD_REQUEST, config));
+        reject(new AxiosError$1("Unsupported protocol " + protocol + ":", AxiosError$1.ERR_BAD_REQUEST, config));
         return;
       }
       request.send(requestData || null);
     });
   };
+  const composeSignals = (signals, timeout) => {
+    const { length } = signals = signals ? signals.filter(Boolean) : [];
+    if (timeout || length) {
+      let controller = new AbortController();
+      let aborted;
+      const onabort = function(reason) {
+        if (!aborted) {
+          aborted = true;
+          unsubscribe();
+          const err = reason instanceof Error ? reason : this.reason;
+          controller.abort(err instanceof AxiosError$1 ? err : new CanceledError$1(err instanceof Error ? err.message : err));
+        }
+      };
+      let timer = timeout && setTimeout(() => {
+        timer = null;
+        onabort(new AxiosError$1(`timeout ${timeout} of ms exceeded`, AxiosError$1.ETIMEDOUT));
+      }, timeout);
+      const unsubscribe = () => {
+        if (signals) {
+          timer && clearTimeout(timer);
+          timer = null;
+          signals.forEach((signal2) => {
+            signal2.unsubscribe ? signal2.unsubscribe(onabort) : signal2.removeEventListener("abort", onabort);
+          });
+          signals = null;
+        }
+      };
+      signals.forEach((signal2) => signal2.addEventListener("abort", onabort));
+      const { signal } = controller;
+      signal.unsubscribe = () => utils$2.asap(unsubscribe);
+      return signal;
+    }
+  };
+  const streamChunk = function* (chunk, chunkSize) {
+    let len = chunk.byteLength;
+    if (len < chunkSize) {
+      yield chunk;
+      return;
+    }
+    let pos = 0;
+    let end2;
+    while (pos < len) {
+      end2 = pos + chunkSize;
+      yield chunk.slice(pos, end2);
+      pos = end2;
+    }
+  };
+  const readBytes = function(iterable, chunkSize) {
+    return __asyncGenerator(this, null, function* () {
+      try {
+        for (var iter = __forAwait(readStream(iterable)), more, temp, error; more = !(temp = yield new __await(iter.next())).done; more = false) {
+          const chunk = temp.value;
+          yield* __yieldStar(streamChunk(chunk, chunkSize));
+        }
+      } catch (temp) {
+        error = [temp];
+      } finally {
+        try {
+          more && (temp = iter.return) && (yield new __await(temp.call(iter)));
+        } finally {
+          if (error)
+            throw error[0];
+        }
+      }
+    });
+  };
+  const readStream = function(stream) {
+    return __asyncGenerator(this, null, function* () {
+      if (stream[Symbol.asyncIterator]) {
+        yield* __yieldStar(stream);
+        return;
+      }
+      const reader = stream.getReader();
+      try {
+        for (; ; ) {
+          const { done, value } = yield new __await(reader.read());
+          if (done) {
+            break;
+          }
+          yield value;
+        }
+      } finally {
+        yield new __await(reader.cancel());
+      }
+    });
+  };
+  const trackStream = (stream, chunkSize, onProgress, onFinish) => {
+    const iterator2 = readBytes(stream, chunkSize);
+    let bytes = 0;
+    let done;
+    let _onFinish = (e) => {
+      if (!done) {
+        done = true;
+        onFinish && onFinish(e);
+      }
+    };
+    return new ReadableStream({
+      pull(controller) {
+        return __async(this, null, function* () {
+          try {
+            const { done: done2, value } = yield iterator2.next();
+            if (done2) {
+              _onFinish();
+              controller.close();
+              return;
+            }
+            let len = value.byteLength;
+            if (onProgress) {
+              let loadedBytes = bytes += len;
+              onProgress(loadedBytes);
+            }
+            controller.enqueue(new Uint8Array(value));
+          } catch (err) {
+            _onFinish(err);
+            throw err;
+          }
+        });
+      },
+      cancel(reason) {
+        _onFinish(reason);
+        return iterator2.return();
+      }
+    }, {
+      highWaterMark: 2
+    });
+  };
+  const DEFAULT_CHUNK_SIZE = 64 * 1024;
+  const { isFunction: isFunction$1 } = utils$2;
+  const globalFetchAPI = (({ Request, Response }) => ({
+    Request,
+    Response
+  }))(utils$2.global);
+  const {
+    ReadableStream: ReadableStream$1,
+    TextEncoder
+  } = utils$2.global;
+  const test = (fn, ...args) => {
+    try {
+      return !!fn(...args);
+    } catch (e) {
+      return false;
+    }
+  };
+  const factory = (env) => {
+    env = utils$2.merge.call({
+      skipUndefined: true
+    }, globalFetchAPI, env);
+    const { fetch: envFetch, Request, Response } = env;
+    const isFetchSupported = envFetch ? isFunction$1(envFetch) : typeof fetch === "function";
+    const isRequestSupported = isFunction$1(Request);
+    const isResponseSupported = isFunction$1(Response);
+    if (!isFetchSupported) {
+      return false;
+    }
+    const isReadableStreamSupported = isFetchSupported && isFunction$1(ReadableStream$1);
+    const encodeText = isFetchSupported && (typeof TextEncoder === "function" ? /* @__PURE__ */ ((encoder) => (str) => encoder.encode(str))(new TextEncoder()) : (str) => __async(null, null, function* () {
+      return new Uint8Array(yield new Request(str).arrayBuffer());
+    }));
+    const supportsRequestStream = isRequestSupported && isReadableStreamSupported && test(() => {
+      let duplexAccessed = false;
+      const hasContentType = new Request(platform.origin, {
+        body: new ReadableStream$1(),
+        method: "POST",
+        get duplex() {
+          duplexAccessed = true;
+          return "half";
+        }
+      }).headers.has("Content-Type");
+      return duplexAccessed && !hasContentType;
+    });
+    const supportsResponseStream = isResponseSupported && isReadableStreamSupported && test(() => utils$2.isReadableStream(new Response("").body));
+    const resolvers = {
+      stream: supportsResponseStream && ((res) => res.body)
+    };
+    isFetchSupported && (() => {
+      ["text", "arrayBuffer", "blob", "formData", "stream"].forEach((type) => {
+        !resolvers[type] && (resolvers[type] = (res, config) => {
+          let method = res && res[type];
+          if (method) {
+            return method.call(res);
+          }
+          throw new AxiosError$1(`Response type '${type}' is not supported`, AxiosError$1.ERR_NOT_SUPPORT, config);
+        });
+      });
+    })();
+    const getBodyLength = (body) => __async(null, null, function* () {
+      if (body == null) {
+        return 0;
+      }
+      if (utils$2.isBlob(body)) {
+        return body.size;
+      }
+      if (utils$2.isSpecCompliantForm(body)) {
+        const _request = new Request(platform.origin, {
+          method: "POST",
+          body
+        });
+        return (yield _request.arrayBuffer()).byteLength;
+      }
+      if (utils$2.isArrayBufferView(body) || utils$2.isArrayBuffer(body)) {
+        return body.byteLength;
+      }
+      if (utils$2.isURLSearchParams(body)) {
+        body = body + "";
+      }
+      if (utils$2.isString(body)) {
+        return (yield encodeText(body)).byteLength;
+      }
+    });
+    const resolveBodyLength = (headers, body) => __async(null, null, function* () {
+      const length = utils$2.toFiniteNumber(headers.getContentLength());
+      return length == null ? getBodyLength(body) : length;
+    });
+    return (config) => __async(null, null, function* () {
+      let {
+        url,
+        method,
+        data,
+        signal,
+        cancelToken,
+        timeout,
+        onDownloadProgress,
+        onUploadProgress,
+        responseType,
+        headers,
+        withCredentials = "same-origin",
+        fetchOptions
+      } = resolveConfig(config);
+      let _fetch = envFetch || fetch;
+      responseType = responseType ? (responseType + "").toLowerCase() : "text";
+      let composedSignal = composeSignals([signal, cancelToken && cancelToken.toAbortSignal()], timeout);
+      let request = null;
+      const unsubscribe = composedSignal && composedSignal.unsubscribe && (() => {
+        composedSignal.unsubscribe();
+      });
+      let requestContentLength;
+      try {
+        if (onUploadProgress && supportsRequestStream && method !== "get" && method !== "head" && (requestContentLength = yield resolveBodyLength(headers, data)) !== 0) {
+          let _request = new Request(url, {
+            method: "POST",
+            body: data,
+            duplex: "half"
+          });
+          let contentTypeHeader;
+          if (utils$2.isFormData(data) && (contentTypeHeader = _request.headers.get("content-type"))) {
+            headers.setContentType(contentTypeHeader);
+          }
+          if (_request.body) {
+            const [onProgress, flush] = progressEventDecorator(
+              requestContentLength,
+              progressEventReducer(asyncDecorator(onUploadProgress))
+            );
+            data = trackStream(_request.body, DEFAULT_CHUNK_SIZE, onProgress, flush);
+          }
+        }
+        if (!utils$2.isString(withCredentials)) {
+          withCredentials = withCredentials ? "include" : "omit";
+        }
+        const isCredentialsSupported = isRequestSupported && "credentials" in Request.prototype;
+        const resolvedOptions = __spreadProps(__spreadValues({}, fetchOptions), {
+          signal: composedSignal,
+          method: method.toUpperCase(),
+          headers: headers.normalize().toJSON(),
+          body: data,
+          duplex: "half",
+          credentials: isCredentialsSupported ? withCredentials : void 0
+        });
+        request = isRequestSupported && new Request(url, resolvedOptions);
+        let response = yield isRequestSupported ? _fetch(request, fetchOptions) : _fetch(url, resolvedOptions);
+        const isStreamResponse = supportsResponseStream && (responseType === "stream" || responseType === "response");
+        if (supportsResponseStream && (onDownloadProgress || isStreamResponse && unsubscribe)) {
+          const options2 = {};
+          ["status", "statusText", "headers"].forEach((prop) => {
+            options2[prop] = response[prop];
+          });
+          const responseContentLength = utils$2.toFiniteNumber(response.headers.get("content-length"));
+          const [onProgress, flush] = onDownloadProgress && progressEventDecorator(
+            responseContentLength,
+            progressEventReducer(asyncDecorator(onDownloadProgress), true)
+          ) || [];
+          response = new Response(
+            trackStream(response.body, DEFAULT_CHUNK_SIZE, onProgress, () => {
+              flush && flush();
+              unsubscribe && unsubscribe();
+            }),
+            options2
+          );
+        }
+        responseType = responseType || "text";
+        let responseData = yield resolvers[utils$2.findKey(resolvers, responseType) || "text"](response, config);
+        !isStreamResponse && unsubscribe && unsubscribe();
+        return yield new Promise((resolve, reject) => {
+          settle(resolve, reject, {
+            data: responseData,
+            headers: AxiosHeaders$1.from(response.headers),
+            status: response.status,
+            statusText: response.statusText,
+            config,
+            request
+          });
+        });
+      } catch (err) {
+        unsubscribe && unsubscribe();
+        if (err && err.name === "TypeError" && /Load failed|fetch/i.test(err.message)) {
+          throw Object.assign(
+            new AxiosError$1("Network Error", AxiosError$1.ERR_NETWORK, config, request),
+            {
+              cause: err.cause || err
+            }
+          );
+        }
+        throw AxiosError$1.from(err, err && err.code, config, request);
+      }
+    });
+  };
+  const seedCache = /* @__PURE__ */ new Map();
+  const getFetch = (config) => {
+    let env = config ? config.env : {};
+    const { fetch: fetch2, Request, Response } = env;
+    const seeds = [
+      Request,
+      Response,
+      fetch2
+    ];
+    let len = seeds.length, i = len, seed, target, map = seedCache;
+    while (i--) {
+      seed = seeds[i];
+      target = map.get(seed);
+      target === void 0 && map.set(seed, target = i ? /* @__PURE__ */ new Map() : factory(env));
+      map = target;
+    }
+    return target;
+  };
+  getFetch();
   const knownAdapters = {
     http: httpAdapter,
-    xhr: xhrAdapter
+    xhr: xhrAdapter,
+    fetch: {
+      get: getFetch
+    }
   };
-  utils$1.forEach(knownAdapters, (fn, value) => {
+  utils$2.forEach(knownAdapters, (fn, value) => {
     if (fn) {
       try {
         Object.defineProperty(fn, "name", { value });
@@ -1618,31 +2153,39 @@ var __async = (__this, __arguments, generator) => {
       Object.defineProperty(fn, "adapterName", { value });
     }
   });
+  const renderReason = (reason) => `- ${reason}`;
+  const isResolvedHandle = (adapter) => utils$2.isFunction(adapter) || adapter === null || adapter === false;
   const adapters = {
-    getAdapter: (adapters2) => {
-      adapters2 = utils$1.isArray(adapters2) ? adapters2 : [adapters2];
+    getAdapter: (adapters2, config) => {
+      adapters2 = utils$2.isArray(adapters2) ? adapters2 : [adapters2];
       const { length } = adapters2;
       let nameOrAdapter;
       let adapter;
+      const rejectedReasons = {};
       for (let i = 0; i < length; i++) {
         nameOrAdapter = adapters2[i];
-        if (adapter = utils$1.isString(nameOrAdapter) ? knownAdapters[nameOrAdapter.toLowerCase()] : nameOrAdapter) {
+        let id;
+        adapter = nameOrAdapter;
+        if (!isResolvedHandle(nameOrAdapter)) {
+          adapter = knownAdapters[(id = String(nameOrAdapter)).toLowerCase()];
+          if (adapter === void 0) {
+            throw new AxiosError$1(`Unknown adapter '${id}'`);
+          }
+        }
+        if (adapter && (utils$2.isFunction(adapter) || (adapter = adapter.get(config)))) {
           break;
         }
+        rejectedReasons[id || "#" + i] = adapter;
       }
       if (!adapter) {
-        if (adapter === false) {
-          throw new AxiosError(
-            `Adapter ${nameOrAdapter} is not supported by the environment`,
-            "ERR_NOT_SUPPORT"
-          );
-        }
-        throw new Error(
-          utils$1.hasOwnProp(knownAdapters, nameOrAdapter) ? `Adapter '${nameOrAdapter}' is not available in the build` : `Unknown adapter '${nameOrAdapter}'`
+        const reasons = Object.entries(rejectedReasons).map(
+          ([id, state]) => `adapter ${id} ` + (state === false ? "is not supported by the environment" : "is not available in the build")
         );
-      }
-      if (!utils$1.isFunction(adapter)) {
-        throw new TypeError("adapter is not a function");
+        let s = length ? reasons.length > 1 ? "since :\n" + reasons.map(renderReason).join("\n") : " " + renderReason(reasons[0]) : "as no adapter specified";
+        throw new AxiosError$1(
+          `There is no suitable adapter to dispatch the request ` + s,
+          "ERR_NOT_SUPPORT"
+        );
       }
       return adapter;
     },
@@ -1653,7 +2196,7 @@ var __async = (__this, __arguments, generator) => {
       config.cancelToken.throwIfRequested();
     }
     if (config.signal && config.signal.aborted) {
-      throw new CanceledError(null, config);
+      throw new CanceledError$1(null, config);
     }
   }
   function dispatchRequest(config) {
@@ -1666,7 +2209,7 @@ var __async = (__this, __arguments, generator) => {
     if (["post", "put", "patch"].indexOf(config.method) !== -1) {
       config.headers.setContentType("application/x-www-form-urlencoded", false);
     }
-    const adapter = adapters.getAdapter(config.adapter || defaults$1.adapter);
+    const adapter = adapters.getAdapter(config.adapter || defaults.adapter, config);
     return adapter(config).then(function onAdapterResolution(response) {
       throwIfCancellationRequested(config);
       response.data = transformData.call(
@@ -1677,7 +2220,7 @@ var __async = (__this, __arguments, generator) => {
       response.headers = AxiosHeaders$1.from(response.headers);
       return response;
     }, function onAdapterRejection(reason) {
-      if (!isCancel(reason)) {
+      if (!isCancel$1(reason)) {
         throwIfCancellationRequested(config);
         if (reason && reason.response) {
           reason.response.data = transformData.call(
@@ -1691,84 +2234,7 @@ var __async = (__this, __arguments, generator) => {
       return Promise.reject(reason);
     });
   }
-  const headersToObject = (thing) => thing instanceof AxiosHeaders$1 ? thing.toJSON() : thing;
-  function mergeConfig(config1, config2) {
-    config2 = config2 || {};
-    const config = {};
-    function getMergedValue(target, source, caseless) {
-      if (utils$1.isPlainObject(target) && utils$1.isPlainObject(source)) {
-        return utils$1.merge.call({ caseless }, target, source);
-      } else if (utils$1.isPlainObject(source)) {
-        return utils$1.merge({}, source);
-      } else if (utils$1.isArray(source)) {
-        return source.slice();
-      }
-      return source;
-    }
-    function mergeDeepProperties(a, b, caseless) {
-      if (!utils$1.isUndefined(b)) {
-        return getMergedValue(a, b, caseless);
-      } else if (!utils$1.isUndefined(a)) {
-        return getMergedValue(void 0, a, caseless);
-      }
-    }
-    function valueFromConfig2(a, b) {
-      if (!utils$1.isUndefined(b)) {
-        return getMergedValue(void 0, b);
-      }
-    }
-    function defaultToConfig2(a, b) {
-      if (!utils$1.isUndefined(b)) {
-        return getMergedValue(void 0, b);
-      } else if (!utils$1.isUndefined(a)) {
-        return getMergedValue(void 0, a);
-      }
-    }
-    function mergeDirectKeys(a, b, prop) {
-      if (prop in config2) {
-        return getMergedValue(a, b);
-      } else if (prop in config1) {
-        return getMergedValue(void 0, a);
-      }
-    }
-    const mergeMap = {
-      url: valueFromConfig2,
-      method: valueFromConfig2,
-      data: valueFromConfig2,
-      baseURL: defaultToConfig2,
-      transformRequest: defaultToConfig2,
-      transformResponse: defaultToConfig2,
-      paramsSerializer: defaultToConfig2,
-      timeout: defaultToConfig2,
-      timeoutMessage: defaultToConfig2,
-      withCredentials: defaultToConfig2,
-      adapter: defaultToConfig2,
-      responseType: defaultToConfig2,
-      xsrfCookieName: defaultToConfig2,
-      xsrfHeaderName: defaultToConfig2,
-      onUploadProgress: defaultToConfig2,
-      onDownloadProgress: defaultToConfig2,
-      decompress: defaultToConfig2,
-      maxContentLength: defaultToConfig2,
-      maxBodyLength: defaultToConfig2,
-      beforeRedirect: defaultToConfig2,
-      transport: defaultToConfig2,
-      httpAgent: defaultToConfig2,
-      httpsAgent: defaultToConfig2,
-      cancelToken: defaultToConfig2,
-      socketPath: defaultToConfig2,
-      responseEncoding: defaultToConfig2,
-      validateStatus: mergeDirectKeys,
-      headers: (a, b) => mergeDeepProperties(headersToObject(a), headersToObject(b), true)
-    };
-    utils$1.forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
-      const merge2 = mergeMap[prop] || mergeDeepProperties;
-      const configValue = merge2(config1[prop], config2[prop], prop);
-      utils$1.isUndefined(configValue) && merge2 !== mergeDirectKeys || (config[prop] = configValue);
-    });
-    return config;
-  }
-  const VERSION = "1.4.0";
+  const VERSION$1 = "1.12.2";
   const validators$1 = {};
   ["object", "boolean", "number", "function", "string", "symbol"].forEach((type, i) => {
     validators$1[type] = function validator2(thing) {
@@ -1778,13 +2244,13 @@ var __async = (__this, __arguments, generator) => {
   const deprecatedWarnings = {};
   validators$1.transitional = function transitional(validator2, version, message) {
     function formatMessage(opt, desc) {
-      return "[Axios v" + VERSION + "] Transitional option '" + opt + "'" + desc + (message ? ". " + message : "");
+      return "[Axios v" + VERSION$1 + "] Transitional option '" + opt + "'" + desc + (message ? ". " + message : "");
     }
     return (value, opt, opts) => {
       if (validator2 === false) {
-        throw new AxiosError(
+        throw new AxiosError$1(
           formatMessage(opt, " has been removed" + (version ? " in " + version : "")),
-          AxiosError.ERR_DEPRECATED
+          AxiosError$1.ERR_DEPRECATED
         );
       }
       if (version && !deprecatedWarnings[opt]) {
@@ -1799,9 +2265,15 @@ var __async = (__this, __arguments, generator) => {
       return validator2 ? validator2(value, opt, opts) : true;
     };
   };
+  validators$1.spelling = function spelling(correctSpelling) {
+    return (value, opt) => {
+      console.warn(`${opt} is likely a misspelling of ${correctSpelling}`);
+      return true;
+    };
+  };
   function assertOptions(options2, schema, allowUnknown) {
     if (typeof options2 !== "object") {
-      throw new AxiosError("options must be an object", AxiosError.ERR_BAD_OPTION_VALUE);
+      throw new AxiosError$1("options must be an object", AxiosError$1.ERR_BAD_OPTION_VALUE);
     }
     const keys2 = Object.keys(options2);
     let i = keys2.length;
@@ -1812,12 +2284,12 @@ var __async = (__this, __arguments, generator) => {
         const value = options2[opt];
         const result = value === void 0 || validator2(value, opt, options2);
         if (result !== true) {
-          throw new AxiosError("option " + opt + " must be " + result, AxiosError.ERR_BAD_OPTION_VALUE);
+          throw new AxiosError$1("option " + opt + " must be " + result, AxiosError$1.ERR_BAD_OPTION_VALUE);
         }
         continue;
       }
       if (allowUnknown !== true) {
-        throw new AxiosError("Unknown option " + opt, AxiosError.ERR_BAD_OPTION);
+        throw new AxiosError$1("Unknown option " + opt, AxiosError$1.ERR_BAD_OPTION);
       }
     }
   }
@@ -1826,12 +2298,12 @@ var __async = (__this, __arguments, generator) => {
     validators: validators$1
   };
   const validators = validator.validators;
-  class Axios {
+  let Axios$1 = class Axios {
     constructor(instanceConfig) {
-      this.defaults = instanceConfig;
+      this.defaults = instanceConfig || {};
       this.interceptors = {
-        request: new InterceptorManager$1(),
-        response: new InterceptorManager$1()
+        request: new InterceptorManager(),
+        response: new InterceptorManager()
       };
     }
     /**
@@ -1843,13 +2315,35 @@ var __async = (__this, __arguments, generator) => {
      * @returns {Promise} The Promise to be fulfilled
      */
     request(configOrUrl, config) {
+      return __async(this, null, function* () {
+        try {
+          return yield this._request(configOrUrl, config);
+        } catch (err) {
+          if (err instanceof Error) {
+            let dummy = {};
+            Error.captureStackTrace ? Error.captureStackTrace(dummy) : dummy = new Error();
+            const stack = dummy.stack ? dummy.stack.replace(/^.+\n/, "") : "";
+            try {
+              if (!err.stack) {
+                err.stack = stack;
+              } else if (stack && !String(err.stack).endsWith(stack.replace(/^.+\n.+\n/, ""))) {
+                err.stack += "\n" + stack;
+              }
+            } catch (e) {
+            }
+          }
+          throw err;
+        }
+      });
+    }
+    _request(configOrUrl, config) {
       if (typeof configOrUrl === "string") {
         config = config || {};
         config.url = configOrUrl;
       } else {
         config = configOrUrl || {};
       }
-      config = mergeConfig(this.defaults, config);
+      config = mergeConfig$1(this.defaults, config);
       const { transitional, paramsSerializer, headers } = config;
       if (transitional !== void 0) {
         validator.assertOptions(transitional, {
@@ -1859,7 +2353,7 @@ var __async = (__this, __arguments, generator) => {
         }, false);
       }
       if (paramsSerializer != null) {
-        if (utils$1.isFunction(paramsSerializer)) {
+        if (utils$2.isFunction(paramsSerializer)) {
           config.paramsSerializer = {
             serialize: paramsSerializer
           };
@@ -1870,13 +2364,22 @@ var __async = (__this, __arguments, generator) => {
           }, true);
         }
       }
+      if (config.allowAbsoluteUrls !== void 0) ;
+      else if (this.defaults.allowAbsoluteUrls !== void 0) {
+        config.allowAbsoluteUrls = this.defaults.allowAbsoluteUrls;
+      } else {
+        config.allowAbsoluteUrls = true;
+      }
+      validator.assertOptions(config, {
+        baseUrl: validators.spelling("baseURL"),
+        withXsrfToken: validators.spelling("withXSRFToken")
+      }, true);
       config.method = (config.method || this.defaults.method || "get").toLowerCase();
-      let contextHeaders;
-      contextHeaders = headers && utils$1.merge(
+      let contextHeaders = headers && utils$2.merge(
         headers.common,
         headers[config.method]
       );
-      contextHeaders && utils$1.forEach(
+      headers && utils$2.forEach(
         ["delete", "get", "head", "post", "put", "patch", "common"],
         (method) => {
           delete headers[method];
@@ -1901,8 +2404,8 @@ var __async = (__this, __arguments, generator) => {
       let len;
       if (!synchronousRequestInterceptors) {
         const chain = [dispatchRequest.bind(this), void 0];
-        chain.unshift.apply(chain, requestInterceptorChain);
-        chain.push.apply(chain, responseInterceptorChain);
+        chain.unshift(...requestInterceptorChain);
+        chain.push(...responseInterceptorChain);
         len = chain.length;
         promise = Promise.resolve(config);
         while (i < len) {
@@ -1912,7 +2415,6 @@ var __async = (__this, __arguments, generator) => {
       }
       len = requestInterceptorChain.length;
       let newConfig = config;
-      i = 0;
       while (i < len) {
         const onFulfilled = requestInterceptorChain[i++];
         const onRejected = requestInterceptorChain[i++];
@@ -1936,24 +2438,24 @@ var __async = (__this, __arguments, generator) => {
       return promise;
     }
     getUri(config) {
-      config = mergeConfig(this.defaults, config);
-      const fullPath = buildFullPath(config.baseURL, config.url);
+      config = mergeConfig$1(this.defaults, config);
+      const fullPath = buildFullPath(config.baseURL, config.url, config.allowAbsoluteUrls);
       return buildURL(fullPath, config.params, config.paramsSerializer);
     }
-  }
-  utils$1.forEach(["delete", "get", "head", "options"], function forEachMethodNoData(method) {
-    Axios.prototype[method] = function(url, config) {
-      return this.request(mergeConfig(config || {}, {
+  };
+  utils$2.forEach(["delete", "get", "head", "options"], function forEachMethodNoData(method) {
+    Axios$1.prototype[method] = function(url, config) {
+      return this.request(mergeConfig$1(config || {}, {
         method,
         url,
         data: (config || {}).data
       }));
     };
   });
-  utils$1.forEach(["post", "put", "patch"], function forEachMethodWithData(method) {
+  utils$2.forEach(["post", "put", "patch"], function forEachMethodWithData(method) {
     function generateHTTPMethod(isForm) {
       return function httpMethod(url, data, config) {
-        return this.request(mergeConfig(config || {}, {
+        return this.request(mergeConfig$1(config || {}, {
           method,
           headers: isForm ? {
             "Content-Type": "multipart/form-data"
@@ -1963,11 +2465,10 @@ var __async = (__this, __arguments, generator) => {
         }));
       };
     }
-    Axios.prototype[method] = generateHTTPMethod();
-    Axios.prototype[method + "Form"] = generateHTTPMethod(true);
+    Axios$1.prototype[method] = generateHTTPMethod();
+    Axios$1.prototype[method + "Form"] = generateHTTPMethod(true);
   });
-  const Axios$1 = Axios;
-  class CancelToken {
+  let CancelToken$1 = class CancelToken2 {
     constructor(executor) {
       if (typeof executor !== "function") {
         throw new TypeError("executor must be a function.");
@@ -1978,8 +2479,7 @@ var __async = (__this, __arguments, generator) => {
       });
       const token = this;
       this.promise.then((cancel) => {
-        if (!token._listeners)
-          return;
+        if (!token._listeners) return;
         let i = token._listeners.length;
         while (i-- > 0) {
           token._listeners[i](cancel);
@@ -2001,7 +2501,7 @@ var __async = (__this, __arguments, generator) => {
         if (token.reason) {
           return;
         }
-        token.reason = new CanceledError(message, config, request);
+        token.reason = new CanceledError$1(message, config, request);
         resolvePromise(token.reason);
       });
     }
@@ -2034,10 +2534,19 @@ var __async = (__this, __arguments, generator) => {
       if (!this._listeners) {
         return;
       }
-      const index2 = this._listeners.indexOf(listener);
-      if (index2 !== -1) {
-        this._listeners.splice(index2, 1);
+      const index = this._listeners.indexOf(listener);
+      if (index !== -1) {
+        this._listeners.splice(index, 1);
       }
+    }
+    toAbortSignal() {
+      const controller = new AbortController();
+      const abort = (err) => {
+        controller.abort(err);
+      };
+      this.subscribe(abort);
+      controller.signal.unsubscribe = () => this.unsubscribe(abort);
+      return controller.signal;
     }
     /**
      * Returns an object that contains a new `CancelToken` and a function that, when called,
@@ -2045,7 +2554,7 @@ var __async = (__this, __arguments, generator) => {
      */
     static source() {
       let cancel;
-      const token = new CancelToken(function executor(c) {
+      const token = new CancelToken2(function executor(c) {
         cancel = c;
       });
       return {
@@ -2053,17 +2562,16 @@ var __async = (__this, __arguments, generator) => {
         cancel
       };
     }
-  }
-  const CancelToken$1 = CancelToken;
-  function spread(callback) {
+  };
+  function spread$1(callback) {
     return function wrap(arr) {
       return callback.apply(null, arr);
     };
   }
-  function isAxiosError(payload) {
-    return utils$1.isObject(payload) && payload.isAxiosError === true;
+  function isAxiosError$1(payload) {
+    return utils$2.isObject(payload) && payload.isAxiosError === true;
   }
-  const HttpStatusCode = {
+  const HttpStatusCode$1 = {
     Continue: 100,
     SwitchingProtocols: 101,
     Processing: 102,
@@ -2128,42 +2636,59 @@ var __async = (__this, __arguments, generator) => {
     NotExtended: 510,
     NetworkAuthenticationRequired: 511
   };
-  Object.entries(HttpStatusCode).forEach(([key, value]) => {
-    HttpStatusCode[value] = key;
+  Object.entries(HttpStatusCode$1).forEach(([key, value]) => {
+    HttpStatusCode$1[value] = key;
   });
-  const HttpStatusCode$1 = HttpStatusCode;
   function createInstance(defaultConfig) {
     const context = new Axios$1(defaultConfig);
     const instance2 = bind(Axios$1.prototype.request, context);
-    utils$1.extend(instance2, Axios$1.prototype, context, { allOwnKeys: true });
-    utils$1.extend(instance2, context, null, { allOwnKeys: true });
+    utils$2.extend(instance2, Axios$1.prototype, context, { allOwnKeys: true });
+    utils$2.extend(instance2, context, null, { allOwnKeys: true });
     instance2.create = function create(instanceConfig) {
-      return createInstance(mergeConfig(defaultConfig, instanceConfig));
+      return createInstance(mergeConfig$1(defaultConfig, instanceConfig));
     };
     return instance2;
   }
-  const axios = createInstance(defaults$1);
+  const axios = createInstance(defaults);
   axios.Axios = Axios$1;
-  axios.CanceledError = CanceledError;
+  axios.CanceledError = CanceledError$1;
   axios.CancelToken = CancelToken$1;
-  axios.isCancel = isCancel;
-  axios.VERSION = VERSION;
-  axios.toFormData = toFormData;
-  axios.AxiosError = AxiosError;
+  axios.isCancel = isCancel$1;
+  axios.VERSION = VERSION$1;
+  axios.toFormData = toFormData$1;
+  axios.AxiosError = AxiosError$1;
   axios.Cancel = axios.CanceledError;
-  axios.all = function all(promises) {
+  axios.all = function all2(promises) {
     return Promise.all(promises);
   };
-  axios.spread = spread;
-  axios.isAxiosError = isAxiosError;
-  axios.mergeConfig = mergeConfig;
+  axios.spread = spread$1;
+  axios.isAxiosError = isAxiosError$1;
+  axios.mergeConfig = mergeConfig$1;
   axios.AxiosHeaders = AxiosHeaders$1;
-  axios.formToJSON = (thing) => formDataToJSON(utils$1.isHTMLForm(thing) ? new FormData(thing) : thing);
+  axios.formToJSON = (thing) => formDataToJSON(utils$2.isHTMLForm(thing) ? new FormData(thing) : thing);
+  axios.getAdapter = adapters.getAdapter;
   axios.HttpStatusCode = HttpStatusCode$1;
   axios.default = axios;
-  const axios$1 = axios;
+  const {
+    Axios,
+    AxiosError,
+    CanceledError,
+    isCancel,
+    CancelToken,
+    VERSION,
+    all,
+    Cancel,
+    isAxiosError,
+    spread,
+    toFormData,
+    AxiosHeaders,
+    HttpStatusCode,
+    formToJSON,
+    getAdapter,
+    mergeConfig
+  } = axios;
   function createWPService() {
-    return axios$1.create({
+    return axios.create({
       baseURL: `${window.ZBCommonData.rest.rest_root}wp/v2`,
       headers: {
         "X-WP-Nonce": window.ZBCommonData.rest.nonce,
@@ -2173,7 +2698,7 @@ var __async = (__this, __arguments, generator) => {
     });
   }
   function getService() {
-    return axios$1.create({
+    return axios.create({
       baseURL: `${window.ZBCommonData.rest.rest_root}zionbuilder/v1/`,
       headers: {
         "X-WP-Nonce": window.ZBCommonData.rest.nonce,
@@ -2256,14 +2781,8 @@ var __async = (__this, __arguments, generator) => {
   function getRenderedContent(id) {
     return getService().get(`pages/${id}/get_rendered_content`);
   }
-  function regenerateCache(itemData) {
-    return getService().post("assets/regenerate", itemData);
-  }
-  function getCacheList() {
-    return getService().get("assets");
-  }
-  function finishRegeneration() {
-    return getService().get("assets/finish");
+  function regenerateCache() {
+    return getService().get("assets/regenerate");
   }
   function replaceUrl(urls) {
     return getService().post("replace-url", urls);
@@ -2366,9 +2885,7 @@ var __async = (__this, __arguments, generator) => {
     errorInterceptor,
     exportLibraryItem,
     exportTemplate,
-    finishRegeneration,
     getBreakpoints,
-    getCacheList,
     getFontsDataSet,
     getGoogleFonts,
     getIconsList,
@@ -2402,19 +2919,22 @@ var __async = (__this, __arguments, generator) => {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
   }
   function getAugmentedNamespace(n) {
-    if (n.__esModule)
-      return n;
+    if (Object.prototype.hasOwnProperty.call(n, "__esModule")) return n;
     var f = n.default;
     if (typeof f == "function") {
       var a = function a2() {
-        if (this instanceof a2) {
+        var isInstance = false;
+        try {
+          isInstance = this instanceof a2;
+        } catch (e) {
+        }
+        if (isInstance) {
           return Reflect.construct(f, arguments, this.constructor);
         }
         return f.apply(this, arguments);
       };
       a.prototype = f.prototype;
-    } else
-      a = {};
+    } else a = {};
     Object.defineProperty(a, "__esModule", { value: true });
     Object.keys(n).forEach(function(k) {
       var d = Object.getOwnPropertyDescriptor(n, k);
@@ -2427,29 +2947,29 @@ var __async = (__this, __arguments, generator) => {
     });
     return a;
   }
-  var md5 = { exports: {} };
+  var md5$1 = { exports: {} };
   function commonjsRequire(path) {
     throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
   }
-  var core = { exports: {} };
+  var core$1 = { exports: {} };
   const __viteBrowserExternal = {};
   const __viteBrowserExternal$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
     default: __viteBrowserExternal
   }, Symbol.toStringTag, { value: "Module" }));
   const require$$0 = /* @__PURE__ */ getAugmentedNamespace(__viteBrowserExternal$1);
+  var core = core$1.exports;
   var hasRequiredCore;
   function requireCore() {
-    if (hasRequiredCore)
-      return core.exports;
+    if (hasRequiredCore) return core$1.exports;
     hasRequiredCore = 1;
     (function(module2, exports2) {
-      (function(root2, factory) {
+      (function(root2, factory2) {
         {
-          module2.exports = factory();
+          module2.exports = factory2();
         }
-      })(commonjsGlobal, function() {
-        var CryptoJS = CryptoJS || function(Math2, undefined$1) {
+      })(core, function() {
+        var CryptoJS = CryptoJS || (function(Math2, undefined$1) {
           var crypto;
           if (typeof window !== "undefined" && window.crypto) {
             crypto = window.crypto;
@@ -2489,7 +3009,7 @@ var __async = (__this, __arguments, generator) => {
             }
             throw new Error("Native crypto module could not be used to get secure random number.");
           };
-          var create = Object.create || function() {
+          var create = Object.create || /* @__PURE__ */ (function() {
             function F() {
             }
             return function(obj) {
@@ -2499,10 +3019,10 @@ var __async = (__this, __arguments, generator) => {
               F.prototype = null;
               return subtype;
             };
-          }();
+          })();
           var C = {};
           var C_lib = C.lib = {};
-          var Base = C_lib.Base = function() {
+          var Base = C_lib.Base = /* @__PURE__ */ (function() {
             return {
               /**
                * Creates a new object that inherits from this object.
@@ -2601,7 +3121,7 @@ var __async = (__this, __arguments, generator) => {
                 return this.init.prototype.extend(this);
               }
             };
-          }();
+          })();
           var WordArray = C_lib.WordArray = Base.extend({
             /**
              * Initializes a newly created word array.
@@ -3039,184 +3559,191 @@ var __async = (__this, __arguments, generator) => {
           });
           var C_algo = C.algo = {};
           return C;
-        }(Math);
+        })(Math);
         return CryptoJS;
       });
-    })(core);
-    return core.exports;
+    })(core$1);
+    return core$1.exports;
   }
-  (function(module2, exports2) {
-    (function(root2, factory) {
-      {
-        module2.exports = factory(requireCore());
-      }
-    })(commonjsGlobal, function(CryptoJS) {
-      (function(Math2) {
-        var C = CryptoJS;
-        var C_lib = C.lib;
-        var WordArray = C_lib.WordArray;
-        var Hasher = C_lib.Hasher;
-        var C_algo = C.algo;
-        var T = [];
-        (function() {
-          for (var i = 0; i < 64; i++) {
-            T[i] = Math2.abs(Math2.sin(i + 1)) * 4294967296 | 0;
-          }
-        })();
-        var MD52 = C_algo.MD5 = Hasher.extend({
-          _doReset: function() {
-            this._hash = new WordArray.init([
-              1732584193,
-              4023233417,
-              2562383102,
-              271733878
-            ]);
-          },
-          _doProcessBlock: function(M, offset2) {
-            for (var i = 0; i < 16; i++) {
-              var offset_i = offset2 + i;
-              var M_offset_i = M[offset_i];
-              M[offset_i] = (M_offset_i << 8 | M_offset_i >>> 24) & 16711935 | (M_offset_i << 24 | M_offset_i >>> 8) & 4278255360;
+  var md5 = md5$1.exports;
+  var hasRequiredMd5;
+  function requireMd5() {
+    if (hasRequiredMd5) return md5$1.exports;
+    hasRequiredMd5 = 1;
+    (function(module2, exports2) {
+      (function(root2, factory2) {
+        {
+          module2.exports = factory2(requireCore());
+        }
+      })(md5, function(CryptoJS) {
+        (function(Math2) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var Hasher = C_lib.Hasher;
+          var C_algo = C.algo;
+          var T = [];
+          (function() {
+            for (var i = 0; i < 64; i++) {
+              T[i] = Math2.abs(Math2.sin(i + 1)) * 4294967296 | 0;
             }
-            var H = this._hash.words;
-            var M_offset_0 = M[offset2 + 0];
-            var M_offset_1 = M[offset2 + 1];
-            var M_offset_2 = M[offset2 + 2];
-            var M_offset_3 = M[offset2 + 3];
-            var M_offset_4 = M[offset2 + 4];
-            var M_offset_5 = M[offset2 + 5];
-            var M_offset_6 = M[offset2 + 6];
-            var M_offset_7 = M[offset2 + 7];
-            var M_offset_8 = M[offset2 + 8];
-            var M_offset_9 = M[offset2 + 9];
-            var M_offset_10 = M[offset2 + 10];
-            var M_offset_11 = M[offset2 + 11];
-            var M_offset_12 = M[offset2 + 12];
-            var M_offset_13 = M[offset2 + 13];
-            var M_offset_14 = M[offset2 + 14];
-            var M_offset_15 = M[offset2 + 15];
-            var a = H[0];
-            var b = H[1];
-            var c = H[2];
-            var d = H[3];
-            a = FF(a, b, c, d, M_offset_0, 7, T[0]);
-            d = FF(d, a, b, c, M_offset_1, 12, T[1]);
-            c = FF(c, d, a, b, M_offset_2, 17, T[2]);
-            b = FF(b, c, d, a, M_offset_3, 22, T[3]);
-            a = FF(a, b, c, d, M_offset_4, 7, T[4]);
-            d = FF(d, a, b, c, M_offset_5, 12, T[5]);
-            c = FF(c, d, a, b, M_offset_6, 17, T[6]);
-            b = FF(b, c, d, a, M_offset_7, 22, T[7]);
-            a = FF(a, b, c, d, M_offset_8, 7, T[8]);
-            d = FF(d, a, b, c, M_offset_9, 12, T[9]);
-            c = FF(c, d, a, b, M_offset_10, 17, T[10]);
-            b = FF(b, c, d, a, M_offset_11, 22, T[11]);
-            a = FF(a, b, c, d, M_offset_12, 7, T[12]);
-            d = FF(d, a, b, c, M_offset_13, 12, T[13]);
-            c = FF(c, d, a, b, M_offset_14, 17, T[14]);
-            b = FF(b, c, d, a, M_offset_15, 22, T[15]);
-            a = GG(a, b, c, d, M_offset_1, 5, T[16]);
-            d = GG(d, a, b, c, M_offset_6, 9, T[17]);
-            c = GG(c, d, a, b, M_offset_11, 14, T[18]);
-            b = GG(b, c, d, a, M_offset_0, 20, T[19]);
-            a = GG(a, b, c, d, M_offset_5, 5, T[20]);
-            d = GG(d, a, b, c, M_offset_10, 9, T[21]);
-            c = GG(c, d, a, b, M_offset_15, 14, T[22]);
-            b = GG(b, c, d, a, M_offset_4, 20, T[23]);
-            a = GG(a, b, c, d, M_offset_9, 5, T[24]);
-            d = GG(d, a, b, c, M_offset_14, 9, T[25]);
-            c = GG(c, d, a, b, M_offset_3, 14, T[26]);
-            b = GG(b, c, d, a, M_offset_8, 20, T[27]);
-            a = GG(a, b, c, d, M_offset_13, 5, T[28]);
-            d = GG(d, a, b, c, M_offset_2, 9, T[29]);
-            c = GG(c, d, a, b, M_offset_7, 14, T[30]);
-            b = GG(b, c, d, a, M_offset_12, 20, T[31]);
-            a = HH(a, b, c, d, M_offset_5, 4, T[32]);
-            d = HH(d, a, b, c, M_offset_8, 11, T[33]);
-            c = HH(c, d, a, b, M_offset_11, 16, T[34]);
-            b = HH(b, c, d, a, M_offset_14, 23, T[35]);
-            a = HH(a, b, c, d, M_offset_1, 4, T[36]);
-            d = HH(d, a, b, c, M_offset_4, 11, T[37]);
-            c = HH(c, d, a, b, M_offset_7, 16, T[38]);
-            b = HH(b, c, d, a, M_offset_10, 23, T[39]);
-            a = HH(a, b, c, d, M_offset_13, 4, T[40]);
-            d = HH(d, a, b, c, M_offset_0, 11, T[41]);
-            c = HH(c, d, a, b, M_offset_3, 16, T[42]);
-            b = HH(b, c, d, a, M_offset_6, 23, T[43]);
-            a = HH(a, b, c, d, M_offset_9, 4, T[44]);
-            d = HH(d, a, b, c, M_offset_12, 11, T[45]);
-            c = HH(c, d, a, b, M_offset_15, 16, T[46]);
-            b = HH(b, c, d, a, M_offset_2, 23, T[47]);
-            a = II(a, b, c, d, M_offset_0, 6, T[48]);
-            d = II(d, a, b, c, M_offset_7, 10, T[49]);
-            c = II(c, d, a, b, M_offset_14, 15, T[50]);
-            b = II(b, c, d, a, M_offset_5, 21, T[51]);
-            a = II(a, b, c, d, M_offset_12, 6, T[52]);
-            d = II(d, a, b, c, M_offset_3, 10, T[53]);
-            c = II(c, d, a, b, M_offset_10, 15, T[54]);
-            b = II(b, c, d, a, M_offset_1, 21, T[55]);
-            a = II(a, b, c, d, M_offset_8, 6, T[56]);
-            d = II(d, a, b, c, M_offset_15, 10, T[57]);
-            c = II(c, d, a, b, M_offset_6, 15, T[58]);
-            b = II(b, c, d, a, M_offset_13, 21, T[59]);
-            a = II(a, b, c, d, M_offset_4, 6, T[60]);
-            d = II(d, a, b, c, M_offset_11, 10, T[61]);
-            c = II(c, d, a, b, M_offset_2, 15, T[62]);
-            b = II(b, c, d, a, M_offset_9, 21, T[63]);
-            H[0] = H[0] + a | 0;
-            H[1] = H[1] + b | 0;
-            H[2] = H[2] + c | 0;
-            H[3] = H[3] + d | 0;
-          },
-          _doFinalize: function() {
-            var data = this._data;
-            var dataWords = data.words;
-            var nBitsTotal = this._nDataBytes * 8;
-            var nBitsLeft = data.sigBytes * 8;
-            dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
-            var nBitsTotalH = Math2.floor(nBitsTotal / 4294967296);
-            var nBitsTotalL = nBitsTotal;
-            dataWords[(nBitsLeft + 64 >>> 9 << 4) + 15] = (nBitsTotalH << 8 | nBitsTotalH >>> 24) & 16711935 | (nBitsTotalH << 24 | nBitsTotalH >>> 8) & 4278255360;
-            dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = (nBitsTotalL << 8 | nBitsTotalL >>> 24) & 16711935 | (nBitsTotalL << 24 | nBitsTotalL >>> 8) & 4278255360;
-            data.sigBytes = (dataWords.length + 1) * 4;
-            this._process();
-            var hash2 = this._hash;
-            var H = hash2.words;
-            for (var i = 0; i < 4; i++) {
-              var H_i = H[i];
-              H[i] = (H_i << 8 | H_i >>> 24) & 16711935 | (H_i << 24 | H_i >>> 8) & 4278255360;
+          })();
+          var MD52 = C_algo.MD5 = Hasher.extend({
+            _doReset: function() {
+              this._hash = new WordArray.init([
+                1732584193,
+                4023233417,
+                2562383102,
+                271733878
+              ]);
+            },
+            _doProcessBlock: function(M, offset2) {
+              for (var i = 0; i < 16; i++) {
+                var offset_i = offset2 + i;
+                var M_offset_i = M[offset_i];
+                M[offset_i] = (M_offset_i << 8 | M_offset_i >>> 24) & 16711935 | (M_offset_i << 24 | M_offset_i >>> 8) & 4278255360;
+              }
+              var H = this._hash.words;
+              var M_offset_0 = M[offset2 + 0];
+              var M_offset_1 = M[offset2 + 1];
+              var M_offset_2 = M[offset2 + 2];
+              var M_offset_3 = M[offset2 + 3];
+              var M_offset_4 = M[offset2 + 4];
+              var M_offset_5 = M[offset2 + 5];
+              var M_offset_6 = M[offset2 + 6];
+              var M_offset_7 = M[offset2 + 7];
+              var M_offset_8 = M[offset2 + 8];
+              var M_offset_9 = M[offset2 + 9];
+              var M_offset_10 = M[offset2 + 10];
+              var M_offset_11 = M[offset2 + 11];
+              var M_offset_12 = M[offset2 + 12];
+              var M_offset_13 = M[offset2 + 13];
+              var M_offset_14 = M[offset2 + 14];
+              var M_offset_15 = M[offset2 + 15];
+              var a = H[0];
+              var b = H[1];
+              var c = H[2];
+              var d = H[3];
+              a = FF(a, b, c, d, M_offset_0, 7, T[0]);
+              d = FF(d, a, b, c, M_offset_1, 12, T[1]);
+              c = FF(c, d, a, b, M_offset_2, 17, T[2]);
+              b = FF(b, c, d, a, M_offset_3, 22, T[3]);
+              a = FF(a, b, c, d, M_offset_4, 7, T[4]);
+              d = FF(d, a, b, c, M_offset_5, 12, T[5]);
+              c = FF(c, d, a, b, M_offset_6, 17, T[6]);
+              b = FF(b, c, d, a, M_offset_7, 22, T[7]);
+              a = FF(a, b, c, d, M_offset_8, 7, T[8]);
+              d = FF(d, a, b, c, M_offset_9, 12, T[9]);
+              c = FF(c, d, a, b, M_offset_10, 17, T[10]);
+              b = FF(b, c, d, a, M_offset_11, 22, T[11]);
+              a = FF(a, b, c, d, M_offset_12, 7, T[12]);
+              d = FF(d, a, b, c, M_offset_13, 12, T[13]);
+              c = FF(c, d, a, b, M_offset_14, 17, T[14]);
+              b = FF(b, c, d, a, M_offset_15, 22, T[15]);
+              a = GG(a, b, c, d, M_offset_1, 5, T[16]);
+              d = GG(d, a, b, c, M_offset_6, 9, T[17]);
+              c = GG(c, d, a, b, M_offset_11, 14, T[18]);
+              b = GG(b, c, d, a, M_offset_0, 20, T[19]);
+              a = GG(a, b, c, d, M_offset_5, 5, T[20]);
+              d = GG(d, a, b, c, M_offset_10, 9, T[21]);
+              c = GG(c, d, a, b, M_offset_15, 14, T[22]);
+              b = GG(b, c, d, a, M_offset_4, 20, T[23]);
+              a = GG(a, b, c, d, M_offset_9, 5, T[24]);
+              d = GG(d, a, b, c, M_offset_14, 9, T[25]);
+              c = GG(c, d, a, b, M_offset_3, 14, T[26]);
+              b = GG(b, c, d, a, M_offset_8, 20, T[27]);
+              a = GG(a, b, c, d, M_offset_13, 5, T[28]);
+              d = GG(d, a, b, c, M_offset_2, 9, T[29]);
+              c = GG(c, d, a, b, M_offset_7, 14, T[30]);
+              b = GG(b, c, d, a, M_offset_12, 20, T[31]);
+              a = HH(a, b, c, d, M_offset_5, 4, T[32]);
+              d = HH(d, a, b, c, M_offset_8, 11, T[33]);
+              c = HH(c, d, a, b, M_offset_11, 16, T[34]);
+              b = HH(b, c, d, a, M_offset_14, 23, T[35]);
+              a = HH(a, b, c, d, M_offset_1, 4, T[36]);
+              d = HH(d, a, b, c, M_offset_4, 11, T[37]);
+              c = HH(c, d, a, b, M_offset_7, 16, T[38]);
+              b = HH(b, c, d, a, M_offset_10, 23, T[39]);
+              a = HH(a, b, c, d, M_offset_13, 4, T[40]);
+              d = HH(d, a, b, c, M_offset_0, 11, T[41]);
+              c = HH(c, d, a, b, M_offset_3, 16, T[42]);
+              b = HH(b, c, d, a, M_offset_6, 23, T[43]);
+              a = HH(a, b, c, d, M_offset_9, 4, T[44]);
+              d = HH(d, a, b, c, M_offset_12, 11, T[45]);
+              c = HH(c, d, a, b, M_offset_15, 16, T[46]);
+              b = HH(b, c, d, a, M_offset_2, 23, T[47]);
+              a = II(a, b, c, d, M_offset_0, 6, T[48]);
+              d = II(d, a, b, c, M_offset_7, 10, T[49]);
+              c = II(c, d, a, b, M_offset_14, 15, T[50]);
+              b = II(b, c, d, a, M_offset_5, 21, T[51]);
+              a = II(a, b, c, d, M_offset_12, 6, T[52]);
+              d = II(d, a, b, c, M_offset_3, 10, T[53]);
+              c = II(c, d, a, b, M_offset_10, 15, T[54]);
+              b = II(b, c, d, a, M_offset_1, 21, T[55]);
+              a = II(a, b, c, d, M_offset_8, 6, T[56]);
+              d = II(d, a, b, c, M_offset_15, 10, T[57]);
+              c = II(c, d, a, b, M_offset_6, 15, T[58]);
+              b = II(b, c, d, a, M_offset_13, 21, T[59]);
+              a = II(a, b, c, d, M_offset_4, 6, T[60]);
+              d = II(d, a, b, c, M_offset_11, 10, T[61]);
+              c = II(c, d, a, b, M_offset_2, 15, T[62]);
+              b = II(b, c, d, a, M_offset_9, 21, T[63]);
+              H[0] = H[0] + a | 0;
+              H[1] = H[1] + b | 0;
+              H[2] = H[2] + c | 0;
+              H[3] = H[3] + d | 0;
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              var nBitsTotal = this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
+              var nBitsTotalH = Math2.floor(nBitsTotal / 4294967296);
+              var nBitsTotalL = nBitsTotal;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 15] = (nBitsTotalH << 8 | nBitsTotalH >>> 24) & 16711935 | (nBitsTotalH << 24 | nBitsTotalH >>> 8) & 4278255360;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = (nBitsTotalL << 8 | nBitsTotalL >>> 24) & 16711935 | (nBitsTotalL << 24 | nBitsTotalL >>> 8) & 4278255360;
+              data.sigBytes = (dataWords.length + 1) * 4;
+              this._process();
+              var hash2 = this._hash;
+              var H = hash2.words;
+              for (var i = 0; i < 4; i++) {
+                var H_i = H[i];
+                H[i] = (H_i << 8 | H_i >>> 24) & 16711935 | (H_i << 24 | H_i >>> 8) & 4278255360;
+              }
+              return hash2;
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              clone._hash = this._hash.clone();
+              return clone;
             }
-            return hash2;
-          },
-          clone: function() {
-            var clone = Hasher.clone.call(this);
-            clone._hash = this._hash.clone();
-            return clone;
+          });
+          function FF(a, b, c, d, x, s, t) {
+            var n = a + (b & c | ~b & d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
           }
-        });
-        function FF(a, b, c, d, x, s, t) {
-          var n = a + (b & c | ~b & d) + x + t;
-          return (n << s | n >>> 32 - s) + b;
-        }
-        function GG(a, b, c, d, x, s, t) {
-          var n = a + (b & d | c & ~d) + x + t;
-          return (n << s | n >>> 32 - s) + b;
-        }
-        function HH(a, b, c, d, x, s, t) {
-          var n = a + (b ^ c ^ d) + x + t;
-          return (n << s | n >>> 32 - s) + b;
-        }
-        function II(a, b, c, d, x, s, t) {
-          var n = a + (c ^ (b | ~d)) + x + t;
-          return (n << s | n >>> 32 - s) + b;
-        }
-        C.MD5 = Hasher._createHelper(MD52);
-        C.HmacMD5 = Hasher._createHmacHelper(MD52);
-      })(Math);
-      return CryptoJS.MD5;
-    });
-  })(md5);
-  var md5Exports = md5.exports;
+          function GG(a, b, c, d, x, s, t) {
+            var n = a + (b & d | c & ~d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function HH(a, b, c, d, x, s, t) {
+            var n = a + (b ^ c ^ d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function II(a, b, c, d, x, s, t) {
+            var n = a + (c ^ (b | ~d)) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          C.MD5 = Hasher._createHelper(MD52);
+          C.HmacMD5 = Hasher._createHmacHelper(MD52);
+        })(Math);
+        return CryptoJS.MD5;
+      });
+    })(md5$1);
+    return md5$1.exports;
+  }
+  var md5Exports = requireMd5();
   const MD5 = /* @__PURE__ */ getDefaultExportFromCjs(md5Exports);
   function hash$2(object) {
     return MD5(JSON.stringify(object));
@@ -3329,8 +3856,8 @@ var __async = (__this, __arguments, generator) => {
     const pathArray = path.split(".");
     const pathLength = pathArray.length;
     let activeValue = newOptions;
-    pathArray.forEach((pathItem, index2) => {
-      if (index2 === pathLength - 1) {
+    pathArray.forEach((pathItem, index) => {
+      if (index === pathLength - 1) {
         activeValue[pathItem] = newValue;
       } else {
         activeValue[pathItem] = __spreadValues({}, activeValue[pathItem]) || {};
@@ -3339,7 +3866,7 @@ var __async = (__this, __arguments, generator) => {
     });
     return newOptions;
   }
-  const generateUID = function(index2, lastDateInSeconds) {
+  const generateUID = /* @__PURE__ */ (function(index, lastDateInSeconds) {
     const startDate = /* @__PURE__ */ new Date("2019");
     return function() {
       const d = /* @__PURE__ */ new Date();
@@ -3348,13 +3875,13 @@ var __async = (__this, __arguments, generator) => {
         lastDateInSeconds = n;
       }
       if (lastDateInSeconds !== n) {
-        index2 = 0;
+        index = 0;
       }
       lastDateInSeconds = n;
-      index2 += 1;
-      return "uid" + n + index2;
+      index += 1;
+      return "uid" + n + index;
     };
-  }(0, false);
+  })(0, false);
   function getCssFromSelector(selectors, styleConfig, args = {}) {
     console.warn("This was deprecated in favor of zb.editor.utill.getCssFromSelector");
     return window.zb.editor.utill.getCssFromSelector(selectors, styleConfig, args);
@@ -3439,16 +3966,13 @@ var __async = (__this, __arguments, generator) => {
     updateOptionValue
   }, Symbol.toStringTag, { value: "Module" }));
   var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
-  const freeGlobal$1 = freeGlobal;
   var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-  var root = freeGlobal$1 || freeSelf || Function("return this")();
-  const root$1 = root;
-  var Symbol$1 = root$1.Symbol;
-  const Symbol$2 = Symbol$1;
+  var root = freeGlobal || freeSelf || Function("return this")();
+  var Symbol$1 = root.Symbol;
   var objectProto$f = Object.prototype;
   var hasOwnProperty$c = objectProto$f.hasOwnProperty;
   var nativeObjectToString$1 = objectProto$f.toString;
-  var symToStringTag$1 = Symbol$2 ? Symbol$2.toStringTag : void 0;
+  var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : void 0;
   function getRawTag(value) {
     var isOwn = hasOwnProperty$c.call(value, symToStringTag$1), tag = value[symToStringTag$1];
     try {
@@ -3472,7 +3996,7 @@ var __async = (__this, __arguments, generator) => {
     return nativeObjectToString.call(value);
   }
   var nullTag = "[object Null]", undefinedTag = "[object Undefined]";
-  var symToStringTag = Symbol$2 ? Symbol$2.toStringTag : void 0;
+  var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : void 0;
   function baseGetTag(value) {
     if (value == null) {
       return value === void 0 ? undefinedTag : nullTag;
@@ -3487,35 +4011,33 @@ var __async = (__this, __arguments, generator) => {
     return typeof value == "symbol" || isObjectLike(value) && baseGetTag(value) == symbolTag$3;
   }
   function arrayMap(array, iteratee) {
-    var index2 = -1, length = array == null ? 0 : array.length, result = Array(length);
-    while (++index2 < length) {
-      result[index2] = iteratee(array[index2], index2, array);
+    var index = -1, length = array == null ? 0 : array.length, result = Array(length);
+    while (++index < length) {
+      result[index] = iteratee(array[index], index, array);
     }
     return result;
   }
   var isArray = Array.isArray;
-  const isArray$1 = isArray;
-  var INFINITY$2 = 1 / 0;
-  var symbolProto$2 = Symbol$2 ? Symbol$2.prototype : void 0, symbolToString = symbolProto$2 ? symbolProto$2.toString : void 0;
+  var symbolProto$2 = Symbol$1 ? Symbol$1.prototype : void 0, symbolToString = symbolProto$2 ? symbolProto$2.toString : void 0;
   function baseToString(value) {
     if (typeof value == "string") {
       return value;
     }
-    if (isArray$1(value)) {
+    if (isArray(value)) {
       return arrayMap(value, baseToString) + "";
     }
     if (isSymbol(value)) {
       return symbolToString ? symbolToString.call(value) : "";
     }
     var result = value + "";
-    return result == "0" && 1 / value == -INFINITY$2 ? "-0" : result;
+    return result == "0" && 1 / value == -Infinity ? "-0" : result;
   }
   var reWhitespace = /\s/;
   function trimmedEndIndex(string) {
-    var index2 = string.length;
-    while (index2-- && reWhitespace.test(string.charAt(index2))) {
+    var index = string.length;
+    while (index-- && reWhitespace.test(string.charAt(index))) {
     }
-    return index2;
+    return index;
   }
   var reTrimStart = /^\s+/;
   function baseTrim(string) {
@@ -3559,12 +4081,11 @@ var __async = (__this, __arguments, generator) => {
     var tag = baseGetTag(value);
     return tag == funcTag$2 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
   }
-  var coreJsData = root$1["__core-js_shared__"];
-  const coreJsData$1 = coreJsData;
-  var maskSrcKey = function() {
-    var uid = /[^.]+$/.exec(coreJsData$1 && coreJsData$1.keys && coreJsData$1.keys.IE_PROTO || "");
+  var coreJsData = root["__core-js_shared__"];
+  var maskSrcKey = (function() {
+    var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
     return uid ? "Symbol(src)_1." + uid : "";
-  }();
+  })();
   function isMasked(func) {
     return !!maskSrcKey && maskSrcKey in func;
   }
@@ -3605,10 +4126,9 @@ var __async = (__this, __arguments, generator) => {
     var value = getValue(object, key);
     return baseIsNative(value) ? value : void 0;
   }
-  var WeakMap = getNative(root$1, "WeakMap");
-  const WeakMap$1 = WeakMap;
+  var WeakMap = getNative(root, "WeakMap");
   var objectCreate = Object.create;
-  var baseCreate = function() {
+  var baseCreate = /* @__PURE__ */ (function() {
     function object() {
     }
     return function(proto) {
@@ -3623,8 +4143,7 @@ var __async = (__this, __arguments, generator) => {
       object.prototype = void 0;
       return result;
     };
-  }();
-  const baseCreate$1 = baseCreate;
+  })();
   function apply(func, thisArg, args) {
     switch (args.length) {
       case 0:
@@ -3641,10 +4160,10 @@ var __async = (__this, __arguments, generator) => {
   function noop() {
   }
   function copyArray(source, array) {
-    var index2 = -1, length = source.length;
+    var index = -1, length = source.length;
     array || (array = Array(length));
-    while (++index2 < length) {
-      array[index2] = source[index2];
+    while (++index < length) {
+      array[index] = source[index];
     }
     return array;
   }
@@ -3670,40 +4189,37 @@ var __async = (__this, __arguments, generator) => {
       return value;
     };
   }
-  var defineProperty = function() {
+  var defineProperty = (function() {
     try {
       var func = getNative(Object, "defineProperty");
       func({}, "", {});
       return func;
     } catch (e) {
     }
-  }();
-  const defineProperty$1 = defineProperty;
-  var baseSetToString = !defineProperty$1 ? identity : function(func, string) {
-    return defineProperty$1(func, "toString", {
+  })();
+  var baseSetToString = !defineProperty ? identity : function(func, string) {
+    return defineProperty(func, "toString", {
       "configurable": true,
       "enumerable": false,
       "value": constant(string),
       "writable": true
     });
   };
-  const baseSetToString$1 = baseSetToString;
-  var setToString = shortOut(baseSetToString$1);
-  const setToString$1 = setToString;
+  var setToString = shortOut(baseSetToString);
   function arrayEach(array, iteratee) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    while (++index2 < length) {
-      if (iteratee(array[index2], index2, array) === false) {
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      if (iteratee(array[index], index, array) === false) {
         break;
       }
     }
     return array;
   }
   function baseFindIndex(array, predicate, fromIndex, fromRight) {
-    var length = array.length, index2 = fromIndex + (fromRight ? 1 : -1);
-    while (fromRight ? index2-- : ++index2 < length) {
-      if (predicate(array[index2], index2, array)) {
-        return index2;
+    var length = array.length, index = fromIndex + -1;
+    while (++index < length) {
+      if (predicate(array[index], index, array)) {
+        return index;
       }
     }
     return -1;
@@ -3712,10 +4228,10 @@ var __async = (__this, __arguments, generator) => {
     return value !== value;
   }
   function strictIndexOf(array, value, fromIndex) {
-    var index2 = fromIndex - 1, length = array.length;
-    while (++index2 < length) {
-      if (array[index2] === value) {
-        return index2;
+    var index = fromIndex - 1, length = array.length;
+    while (++index < length) {
+      if (array[index] === value) {
+        return index;
       }
     }
     return -1;
@@ -3735,8 +4251,8 @@ var __async = (__this, __arguments, generator) => {
     return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
   }
   function baseAssignValue(object, key, value) {
-    if (key == "__proto__" && defineProperty$1) {
-      defineProperty$1(object, key, {
+    if (key == "__proto__" && defineProperty) {
+      defineProperty(object, key, {
         "configurable": true,
         "enumerable": true,
         "value": value,
@@ -3760,10 +4276,10 @@ var __async = (__this, __arguments, generator) => {
   function copyObject(source, props, object, customizer) {
     var isNew = !object;
     object || (object = {});
-    var index2 = -1, length = props.length;
-    while (++index2 < length) {
-      var key = props[index2];
-      var newValue = customizer ? customizer(object[key], source[key], key, object, source) : void 0;
+    var index = -1, length = props.length;
+    while (++index < length) {
+      var key = props[index];
+      var newValue = void 0;
       if (newValue === void 0) {
         newValue = source[key];
       }
@@ -3779,21 +4295,21 @@ var __async = (__this, __arguments, generator) => {
   function overRest(func, start2, transform) {
     start2 = nativeMax$1(start2 === void 0 ? func.length - 1 : start2, 0);
     return function() {
-      var args = arguments, index2 = -1, length = nativeMax$1(args.length - start2, 0), array = Array(length);
-      while (++index2 < length) {
-        array[index2] = args[start2 + index2];
+      var args = arguments, index = -1, length = nativeMax$1(args.length - start2, 0), array = Array(length);
+      while (++index < length) {
+        array[index] = args[start2 + index];
       }
-      index2 = -1;
+      index = -1;
       var otherArgs = Array(start2 + 1);
-      while (++index2 < start2) {
-        otherArgs[index2] = args[index2];
+      while (++index < start2) {
+        otherArgs[index] = args[index];
       }
       otherArgs[start2] = transform(array);
       return apply(func, this, otherArgs);
     };
   }
   function baseRest(func, start2) {
-    return setToString$1(overRest(func, start2, identity), func + "");
+    return setToString(overRest(func, start2, identity), func + "");
   }
   var MAX_SAFE_INTEGER = 9007199254740991;
   function isLength(value) {
@@ -3802,29 +4318,29 @@ var __async = (__this, __arguments, generator) => {
   function isArrayLike(value) {
     return value != null && isLength(value.length) && !isFunction(value);
   }
-  function isIterateeCall(value, index2, object) {
+  function isIterateeCall(value, index, object) {
     if (!isObject(object)) {
       return false;
     }
-    var type = typeof index2;
-    if (type == "number" ? isArrayLike(object) && isIndex(index2, object.length) : type == "string" && index2 in object) {
-      return eq(object[index2], value);
+    var type = typeof index;
+    if (type == "number" ? isArrayLike(object) && isIndex(index, object.length) : type == "string" && index in object) {
+      return eq(object[index], value);
     }
     return false;
   }
   function createAssigner(assigner) {
     return baseRest(function(object, sources) {
-      var index2 = -1, length = sources.length, customizer = length > 1 ? sources[length - 1] : void 0, guard = length > 2 ? sources[2] : void 0;
+      var index = -1, length = sources.length, customizer = length > 1 ? sources[length - 1] : void 0, guard = length > 2 ? sources[2] : void 0;
       customizer = assigner.length > 3 && typeof customizer == "function" ? (length--, customizer) : void 0;
       if (guard && isIterateeCall(sources[0], sources[1], guard)) {
         customizer = length < 3 ? void 0 : customizer;
         length = 1;
       }
       object = Object(object);
-      while (++index2 < length) {
-        var source = sources[index2];
+      while (++index < length) {
+        var source = sources[index];
         if (source) {
-          assigner(object, source, index2, customizer);
+          assigner(object, source, index, customizer);
         }
       }
       return object;
@@ -3836,9 +4352,9 @@ var __async = (__this, __arguments, generator) => {
     return value === proto;
   }
   function baseTimes(n, iteratee) {
-    var index2 = -1, result = Array(n);
-    while (++index2 < n) {
-      result[index2] = iteratee(index2);
+    var index = -1, result = Array(n);
+    while (++index < n) {
+      result[index] = iteratee(index);
     }
     return result;
   }
@@ -3849,22 +4365,20 @@ var __async = (__this, __arguments, generator) => {
   var objectProto$a = Object.prototype;
   var hasOwnProperty$9 = objectProto$a.hasOwnProperty;
   var propertyIsEnumerable$1 = objectProto$a.propertyIsEnumerable;
-  var isArguments = baseIsArguments(function() {
+  var isArguments = baseIsArguments(/* @__PURE__ */ (function() {
     return arguments;
-  }()) ? baseIsArguments : function(value) {
+  })()) ? baseIsArguments : function(value) {
     return isObjectLike(value) && hasOwnProperty$9.call(value, "callee") && !propertyIsEnumerable$1.call(value, "callee");
   };
-  const isArguments$1 = isArguments;
   function stubFalse() {
     return false;
   }
   var freeExports$2 = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule$2 = freeExports$2 && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports$2 = freeModule$2 && freeModule$2.exports === freeExports$2;
-  var Buffer$2 = moduleExports$2 ? root$1.Buffer : void 0;
+  var Buffer$2 = moduleExports$2 ? root.Buffer : void 0;
   var nativeIsBuffer = Buffer$2 ? Buffer$2.isBuffer : void 0;
   var isBuffer = nativeIsBuffer || stubFalse;
-  const isBuffer$1 = isBuffer;
   var argsTag$2 = "[object Arguments]", arrayTag$2 = "[object Array]", boolTag$3 = "[object Boolean]", dateTag$3 = "[object Date]", errorTag$2 = "[object Error]", funcTag$1 = "[object Function]", mapTag$5 = "[object Map]", numberTag$3 = "[object Number]", objectTag$4 = "[object Object]", regexpTag$3 = "[object RegExp]", setTag$5 = "[object Set]", stringTag$3 = "[object String]", weakMapTag$2 = "[object WeakMap]";
   var arrayBufferTag$3 = "[object ArrayBuffer]", dataViewTag$4 = "[object DataView]", float32Tag$2 = "[object Float32Array]", float64Tag$2 = "[object Float64Array]", int8Tag$2 = "[object Int8Array]", int16Tag$2 = "[object Int16Array]", int32Tag$2 = "[object Int32Array]", uint8Tag$2 = "[object Uint8Array]", uint8ClampedTag$2 = "[object Uint8ClampedArray]", uint16Tag$2 = "[object Uint16Array]", uint32Tag$2 = "[object Uint32Array]";
   var typedArrayTags = {};
@@ -3881,8 +4395,8 @@ var __async = (__this, __arguments, generator) => {
   var freeExports$1 = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule$1 = freeExports$1 && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports$1 = freeModule$1 && freeModule$1.exports === freeExports$1;
-  var freeProcess = moduleExports$1 && freeGlobal$1.process;
-  var nodeUtil = function() {
+  var freeProcess = moduleExports$1 && freeGlobal.process;
+  var nodeUtil = (function() {
     try {
       var types = freeModule$1 && freeModule$1.require && freeModule$1.require("util").types;
       if (types) {
@@ -3891,15 +4405,13 @@ var __async = (__this, __arguments, generator) => {
       return freeProcess && freeProcess.binding && freeProcess.binding("util");
     } catch (e) {
     }
-  }();
-  const nodeUtil$1 = nodeUtil;
-  var nodeIsTypedArray = nodeUtil$1 && nodeUtil$1.isTypedArray;
+  })();
+  var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
   var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
-  const isTypedArray$1 = isTypedArray;
   var objectProto$9 = Object.prototype;
   var hasOwnProperty$8 = objectProto$9.hasOwnProperty;
   function arrayLikeKeys(value, inherited) {
-    var isArr = isArray$1(value), isArg = !isArr && isArguments$1(value), isBuff = !isArr && !isArg && isBuffer$1(value), isType = !isArr && !isArg && !isBuff && isTypedArray$1(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
+    var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer(value), isType = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
     for (var key in value) {
       if ((inherited || hasOwnProperty$8.call(value, key)) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
       (key == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
@@ -3917,12 +4429,11 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var nativeKeys = overArg(Object.keys, Object);
-  const nativeKeys$1 = nativeKeys;
   var objectProto$8 = Object.prototype;
   var hasOwnProperty$7 = objectProto$8.hasOwnProperty;
   function baseKeys(object) {
     if (!isPrototype(object)) {
-      return nativeKeys$1(object);
+      return nativeKeys(object);
     }
     var result = [];
     for (var key in Object(object)) {
@@ -3963,7 +4474,7 @@ var __async = (__this, __arguments, generator) => {
   }
   var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/, reIsPlainProp = /^\w*$/;
   function isKey(value, object) {
-    if (isArray$1(value)) {
+    if (isArray(value)) {
       return false;
     }
     var type = typeof value;
@@ -3973,9 +4484,8 @@ var __async = (__this, __arguments, generator) => {
     return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
   }
   var nativeCreate = getNative(Object, "create");
-  const nativeCreate$1 = nativeCreate;
   function hashClear() {
-    this.__data__ = nativeCreate$1 ? nativeCreate$1(null) : {};
+    this.__data__ = nativeCreate ? nativeCreate(null) : {};
     this.size = 0;
   }
   function hashDelete(key) {
@@ -3988,7 +4498,7 @@ var __async = (__this, __arguments, generator) => {
   var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
   function hashGet(key) {
     var data = this.__data__;
-    if (nativeCreate$1) {
+    if (nativeCreate) {
       var result = data[key];
       return result === HASH_UNDEFINED$2 ? void 0 : result;
     }
@@ -3998,20 +4508,20 @@ var __async = (__this, __arguments, generator) => {
   var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
   function hashHas(key) {
     var data = this.__data__;
-    return nativeCreate$1 ? data[key] !== void 0 : hasOwnProperty$4.call(data, key);
+    return nativeCreate ? data[key] !== void 0 : hasOwnProperty$4.call(data, key);
   }
   var HASH_UNDEFINED$1 = "__lodash_hash_undefined__";
   function hashSet(key, value) {
     var data = this.__data__;
     this.size += this.has(key) ? 0 : 1;
-    data[key] = nativeCreate$1 && value === void 0 ? HASH_UNDEFINED$1 : value;
+    data[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED$1 : value;
     return this;
   }
   function Hash(entries) {
-    var index2 = -1, length = entries == null ? 0 : entries.length;
+    var index = -1, length = entries == null ? 0 : entries.length;
     this.clear();
-    while (++index2 < length) {
-      var entry = entries[index2];
+    while (++index < length) {
+      var entry = entries[index];
       this.set(entry[0], entry[1]);
     }
   }
@@ -4036,41 +4546,41 @@ var __async = (__this, __arguments, generator) => {
   var arrayProto = Array.prototype;
   var splice = arrayProto.splice;
   function listCacheDelete(key) {
-    var data = this.__data__, index2 = assocIndexOf(data, key);
-    if (index2 < 0) {
+    var data = this.__data__, index = assocIndexOf(data, key);
+    if (index < 0) {
       return false;
     }
     var lastIndex = data.length - 1;
-    if (index2 == lastIndex) {
+    if (index == lastIndex) {
       data.pop();
     } else {
-      splice.call(data, index2, 1);
+      splice.call(data, index, 1);
     }
     --this.size;
     return true;
   }
   function listCacheGet(key) {
-    var data = this.__data__, index2 = assocIndexOf(data, key);
-    return index2 < 0 ? void 0 : data[index2][1];
+    var data = this.__data__, index = assocIndexOf(data, key);
+    return index < 0 ? void 0 : data[index][1];
   }
   function listCacheHas(key) {
     return assocIndexOf(this.__data__, key) > -1;
   }
   function listCacheSet(key, value) {
-    var data = this.__data__, index2 = assocIndexOf(data, key);
-    if (index2 < 0) {
+    var data = this.__data__, index = assocIndexOf(data, key);
+    if (index < 0) {
       ++this.size;
       data.push([key, value]);
     } else {
-      data[index2][1] = value;
+      data[index][1] = value;
     }
     return this;
   }
   function ListCache(entries) {
-    var index2 = -1, length = entries == null ? 0 : entries.length;
+    var index = -1, length = entries == null ? 0 : entries.length;
     this.clear();
-    while (++index2 < length) {
-      var entry = entries[index2];
+    while (++index < length) {
+      var entry = entries[index];
       this.set(entry[0], entry[1]);
     }
   }
@@ -4079,13 +4589,12 @@ var __async = (__this, __arguments, generator) => {
   ListCache.prototype.get = listCacheGet;
   ListCache.prototype.has = listCacheHas;
   ListCache.prototype.set = listCacheSet;
-  var Map$1 = getNative(root$1, "Map");
-  const Map$2 = Map$1;
+  var Map$1 = getNative(root, "Map");
   function mapCacheClear() {
     this.size = 0;
     this.__data__ = {
       "hash": new Hash(),
-      "map": new (Map$2 || ListCache)(),
+      "map": new (Map$1 || ListCache)(),
       "string": new Hash()
     };
   }
@@ -4115,10 +4624,10 @@ var __async = (__this, __arguments, generator) => {
     return this;
   }
   function MapCache(entries) {
-    var index2 = -1, length = entries == null ? 0 : entries.length;
+    var index = -1, length = entries == null ? 0 : entries.length;
     this.clear();
-    while (++index2 < length) {
-      var entry = entries[index2];
+    while (++index < length) {
+      var entry = entries[index];
       this.set(entry[0], entry[1]);
     }
   }
@@ -4168,57 +4677,53 @@ var __async = (__this, __arguments, generator) => {
     });
     return result;
   });
-  const stringToPath$1 = stringToPath;
   function toString(value) {
     return value == null ? "" : baseToString(value);
   }
   function castPath(value, object) {
-    if (isArray$1(value)) {
+    if (isArray(value)) {
       return value;
     }
-    return isKey(value, object) ? [value] : stringToPath$1(toString(value));
+    return isKey(value, object) ? [value] : stringToPath(toString(value));
   }
-  var INFINITY$1 = 1 / 0;
   function toKey(value) {
     if (typeof value == "string" || isSymbol(value)) {
       return value;
     }
     var result = value + "";
-    return result == "0" && 1 / value == -INFINITY$1 ? "-0" : result;
+    return result == "0" && 1 / value == -Infinity ? "-0" : result;
   }
   function baseGet(object, path) {
     path = castPath(path, object);
-    var index2 = 0, length = path.length;
-    while (object != null && index2 < length) {
-      object = object[toKey(path[index2++])];
+    var index = 0, length = path.length;
+    while (object != null && index < length) {
+      object = object[toKey(path[index++])];
     }
-    return index2 && index2 == length ? object : void 0;
+    return index && index == length ? object : void 0;
   }
-  function get(object, path, defaultValue) {
+  function get$1(object, path, defaultValue) {
     var result = object == null ? void 0 : baseGet(object, path);
     return result === void 0 ? defaultValue : result;
   }
   function arrayPush(array, values) {
-    var index2 = -1, length = values.length, offset2 = array.length;
-    while (++index2 < length) {
-      array[offset2 + index2] = values[index2];
+    var index = -1, length = values.length, offset2 = array.length;
+    while (++index < length) {
+      array[offset2 + index] = values[index];
     }
     return array;
   }
-  var spreadableSymbol = Symbol$2 ? Symbol$2.isConcatSpreadable : void 0;
+  var spreadableSymbol = Symbol$1 ? Symbol$1.isConcatSpreadable : void 0;
   function isFlattenable(value) {
-    return isArray$1(value) || isArguments$1(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
+    return isArray(value) || isArguments(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
   }
   function baseFlatten(array, depth, predicate, isStrict, result) {
-    var index2 = -1, length = array.length;
+    var index = -1, length = array.length;
     predicate || (predicate = isFlattenable);
     result || (result = []);
-    while (++index2 < length) {
-      var value = array[index2];
-      if (depth > 0 && predicate(value)) {
-        if (depth > 1) {
-          baseFlatten(value, depth - 1, predicate, isStrict, result);
-        } else {
+    while (++index < length) {
+      var value = array[index];
+      if (predicate(value)) {
+        {
           arrayPush(result, value);
         }
       } else if (!isStrict) {
@@ -4229,13 +4734,12 @@ var __async = (__this, __arguments, generator) => {
   }
   function flatten(array) {
     var length = array == null ? 0 : array.length;
-    return length ? baseFlatten(array, 1) : [];
+    return length ? baseFlatten(array) : [];
   }
   function flatRest(func) {
-    return setToString$1(overRest(func, void 0, flatten), func + "");
+    return setToString(overRest(func, void 0, flatten), func + "");
   }
   var getPrototype = overArg(Object.getPrototypeOf, Object);
-  const getPrototype$1 = getPrototype;
   var objectTag$3 = "[object Object]";
   var funcProto = Function.prototype, objectProto$4 = Object.prototype;
   var funcToString = funcProto.toString;
@@ -4245,7 +4749,7 @@ var __async = (__this, __arguments, generator) => {
     if (!isObjectLike(value) || baseGetTag(value) != objectTag$3) {
       return false;
     }
-    var proto = getPrototype$1(value);
+    var proto = getPrototype(value);
     if (proto === null) {
       return true;
     }
@@ -4253,7 +4757,7 @@ var __async = (__this, __arguments, generator) => {
     return typeof Ctor == "function" && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
   }
   function baseSlice(array, start2, end2) {
-    var index2 = -1, length = array.length;
+    var index = -1, length = array.length;
     if (start2 < 0) {
       start2 = -start2 > length ? 0 : length + start2;
     }
@@ -4264,8 +4768,8 @@ var __async = (__this, __arguments, generator) => {
     length = start2 > end2 ? 0 : end2 - start2 >>> 0;
     start2 >>>= 0;
     var result = Array(length);
-    while (++index2 < length) {
-      result[index2] = array[index2 + start2];
+    while (++index < length) {
+      result[index] = array[index + start2];
     }
     return result;
   }
@@ -4303,14 +4807,10 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var upperFirst = createCaseFirst("toUpperCase");
-  const upperFirst$1 = upperFirst;
   function arrayReduce(array, iteratee, accumulator, initAccum) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    if (initAccum && length) {
-      accumulator = array[++index2];
-    }
-    while (++index2 < length) {
-      accumulator = iteratee(accumulator, array[index2], index2, array);
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      accumulator = iteratee(accumulator, array[index], index, array);
     }
     return accumulator;
   }
@@ -4514,14 +5014,13 @@ var __async = (__this, __arguments, generator) => {
     "ſ": "s"
   };
   var deburrLetter = basePropertyOf(deburredLetters);
-  const deburrLetter$1 = deburrLetter;
   var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
   var rsComboMarksRange$1 = "\\u0300-\\u036f", reComboHalfMarksRange$1 = "\\ufe20-\\ufe2f", rsComboSymbolsRange$1 = "\\u20d0-\\u20ff", rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1;
   var rsCombo$1 = "[" + rsComboRange$1 + "]";
   var reComboMark = RegExp(rsCombo$1, "g");
   function deburr(string) {
     string = toString(string);
-    return string && string.replace(reLatin, deburrLetter$1).replace(reComboMark, "");
+    return string && string.replace(reLatin, deburrLetter).replace(reComboMark, "");
   }
   var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
   function asciiWords(string) {
@@ -4549,7 +5048,7 @@ var __async = (__this, __arguments, generator) => {
   }
   function words(string, pattern, guard) {
     string = toString(string);
-    pattern = guard ? void 0 : pattern;
+    pattern = pattern;
     if (pattern === void 0) {
       return hasUnicodeWord(string) ? unicodeWords(string) : asciiWords(string);
     }
@@ -4608,7 +5107,7 @@ var __async = (__this, __arguments, generator) => {
     var data = this.__data__;
     if (data instanceof ListCache) {
       var pairs = data.__data__;
-      if (!Map$2 || pairs.length < LARGE_ARRAY_SIZE$1 - 1) {
+      if (!Map$1 || pairs.length < LARGE_ARRAY_SIZE$1 - 1) {
         pairs.push([key, value]);
         this.size = ++data.size;
         return this;
@@ -4637,7 +5136,7 @@ var __async = (__this, __arguments, generator) => {
   var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule = freeExports && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports = freeModule && freeModule.exports === freeExports;
-  var Buffer$1 = moduleExports ? root$1.Buffer : void 0, allocUnsafe = Buffer$1 ? Buffer$1.allocUnsafe : void 0;
+  var Buffer$1 = moduleExports ? root.Buffer : void 0, allocUnsafe = Buffer$1 ? Buffer$1.allocUnsafe : void 0;
   function cloneBuffer(buffer, isDeep) {
     if (isDeep) {
       return buffer.slice();
@@ -4647,10 +5146,10 @@ var __async = (__this, __arguments, generator) => {
     return result;
   }
   function arrayFilter(array, predicate) {
-    var index2 = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
-    while (++index2 < length) {
-      var value = array[index2];
-      if (predicate(value, index2, array)) {
+    var index = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
+    while (++index < length) {
+      var value = array[index];
+      if (predicate(value, index, array)) {
         result[resIndex++] = value;
       }
     }
@@ -4671,44 +5170,39 @@ var __async = (__this, __arguments, generator) => {
       return propertyIsEnumerable.call(object, symbol);
     });
   };
-  const getSymbols$1 = getSymbols;
   function copySymbols(source, object) {
-    return copyObject(source, getSymbols$1(source), object);
+    return copyObject(source, getSymbols(source), object);
   }
   var nativeGetSymbols = Object.getOwnPropertySymbols;
   var getSymbolsIn = !nativeGetSymbols ? stubArray : function(object) {
     var result = [];
     while (object) {
-      arrayPush(result, getSymbols$1(object));
-      object = getPrototype$1(object);
+      arrayPush(result, getSymbols(object));
+      object = getPrototype(object);
     }
     return result;
   };
-  const getSymbolsIn$1 = getSymbolsIn;
   function copySymbolsIn(source, object) {
-    return copyObject(source, getSymbolsIn$1(source), object);
+    return copyObject(source, getSymbolsIn(source), object);
   }
   function baseGetAllKeys(object, keysFunc, symbolsFunc) {
     var result = keysFunc(object);
-    return isArray$1(object) ? result : arrayPush(result, symbolsFunc(object));
+    return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
   }
   function getAllKeys(object) {
-    return baseGetAllKeys(object, keys, getSymbols$1);
+    return baseGetAllKeys(object, keys, getSymbols);
   }
   function getAllKeysIn(object) {
-    return baseGetAllKeys(object, keysIn, getSymbolsIn$1);
+    return baseGetAllKeys(object, keysIn, getSymbolsIn);
   }
-  var DataView = getNative(root$1, "DataView");
-  const DataView$1 = DataView;
-  var Promise$1 = getNative(root$1, "Promise");
-  const Promise$2 = Promise$1;
-  var Set$1 = getNative(root$1, "Set");
-  const Set$2 = Set$1;
+  var DataView = getNative(root, "DataView");
+  var Promise$1 = getNative(root, "Promise");
+  var Set$1 = getNative(root, "Set");
   var mapTag$4 = "[object Map]", objectTag$2 = "[object Object]", promiseTag = "[object Promise]", setTag$4 = "[object Set]", weakMapTag$1 = "[object WeakMap]";
   var dataViewTag$3 = "[object DataView]";
-  var dataViewCtorString = toSource(DataView$1), mapCtorString = toSource(Map$2), promiseCtorString = toSource(Promise$2), setCtorString = toSource(Set$2), weakMapCtorString = toSource(WeakMap$1);
+  var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map$1), promiseCtorString = toSource(Promise$1), setCtorString = toSource(Set$1), weakMapCtorString = toSource(WeakMap);
   var getTag = baseGetTag;
-  if (DataView$1 && getTag(new DataView$1(new ArrayBuffer(1))) != dataViewTag$3 || Map$2 && getTag(new Map$2()) != mapTag$4 || Promise$2 && getTag(Promise$2.resolve()) != promiseTag || Set$2 && getTag(new Set$2()) != setTag$4 || WeakMap$1 && getTag(new WeakMap$1()) != weakMapTag$1) {
+  if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag$3 || Map$1 && getTag(new Map$1()) != mapTag$4 || Promise$1 && getTag(Promise$1.resolve()) != promiseTag || Set$1 && getTag(new Set$1()) != setTag$4 || WeakMap && getTag(new WeakMap()) != weakMapTag$1) {
     getTag = function(value) {
       var result = baseGetTag(value), Ctor = result == objectTag$2 ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
       if (ctorString) {
@@ -4728,7 +5222,6 @@ var __async = (__this, __arguments, generator) => {
       return result;
     };
   }
-  const getTag$1 = getTag;
   var objectProto$2 = Object.prototype;
   var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
   function initCloneArray(array) {
@@ -4739,11 +5232,10 @@ var __async = (__this, __arguments, generator) => {
     }
     return result;
   }
-  var Uint8Array$1 = root$1.Uint8Array;
-  const Uint8Array$2 = Uint8Array$1;
+  var Uint8Array$1 = root.Uint8Array;
   function cloneArrayBuffer(arrayBuffer) {
     var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
-    new Uint8Array$2(result).set(new Uint8Array$2(arrayBuffer));
+    new Uint8Array$1(result).set(new Uint8Array$1(arrayBuffer));
     return result;
   }
   function cloneDataView(dataView, isDeep) {
@@ -4756,7 +5248,7 @@ var __async = (__this, __arguments, generator) => {
     result.lastIndex = regexp.lastIndex;
     return result;
   }
-  var symbolProto$1 = Symbol$2 ? Symbol$2.prototype : void 0, symbolValueOf$1 = symbolProto$1 ? symbolProto$1.valueOf : void 0;
+  var symbolProto$1 = Symbol$1 ? Symbol$1.prototype : void 0, symbolValueOf$1 = symbolProto$1 ? symbolProto$1.valueOf : void 0;
   function cloneSymbol(symbol) {
     return symbolValueOf$1 ? Object(symbolValueOf$1.call(symbol)) : {};
   }
@@ -4800,22 +5292,20 @@ var __async = (__this, __arguments, generator) => {
     }
   }
   function initCloneObject(object) {
-    return typeof object.constructor == "function" && !isPrototype(object) ? baseCreate$1(getPrototype$1(object)) : {};
+    return typeof object.constructor == "function" && !isPrototype(object) ? baseCreate(getPrototype(object)) : {};
   }
   var mapTag$2 = "[object Map]";
   function baseIsMap(value) {
-    return isObjectLike(value) && getTag$1(value) == mapTag$2;
+    return isObjectLike(value) && getTag(value) == mapTag$2;
   }
-  var nodeIsMap = nodeUtil$1 && nodeUtil$1.isMap;
+  var nodeIsMap = nodeUtil && nodeUtil.isMap;
   var isMap = nodeIsMap ? baseUnary(nodeIsMap) : baseIsMap;
-  const isMap$1 = isMap;
   var setTag$2 = "[object Set]";
   function baseIsSet(value) {
-    return isObjectLike(value) && getTag$1(value) == setTag$2;
+    return isObjectLike(value) && getTag(value) == setTag$2;
   }
-  var nodeIsSet = nodeUtil$1 && nodeUtil$1.isSet;
+  var nodeIsSet = nodeUtil && nodeUtil.isSet;
   var isSet = nodeIsSet ? baseUnary(nodeIsSet) : baseIsSet;
-  const isSet$1 = isSet;
   var CLONE_DEEP_FLAG$2 = 1, CLONE_FLAT_FLAG$1 = 2, CLONE_SYMBOLS_FLAG$2 = 4;
   var argsTag$1 = "[object Arguments]", arrayTag$1 = "[object Array]", boolTag$1 = "[object Boolean]", dateTag$1 = "[object Date]", errorTag$1 = "[object Error]", funcTag = "[object Function]", genTag = "[object GeneratorFunction]", mapTag$1 = "[object Map]", numberTag$1 = "[object Number]", objectTag$1 = "[object Object]", regexpTag$1 = "[object RegExp]", setTag$1 = "[object Set]", stringTag$1 = "[object String]", symbolTag$1 = "[object Symbol]", weakMapTag = "[object WeakMap]";
   var arrayBufferTag$1 = "[object ArrayBuffer]", dataViewTag$1 = "[object DataView]", float32Tag = "[object Float32Array]", float64Tag = "[object Float64Array]", int8Tag = "[object Int8Array]", int16Tag = "[object Int16Array]", int32Tag = "[object Int32Array]", uint8Tag = "[object Uint8Array]", uint8ClampedTag = "[object Uint8ClampedArray]", uint16Tag = "[object Uint16Array]", uint32Tag = "[object Uint32Array]";
@@ -4833,15 +5323,15 @@ var __async = (__this, __arguments, generator) => {
     if (!isObject(value)) {
       return value;
     }
-    var isArr = isArray$1(value);
+    var isArr = isArray(value);
     if (isArr) {
       result = initCloneArray(value);
       if (!isDeep) {
         return copyArray(value, result);
       }
     } else {
-      var tag = getTag$1(value), isFunc = tag == funcTag || tag == genTag;
-      if (isBuffer$1(value)) {
+      var tag = getTag(value), isFunc = tag == funcTag || tag == genTag;
+      if (isBuffer(value)) {
         return cloneBuffer(value, isDeep);
       }
       if (tag == objectTag$1 || tag == argsTag$1 || isFunc && !object) {
@@ -4862,11 +5352,11 @@ var __async = (__this, __arguments, generator) => {
       return stacked;
     }
     stack.set(value, result);
-    if (isSet$1(value)) {
+    if (isSet(value)) {
       value.forEach(function(subValue) {
         result.add(baseClone(subValue, bitmask, customizer, subValue, value, stack));
       });
-    } else if (isMap$1(value)) {
+    } else if (isMap(value)) {
       value.forEach(function(subValue, key2) {
         result.set(key2, baseClone(subValue, bitmask, customizer, key2, value, stack));
       });
@@ -4895,18 +5385,18 @@ var __async = (__this, __arguments, generator) => {
     return this.__data__.has(value);
   }
   function SetCache(values) {
-    var index2 = -1, length = values == null ? 0 : values.length;
+    var index = -1, length = values == null ? 0 : values.length;
     this.__data__ = new MapCache();
-    while (++index2 < length) {
-      this.add(values[index2]);
+    while (++index < length) {
+      this.add(values[index]);
     }
   }
   SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
   SetCache.prototype.has = setCacheHas;
   function arraySome(array, predicate) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    while (++index2 < length) {
-      if (predicate(array[index2], index2, array)) {
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      if (predicate(array[index], index, array)) {
         return true;
       }
     }
@@ -4926,13 +5416,13 @@ var __async = (__this, __arguments, generator) => {
     if (arrStacked && othStacked) {
       return arrStacked == other && othStacked == array;
     }
-    var index2 = -1, result = true, seen = bitmask & COMPARE_UNORDERED_FLAG$3 ? new SetCache() : void 0;
+    var index = -1, result = true, seen = bitmask & COMPARE_UNORDERED_FLAG$3 ? new SetCache() : void 0;
     stack.set(array, other);
     stack.set(other, array);
-    while (++index2 < arrLength) {
-      var arrValue = array[index2], othValue = other[index2];
+    while (++index < arrLength) {
+      var arrValue = array[index], othValue = other[index];
       if (customizer) {
-        var compared = isPartial ? customizer(othValue, arrValue, index2, other, array, stack) : customizer(arrValue, othValue, index2, array, other, stack);
+        var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
       }
       if (compared !== void 0) {
         if (compared) {
@@ -4960,23 +5450,23 @@ var __async = (__this, __arguments, generator) => {
     return result;
   }
   function mapToArray(map) {
-    var index2 = -1, result = Array(map.size);
+    var index = -1, result = Array(map.size);
     map.forEach(function(value, key) {
-      result[++index2] = [key, value];
+      result[++index] = [key, value];
     });
     return result;
   }
   function setToArray(set2) {
-    var index2 = -1, result = Array(set2.size);
+    var index = -1, result = Array(set2.size);
     set2.forEach(function(value) {
-      result[++index2] = value;
+      result[++index] = value;
     });
     return result;
   }
   var COMPARE_PARTIAL_FLAG$4 = 1, COMPARE_UNORDERED_FLAG$2 = 2;
   var boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", mapTag = "[object Map]", numberTag = "[object Number]", regexpTag = "[object RegExp]", setTag = "[object Set]", stringTag = "[object String]", symbolTag = "[object Symbol]";
   var arrayBufferTag = "[object ArrayBuffer]", dataViewTag = "[object DataView]";
-  var symbolProto = Symbol$2 ? Symbol$2.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
+  var symbolProto = Symbol$1 ? Symbol$1.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
   function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
     switch (tag) {
       case dataViewTag:
@@ -4986,7 +5476,7 @@ var __async = (__this, __arguments, generator) => {
         object = object.buffer;
         other = other.buffer;
       case arrayBufferTag:
-        if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array$2(object), new Uint8Array$2(other))) {
+        if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array$1(object), new Uint8Array$1(other))) {
           return false;
         }
         return true;
@@ -5031,9 +5521,9 @@ var __async = (__this, __arguments, generator) => {
     if (objLength != othLength && !isPartial) {
       return false;
     }
-    var index2 = objLength;
-    while (index2--) {
-      var key = objProps[index2];
+    var index = objLength;
+    while (index--) {
+      var key = objProps[index];
       if (!(isPartial ? key in other : hasOwnProperty$1.call(other, key))) {
         return false;
       }
@@ -5047,8 +5537,8 @@ var __async = (__this, __arguments, generator) => {
     stack.set(object, other);
     stack.set(other, object);
     var skipCtor = isPartial;
-    while (++index2 < objLength) {
-      key = objProps[index2];
+    while (++index < objLength) {
+      key = objProps[index];
       var objValue = object[key], othValue = other[key];
       if (customizer) {
         var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
@@ -5074,12 +5564,12 @@ var __async = (__this, __arguments, generator) => {
   var objectProto = Object.prototype;
   var hasOwnProperty = objectProto.hasOwnProperty;
   function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
-    var objIsArr = isArray$1(object), othIsArr = isArray$1(other), objTag = objIsArr ? arrayTag : getTag$1(object), othTag = othIsArr ? arrayTag : getTag$1(other);
+    var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
     objTag = objTag == argsTag ? objectTag : objTag;
     othTag = othTag == argsTag ? objectTag : othTag;
     var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
-    if (isSameTag && isBuffer$1(object)) {
-      if (!isBuffer$1(other)) {
+    if (isSameTag && isBuffer(object)) {
+      if (!isBuffer(other)) {
         return false;
       }
       objIsArr = true;
@@ -5087,7 +5577,7 @@ var __async = (__this, __arguments, generator) => {
     }
     if (isSameTag && !objIsObj) {
       stack || (stack = new Stack());
-      return objIsArr || isTypedArray$1(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+      return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
     }
     if (!(bitmask & COMPARE_PARTIAL_FLAG$2)) {
       var objIsWrapped = objIsObj && hasOwnProperty.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty.call(other, "__wrapped__");
@@ -5114,29 +5604,27 @@ var __async = (__this, __arguments, generator) => {
   }
   var COMPARE_PARTIAL_FLAG$1 = 1, COMPARE_UNORDERED_FLAG$1 = 2;
   function baseIsMatch(object, source, matchData, customizer) {
-    var index2 = matchData.length, length = index2, noCustomizer = !customizer;
+    var index = matchData.length, length = index;
     if (object == null) {
       return !length;
     }
     object = Object(object);
-    while (index2--) {
-      var data = matchData[index2];
-      if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+    while (index--) {
+      var data = matchData[index];
+      if (data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
         return false;
       }
     }
-    while (++index2 < length) {
-      data = matchData[index2];
+    while (++index < length) {
+      data = matchData[index];
       var key = data[0], objValue = object[key], srcValue = data[1];
-      if (noCustomizer && data[2]) {
+      if (data[2]) {
         if (objValue === void 0 && !(key in object)) {
           return false;
         }
       } else {
         var stack = new Stack();
-        if (customizer) {
-          var result = customizer(objValue, srcValue, key, object, source, stack);
-        }
+        var result;
         if (!(result === void 0 ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$1 | COMPARE_UNORDERED_FLAG$1, customizer, stack) : result)) {
           return false;
         }
@@ -5177,19 +5665,19 @@ var __async = (__this, __arguments, generator) => {
   }
   function hasPath(object, path, hasFunc) {
     path = castPath(path, object);
-    var index2 = -1, length = path.length, result = false;
-    while (++index2 < length) {
-      var key = toKey(path[index2]);
+    var index = -1, length = path.length, result = false;
+    while (++index < length) {
+      var key = toKey(path[index]);
       if (!(result = object != null && hasFunc(object, key))) {
         break;
       }
       object = object[key];
     }
-    if (result || ++index2 != length) {
+    if (result || ++index != length) {
       return result;
     }
     length = object == null ? 0 : object.length;
-    return !!length && isLength(length) && isIndex(key, length) && (isArray$1(object) || isArguments$1(object));
+    return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
   }
   function hasIn(object, path) {
     return object != null && hasPath(object, path, baseHasIn);
@@ -5200,7 +5688,7 @@ var __async = (__this, __arguments, generator) => {
       return matchesStrictComparable(toKey(path), srcValue);
     }
     return function(object) {
-      var objValue = get(object, path);
+      var objValue = get$1(object, path);
       return objValue === void 0 && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG);
     };
   }
@@ -5225,15 +5713,15 @@ var __async = (__this, __arguments, generator) => {
       return identity;
     }
     if (typeof value == "object") {
-      return isArray$1(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+      return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
     }
     return property(value);
   }
   function createBaseFor(fromRight) {
     return function(object, iteratee, keysFunc) {
-      var index2 = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
+      var index = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
       while (length--) {
-        var key = props[fromRight ? length : ++index2];
+        var key = props[++index];
         if (iteratee(iterable[key], key, iterable) === false) {
           break;
         }
@@ -5242,9 +5730,8 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var baseFor = createBaseFor();
-  const baseFor$1 = baseFor;
   function baseForOwn(object, iteratee) {
-    return object && baseFor$1(object, iteratee, keys);
+    return object && baseFor(object, iteratee, keys);
   }
   function createBaseEach(eachFunc, fromRight) {
     return function(collection, iteratee) {
@@ -5254,9 +5741,9 @@ var __async = (__this, __arguments, generator) => {
       if (!isArrayLike(collection)) {
         return eachFunc(collection, iteratee);
       }
-      var length = collection.length, index2 = fromRight ? length : -1, iterable = Object(collection);
-      while (fromRight ? index2-- : ++index2 < length) {
-        if (iteratee(iterable[index2], index2, iterable) === false) {
+      var length = collection.length, index = -1, iterable = Object(collection);
+      while (++index < length) {
+        if (iteratee(iterable[index], index, iterable) === false) {
           break;
         }
       }
@@ -5264,11 +5751,9 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var baseEach = createBaseEach(baseForOwn);
-  const baseEach$1 = baseEach;
   var now = function() {
-    return root$1.Date.now();
+    return root.Date.now();
   };
-  const now$1 = now;
   var FUNC_ERROR_TEXT = "Expected a function";
   var nativeMax = Math.max, nativeMin = Math.min;
   function debounce$1(func, wait, options2) {
@@ -5304,7 +5789,7 @@ var __async = (__this, __arguments, generator) => {
       return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
     }
     function timerExpired() {
-      var time = now$1();
+      var time = now();
       if (shouldInvoke(time)) {
         return trailingEdge(time);
       }
@@ -5326,10 +5811,10 @@ var __async = (__this, __arguments, generator) => {
       lastArgs = lastCallTime = lastThis = timerId = void 0;
     }
     function flush() {
-      return timerId === void 0 ? result : trailingEdge(now$1());
+      return timerId === void 0 ? result : trailingEdge(now());
     }
     function debounced() {
-      var time = now$1(), isInvoking = shouldInvoke(time);
+      var time = now(), isInvoking = shouldInvoke(time);
       lastArgs = arguments;
       lastThis = this;
       lastCallTime = time;
@@ -5381,10 +5866,10 @@ var __async = (__this, __arguments, generator) => {
     var newValue = customizer ? customizer(objValue, srcValue, key + "", object, source, stack) : void 0;
     var isCommon = newValue === void 0;
     if (isCommon) {
-      var isArr = isArray$1(srcValue), isBuff = !isArr && isBuffer$1(srcValue), isTyped = !isArr && !isBuff && isTypedArray$1(srcValue);
+      var isArr = isArray(srcValue), isBuff = !isArr && isBuffer(srcValue), isTyped = !isArr && !isBuff && isTypedArray(srcValue);
       newValue = srcValue;
       if (isArr || isBuff || isTyped) {
-        if (isArray$1(objValue)) {
+        if (isArray(objValue)) {
           newValue = objValue;
         } else if (isArrayLikeObject(objValue)) {
           newValue = copyArray(objValue);
@@ -5397,9 +5882,9 @@ var __async = (__this, __arguments, generator) => {
         } else {
           newValue = [];
         }
-      } else if (isPlainObject(srcValue) || isArguments$1(srcValue)) {
+      } else if (isPlainObject(srcValue) || isArguments(srcValue)) {
         newValue = objValue;
-        if (isArguments$1(objValue)) {
+        if (isArguments(objValue)) {
           newValue = toPlainObject(objValue);
         } else if (!isObject(objValue) || isFunction(objValue)) {
           newValue = initCloneObject(srcValue);
@@ -5419,7 +5904,7 @@ var __async = (__this, __arguments, generator) => {
     if (object === source) {
       return;
     }
-    baseFor$1(source, function(srcValue, key) {
+    baseFor(source, function(srcValue, key) {
       stack || (stack = new Stack());
       if (isObject(srcValue)) {
         baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
@@ -5432,15 +5917,6 @@ var __async = (__this, __arguments, generator) => {
       }
     }, keysIn);
   }
-  function arrayIncludesWith(array, value, comparator) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    while (++index2 < length) {
-      if (comparator(value, array[index2])) {
-        return true;
-      }
-    }
-    return false;
-  }
   function last(array) {
     var length = array == null ? 0 : array.length;
     return length ? array[length - 1] : void 0;
@@ -5449,23 +5925,21 @@ var __async = (__this, __arguments, generator) => {
     return typeof value == "function" ? value : identity;
   }
   function baseMap(collection, iteratee) {
-    var index2 = -1, result = isArrayLike(collection) ? Array(collection.length) : [];
-    baseEach$1(collection, function(value, key, collection2) {
-      result[++index2] = iteratee(value, key, collection2);
+    var index = -1, result = isArrayLike(collection) ? Array(collection.length) : [];
+    baseEach(collection, function(value, key, collection2) {
+      result[++index] = iteratee(value, key, collection2);
     });
     return result;
   }
   function parent(object, path) {
     return path.length < 2 ? object : baseGet(object, baseSlice(path, 0, -1));
   }
-  var kebabCase = createCompounder(function(result, word, index2) {
-    return result + (index2 ? "-" : "") + word.toLowerCase();
+  var kebabCase = createCompounder(function(result, word, index) {
+    return result + (index ? "-" : "") + word.toLowerCase();
   });
-  const kebabCase$1 = kebabCase;
   var merge = createAssigner(function(object, source, srcIndex) {
     baseMerge(object, source, srcIndex);
   });
-  const merge$1 = merge;
   function baseUnset(object, path) {
     path = castPath(path, object);
     object = parent(object, path);
@@ -5496,23 +5970,22 @@ var __async = (__this, __arguments, generator) => {
     }
     return result;
   });
-  const omit$1 = omit;
   function baseSet(object, path, value, customizer) {
     if (!isObject(object)) {
       return object;
     }
     path = castPath(path, object);
-    var index2 = -1, length = path.length, lastIndex = length - 1, nested = object;
-    while (nested != null && ++index2 < length) {
-      var key = toKey(path[index2]), newValue = value;
+    var index = -1, length = path.length, lastIndex = length - 1, nested = object;
+    while (nested != null && ++index < length) {
+      var key = toKey(path[index]), newValue = value;
       if (key === "__proto__" || key === "constructor" || key === "prototype") {
         return object;
       }
-      if (index2 != lastIndex) {
+      if (index != lastIndex) {
         var objValue = nested[key];
-        newValue = customizer ? customizer(objValue, key, nested) : void 0;
+        newValue = void 0;
         if (newValue === void 0) {
-          newValue = isObject(objValue) ? objValue : isIndex(path[index2 + 1]) ? [] : {};
+          newValue = isObject(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
         }
       }
       assignValue(nested, key, newValue);
@@ -5542,14 +6015,14 @@ var __async = (__this, __arguments, generator) => {
     return 0;
   }
   function compareMultiple(object, other, orders) {
-    var index2 = -1, objCriteria = object.criteria, othCriteria = other.criteria, length = objCriteria.length, ordersLength = orders.length;
-    while (++index2 < length) {
-      var result = compareAscending(objCriteria[index2], othCriteria[index2]);
+    var index = -1, objCriteria = object.criteria, othCriteria = other.criteria, length = objCriteria.length, ordersLength = orders.length;
+    while (++index < length) {
+      var result = compareAscending(objCriteria[index], othCriteria[index]);
       if (result) {
-        if (index2 >= ordersLength) {
+        if (index >= ordersLength) {
           return result;
         }
-        var order2 = orders[index2];
+        var order2 = orders[index];
         return result * (order2 == "desc" ? -1 : 1);
       }
     }
@@ -5558,7 +6031,7 @@ var __async = (__this, __arguments, generator) => {
   function baseOrderBy(collection, iteratees, orders) {
     if (iteratees.length) {
       iteratees = arrayMap(iteratees, function(iteratee) {
-        if (isArray$1(iteratee)) {
+        if (isArray(iteratee)) {
           return function(value) {
             return baseGet(value, iteratee.length === 1 ? iteratee[0] : iteratee);
           };
@@ -5568,13 +6041,13 @@ var __async = (__this, __arguments, generator) => {
     } else {
       iteratees = [identity];
     }
-    var index2 = -1;
+    var index = -1;
     iteratees = arrayMap(iteratees, baseUnary(baseIteratee));
     var result = baseMap(collection, function(value, key, collection2) {
       var criteria = arrayMap(iteratees, function(iteratee) {
         return iteratee(value);
       });
-      return { "criteria": criteria, "index": ++index2, "value": value };
+      return { "criteria": criteria, "index": ++index, "value": value };
     });
     return baseSortBy(result, function(object, other) {
       return compareMultiple(object, other, orders);
@@ -5584,35 +6057,30 @@ var __async = (__this, __arguments, generator) => {
     if (collection == null) {
       return [];
     }
-    if (!isArray$1(iteratees)) {
+    if (!isArray(iteratees)) {
       iteratees = iteratees == null ? [] : [iteratees];
     }
-    orders = guard ? void 0 : orders;
-    if (!isArray$1(orders)) {
+    orders = orders;
+    if (!isArray(orders)) {
       orders = orders == null ? [] : [orders];
     }
     return baseOrderBy(collection, iteratees, orders);
   }
-  function set(object, path, value) {
+  function set$1(object, path, value) {
     return object == null ? object : baseSet(object, path, value);
   }
-  var startCase = createCompounder(function(result, word, index2) {
-    return result + (index2 ? " " : "") + upperFirst$1(word);
+  var startCase = createCompounder(function(result, word, index) {
+    return result + (index ? " " : "") + upperFirst(word);
   });
-  const startCase$1 = startCase;
   var INFINITY = 1 / 0;
-  var createSet = !(Set$2 && 1 / setToArray(new Set$2([, -0]))[1] == INFINITY) ? noop : function(values) {
-    return new Set$2(values);
+  var createSet = !(Set$1 && 1 / setToArray(new Set$1([, -0]))[1] == INFINITY) ? noop : function(values) {
+    return new Set$1(values);
   };
-  const createSet$1 = createSet;
   var LARGE_ARRAY_SIZE = 200;
   function baseUniq(array, iteratee, comparator) {
-    var index2 = -1, includes = arrayIncludes, length = array.length, isCommon = true, result = [], seen = result;
-    if (comparator) {
-      isCommon = false;
-      includes = arrayIncludesWith;
-    } else if (length >= LARGE_ARRAY_SIZE) {
-      var set2 = iteratee ? null : createSet$1(array);
+    var index = -1, includes = arrayIncludes, length = array.length, isCommon = true, result = [], seen = result;
+    if (length >= LARGE_ARRAY_SIZE) {
+      var set2 = iteratee ? null : createSet(array);
       if (set2) {
         return setToArray(set2);
       }
@@ -5623,9 +6091,9 @@ var __async = (__this, __arguments, generator) => {
       seen = iteratee ? [] : result;
     }
     outer:
-      while (++index2 < length) {
-        var value = array[index2], computed = iteratee ? iteratee(value) : value;
-        value = comparator || value !== 0 ? value : 0;
+      while (++index < length) {
+        var value = array[index], computed = iteratee ? iteratee(value) : value;
+        value = value !== 0 ? value : 0;
         if (isCommon && computed === computed) {
           var seenIndex = seen.length;
           while (seenIndex--) {
@@ -5653,12 +6121,11 @@ var __async = (__this, __arguments, generator) => {
     }
     return baseUniq(baseFlatten(arrays, 1, isArrayLikeObject, true), baseIteratee(iteratee));
   });
-  const unionBy$1 = unionBy;
   function unset(object, path) {
     return object == null ? true : baseUnset(object, path);
   }
   function baseUpdate(object, path, updater, customizer) {
-    return baseSet(object, path, updater(baseGet(object, path)), customizer);
+    return baseSet(object, path, updater(baseGet(object, path)));
   }
   function update(object, path, updater) {
     return object == null ? object : baseUpdate(object, path, castFunction(updater));
@@ -5701,7 +6168,7 @@ var __async = (__this, __arguments, generator) => {
       });
     }
     function getOptionValue(optionId, defaultValue = null) {
-      return get(options2.value, optionId, defaultValue);
+      return get$1(options2.value, optionId, defaultValue);
     }
     function updateOptionValue2(path, newValue, saveOptions2 = true) {
       update(options2.value, path, () => newValue);
@@ -5785,10 +6252,10 @@ var __async = (__this, __arguments, generator) => {
       }
       saveOptionsToDB();
     }
-    function editGlobalColor(index2, newColor, saveToDB = true) {
-      const colorToChange = __spreadValues({}, options2.value.global_colors[index2]);
+    function editGlobalColor(index, newColor, saveToDB = true) {
+      const colorToChange = __spreadValues({}, options2.value.global_colors[index]);
       colorToChange["color"] = newColor;
-      options2.value.global_colors.splice(index2, 1, colorToChange);
+      options2.value.global_colors.splice(index, 1, colorToChange);
       if (saveToDB) {
         saveOptionsToDB();
       }
@@ -5985,8 +6452,8 @@ var __async = (__this, __arguments, generator) => {
         this.notifications.push(new Notification(data));
       },
       remove(notification) {
-        const index2 = this.notifications.indexOf(notification);
-        this.notifications.splice(index2, 1);
+        const index = this.notifications.indexOf(notification);
+        this.notifications.splice(index, 1);
       }
     }
   });
@@ -6088,9 +6555,7 @@ var __async = (__this, __arguments, generator) => {
   const useAssetsStore = pinia.defineStore("assets", {
     state: () => {
       return {
-        isLoading: false,
-        currentIndex: 0,
-        filesCount: 0
+        isLoading: false
       };
     },
     actions: {
@@ -6098,28 +6563,13 @@ var __async = (__this, __arguments, generator) => {
         return __async(this, null, function* () {
           this.isLoading = true;
           try {
-            const { data: cacheFiles } = yield getCacheList();
-            this.filesCount = cacheFiles.length;
-            if (this.filesCount > 0) {
-              for (const fileData of cacheFiles) {
-                try {
-                  this.currentIndex++;
-                  yield regenerateCache(fileData);
-                } catch (error) {
-                  console.error(error);
-                }
-              }
-            }
+            yield regenerateCache();
           } catch (error) {
             console.error(error);
+          } finally {
+            this.isLoading = false;
           }
-          this.isLoading = false;
-          this.filesCount = 0;
-          this.currentIndex = 0;
         });
-      },
-      finish() {
-        return finishRegeneration();
       }
     }
   });
@@ -6130,6 +6580,9 @@ var __async = (__this, __arguments, generator) => {
     getters: {
       isProActive(state) {
         return state.plugin_pro.is_active;
+      },
+      isProInstalled(state) {
+        return !!state.plugin_pro.is_installed;
       }
     },
     actions: {}
@@ -6152,7 +6605,8 @@ var __async = (__this, __arguments, generator) => {
       loading: { type: Boolean, default: true }
     },
     emits: ["scroll-end"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const listScrollRef = vue.ref(null);
       function onScroll(event2) {
         if (listScrollRef.value.scrollHeight - Math.round(listScrollRef.value.scrollTop) === listScrollRef.value.clientHeight) {
@@ -6161,28 +6615,40 @@ var __async = (__this, __arguments, generator) => {
       }
       return (_ctx, _cache) => {
         const _component_Loader = vue.resolveComponent("Loader");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-scroll-list-wrapper", { "znpb-scroll-list-wrapper--loading": _ctx.loading }])
-        }, [
-          vue.createElementVNode("div", {
-            ref_key: "listScrollRef",
-            ref: listScrollRef,
-            class: "znpb-fancy-scrollbar znpb-scroll-list-container",
-            onWheelPassive: onScroll
-          }, [
-            vue.renderSlot(_ctx.$slots, "default")
-          ], 544),
-          vue.createVNode(vue.Transition, { name: "fadeFromBottom" }, {
-            default: vue.withCtx(() => [
-              _ctx.loading ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : vue.createCommentVNode("", true)
-            ]),
-            _: 1
-          })
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-scroll-list-wrapper", { "znpb-scroll-list-wrapper--loading": __props.loading }])
+          },
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                ref_key: "listScrollRef",
+                ref: listScrollRef,
+                class: "znpb-fancy-scrollbar znpb-scroll-list-container",
+                onWheelPassive: onScroll
+              },
+              [
+                vue.renderSlot(_ctx.$slots, "default")
+              ],
+              544
+              /* NEED_HYDRATION, NEED_PATCH */
+            ),
+            vue.createVNode(vue.Transition, { name: "fadeFromBottom" }, {
+              default: vue.withCtx(() => [
+                __props.loading ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : vue.createCommentVNode("v-if", true)
+              ]),
+              _: 1
+              /* STABLE */
+            })
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const ListScroll_vue_vue_type_style_index_0_lang = "";
   const SvgIcons = [
     {
       paths: [
@@ -7651,32 +8117,36 @@ var __async = (__this, __arguments, generator) => {
         if (props.rotate) {
           if (typeof props.rotate === "string" || typeof props.rotate === "number") {
             cssStyles = `rotate(${props.rotate}deg)`;
-          } else
-            cssStyles = "rotate(90deg)";
+          } else cssStyles = "rotate(90deg)";
         }
         return cssStyles;
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("span", {
-          class: vue.normalizeClass(["znpb-editor-icon-wrapper", iconClass.value]),
-          style: vue.normalizeStyle(iconStyles.value)
-        }, [
-          iconSettings.value ? (vue.openBlock(), vue.createElementBlock("svg", {
-            key: 0,
-            class: vue.normalizeClass(["zion-svg-inline znpb-editor-icon zion-icon", {
-              [`zion-${_ctx.icon}`]: _ctx.icon
-            }]),
-            xmlns: "http://www.w3.org/2000/svg",
-            "aria-hidden": "true",
-            viewBox: iconSettings.value.viewBox,
-            preserveAspectRatio: props.preserveAspectRatio || "",
-            innerHTML: iconSettings.value.pathString
-          }, null, 10, _hoisted_1$1d)) : vue.createCommentVNode("", true)
-        ], 6);
+        return vue.openBlock(), vue.createElementBlock(
+          "span",
+          {
+            class: vue.normalizeClass(["znpb-editor-icon-wrapper", iconClass.value]),
+            style: vue.normalizeStyle(iconStyles.value)
+          },
+          [
+            iconSettings.value ? (vue.openBlock(), vue.createElementBlock("svg", {
+              key: 0,
+              class: vue.normalizeClass(["zion-svg-inline znpb-editor-icon zion-icon", {
+                [`zion-${__props.icon}`]: __props.icon
+              }]),
+              xmlns: "http://www.w3.org/2000/svg",
+              "aria-hidden": "true",
+              viewBox: iconSettings.value.viewBox,
+              preserveAspectRatio: props.preserveAspectRatio || "",
+              innerHTML: iconSettings.value.pathString
+            }, null, 10, _hoisted_1$1d)) : vue.createCommentVNode("v-if", true)
+          ],
+          6
+          /* CLASS, STYLE */
+        );
       };
     }
   }));
-  const Icon_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$1c = {
     key: 0,
     class: "znpb-accordion__content"
@@ -7693,35 +8163,44 @@ var __async = (__this, __arguments, generator) => {
       const props = __props;
       const localCollapsed = vue.ref(props.collapsed);
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-accordion", { "znpb-accordion--collapsed": localCollapsed.value }])
-        }, [
-          vue.createElementVNode("div", {
-            class: "znpb-accordion__header",
-            onClick: _cache[0] || (_cache[0] = ($event) => localCollapsed.value = !localCollapsed.value)
-          }, [
-            vue.renderSlot(_ctx.$slots, "header", {}, () => [
-              vue.createTextVNode(vue.toDisplayString(_ctx.header), 1)
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-accordion", { "znpb-accordion--collapsed": localCollapsed.value }])
+          },
+          [
+            vue.createElementVNode("div", {
+              class: "znpb-accordion__header",
+              onClick: _cache[0] || (_cache[0] = ($event) => localCollapsed.value = !localCollapsed.value)
+            }, [
+              vue.renderSlot(_ctx.$slots, "header", {}, () => [
+                vue.createTextVNode(
+                  vue.toDisplayString(__props.header),
+                  1
+                  /* TEXT */
+                )
+              ]),
+              vue.createVNode(_sfc_main$1z, {
+                icon: "select",
+                class: "znpb-accordion-title-icon"
+              })
             ]),
-            vue.createVNode(_sfc_main$1z, {
-              icon: "select",
-              class: "znpb-accordion-title-icon"
-            })
-          ]),
-          localCollapsed.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1c, [
-            vue.renderSlot(_ctx.$slots, "default")
-          ])) : vue.createCommentVNode("", true)
-        ], 2);
+            localCollapsed.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1c, [
+              vue.renderSlot(_ctx.$slots, "default")
+            ])) : vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const Accordion_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$1b = { class: "znpb-actions-overlay__wrapper" };
-  const _hoisted_2$O = {
+  const _hoisted_2$L = {
     key: 0,
     class: "znpb-actions-overlay__actions-wrapper"
   };
-  const _hoisted_3$u = { class: "znpb-actions-overlay__actions" };
+  const _hoisted_3$s = { class: "znpb-actions-overlay__actions" };
   const __default__$16 = {
     name: "ActionsOverlay"
   };
@@ -7733,28 +8212,27 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1b, [
           vue.renderSlot(_ctx.$slots, "default"),
-          _ctx.showOverlay ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$O, [
-            vue.createElementVNode("div", _hoisted_3$u, [
+          __props.showOverlay ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$L, [
+            vue.createElementVNode("div", _hoisted_3$s, [
               vue.renderSlot(_ctx.$slots, "actions")
             ])
-          ])) : vue.createCommentVNode("", true)
+          ])) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   }));
-  const ActionsOverlay_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$1a = {
     key: 0,
     class: "zion-input__prefix"
   };
-  const _hoisted_2$N = {
+  const _hoisted_2$K = {
     key: 0,
     class: "zion-input__prepend"
   };
-  const _hoisted_3$t = ["type", "value"];
-  const _hoisted_4$h = ["value"];
-  const _hoisted_5$d = { class: "zion-input__suffix" };
-  const _hoisted_6$8 = { class: "zion-input__append" };
+  const _hoisted_3$r = ["type", "value"];
+  const _hoisted_4$f = ["value"];
+  const _hoisted_5$c = { class: "zion-input__suffix" };
+  const _hoisted_6$7 = { class: "zion-input__append" };
   const __default__$15 = {
     name: "BaseInput",
     inheritAttrs: false
@@ -7771,8 +8249,9 @@ var __async = (__this, __arguments, generator) => {
       class: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { expose: __expose, emit }) {
+    setup(__props, { expose: __expose, emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const input = vue.ref(null);
       const showClear = vue.computed(() => {
         return props.clearable && props.modelValue ? true : false;
@@ -7814,66 +8293,74 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_Injection = vue.resolveComponent("Injection");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["zion-input", {
-            "zion-input--has-prepend": _ctx.$slots.prepend,
-            "zion-input--has-append": _ctx.$slots.append,
-            "zion-input--has-suffix": hasSuffixContent.value,
-            "zion-input--error": _ctx.error,
-            [`zion-input--size-${_ctx.size}`]: _ctx.size,
-            [cssClass.value]: cssClass.value
-          }]),
-          onKeydown: onKeyDown
-        }, [
-          _ctx.$slots.prepend ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1a, [
-            _ctx.$slots.prepend ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$N, [
-              vue.renderSlot(_ctx.$slots, "prepend")
-            ])) : vue.createCommentVNode("", true)
-          ])) : vue.createCommentVNode("", true),
-          _ctx.type !== "textarea" ? (vue.openBlock(), vue.createElementBlock("input", vue.mergeProps({
-            key: 1,
-            ref_key: "input",
-            ref: input,
-            type: _ctx.type,
-            value: _ctx.modelValue,
-            style: getStyle.value
-          }, _ctx.$attrs, { onInput }), null, 16, _hoisted_3$t)) : (vue.openBlock(), vue.createElementBlock("textarea", vue.mergeProps({
-            key: 2,
-            ref_key: "input",
-            ref: input,
-            class: "znpb-fancy-scrollbar",
-            value: _ctx.modelValue
-          }, _ctx.$attrs, {
-            onInput: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event.target.value))
-          }), "\n		", 16, _hoisted_4$h)),
-          vue.renderSlot(_ctx.$slots, "after-input"),
-          showClear.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-            key: 3,
-            class: "zion-input__suffix-icon zion-input__clear-text",
-            icon: "close",
-            onMousedown: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("update:modelValue", ""), ["stop", "prevent"]))
-          })) : vue.createCommentVNode("", true),
-          vue.createElementVNode("div", _hoisted_5$d, [
-            vue.renderSlot(_ctx.$slots, "suffix"),
-            _ctx.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-              key: 0,
-              class: "zion-input__suffix-icon",
-              icon: _ctx.icon,
-              onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => _ctx.$emit("update:modelValue", ""), ["stop", "prevent"]))
-            }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-            vue.createElementVNode("div", _hoisted_6$8, [
-              vue.renderSlot(_ctx.$slots, "append"),
-              vue.createVNode(_component_Injection, {
-                location: "base_input/append",
-                class: "znpb-options-injection--after-title"
-              })
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["zion-input", {
+              "zion-input--has-prepend": _ctx.$slots.prepend,
+              "zion-input--has-append": _ctx.$slots.append,
+              "zion-input--has-suffix": hasSuffixContent.value,
+              "zion-input--error": __props.error,
+              [`zion-input--size-${__props.size}`]: __props.size,
+              [cssClass.value]: cssClass.value
+            }]),
+            onKeydown: onKeyDown
+          },
+          [
+            _ctx.$slots.prepend ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1a, [
+              _ctx.$slots.prepend ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$K, [
+                vue.createCommentVNode(" @slot Content that will be placed before input "),
+                vue.renderSlot(_ctx.$slots, "prepend")
+              ])) : vue.createCommentVNode("v-if", true)
+            ])) : vue.createCommentVNode("v-if", true),
+            __props.type !== "textarea" ? (vue.openBlock(), vue.createElementBlock("input", vue.mergeProps({
+              key: 1,
+              ref_key: "input",
+              ref: input,
+              type: __props.type,
+              value: __props.modelValue,
+              style: getStyle.value
+            }, _ctx.$attrs, { onInput }), null, 16, _hoisted_3$r)) : (vue.openBlock(), vue.createElementBlock("textarea", vue.mergeProps({
+              key: 2,
+              ref_key: "input",
+              ref: input,
+              class: "znpb-fancy-scrollbar",
+              value: __props.modelValue
+            }, _ctx.$attrs, {
+              onInput: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event.target.value))
+            }), "		", 16, _hoisted_4$f)),
+            vue.renderSlot(_ctx.$slots, "after-input"),
+            showClear.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+              key: 3,
+              class: "zion-input__suffix-icon zion-input__clear-text",
+              icon: "close",
+              onMousedown: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("update:modelValue", ""), ["stop", "prevent"]))
+            })) : vue.createCommentVNode("v-if", true),
+            vue.createElementVNode("div", _hoisted_5$c, [
+              vue.createCommentVNode(" @slot Content that will be placed after input "),
+              vue.renderSlot(_ctx.$slots, "suffix"),
+              __props.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                key: 0,
+                class: "zion-input__suffix-icon",
+                icon: __props.icon,
+                onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => _ctx.$emit("update:modelValue", ""), ["stop", "prevent"]))
+              }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+              vue.createElementVNode("div", _hoisted_6$7, [
+                vue.createCommentVNode(" @slot Content that will be appended to input "),
+                vue.renderSlot(_ctx.$slots, "append"),
+                vue.createVNode(_component_Injection, {
+                  location: "base_input/append",
+                  class: "znpb-options-injection--after-title"
+                })
+              ])
             ])
-          ])
-        ], 34);
+          ],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   }));
-  const BaseInput_vue_vue_type_style_index_0_lang = "";
   const __default__$14 = {
     name: "Button"
   };
@@ -7883,23 +8370,29 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-button", { ["znpb-button--" + _ctx.type]: _ctx.type }])
-        }, [
-          vue.renderSlot(_ctx.$slots, "default")
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-button", { ["znpb-button--" + __props.type]: __props.type }])
+          },
+          [
+            vue.createCommentVNode(" @slot Content that will be added inside button "),
+            vue.renderSlot(_ctx.$slots, "default")
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const Button_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$19 = { class: "znpb-options-has-changes-wrapper" };
-  const _hoisted_2$M = { key: 0 };
+  const _hoisted_2$J = { key: 0 };
   const __default__$13 = {
     name: "ChangesBullet"
   };
   const _sfc_main$1u = /* @__PURE__ */ vue.defineComponent(__spreadProps(__spreadValues({}, __default__$13), {
     props: {
-      discardChangesTitle: { default: () => i18n__namespace.__("Discard changes", "zionbuilder") }
+      discardChangesTitle: { default: (() => i18n__namespace.__("Discard changes", "zionbuilder")) }
     },
     emits: ["remove-styles"],
     setup(__props) {
@@ -7908,26 +8401,31 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
         return vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", _hoisted_1$19, [
-          vue.createElementVNode("span", {
-            class: "znpb-options__has-changes",
-            onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => _ctx.$emit("remove-styles"), ["stop"])),
-            onMouseover: _cache[1] || (_cache[1] = ($event) => showIcon.value = true),
-            onMouseleave: _cache[2] || (_cache[2] = ($event) => showIcon.value = false)
-          }, [
-            !showIcon.value ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$M)) : (vue.openBlock(), vue.createBlock(_component_Icon, {
-              key: 1,
-              class: "znpb-options-has-changes-wrapper__delete",
-              icon: "close",
-              size: 6
-            }))
-          ], 32)
+          vue.createElementVNode(
+            "span",
+            {
+              class: "znpb-options__has-changes",
+              onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => _ctx.$emit("remove-styles"), ["stop"])),
+              onMouseover: _cache[1] || (_cache[1] = ($event) => showIcon.value = true),
+              onMouseleave: _cache[2] || (_cache[2] = ($event) => showIcon.value = false)
+            },
+            [
+              !showIcon.value ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$J)) : (vue.openBlock(), vue.createBlock(_component_Icon, {
+                key: 1,
+                class: "znpb-options-has-changes-wrapper__delete",
+                icon: "close",
+                size: 6
+              }))
+            ],
+            32
+            /* NEED_HYDRATION */
+          )
         ])), [
-          [_directive_znpb_tooltip, _ctx.discardChangesTitle]
+          [_directive_znpb_tooltip, __props.discardChangesTitle]
         ]);
       };
     }
   }));
-  const ChangesBullet_vue_vue_type_style_index_0_lang = "";
   function _typeof(obj) {
     "@babel/helpers - typeof";
     return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
@@ -7950,12 +8448,9 @@ var __async = (__this, __arguments, generator) => {
     var rgb = inputToRGB(color);
     this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb.format;
     this._gradientType = opts.gradientType;
-    if (this._r < 1)
-      this._r = Math.round(this._r);
-    if (this._g < 1)
-      this._g = Math.round(this._g);
-    if (this._b < 1)
-      this._b = Math.round(this._b);
+    if (this._r < 1) this._r = Math.round(this._r);
+    if (this._g < 1) this._g = Math.round(this._g);
+    if (this._b < 1) this._b = Math.round(this._b);
     this._ok = rgb.ok;
   }
   tinycolor.prototype = {
@@ -7987,18 +8482,12 @@ var __async = (__this, __arguments, generator) => {
       RsRGB = rgb.r / 255;
       GsRGB = rgb.g / 255;
       BsRGB = rgb.b / 255;
-      if (RsRGB <= 0.03928)
-        R = RsRGB / 12.92;
-      else
-        R = Math.pow((RsRGB + 0.055) / 1.055, 2.4);
-      if (GsRGB <= 0.03928)
-        G = GsRGB / 12.92;
-      else
-        G = Math.pow((GsRGB + 0.055) / 1.055, 2.4);
-      if (BsRGB <= 0.03928)
-        B = BsRGB / 12.92;
-      else
-        B = Math.pow((BsRGB + 0.055) / 1.055, 2.4);
+      if (RsRGB <= 0.03928) R = RsRGB / 12.92;
+      else R = Math.pow((RsRGB + 0.055) / 1.055, 2.4);
+      if (GsRGB <= 0.03928) G = GsRGB / 12.92;
+      else G = Math.pow((GsRGB + 0.055) / 1.055, 2.4);
+      if (BsRGB <= 0.03928) B = BsRGB / 12.92;
+      else B = Math.pow((BsRGB + 0.055) / 1.055, 2.4);
       return 0.2126 * R + 0.7152 * G + 0.0722 * B;
     },
     setAlpha: function setAlpha(value) {
@@ -8292,16 +8781,11 @@ var __async = (__this, __arguments, generator) => {
     s = bound01(s, 100);
     l = bound01(l, 100);
     function hue2rgb(p2, q2, t) {
-      if (t < 0)
-        t += 1;
-      if (t > 1)
-        t -= 1;
-      if (t < 1 / 6)
-        return p2 + (q2 - p2) * 6 * t;
-      if (t < 1 / 2)
-        return q2;
-      if (t < 2 / 3)
-        return p2 + (q2 - p2) * (2 / 3 - t) * 6;
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p2 + (q2 - p2) * 6 * t;
+      if (t < 1 / 2) return q2;
+      if (t < 2 / 3) return p2 + (q2 - p2) * (2 / 3 - t) * 6;
       return p2;
     }
     if (s === 0) {
@@ -8379,8 +8863,7 @@ var __async = (__this, __arguments, generator) => {
     return hex.join("");
   }
   tinycolor.equals = function(color1, color2) {
-    if (!color1 || !color2)
-      return false;
+    if (!color1 || !color2) return false;
     return tinycolor(color1).toRgbString() == tinycolor(color2).toRgbString();
   };
   tinycolor.random = function() {
@@ -8729,8 +9212,7 @@ var __async = (__this, __arguments, generator) => {
     return a;
   }
   function bound01(n, max2) {
-    if (isOnePointZero(n))
-      n = "100%";
+    if (isOnePointZero(n)) n = "100%";
     var processPercent = isPercentage(n);
     n = Math.min(max2, Math.max(0, parseFloat(n)));
     if (processPercent) {
@@ -8768,7 +9250,7 @@ var __async = (__this, __arguments, generator) => {
   function convertHexToDecimal(h) {
     return parseIntFromHex(h) / 255;
   }
-  var matchers = function() {
+  var matchers = (function() {
     var CSS_INTEGER = "[-\\+]?\\d+%?";
     var CSS_NUMBER = "[-\\+]?\\d*\\.\\d+%?";
     var CSS_UNIT = "(?:" + CSS_NUMBER + ")|(?:" + CSS_INTEGER + ")";
@@ -8787,7 +9269,7 @@ var __async = (__this, __arguments, generator) => {
       hex4: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
       hex8: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
     };
-  }();
+  })();
   function isValidCSSUnit(color) {
     return !!matchers.CSS_UNIT.exec(color);
   }
@@ -8907,26 +9389,31 @@ var __async = (__this, __arguments, generator) => {
       size
     };
   }
+  typeof WorkerGlobalScope !== "undefined" && globalThis instanceof WorkerGlobalScope;
+  // @__NO_SIDE_EFFECTS__
   function useMounted() {
-    const isMounted = vue.ref(false);
-    if (vue.getCurrentInstance()) {
+    const isMounted = vue.shallowRef(false);
+    const instance2 = vue.getCurrentInstance();
+    if (instance2) {
       vue.onMounted(() => {
         isMounted.value = true;
-      });
+      }, instance2);
     }
     return isMounted;
   }
+  // @__NO_SIDE_EFFECTS__
   function useSupported(callback) {
-    const isMounted = useMounted();
+    const isMounted = /* @__PURE__ */ useMounted();
     return vue.computed(() => {
       isMounted.value;
       return Boolean(callback());
     });
   }
+  // @__NO_SIDE_EFFECTS__
   function useEyeDropper(options2 = {}) {
     const { initialValue = "" } = options2;
-    const isSupported = useSupported(() => typeof window !== "undefined" && "EyeDropper" in window);
-    const sRGBHex = vue.ref(initialValue);
+    const isSupported = /* @__PURE__ */ useSupported(() => typeof window !== "undefined" && "EyeDropper" in window);
+    const sRGBHex = vue.shallowRef(initialValue);
     function open2(openOptions) {
       return __async(this, null, function* () {
         if (!isSupported.value)
@@ -8964,7 +9451,6 @@ var __async = (__this, __arguments, generator) => {
     };
     return wrapperFn;
   };
-  const rafSchd$1 = rafSchd;
   const _hoisted_1$18 = { class: "znpb-colorpicker-inner-editor__hue" };
   const __default__$12 = {
     name: "HueStrip"
@@ -8974,9 +9460,10 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       var _a2;
       const props = __props;
+      const emit = __emit;
       const direction = vue.ref("right");
       const oldHue = vue.ref((_a2 = props.modelValue) == null ? void 0 : _a2.h);
       const lastHue = vue.ref(null);
@@ -9005,7 +9492,7 @@ var __async = (__this, __arguments, generator) => {
           oldHue.value = h;
         }
       );
-      const rafDragCircle = rafSchd$1(dragHueCircle);
+      const rafDragCircle = rafSchd(dragHueCircle);
       function actHueCircleDrag() {
         ownerWindow.addEventListener("mousemove", rafDragCircle);
         ownerWindow.addEventListener("mouseup", deactivatedragHueCircle);
@@ -9057,35 +9544,47 @@ var __async = (__this, __arguments, generator) => {
         ownerWindow.removeEventListener("mousemove", dragHueCircle);
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-colorpicker-inner-editor__hue-wrapper",
-          onClick: dragHueCircle
-        }, [
-          vue.createElementVNode("div", _hoisted_1$18, [
-            vue.createElementVNode("span", {
-              style: vue.normalizeStyle(hueStyles.value),
-              class: "znpb-colorpicker-inner-editor__hue-indicator",
-              onMousedown: actHueCircleDrag
-            }, null, 36)
-          ])
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-colorpicker-inner-editor__hue-wrapper",
+            onClick: dragHueCircle
+          },
+          [
+            vue.createElementVNode("div", _hoisted_1$18, [
+              vue.createElementVNode(
+                "span",
+                {
+                  style: vue.normalizeStyle(hueStyles.value),
+                  class: "znpb-colorpicker-inner-editor__hue-indicator",
+                  onMousedown: actHueCircleDrag
+                },
+                null,
+                36
+                /* STYLE, NEED_HYDRATION */
+              )
+            ])
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   }));
-  const HueStrip_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$1s = /* @__PURE__ */ vue.defineComponent({
     __name: "OpacityStrip",
     props: {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const root2 = vue.ref(null);
       const opacityStrip = vue.ref(null);
-      const rafDragCircle = rafSchd$1(dragCircle);
+      const rafDragCircle = rafSchd(dragCircle);
       let lastA;
       let ownerWindow;
       const opacityStyles = vue.computed(() => {
@@ -9148,33 +9647,50 @@ var __async = (__this, __arguments, generator) => {
         deactivateDragCircle();
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-colorpicker-inner-editor__opacity-wrapper",
-          onMousedown: actCircleDrag
-        }, [
-          vue.createElementVNode("div", {
-            class: "znpb-colorpicker-inner-editor__opacity",
-            onClick: dragCircle
-          }, [
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-colorpicker-inner-editor__opacity-wrapper",
+            onMousedown: actCircleDrag
+          },
+          [
             vue.createElementVNode("div", {
-              ref_key: "opacityStrip",
-              ref: opacityStrip,
-              style: vue.normalizeStyle(barStyles.value),
-              class: "znpb-colorpicker-inner-editor__opacity-strip"
-            }, null, 4),
-            vue.createElementVNode("span", {
-              style: vue.normalizeStyle(opacityStyles.value),
-              class: "znpb-colorpicker-inner-editor__opacity-indicator",
-              onMousedown: actCircleDrag
-            }, null, 36)
-          ])
-        ], 544);
+              class: "znpb-colorpicker-inner-editor__opacity",
+              onClick: dragCircle
+            }, [
+              vue.createElementVNode(
+                "div",
+                {
+                  ref_key: "opacityStrip",
+                  ref: opacityStrip,
+                  style: vue.normalizeStyle(barStyles.value),
+                  class: "znpb-colorpicker-inner-editor__opacity-strip"
+                },
+                null,
+                4
+                /* STYLE */
+              ),
+              vue.createElementVNode(
+                "span",
+                {
+                  style: vue.normalizeStyle(opacityStyles.value),
+                  class: "znpb-colorpicker-inner-editor__opacity-indicator",
+                  onMousedown: actCircleDrag
+                },
+                null,
+                36
+                /* STYLE, NEED_HYDRATION */
+              )
+            ])
+          ],
+          544
+          /* NEED_HYDRATION, NEED_PATCH */
+        );
       };
     }
   });
-  const OpacityStrip_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$17 = { class: "znpb-input-number" };
   const __default__$11 = {
     name: "InputNumber",
@@ -9191,8 +9707,9 @@ var __async = (__this, __arguments, generator) => {
       placeholder: { default: null }
     },
     emits: ["update:modelValue", "linked-value"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const shiftKey = vue.ref(false);
       let initialPosition = 0;
       let lastPosition = 0;
@@ -9278,10 +9795,10 @@ var __async = (__this, __arguments, generator) => {
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => model.value = $event),
             type: "number",
             class: "znpb-input-number__input",
-            min: _ctx.min,
-            max: _ctx.max,
-            step: shiftKey.value ? _ctx.shiftStep : _ctx.step,
-            placeholder: _ctx.placeholder,
+            min: __props.min,
+            max: __props.max,
+            step: shiftKey.value ? __props.shiftStep : __props.step,
+            placeholder: __props.placeholder,
             onKeydown: onKeyDown,
             onMousedown: actNumberDrag,
             onTouchstartPassive: vue.withModifiers(actNumberDrag, ["prevent"]),
@@ -9289,15 +9806,19 @@ var __async = (__this, __arguments, generator) => {
           }, {
             suffix: vue.withCtx(() => [
               vue.renderSlot(_ctx.$slots, "default"),
-              vue.createTextVNode(" " + vue.toDisplayString(_ctx.suffix), 1)
+              vue.createTextVNode(
+                " " + vue.toDisplayString(__props.suffix),
+                1
+                /* TEXT */
+              )
             ]),
             _: 3
-          }, 8, ["modelValue", "min", "max", "step", "placeholder", "onTouchstartPassive"])
+            /* FORWARDED */
+          }, 8, ["modelValue", "min", "max", "step", "placeholder"])
         ]);
       };
     }
   }));
-  const InputNumber_vue_vue_type_style_index_0_lang = "";
   const DEFAULT_UNIT_TYPES = ["px", "%", "em", "rem", "vw", "vh"];
   const ALL_NUMBER_UNITS_TYPES = [
     "px",
@@ -9446,7 +9967,7 @@ var __async = (__this, __arguments, generator) => {
   var round = Math.round;
   function getUAString() {
     var uaData = navigator.userAgentData;
-    if (uaData != null && uaData.brands) {
+    if (uaData != null && uaData.brands && Array.isArray(uaData.brands)) {
       return uaData.brands.map(function(item) {
         return item.brand + "/" + item.version;
       }).join(" ");
@@ -9683,9 +10204,8 @@ var __async = (__this, __arguments, generator) => {
     bottom: "auto",
     left: "auto"
   };
-  function roundOffsetsByDPR(_ref) {
+  function roundOffsetsByDPR(_ref, win) {
     var x = _ref.x, y = _ref.y;
-    var win = window;
     var dpr = win.devicePixelRatio || 1;
     return {
       x: round(x * dpr) / dpr || 0,
@@ -9747,7 +10267,7 @@ var __async = (__this, __arguments, generator) => {
     var _ref4 = roundOffsets === true ? roundOffsetsByDPR({
       x,
       y
-    }) : {
+    }, getWindow(popper2)) : {
       x,
       y
     };
@@ -10054,7 +10574,6 @@ var __async = (__this, __arguments, generator) => {
     var popperOffsets2 = computeOffsets({
       reference: referenceClientRect,
       element: popperRect,
-      strategy: "absolute",
       placement
     });
     var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets2));
@@ -10188,8 +10707,7 @@ var __async = (__this, __arguments, generator) => {
       };
       for (var _i = numberOfChecks; _i > 0; _i--) {
         var _ret = _loop(_i);
-        if (_ret === "break")
-          break;
+        if (_ret === "break") break;
       }
     }
     if (state.placement !== firstFittingPlacement) {
@@ -10302,7 +10820,6 @@ var __async = (__this, __arguments, generator) => {
     state.modifiersData[name] = computeOffsets({
       reference: state.rects.reference,
       element: state.rects.popper,
-      strategy: "absolute",
       placement: state.placement
     });
   }
@@ -10599,13 +11116,13 @@ var __async = (__this, __arguments, generator) => {
           state.orderedModifiers.forEach(function(modifier) {
             return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
           });
-          for (var index2 = 0; index2 < state.orderedModifiers.length; index2++) {
+          for (var index = 0; index < state.orderedModifiers.length; index++) {
             if (state.reset === true) {
               state.reset = false;
-              index2 = -1;
+              index = -1;
               continue;
             }
-            var _state$orderedModifie = state.orderedModifiers[index2], fn = _state$orderedModifie.fn, _state$orderedModifie2 = _state$orderedModifie.options, _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2, name = _state$orderedModifie.name;
+            var _state$orderedModifie = state.orderedModifiers[index], fn = _state$orderedModifie.fn, _state$orderedModifie2 = _state$orderedModifie.options, _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2, name = _state$orderedModifie.name;
             if (typeof fn === "function") {
               state = fn({
                 state,
@@ -10638,8 +11155,8 @@ var __async = (__this, __arguments, generator) => {
         }
       });
       function runModifierEffects() {
-        state.orderedModifiers.forEach(function(_ref3) {
-          var name = _ref3.name, _ref3$options = _ref3.options, options3 = _ref3$options === void 0 ? {} : _ref3$options, effect2 = _ref3.effect;
+        state.orderedModifiers.forEach(function(_ref) {
+          var name = _ref.name, _ref$options = _ref.options, options3 = _ref$options === void 0 ? {} : _ref$options, effect2 = _ref.effect;
           if (typeof effect2 === "function") {
             var cleanupFn = effect2({
               state,
@@ -10711,8 +11228,9 @@ var __async = (__this, __arguments, generator) => {
       strategy: { default: "absolute" }
     },
     emits: ["show", "hide", "update:show"],
-    setup(__props, { expose: __expose, emit }) {
+    setup(__props, { expose: __expose, emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const root2 = vue.ref(null);
       const popperContentRef = vue.ref(null);
       const popperSelector = vue.ref(null);
@@ -10741,7 +11259,7 @@ var __async = (__this, __arguments, generator) => {
             });
           }
         }
-        return merge$1(options2, instanceOptions);
+        return merge(options2, instanceOptions);
       });
       vue.watch(
         () => props.closeOnOutsideClick,
@@ -10937,41 +11455,57 @@ var __async = (__this, __arguments, generator) => {
       };
       __expose(api2);
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.tag), {
-          ref_key: "root",
-          ref: root2,
-          onClick,
-          onMouseenter: onMouseEnter,
-          onMouseleave: onMouseLeave
-        }, {
-          default: vue.withCtx(() => [
-            getAppendToElement ? (vue.openBlock(), vue.createBlock(vue.Teleport, {
-              key: 0,
-              disabled: _ctx.appendTo === "element",
-              to: "body"
-            }, [
-              isVisible.value ? (vue.openBlock(), vue.createElementBlock("div", {
+        return vue.openBlock(), vue.createBlock(
+          vue.resolveDynamicComponent(__props.tag),
+          {
+            ref_key: "root",
+            ref: root2,
+            onClick,
+            onMouseenter: onMouseEnter,
+            onMouseleave: onMouseLeave
+          },
+          {
+            default: vue.withCtx(() => [
+              getAppendToElement ? (vue.openBlock(), vue.createBlock(vue.Teleport, {
                 key: 0,
-                ref_key: "popperContentRef",
-                ref: popperContentRef,
-                class: vue.normalizeClass(["hg-popper", _ctx.tooltipClass]),
-                style: vue.normalizeStyle(getStyle.value)
+                disabled: __props.appendTo === "element",
+                to: "body"
               }, [
-                vue.createTextVNode(vue.toDisplayString(_ctx.content) + " ", 1),
-                vue.renderSlot(_ctx.$slots, "content"),
-                _ctx.showArrows ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$16)) : vue.createCommentVNode("", true)
-              ], 6)) : vue.createCommentVNode("", true)
-            ], 8, ["disabled"])) : vue.createCommentVNode("", true),
-            vue.renderSlot(_ctx.$slots, "default")
-          ]),
-          _: 3
-        }, 544);
+                isVisible.value ? (vue.openBlock(), vue.createElementBlock(
+                  "div",
+                  {
+                    key: 0,
+                    ref_key: "popperContentRef",
+                    ref: popperContentRef,
+                    class: vue.normalizeClass(["hg-popper", __props.tooltipClass]),
+                    style: vue.normalizeStyle(getStyle.value)
+                  },
+                  [
+                    vue.createTextVNode(
+                      vue.toDisplayString(__props.content) + " ",
+                      1
+                      /* TEXT */
+                    ),
+                    vue.renderSlot(_ctx.$slots, "content"),
+                    __props.showArrows ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$16)) : vue.createCommentVNode("v-if", true)
+                  ],
+                  6
+                  /* CLASS, STYLE */
+                )) : vue.createCommentVNode("v-if", true)
+              ], 8, ["disabled"])) : vue.createCommentVNode("v-if", true),
+              vue.renderSlot(_ctx.$slots, "default")
+            ]),
+            _: 3
+            /* FORWARDED */
+          },
+          544
+          /* NEED_HYDRATION, NEED_PATCH */
+        );
       };
     }
   });
-  const Tooltip_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$15 = { class: "znpb-number-unit-list hg-popper-list" };
-  const _hoisted_2$L = ["onClick"];
+  const _hoisted_2$I = ["onClick"];
   const dragThreshold = 3;
   const _sfc_main$1p = /* @__PURE__ */ vue.defineComponent({
     __name: "InputNumberUnit",
@@ -10988,8 +11522,9 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue", "linked-value"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const root2 = vue.ref(null);
       const numberUnitInput = vue.ref(null);
       const localRawValue = vue.ref("");
@@ -11130,7 +11665,7 @@ var __async = (__this, __arguments, generator) => {
       let directionReset = 0;
       let draggingCached = 0;
       let dragging = false;
-      const dragNumberThrottle = rafSchd$1(dragNumber);
+      const dragNumberThrottle = rafSchd(dragNumber);
       function actNumberDrag(event2) {
         dragging = true;
         draggingCached = localValue.value;
@@ -11235,77 +11770,102 @@ var __async = (__this, __arguments, generator) => {
         }
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-input-number-unit"
-        }, [
-          vue.createVNode(_sfc_main$1w, {
-            ref_key: "numberUnitInput",
-            ref: numberUnitInput,
-            "model-value": localRawValue.value,
-            class: "znpb-input-number--has-units",
-            size: "narrow",
-            placeholder: computedPlaceholder.value,
-            "onUpdate:modelValue": onTextValueChange,
-            onMousedown: vue.withModifiers(actNumberDrag, ["stop"]),
-            onTouchstartPassive: vue.withModifiers(actNumberDrag, ["prevent"]),
-            onMouseup: deactivateDragNumber,
-            onKeydown: onKeyDown
-          }, {
-            suffix: vue.withCtx(() => [
-              vue.createVNode(_sfc_main$1q, {
-                show: showUnits.value,
-                "onUpdate:show": _cache[2] || (_cache[2] = ($event) => showUnits.value = $event),
-                trigger: "click",
-                placement: "bottom",
-                "append-to": "element",
-                "show-arrows": false,
-                strategy: "fixed",
-                "tooltip-class": "hg-popper--no-padding",
-                "close-on-outside-click": true,
-                class: "znpb-input-number__units-tooltip-wrapper"
-              }, {
-                content: vue.withCtx(() => [
-                  vue.createElementVNode("div", _hoisted_1$15, [
-                    (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.units, (unit, i) => {
-                      return vue.openBlock(), vue.createElementBlock("div", {
-                        key: i,
-                        class: vue.normalizeClass(["znpb-number-unit-list__option hg-popper-list__item", {
-                          [`znpb-number-unit-list__option--selected`]: activeUnit.value === unit
-                        }]),
-                        onClick: vue.withModifiers(($event) => changeUnit(unit), ["stop"])
-                      }, vue.toDisplayString(unit.length ? unit : "-"), 11, _hoisted_2$L);
-                    }), 128)),
-                    vue.createElementVNode("div", {
-                      class: vue.normalizeClass(["znpb-number-unit-list__option hg-popper-list__item", {
-                        [`znpb-number-unit-list__option--selected`]: activeUnit.value === ""
-                      }]),
-                      onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => changeUnit(""), ["stop"]))
-                    }, vue.toDisplayString(i18n__namespace.__("custom", "zionbuilder")), 3)
-                  ])
-                ]),
-                default: vue.withCtx(() => [
-                  vue.createElementVNode("span", {
-                    class: "znpb-input-number__unitValue",
-                    onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => showUnits.value = !showUnits.value, ["stop"]))
-                  }, vue.toDisplayString(localUnit.value.length ? localUnit.value : "-"), 1)
-                ]),
-                _: 1
-              }, 8, ["show"])
-            ]),
-            _: 1
-          }, 8, ["model-value", "placeholder", "onMousedown", "onTouchstartPassive"])
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-input-number-unit"
+          },
+          [
+            vue.createVNode(_sfc_main$1w, {
+              ref_key: "numberUnitInput",
+              ref: numberUnitInput,
+              "model-value": localRawValue.value,
+              class: "znpb-input-number--has-units",
+              size: "narrow",
+              placeholder: computedPlaceholder.value,
+              "onUpdate:modelValue": onTextValueChange,
+              onMousedown: vue.withModifiers(actNumberDrag, ["stop"]),
+              onTouchstartPassive: vue.withModifiers(actNumberDrag, ["prevent"]),
+              onMouseup: deactivateDragNumber,
+              onKeydown: onKeyDown
+            }, {
+              suffix: vue.withCtx(() => [
+                vue.createVNode(_sfc_main$1q, {
+                  show: showUnits.value,
+                  "onUpdate:show": _cache[2] || (_cache[2] = ($event) => showUnits.value = $event),
+                  trigger: "click",
+                  placement: "bottom",
+                  "append-to": "element",
+                  "show-arrows": false,
+                  strategy: "fixed",
+                  "tooltip-class": "hg-popper--no-padding",
+                  "close-on-outside-click": true,
+                  class: "znpb-input-number__units-tooltip-wrapper"
+                }, {
+                  content: vue.withCtx(() => [
+                    vue.createElementVNode("div", _hoisted_1$15, [
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(__props.units, (unit, i) => {
+                          return vue.openBlock(), vue.createElementBlock("div", {
+                            key: i,
+                            class: vue.normalizeClass(["znpb-number-unit-list__option hg-popper-list__item", {
+                              [`znpb-number-unit-list__option--selected`]: activeUnit.value === unit
+                            }]),
+                            onClick: vue.withModifiers(($event) => changeUnit(unit), ["stop"])
+                          }, vue.toDisplayString(unit.length ? unit : "-"), 11, _hoisted_2$I);
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      )),
+                      vue.createElementVNode(
+                        "div",
+                        {
+                          class: vue.normalizeClass(["znpb-number-unit-list__option hg-popper-list__item", {
+                            [`znpb-number-unit-list__option--selected`]: activeUnit.value === ""
+                          }]),
+                          onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => changeUnit(""), ["stop"]))
+                        },
+                        vue.toDisplayString(i18n__namespace.__("custom", "zionbuilder")),
+                        3
+                        /* TEXT, CLASS */
+                      )
+                    ])
+                  ]),
+                  default: vue.withCtx(() => [
+                    vue.createElementVNode(
+                      "span",
+                      {
+                        class: "znpb-input-number__unitValue",
+                        onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => showUnits.value = !showUnits.value, ["stop"]))
+                      },
+                      vue.toDisplayString(localUnit.value.length ? localUnit.value : "-"),
+                      1
+                      /* TEXT */
+                    )
+                  ]),
+                  _: 1
+                  /* STABLE */
+                }, 8, ["show"])
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["model-value", "placeholder"])
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });
-  const InputNumberUnit_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$14 = {
     key: 0,
     class: "znpb-form-label-content"
   };
-  const _hoisted_2$K = { key: 1 };
+  const _hoisted_2$H = { key: 1 };
   const __default__$10 = {
     name: "InputLabel"
   };
@@ -11318,26 +11878,39 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("label", {
-          class: vue.normalizeClass(["znpb-form-label", {
-            [`znpb-form-label--${_ctx.align}`]: _ctx.align,
-            [`znpb-form-label--position-${_ctx.position}`]: _ctx.position
-          }])
-        }, [
-          vue.renderSlot(_ctx.$slots, "default"),
-          _ctx.$slots.label || _ctx.label || _ctx.icon ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$14, [
-            _ctx.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-              key: 0,
-              icon: _ctx.icon
-            }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-            !_ctx.$slots.label ? (vue.openBlock(), vue.createElementBlock("h4", _hoisted_2$K, vue.toDisplayString(_ctx.label), 1)) : vue.createCommentVNode("", true),
-            vue.renderSlot(_ctx.$slots, "label")
-          ])) : vue.createCommentVNode("", true)
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "label",
+          {
+            class: vue.normalizeClass(["znpb-form-label", {
+              [`znpb-form-label--${__props.align}`]: __props.align,
+              [`znpb-form-label--position-${__props.position}`]: __props.position
+            }])
+          },
+          [
+            vue.createCommentVNode(" @slot text "),
+            vue.renderSlot(_ctx.$slots, "default"),
+            _ctx.$slots.label || __props.label || __props.icon ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$14, [
+              __props.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                key: 0,
+                icon: __props.icon
+              }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+              !_ctx.$slots.label ? (vue.openBlock(), vue.createElementBlock(
+                "h4",
+                _hoisted_2$H,
+                vue.toDisplayString(__props.label),
+                1
+                /* TEXT */
+              )) : vue.createCommentVNode("v-if", true),
+              vue.createCommentVNode(" @slot Label text "),
+              vue.renderSlot(_ctx.$slots, "label")
+            ])) : vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const InputLabel_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$13 = { class: "znpb-colorpicker-inner-editor-rgba" };
   const _sfc_main$1n = /* @__PURE__ */ vue.defineComponent({
     __name: "RgbaElement",
@@ -11345,8 +11918,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       function updateValue(property2, newValue) {
         emit("update:modelValue", __spreadProps(__spreadValues({}, props.modelValue), {
           [property2]: newValue
@@ -11359,81 +11933,99 @@ var __async = (__this, __arguments, generator) => {
               var _a2;
               return [
                 vue.createVNode(vue.unref(_sfc_main$1r), {
-                  modelValue: (_a2 = _ctx.modelValue) == null ? void 0 : _a2.r,
+                  modelValue: (_a2 = __props.modelValue) == null ? void 0 : _a2.r,
                   min: 0,
                   max: 255,
                   step: 1,
                   "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => updateValue("r", $event))
                 }, null, 8, ["modelValue"]),
-                vue.createTextVNode(" R ")
+                _cache[4] || (_cache[4] = vue.createTextVNode(
+                  " R ",
+                  -1
+                  /* CACHED */
+                ))
               ];
             }),
             _: 1
+            /* STABLE */
           }),
           vue.createVNode(vue.unref(_sfc_main$1o), null, {
             default: vue.withCtx(() => {
               var _a2;
               return [
                 vue.createVNode(vue.unref(_sfc_main$1r), {
-                  modelValue: (_a2 = _ctx.modelValue) == null ? void 0 : _a2.g,
+                  modelValue: (_a2 = __props.modelValue) == null ? void 0 : _a2.g,
                   min: 0,
                   max: 255,
                   step: 1,
                   "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => updateValue("g", $event))
                 }, null, 8, ["modelValue"]),
-                vue.createTextVNode(" G ")
+                _cache[5] || (_cache[5] = vue.createTextVNode(
+                  " G ",
+                  -1
+                  /* CACHED */
+                ))
               ];
             }),
             _: 1
+            /* STABLE */
           }),
           vue.createVNode(vue.unref(_sfc_main$1o), null, {
             default: vue.withCtx(() => {
               var _a2;
               return [
                 vue.createVNode(vue.unref(_sfc_main$1r), {
-                  modelValue: (_a2 = _ctx.modelValue) == null ? void 0 : _a2.b,
+                  modelValue: (_a2 = __props.modelValue) == null ? void 0 : _a2.b,
                   min: 0,
                   max: 255,
                   step: 1,
                   "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => updateValue("b", $event))
                 }, null, 8, ["modelValue"]),
-                vue.createTextVNode(" B ")
+                _cache[6] || (_cache[6] = vue.createTextVNode(
+                  " B ",
+                  -1
+                  /* CACHED */
+                ))
               ];
             }),
             _: 1
+            /* STABLE */
           }),
           vue.createVNode(vue.unref(_sfc_main$1o), null, {
             default: vue.withCtx(() => {
               var _a2;
               return [
                 vue.createVNode(vue.unref(_sfc_main$1r), {
-                  modelValue: (_a2 = _ctx.modelValue) == null ? void 0 : _a2.a,
+                  modelValue: (_a2 = __props.modelValue) == null ? void 0 : _a2.a,
                   min: 0,
                   max: 1,
                   step: 0.01,
                   "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => updateValue("a", $event))
                 }, null, 8, ["modelValue"]),
-                vue.createTextVNode(" A ")
+                _cache[7] || (_cache[7] = vue.createTextVNode(
+                  " A ",
+                  -1
+                  /* CACHED */
+                ))
               ];
             }),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   });
-  const RgbaElement_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$12 = { class: "znpb-colorpicker-inner-editor-hsla" };
-  const _hoisted_2$J = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-colorpicker-inner-editor__number-unit" }, "%", -1);
-  const _hoisted_3$s = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-colorpicker-inner-editor__number-unit" }, "%", -1);
   const _sfc_main$1m = /* @__PURE__ */ vue.defineComponent({
     __name: "HslaElement",
     props: {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const hsla = vue.computed(() => {
         const { h, s, l, a } = props.modelValue;
         return {
@@ -11460,9 +12052,14 @@ var __async = (__this, __arguments, generator) => {
                 step: 1,
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => updateHex("h", $event))
               }, null, 8, ["modelValue"]),
-              vue.createTextVNode(" H ")
+              _cache[7] || (_cache[7] = vue.createTextVNode(
+                " H ",
+                -1
+                /* CACHED */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }),
           vue.createVNode(vue.unref(_sfc_main$1o), { class: "znpb-colorpicker-inner-editor__number--has-percentage" }, {
             default: vue.withCtx(() => [
@@ -11476,14 +12073,26 @@ var __async = (__this, __arguments, generator) => {
                 max: 100,
                 step: 1
               }, {
-                default: vue.withCtx(() => [
-                  _hoisted_2$J
-                ]),
+                default: vue.withCtx(() => [..._cache[8] || (_cache[8] = [
+                  vue.createElementVNode(
+                    "span",
+                    { class: "znpb-colorpicker-inner-editor__number-unit" },
+                    "%",
+                    -1
+                    /* CACHED */
+                  )
+                ])]),
                 _: 1
+                /* STABLE */
               }, 8, ["modelValue"]),
-              vue.createTextVNode(" S ")
+              _cache[9] || (_cache[9] = vue.createTextVNode(
+                " S ",
+                -1
+                /* CACHED */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }),
           vue.createVNode(vue.unref(_sfc_main$1o), { class: "znpb-colorpicker-inner-editor__number--has-percentage" }, {
             default: vue.withCtx(() => [
@@ -11497,14 +12106,26 @@ var __async = (__this, __arguments, generator) => {
                 max: 100,
                 step: 1
               }, {
-                default: vue.withCtx(() => [
-                  _hoisted_3$s
-                ]),
+                default: vue.withCtx(() => [..._cache[10] || (_cache[10] = [
+                  vue.createElementVNode(
+                    "span",
+                    { class: "znpb-colorpicker-inner-editor__number-unit" },
+                    "%",
+                    -1
+                    /* CACHED */
+                  )
+                ])]),
                 _: 1
+                /* STABLE */
               }, 8, ["modelValue"]),
-              vue.createTextVNode(" L ")
+              _cache[11] || (_cache[11] = vue.createTextVNode(
+                " L ",
+                -1
+                /* CACHED */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }),
           vue.createVNode(vue.unref(_sfc_main$1o), null, {
             default: vue.withCtx(() => [
@@ -11518,15 +12139,19 @@ var __async = (__this, __arguments, generator) => {
                 max: 1,
                 step: 0.01
               }, null, 8, ["modelValue"]),
-              vue.createTextVNode(" A ")
+              _cache[12] || (_cache[12] = vue.createTextVNode(
+                " A ",
+                -1
+                /* CACHED */
+              ))
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   });
-  const HslaElement_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$11 = { class: "znpb-colorpicker-inner-editor-hex" };
   const _sfc_main$1l = /* @__PURE__ */ vue.defineComponent({
     __name: "HexElement",
@@ -11534,8 +12159,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const hexValue = vue.computed({
         get() {
           return props.modelValue;
@@ -11553,31 +12179,36 @@ var __async = (__this, __arguments, generator) => {
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => hexValue.value = $event),
                 class: "znpb-form-colorpicker__input-text"
               }, null, 8, ["modelValue"]),
-              vue.createTextVNode(" HEX ")
+              _cache[1] || (_cache[1] = vue.createTextVNode(
+                " HEX ",
+                -1
+                /* CACHED */
+              ))
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   });
-  const HexElement_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$10 = { class: "znpb-colorpicker-inner-editor" };
-  const _hoisted_2$I = { class: "znpb-colorpicker-inner-editor__colors" };
-  const _hoisted_3$r = { class: "znpb-colorpicker-inner-editor__current-color" };
-  const _hoisted_4$g = { class: "znpb-colorpicker-circle znpb-colorpicker-circle--opacity" };
-  const _hoisted_5$c = { class: "znpb-colorpicker-inner-editor__stripes" };
-  const _hoisted_6$7 = { class: "znpb-colorpicker-inner-editor__rgba" };
-  const _hoisted_7$5 = { class: "znpb-color-picker-change-color znpb-input-number-arrow-wrapper" };
+  const _hoisted_2$G = { class: "znpb-colorpicker-inner-editor__colors" };
+  const _hoisted_3$q = { class: "znpb-colorpicker-inner-editor__current-color" };
+  const _hoisted_4$e = { class: "znpb-colorpicker-circle znpb-colorpicker-circle--opacity" };
+  const _hoisted_5$b = { class: "znpb-colorpicker-inner-editor__stripes" };
+  const _hoisted_6$6 = { class: "znpb-colorpicker-inner-editor__rgba" };
+  const _hoisted_7$4 = { class: "znpb-color-picker-change-color znpb-input-number-arrow-wrapper" };
   const _sfc_main$1k = /* @__PURE__ */ vue.defineComponent({
     __name: "PanelHex",
     props: {
       modelValue: {}
     },
     emits: ["update:modelValue", "update:format"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const { isSupported, open: open2 } = /* @__PURE__ */ useEyeDropper();
       const props = __props;
-      const { isSupported, open: open2, sRGBHex } = useEyeDropper();
+      const emit = __emit;
       function openEyeDropper() {
         return __async(this, null, function* () {
           let result;
@@ -11634,16 +12265,22 @@ var __async = (__this, __arguments, generator) => {
       }
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$10, [
-          vue.createElementVNode("div", _hoisted_2$I, [
-            vue.createElementVNode("div", _hoisted_3$r, [
-              vue.createElementVNode("span", _hoisted_4$g, [
-                vue.createElementVNode("span", {
-                  style: vue.normalizeStyle({ backgroundColor: _ctx.modelValue.hex8 }),
-                  class: "znpb-colorpicker-circle znpb-colorpicker-circle-color"
-                }, null, 4)
+          vue.createElementVNode("div", _hoisted_2$G, [
+            vue.createElementVNode("div", _hoisted_3$q, [
+              vue.createElementVNode("span", _hoisted_4$e, [
+                vue.createElementVNode(
+                  "span",
+                  {
+                    style: vue.normalizeStyle({ backgroundColor: __props.modelValue.hex8 }),
+                    class: "znpb-colorpicker-circle znpb-colorpicker-circle-color"
+                  },
+                  null,
+                  4
+                  /* STYLE */
+                )
               ])
             ]),
-            vue.createElementVNode("div", _hoisted_5$c, [
+            vue.createElementVNode("div", _hoisted_5$b, [
               vue.createVNode(_sfc_main$1t, {
                 modelValue: hslaValue.value,
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => hslaValue.value = $event)
@@ -11654,29 +12291,29 @@ var __async = (__this, __arguments, generator) => {
               }, null, 8, ["modelValue"])
             ])
           ]),
-          vue.createElementVNode("div", _hoisted_6$7, [
+          vue.createElementVNode("div", _hoisted_6$6, [
             vue.unref(isSupported) ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
               key: 0,
               icon: "eyedropper",
               class: "znpb-eyedropper",
               onClick: openEyeDropper
-            })) : vue.createCommentVNode("", true),
-            _ctx.modelValue.format === "rgb" ? (vue.openBlock(), vue.createBlock(_sfc_main$1n, {
+            })) : vue.createCommentVNode("v-if", true),
+            __props.modelValue.format === "rgb" ? (vue.openBlock(), vue.createBlock(_sfc_main$1n, {
               key: 1,
               modelValue: rgbaValue.value,
               "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => rgbaValue.value = $event)
-            }, null, 8, ["modelValue"])) : vue.createCommentVNode("", true),
-            _ctx.modelValue.format === "hsl" ? (vue.openBlock(), vue.createBlock(_sfc_main$1m, {
+            }, null, 8, ["modelValue"])) : vue.createCommentVNode("v-if", true),
+            __props.modelValue.format === "hsl" ? (vue.openBlock(), vue.createBlock(_sfc_main$1m, {
               key: 2,
               modelValue: hslaValue.value,
               "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => hslaValue.value = $event)
-            }, null, 8, ["modelValue"])) : vue.createCommentVNode("", true),
-            _ctx.modelValue.format === "hex" || _ctx.modelValue.format === "hex8" || _ctx.modelValue.format === "name" ? (vue.openBlock(), vue.createBlock(_sfc_main$1l, {
+            }, null, 8, ["modelValue"])) : vue.createCommentVNode("v-if", true),
+            __props.modelValue.format === "hex" || __props.modelValue.format === "hex8" || __props.modelValue.format === "name" ? (vue.openBlock(), vue.createBlock(_sfc_main$1l, {
               key: 3,
               modelValue: hexValue.value,
               "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => hexValue.value = $event)
-            }, null, 8, ["modelValue"])) : vue.createCommentVNode("", true),
-            vue.createElementVNode("div", _hoisted_7$5, [
+            }, null, 8, ["modelValue"])) : vue.createCommentVNode("v-if", true),
+            vue.createElementVNode("div", _hoisted_7$4, [
               vue.createVNode(vue.unref(_sfc_main$1z), {
                 icon: "select",
                 rotate: 180,
@@ -11694,17 +12331,17 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const PanelHex_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$$ = { class: "znpb-form-colorPicker-saturation__white" };
-  const _hoisted_2$H = { class: "znpb-form-colorPicker-saturation__black" };
+  const _hoisted_2$F = { class: "znpb-form-colorPicker-saturation__black" };
   const _sfc_main$1j = /* @__PURE__ */ vue.defineComponent({
     __name: "ColorBoard",
     props: {
       colorObject: {}
     },
     emits: ["update:color-object"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const isDragging = vue.ref(false);
       const root2 = vue.ref(null);
       const boardContent = vue.ref(null);
@@ -11732,7 +12369,7 @@ var __async = (__this, __arguments, generator) => {
       const boardRect = vue.computed(() => {
         return boardContent.value.getBoundingClientRect();
       });
-      const rafDragCircle = rafSchd$1(dragCircle);
+      const rafDragCircle = rafSchd(dragCircle);
       function initiateDrag(event2) {
         isDragging.value = true;
         let { clientX, clientY } = event2;
@@ -11794,33 +12431,50 @@ var __async = (__this, __arguments, generator) => {
         deactivateDragCircle();
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-form-colorPicker-saturation"
-        }, [
-          vue.createElementVNode("div", {
-            ref_key: "boardContent",
-            ref: boardContent,
-            style: vue.normalizeStyle({ background: bgColor.value }),
-            class: "znpb-form-colorPicker-saturation__color",
-            onMousedown: initiateDrag,
-            onMouseup: deactivateDragCircle
-          }, [
-            vue.createElementVNode("div", _hoisted_1$$, [
-              vue.createElementVNode("div", _hoisted_2$H, [
-                vue.createElementVNode("div", {
-                  style: vue.normalizeStyle(pointStyles.value),
-                  class: "znpb-color-picker-pointer"
-                }, null, 4)
-              ])
-            ])
-          ], 36)
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-form-colorPicker-saturation"
+          },
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                ref_key: "boardContent",
+                ref: boardContent,
+                style: vue.normalizeStyle({ background: bgColor.value }),
+                class: "znpb-form-colorPicker-saturation__color",
+                onMousedown: initiateDrag,
+                onMouseup: deactivateDragCircle
+              },
+              [
+                vue.createElementVNode("div", _hoisted_1$$, [
+                  vue.createElementVNode("div", _hoisted_2$F, [
+                    vue.createElementVNode(
+                      "div",
+                      {
+                        style: vue.normalizeStyle(pointStyles.value),
+                        class: "znpb-color-picker-pointer"
+                      },
+                      null,
+                      4
+                      /* STYLE */
+                    )
+                  ])
+                ])
+              ],
+              36
+              /* STYLE, NEED_HYDRATION */
+            )
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });
-  const ColorBoard_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$_ = { class: "znpb-form-colorpicker-inner__panel" };
   const __default__$$ = {
     name: "ColorPicker",
@@ -11833,8 +12487,9 @@ var __async = (__this, __arguments, generator) => {
       zIndex: {}
     },
     emits: ["color-changed"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const computedModelValue = vue.computed({
         get() {
           return props.model;
@@ -11915,30 +12570,33 @@ var __async = (__this, __arguments, generator) => {
         };
       }
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref: "colorPicker",
-          class: vue.normalizeClass(["znpb-form-colorpicker__color-picker-holder", { ["color-picker-holder--has-library"]: _ctx.showLibrary }]),
-          style: vue.normalizeStyle(pickerStyle.value)
-        }, [
-          vue.createVNode(_sfc_main$1j, {
-            "color-object": computedColorObject.value,
-            "onUpdate:colorObject": _cache[0] || (_cache[0] = ($event) => computedColorObject.value = $event)
-          }, null, 8, ["color-object"]),
-          vue.createElementVNode("div", _hoisted_1$_, [
-            vue.createVNode(_sfc_main$1k, {
-              "model-value": computedColorObject.value,
-              "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => computedColorObject.value = $event)
-            }, null, 8, ["model-value"]),
-            vue.renderSlot(_ctx.$slots, "end")
-          ])
-        ], 6);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref: "colorPicker",
+            class: vue.normalizeClass(["znpb-form-colorpicker__color-picker-holder", { ["color-picker-holder--has-library"]: __props.showLibrary }]),
+            style: vue.normalizeStyle(pickerStyle.value)
+          },
+          [
+            vue.createVNode(_sfc_main$1j, {
+              "color-object": computedColorObject.value,
+              "onUpdate:colorObject": _cache[0] || (_cache[0] = ($event) => computedColorObject.value = $event)
+            }, null, 8, ["color-object"]),
+            vue.createElementVNode("div", _hoisted_1$_, [
+              vue.createVNode(_sfc_main$1k, {
+                "model-value": computedColorObject.value,
+                "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => computedColorObject.value = $event)
+              }, null, 8, ["model-value"]),
+              vue.renderSlot(_ctx.$slots, "end")
+            ])
+          ],
+          6
+          /* CLASS, STYLE */
+        );
       };
     }
   }));
-  const Colorpicker_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$Z = /* @__PURE__ */ vue.createElementVNode("div", { class: "znpb-empty-list__border-top-bottom" }, null, -1);
-  const _hoisted_2$G = /* @__PURE__ */ vue.createElementVNode("div", { class: "znpb-empty-list__border-left-right" }, null, -1);
-  const _hoisted_3$q = { class: "znpb-empty-list__content" };
+  const _hoisted_1$Z = { class: "znpb-empty-list__content" };
   const __default__$_ = {
     name: "EmptyList"
   };
@@ -11948,19 +12606,36 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-empty-list__container", { "znpb-empty-list__container--no-margin": _ctx.noMargin }])
-        }, [
-          _hoisted_1$Z,
-          _hoisted_2$G,
-          vue.createElementVNode("div", _hoisted_3$q, [
-            vue.renderSlot(_ctx.$slots, "default")
-          ])
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-empty-list__container", { "znpb-empty-list__container--no-margin": __props.noMargin }])
+          },
+          [
+            _cache[0] || (_cache[0] = vue.createElementVNode(
+              "div",
+              { class: "znpb-empty-list__border-top-bottom" },
+              null,
+              -1
+              /* CACHED */
+            )),
+            _cache[1] || (_cache[1] = vue.createElementVNode(
+              "div",
+              { class: "znpb-empty-list__border-left-right" },
+              null,
+              -1
+              /* CACHED */
+            )),
+            vue.createElementVNode("div", _hoisted_1$Z, [
+              vue.renderSlot(_ctx.$slots, "default")
+            ])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const EmptyList_vue_vue_type_style_index_0_lang = "";
   const __default__$Z = {
     name: "GradientPreview"
   };
@@ -12000,18 +12675,29 @@ var __async = (__this, __arguments, generator) => {
         return style;
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-gradient-preview-transparent", { "gradient-type-rounded": _ctx.round }])
-        }, [
-          vue.createElementVNode("div", {
-            class: vue.normalizeClass(["znpb-gradient-preview", { "gradient-type-rounded": _ctx.round }]),
-            style: vue.normalizeStyle(getGradientPreviewStyle.value)
-          }, null, 6)
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-gradient-preview-transparent", { "gradient-type-rounded": __props.round }])
+          },
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                class: vue.normalizeClass(["znpb-gradient-preview", { "gradient-type-rounded": __props.round }]),
+                style: vue.normalizeStyle(getGradientPreviewStyle.value)
+              },
+              null,
+              6
+              /* CLASS, STYLE */
+            )
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const GradientPreview_vue_vue_type_style_index_0_lang = "";
   const __default__$Y = {
     name: "GradientRadialDragger"
   };
@@ -12031,14 +12717,19 @@ var __async = (__this, __arguments, generator) => {
         return cssStyles;
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("span", {
-          class: vue.normalizeClass(["znpb-color-picker-pointer", { "znpb-color-picker-pointer--active": _ctx.active }]),
-          style: vue.normalizeStyle(radialPosition.value)
-        }, null, 6);
+        return vue.openBlock(), vue.createElementBlock(
+          "span",
+          {
+            class: vue.normalizeClass(["znpb-color-picker-pointer", { "znpb-color-picker-pointer--active": __props.active }]),
+            style: vue.normalizeStyle(radialPosition.value)
+          },
+          null,
+          6
+          /* CLASS, STYLE */
+        );
       };
     }
   }));
-  const GradientRadialDragger_vue_vue_type_style_index_0_scoped_8d8b88dd_lang = "";
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -12060,11 +12751,12 @@ var __async = (__this, __arguments, generator) => {
       activegrad: {}
     },
     emits: ["change-active-gradient", "position-changed"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const gradboard = vue.ref(null);
-      const rafMovePosition = rafSchd$1(onCircleDrag);
-      const rafEndDragging = rafSchd$1(disableDragging);
+      const rafMovePosition = rafSchd(onCircleDrag);
+      const rafEndDragging = rafSchd(disableDragging);
       const radialArr = vue.computed({
         get() {
           return props.config.filter((gradient) => gradient.type === "radial");
@@ -12098,29 +12790,40 @@ var __async = (__this, __arguments, generator) => {
         disableDragging();
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "gradboard",
-          ref: gradboard,
-          class: "znpb-gradient-wrapper__board"
-        }, [
-          vue.createVNode(_sfc_main$1g, { config: _ctx.config }, null, 8, ["config"]),
-          radialArr.value != null ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$Y, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(radialArr.value, (gradient, index2) => {
-              return vue.openBlock(), vue.createBlock(GradientRadialDragger, {
-                key: gradient.type + index2,
-                position: gradient.position,
-                active: _ctx.activegrad === gradient,
-                onMousedown: ($event) => enableDragging(gradient)
-              }, null, 8, ["position", "active", "onMousedown"]);
-            }), 128))
-          ])) : vue.createCommentVNode("", true)
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "gradboard",
+            ref: gradboard,
+            class: "znpb-gradient-wrapper__board"
+          },
+          [
+            vue.createVNode(_sfc_main$1g, { config: __props.config }, null, 8, ["config"]),
+            radialArr.value != null ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$Y, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(radialArr.value, (gradient, index) => {
+                  return vue.openBlock(), vue.createBlock(GradientRadialDragger, {
+                    key: gradient.type + index,
+                    position: gradient.position,
+                    active: __props.activegrad === gradient,
+                    onMousedown: ($event) => enableDragging(gradient)
+                  }, null, 8, ["position", "active", "onMousedown"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])) : vue.createCommentVNode("v-if", true)
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   }));
-  const GradientBoard_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$X = ["title"];
-  const _hoisted_2$F = { class: "znpb-gradient-preview-transparent" };
+  const _hoisted_2$E = { class: "znpb-gradient-preview-transparent" };
   const __default__$W = {
     name: "GradientBarPreview"
   };
@@ -12150,17 +12853,22 @@ var __async = (__this, __arguments, generator) => {
           class: "znpb-gradient-preview-transparent-container",
           title: i18n__namespace.__("Click to add gradient point", "zionbuilder")
         }, [
-          vue.createElementVNode("div", _hoisted_2$F, [
-            vue.createElementVNode("div", {
-              class: "znpb-gradient-preview",
-              style: vue.normalizeStyle(getGradientPreviewStyle.value)
-            }, null, 4)
+          vue.createElementVNode("div", _hoisted_2$E, [
+            vue.createElementVNode(
+              "div",
+              {
+                class: "znpb-gradient-preview",
+                style: vue.normalizeStyle(getGradientPreviewStyle.value)
+              },
+              null,
+              4
+              /* STYLE */
+            )
           ])
         ], 8, _hoisted_1$X);
       };
     }
   }));
-  const GradientBarPreview_vue_vue_type_style_index_0_lang = "";
   const PopperDirective = {
     mounted(el, { value, arg }, vnode) {
       if (value) {
@@ -12254,8 +12962,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue", "color-picker-open"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const gradientCircle = vue.ref(null);
       const colorpickerHolder = vue.ref(null);
       const showPicker = vue.ref(false);
@@ -12328,27 +13037,33 @@ var __async = (__this, __arguments, generator) => {
                 model: computedValue.value.color,
                 "show-library": false,
                 onColorChanged: _cache[0] || (_cache[0] = ($event) => colorValue.value = $event)
-              }, null, 8, ["parent-position", "model"])) : vue.createCommentVNode("", true)
+              }, null, 8, ["parent-position", "model"])) : vue.createCommentVNode("v-if", true)
             ]),
             default: vue.withCtx(() => [
-              vue.createElementVNode("span", {
-                ref_key: "gradientCircle",
-                ref: gradientCircle,
-                class: "znpb-gradient-dragger",
-                style: vue.normalizeStyle(colorPosition.value),
-                onDblclick: openColorPicker
-              }, null, 36)
+              vue.createElementVNode(
+                "span",
+                {
+                  ref_key: "gradientCircle",
+                  ref: gradientCircle,
+                  class: "znpb-gradient-dragger",
+                  style: vue.normalizeStyle(colorPosition.value),
+                  onDblclick: openColorPicker
+                },
+                null,
+                36
+                /* STYLE, NEED_HYDRATION */
+              )
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["show"])
         ]);
       };
     }
   }));
-  const GradientDragger_vue_vue_type_style_index_0_scoped_fb33dcca_lang = "";
   const GradientDragger = /* @__PURE__ */ _export_sfc(_sfc_main$1c, [["__scopeId", "data-v-fb33dcca"]]);
   const _hoisted_1$V = { class: "znpb-gradient-actions" };
-  const _hoisted_2$E = {
+  const _hoisted_2$D = {
     key: 0,
     class: "znpb-gradient-actions__delete"
   };
@@ -12361,8 +13076,9 @@ var __async = (__this, __arguments, generator) => {
       showDelete: { type: Boolean, default: true }
     },
     emits: ["delete-color", "update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const schema = {
         color: {
           type: "colorpicker",
@@ -12399,20 +13115,19 @@ var __async = (__this, __arguments, generator) => {
             schema,
             class: "znpb-gradient-color-form"
           }, null, 8, ["modelValue"]),
-          _ctx.showDelete ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$E, [
+          __props.showDelete ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$D, [
             vue.createVNode(_sfc_main$1z, {
               icon: "close",
               class: "znpb-gradient-actions-delete",
-              onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("delete-color", _ctx.config), ["stop"]))
+              onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("delete-color", __props.config), ["stop"]))
             })
-          ])) : vue.createCommentVNode("", true)
+          ])) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   }));
-  const GradientColorConfig_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$U = { class: "znpb-gradient-colors-legend" };
-  const _hoisted_2$D = { class: "znpb-form__input-title znpb-gradient-colors-legend-item" };
+  const _hoisted_2$C = { class: "znpb-form__input-title znpb-gradient-colors-legend-item" };
   const _hoisted_3$p = { class: "znpb-form__input-title znpb-gradient-colors-legend-item" };
   const __default__$T = {
     name: "GradientBar"
@@ -12422,15 +13137,16 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const root2 = vue.ref(null);
       const gradientBar = vue.ref(null);
       const gradRef = vue.ref(null);
       const colorPickerOpen = vue.ref(false);
       const deletedColorConfig = vue.ref(null);
-      const rafMovePosition = rafSchd$1(onCircleDrag);
-      const rafEndDragging = rafSchd$1(disableDragging);
+      const rafMovePosition = rafSchd(onCircleDrag);
+      const rafEndDragging = rafSchd(disableDragging);
       let draggedCircleIndex;
       let draggedItem;
       const computedValue = vue.computed({
@@ -12451,18 +13167,18 @@ var __async = (__this, __arguments, generator) => {
         return computedValue.value.colors[draggedCircleIndex];
       });
       function onColorConfigUpdate(colorConfig, newValues) {
-        const index2 = computedValue.value.colors.indexOf(colorConfig);
+        const index = computedValue.value.colors.indexOf(colorConfig);
         const updatedValues = computedValue.value.colors.slice(0);
-        updatedValues.splice(index2, 1, newValues);
+        updatedValues.splice(index, 1, newValues);
         computedValue.value = __spreadProps(__spreadValues({}, computedValue.value), {
           colors: updatedValues
         });
       }
       function onDeleteColor(colorConfig) {
-        const index2 = computedValue.value.colors.indexOf(colorConfig);
+        const index = computedValue.value.colors.indexOf(colorConfig);
         const colorsClone = computedValue.value.colors.slice(0);
         deletedColorConfig.value = colorConfig;
-        colorsClone.splice(index2, 1);
+        colorsClone.splice(index, 1);
         computedValue.value = __spreadProps(__spreadValues({}, computedValue.value), {
           colors: colorsClone
         });
@@ -12538,48 +13254,83 @@ var __async = (__this, __arguments, generator) => {
         disableDragging();
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-gradient-bar-colors-wrapper"
-        }, [
-          vue.createElementVNode("div", {
-            ref_key: "gradientBar",
-            ref: gradientBar,
-            class: "znpb-gradient-bar-wrapper"
-          }, [
-            vue.createVNode(_sfc_main$1d, {
-              config: computedValue.value,
-              onClick: addColor
-            }, null, 8, ["config"]),
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(computedValue.value.colors, (colorConfig, i) => {
-              return vue.openBlock(), vue.createBlock(GradientDragger, {
-                key: i,
-                modelValue: colorConfig,
-                "onUpdate:modelValue": ($event) => onColorConfigUpdate(colorConfig, $event),
-                onColorPickerOpen: _cache[0] || (_cache[0] = ($event) => colorPickerOpen.value = $event),
-                onMousedown: ($event) => enableDragging(i)
-              }, null, 8, ["modelValue", "onUpdate:modelValue", "onMousedown"]);
-            }), 128))
-          ], 512),
-          vue.createElementVNode("div", _hoisted_1$U, [
-            vue.createElementVNode("span", _hoisted_2$D, vue.toDisplayString(i18n__namespace.__("Color", "zionbuilder")), 1),
-            vue.createElementVNode("span", _hoisted_3$p, vue.toDisplayString(i18n__namespace.__("Location", "zionbuilder")), 1)
-          ]),
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(sortedColors.value, (colorConfig, i) => {
-            return vue.openBlock(), vue.createBlock(_sfc_main$1b, {
-              key: i,
-              config: colorConfig,
-              "show-delete": sortedColors.value.length > 2,
-              "onUpdate:modelValue": ($event) => onColorConfigUpdate(colorConfig, $event),
-              onDeleteColor: ($event) => onDeleteColor(colorConfig)
-            }, null, 8, ["config", "show-delete", "onUpdate:modelValue", "onDeleteColor"]);
-          }), 128))
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-gradient-bar-colors-wrapper"
+          },
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                ref_key: "gradientBar",
+                ref: gradientBar,
+                class: "znpb-gradient-bar-wrapper"
+              },
+              [
+                vue.createVNode(_sfc_main$1d, {
+                  config: computedValue.value,
+                  onClick: addColor
+                }, null, 8, ["config"]),
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList(computedValue.value.colors, (colorConfig, i) => {
+                    return vue.openBlock(), vue.createBlock(GradientDragger, {
+                      key: i,
+                      modelValue: colorConfig,
+                      "onUpdate:modelValue": ($event) => onColorConfigUpdate(colorConfig, $event),
+                      onColorPickerOpen: _cache[0] || (_cache[0] = ($event) => colorPickerOpen.value = $event),
+                      onMousedown: ($event) => enableDragging(i)
+                    }, null, 8, ["modelValue", "onUpdate:modelValue", "onMousedown"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ],
+              512
+              /* NEED_PATCH */
+            ),
+            vue.createElementVNode("div", _hoisted_1$U, [
+              vue.createElementVNode(
+                "span",
+                _hoisted_2$C,
+                vue.toDisplayString(i18n__namespace.__("Color", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "span",
+                _hoisted_3$p,
+                vue.toDisplayString(i18n__namespace.__("Location", "zionbuilder")),
+                1
+                /* TEXT */
+              )
+            ]),
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(sortedColors.value, (colorConfig, i) => {
+                return vue.openBlock(), vue.createBlock(_sfc_main$1b, {
+                  key: i,
+                  config: colorConfig,
+                  "show-delete": sortedColors.value.length > 2,
+                  "onUpdate:modelValue": ($event) => onColorConfigUpdate(colorConfig, $event),
+                  onDeleteColor: ($event) => onDeleteColor(colorConfig)
+                }, null, 8, ["config", "show-delete", "onUpdate:modelValue", "onDeleteColor"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   }));
-  const GradientBar_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$T = { class: "znpb-forms-input-content" };
   const __default__$S = {
     name: "InputWrapper"
@@ -12607,40 +13358,65 @@ var __async = (__this, __arguments, generator) => {
         return styles;
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-input-wrapper", {
-            [`znpb-input-wrapper--${_ctx.layout}`]: true
-          }]),
-          style: vue.normalizeStyle(computedWrapperStyle.value)
-        }, [
-          _ctx.title ? (vue.openBlock(), vue.createElementBlock("div", {
-            key: 0,
-            class: vue.normalizeClass(["znpb-form__input-title", { "znpb-form__input-title--fake-label": _ctx.fakeLabel }])
-          }, [
-            vue.createElementVNode("span", null, vue.toDisplayString(_ctx.title), 1),
-            _ctx.description ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1q), {
-              key: 0,
-              enterable: false
-            }, {
-              content: vue.withCtx(() => [
-                vue.createElementVNode("div", null, vue.toDisplayString(_ctx.description), 1)
-              ]),
-              default: vue.withCtx(() => [
-                vue.createVNode(vue.unref(_sfc_main$1z), { icon: "question-mark" })
-              ]),
-              _: 1
-            })) : vue.createCommentVNode("", true)
-          ], 2)) : vue.createCommentVNode("", true),
-          vue.createElementVNode("div", _hoisted_1$T, [
-            vue.renderSlot(_ctx.$slots, "default")
-          ])
-        ], 6);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-input-wrapper", {
+              [`znpb-input-wrapper--${__props.layout}`]: true
+            }]),
+            style: vue.normalizeStyle(computedWrapperStyle.value)
+          },
+          [
+            __props.title ? (vue.openBlock(), vue.createElementBlock(
+              "div",
+              {
+                key: 0,
+                class: vue.normalizeClass(["znpb-form__input-title", { "znpb-form__input-title--fake-label": __props.fakeLabel }])
+              },
+              [
+                vue.createElementVNode(
+                  "span",
+                  null,
+                  vue.toDisplayString(__props.title),
+                  1
+                  /* TEXT */
+                ),
+                __props.description ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1q), {
+                  key: 0,
+                  enterable: false
+                }, {
+                  content: vue.withCtx(() => [
+                    vue.createElementVNode(
+                      "div",
+                      null,
+                      vue.toDisplayString(__props.description),
+                      1
+                      /* TEXT */
+                    )
+                  ]),
+                  default: vue.withCtx(() => [
+                    vue.createVNode(vue.unref(_sfc_main$1z), { icon: "question-mark" })
+                  ]),
+                  _: 1
+                  /* STABLE */
+                })) : vue.createCommentVNode("v-if", true)
+              ],
+              2
+              /* CLASS */
+            )) : vue.createCommentVNode("v-if", true),
+            vue.createElementVNode("div", _hoisted_1$T, [
+              vue.createCommentVNode(" @slot Content inside wrapper "),
+              vue.renderSlot(_ctx.$slots, "default")
+            ])
+          ],
+          6
+          /* CLASS, STYLE */
+        );
       };
     }
   }));
-  const InputWrapper_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$S = { class: "znpb-input-range" };
-  const _hoisted_2$C = { class: "znpb-input-range__label" };
+  const _hoisted_2$B = { class: "znpb-input-range__label" };
   const __default__$R = {
     name: "InputRange",
     inheritAttrs: false
@@ -12654,8 +13430,9 @@ var __async = (__this, __arguments, generator) => {
       step: { default: 1 }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const localStep = vue.ref(props.step);
       const optionValue = vue.computed({
         get() {
@@ -12692,43 +13469,51 @@ var __async = (__this, __arguments, generator) => {
             modelValue: optionValue.value,
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => optionValue.value = $event),
             type: "range",
-            min: _ctx.min,
-            max: _ctx.max,
+            min: __props.min,
+            max: __props.max,
             step: localStep.value,
             onKeydown,
             onKeyup: onKeyUp
           }, {
             suffix: vue.withCtx(() => [
-              vue.createElementVNode("div", {
-                class: "znpb-input-range__trackwidth",
-                style: vue.normalizeStyle(trackWidth.value)
-              }, null, 4)
+              vue.createElementVNode(
+                "div",
+                {
+                  class: "znpb-input-range__trackwidth",
+                  style: vue.normalizeStyle(trackWidth.value)
+                },
+                null,
+                4
+                /* STYLE */
+              )
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["modelValue", "min", "max", "step"]),
-          vue.createElementVNode("label", _hoisted_2$C, [
+          vue.createElementVNode("label", _hoisted_2$B, [
             vue.createVNode(vue.unref(_sfc_main$1r), {
               modelValue: optionValue.value,
               "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => optionValue.value = $event),
               class: "znpb-input-range-number",
-              min: _ctx.min,
-              max: _ctx.max,
-              step: _ctx.step,
-              shift_step: _ctx.shift_step,
+              min: __props.min,
+              max: __props.max,
+              step: __props.step,
+              shift_step: __props.shift_step,
               onKeydown,
               onKeyup: onKeyUp
             }, {
               default: vue.withCtx(() => [
+                vue.createCommentVNode(" @slot Content for units "),
                 vue.renderSlot(_ctx.$slots, "default")
               ]),
               _: 3
+              /* FORWARDED */
             }, 8, ["modelValue", "min", "max", "step", "shift_step"])
           ])
         ]);
       };
     }
   }));
-  const InputRange_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$R = { class: "znpb-input-range__label" };
   const __default__$Q = {
     name: "InputRangeDynamic",
@@ -12744,14 +13529,15 @@ var __async = (__this, __arguments, generator) => {
       max: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { expose: __expose, emit }) {
+    setup(__props, { expose: __expose, emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const root2 = vue.ref(null);
       const inputNumberUnit = vue.ref(null);
       const step = vue.ref(1);
       const unit = vue.ref("");
       const customUnit = vue.ref(false);
-      const rafUpdateValue = rafSchd$1(updateValue);
+      const rafUpdateValue = rafSchd(updateValue);
       const activeOption = vue.computed(() => {
         let activeOption2 = null;
         props.options.forEach((option) => {
@@ -12843,51 +13629,63 @@ var __async = (__this, __arguments, generator) => {
         inputNumberUnit
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: vue.normalizeClass(["znpb-input-range znpb-input-range--has-multiple-units", { ["znpb-input-range--disabled"]: disabled.value }])
-        }, [
-          vue.createVNode(_sfc_main$1w, {
-            modelValue: rangeModel.value,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => rangeModel.value = $event),
-            type: "range",
-            min: activeOption.value.min,
-            max: activeOption.value.max,
-            step: step.value,
-            disabled: disabled.value,
-            onKeydown: onRangeKeydown,
-            onKeyup: onRangeKeyUp
-          }, {
-            suffix: vue.withCtx(() => [
-              vue.createElementVNode("div", {
-                class: "znpb-input-range__trackwidth",
-                style: vue.normalizeStyle(trackWidth.value)
-              }, null, 4)
-            ]),
-            _: 1
-          }, 8, ["modelValue", "min", "max", "step", "disabled"]),
-          vue.createElementVNode("label", _hoisted_1$R, [
-            vue.createVNode(_sfc_main$1p, {
-              ref_key: "inputNumberUnit",
-              ref: inputNumberUnit,
-              modelValue: computedValue.value,
-              "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => computedValue.value = $event),
-              class: "znpb-input-range-number",
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: vue.normalizeClass(["znpb-input-range znpb-input-range--has-multiple-units", { ["znpb-input-range--disabled"]: disabled.value }])
+          },
+          [
+            vue.createVNode(_sfc_main$1w, {
+              modelValue: rangeModel.value,
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => rangeModel.value = $event),
+              type: "range",
               min: activeOption.value.min,
               max: activeOption.value.max,
-              units: getUnits.value,
               step: step.value,
-              shift_step: shiftStep.value,
-              onIsCustomUnit: onCustomUnit,
-              onUnitUpdate
-            }, null, 8, ["modelValue", "min", "max", "units", "step", "shift_step"])
-          ])
-        ], 2);
+              disabled: disabled.value,
+              onKeydown: onRangeKeydown,
+              onKeyup: onRangeKeyUp
+            }, {
+              suffix: vue.withCtx(() => [
+                vue.createElementVNode(
+                  "div",
+                  {
+                    class: "znpb-input-range__trackwidth",
+                    style: vue.normalizeStyle(trackWidth.value)
+                  },
+                  null,
+                  4
+                  /* STYLE */
+                )
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["modelValue", "min", "max", "step", "disabled"]),
+            vue.createElementVNode("label", _hoisted_1$R, [
+              vue.createVNode(_sfc_main$1p, {
+                ref_key: "inputNumberUnit",
+                ref: inputNumberUnit,
+                modelValue: computedValue.value,
+                "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => computedValue.value = $event),
+                class: "znpb-input-range-number",
+                min: activeOption.value.min,
+                max: activeOption.value.max,
+                units: getUnits.value,
+                step: step.value,
+                shift_step: shiftStep.value,
+                onIsCustomUnit: onCustomUnit,
+                onUnitUpdate
+              }, null, 8, ["modelValue", "min", "max", "units", "step", "shift_step"])
+            ])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const InputRangeDynamic_vue_vue_type_style_index_0_lang = "";
   const __default__$P = {
     name: "Tab"
   };
@@ -12900,10 +13698,16 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock(vue.Fragment, null, [
-          vue.renderSlot(_ctx.$slots, "title"),
-          vue.renderSlot(_ctx.$slots, "default")
-        ], 64);
+        return vue.openBlock(), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          [
+            vue.renderSlot(_ctx.$slots, "title"),
+            vue.renderSlot(_ctx.$slots, "default")
+          ],
+          64
+          /* STABLE_FRAGMENT */
+        );
       };
     }
   }));
@@ -12919,9 +13723,10 @@ var __async = (__this, __arguments, generator) => {
       hasScroll: { default: () => [] }
     },
     emits: ["update:activeTab", "changed-tab"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       var _a2;
       const props = __props;
+      const emit = __emit;
       const tabs = vue.ref();
       const activeTab = vue.ref(props.activeTab);
       vue.watch(
@@ -12939,7 +13744,7 @@ var __async = (__this, __arguments, generator) => {
           return;
         }
         const props2 = tab.props;
-        return (_a3 = props2 == null ? void 0 : props2.id) != null ? _a3 : kebabCase$1(props2.name);
+        return (_a3 = props2 == null ? void 0 : props2.id) != null ? _a3 : kebabCase(props2.name);
       }
       const slots = vue.useSlots();
       if (slots.default) {
@@ -12964,53 +13769,82 @@ var __async = (__this, __arguments, generator) => {
         emit("update:activeTab", tabId);
       }
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-tabs", { [`znpb-tabs--${_ctx.tabStyle}`]: _ctx.tabStyle }])
-        }, [
-          vue.createElementVNode("div", {
-            class: vue.normalizeClass(["znpb-tabs__header", { [`znpb-tabs__header--${_ctx.titlePosition}`]: _ctx.titlePosition }])
-          }, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(tabs.value, (tab, index2) => {
-              var _a3, _b;
-              return vue.openBlock(), vue.createElementBlock("div", {
-                key: index2,
-                class: vue.normalizeClass(["znpb-tabs__header-item", {
-                  "znpb-tabs__header-item--active": getIdForTab(tab) === activeTab.value,
-                  [`znpb-tabs__header-item--${getIdForTab(tab)}`]: true
-                }]),
-                onClick: ($event) => selectTab(tab)
-              }, [
-                vue.createVNode(RenderComponent, {
-                  "render-slot": (_b = (_a3 = tab == null ? void 0 : tab.children) == null ? void 0 : _a3.title) != null ? _b : tab.props.name
-                }, null, 8, ["render-slot"])
-              ], 10, _hoisted_1$Q);
-            }), 128))
-          ], 2),
-          vue.createElementVNode("div", {
-            class: vue.normalizeClass(["znpb-tabs__content", { "znpb-fancy-scrollbar": _ctx.hasScroll }])
-          }, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(tabs.value, (tab, index2) => {
-              var _a3;
-              return vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
-                key: index2,
-                class: "znpb-tab__wrapper"
-              }, [
-                getIdForTab(tab) === activeTab.value ? (vue.openBlock(), vue.createBlock(RenderComponent, {
-                  key: 0,
-                  "render-slot": (_a3 = tab == null ? void 0 : tab.children) == null ? void 0 : _a3.default
-                }, null, 8, ["render-slot"])) : vue.createCommentVNode("", true)
-              ])), [
-                [vue.vShow, getIdForTab(tab) === activeTab.value]
-              ]);
-            }), 128))
-          ], 2)
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-tabs", { [`znpb-tabs--${__props.tabStyle}`]: __props.tabStyle }])
+          },
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                class: vue.normalizeClass(["znpb-tabs__header", { [`znpb-tabs__header--${__props.titlePosition}`]: __props.titlePosition }])
+              },
+              [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList(tabs.value, (tab, index) => {
+                    var _a3, _b;
+                    return vue.openBlock(), vue.createElementBlock("div", {
+                      key: index,
+                      class: vue.normalizeClass(["znpb-tabs__header-item", {
+                        "znpb-tabs__header-item--active": getIdForTab(tab) === activeTab.value,
+                        [`znpb-tabs__header-item--${getIdForTab(tab)}`]: true
+                      }]),
+                      onClick: ($event) => selectTab(tab)
+                    }, [
+                      vue.createVNode(RenderComponent, {
+                        "render-slot": (_b = (_a3 = tab == null ? void 0 : tab.children) == null ? void 0 : _a3.title) != null ? _b : tab.props.name
+                      }, null, 8, ["render-slot"])
+                    ], 10, _hoisted_1$Q);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ],
+              2
+              /* CLASS */
+            ),
+            vue.createElementVNode(
+              "div",
+              {
+                class: vue.normalizeClass(["znpb-tabs__content", { "znpb-fancy-scrollbar": __props.hasScroll }])
+              },
+              [
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList(tabs.value, (tab, index) => {
+                    var _a3;
+                    return vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
+                      key: index,
+                      class: "znpb-tab__wrapper"
+                    }, [
+                      getIdForTab(tab) === activeTab.value ? (vue.openBlock(), vue.createBlock(RenderComponent, {
+                        key: 0,
+                        "render-slot": (_a3 = tab == null ? void 0 : tab.children) == null ? void 0 : _a3.default
+                      }, null, 8, ["render-slot"])) : vue.createCommentVNode("v-if", true)
+                    ])), [
+                      [vue.vShow, getIdForTab(tab) === activeTab.value]
+                    ]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ],
+              2
+              /* CLASS */
+            )
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const Tabs_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$P = { class: "znpb-gradient-options-wrapper" };
-  const _hoisted_2$B = { class: "znpb-radial-postion-wrapper" };
+  const _hoisted_2$A = { class: "znpb-radial-postion-wrapper" };
   const __default__$N = {
     name: "GradientOptions"
   };
@@ -13019,8 +13853,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const computedValue = vue.computed({
         get() {
           return props.modelValue;
@@ -13103,20 +13938,27 @@ var __async = (__this, __arguments, generator) => {
                             max: 360,
                             step: 1
                           }, {
-                            default: vue.withCtx(() => [
-                              vue.createTextVNode("deg")
-                            ]),
+                            default: vue.withCtx(() => [..._cache[4] || (_cache[4] = [
+                              vue.createTextVNode(
+                                "deg",
+                                -1
+                                /* CACHED */
+                              )
+                            ])]),
                             _: 1
+                            /* STABLE */
                           }, 8, ["modelValue"])
                         ]),
                         _: 1
+                        /* STABLE */
                       }, 8, ["title"])
                     ]),
                     _: 1
+                    /* STABLE */
                   }),
                   vue.createVNode(vue.unref(_sfc_main$16), { name: "Radial" }, {
                     default: vue.withCtx(() => [
-                      vue.createElementVNode("div", _hoisted_2$B, [
+                      vue.createElementVNode("div", _hoisted_2$A, [
                         vue.createVNode(vue.unref(_sfc_main$19), {
                           title: "Position X",
                           layout: "inline"
@@ -13129,13 +13971,19 @@ var __async = (__this, __arguments, generator) => {
                               max: 100,
                               step: 1
                             }, {
-                              default: vue.withCtx(() => [
-                                vue.createTextVNode(" % ")
-                              ]),
+                              default: vue.withCtx(() => [..._cache[5] || (_cache[5] = [
+                                vue.createTextVNode(
+                                  " % ",
+                                  -1
+                                  /* CACHED */
+                                )
+                              ])]),
                               _: 1
+                              /* STABLE */
                             }, 8, ["modelValue"])
                           ]),
                           _: 1
+                          /* STABLE */
                         }),
                         vue.createVNode(vue.unref(_sfc_main$19), {
                           title: "Position Y",
@@ -13149,23 +13997,32 @@ var __async = (__this, __arguments, generator) => {
                               max: 100,
                               step: 1
                             }, {
-                              default: vue.withCtx(() => [
-                                vue.createTextVNode(" % ")
-                              ]),
+                              default: vue.withCtx(() => [..._cache[6] || (_cache[6] = [
+                                vue.createTextVNode(
+                                  " % ",
+                                  -1
+                                  /* CACHED */
+                                )
+                              ])]),
                               _: 1
+                              /* STABLE */
                             }, 8, ["modelValue"])
                           ]),
                           _: 1
+                          /* STABLE */
                         })
                       ])
                     ]),
                     _: 1
+                    /* STABLE */
                   })
                 ]),
                 _: 1
+                /* STABLE */
               }, 8, ["active-tab"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["title"]),
           vue.createVNode(vue.unref(_sfc_main$19), {
             title: i18n__namespace.__("Gradient bar", "zionbuilder")
@@ -13178,12 +14035,12 @@ var __async = (__this, __arguments, generator) => {
               }, null, 8, ["modelValue"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["title"])
         ]);
       };
     }
   }));
-  const GradientOptions_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$O = { class: "znpb-gradient-preview-transparent" };
   const __default__$M = {
     name: "OneGradient"
@@ -13218,15 +14075,20 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$O, [
-          vue.createElementVNode("div", {
-            class: vue.normalizeClass(["znpb-gradient-preview", { "gradient-type-rounded": _ctx.round }]),
-            style: vue.normalizeStyle(getGradientPreviewStyle.value)
-          }, null, 6)
+          vue.createElementVNode(
+            "div",
+            {
+              class: vue.normalizeClass(["znpb-gradient-preview", { "gradient-type-rounded": __props.round }]),
+              style: vue.normalizeStyle(getGradientPreviewStyle.value)
+            },
+            null,
+            6
+            /* CLASS, STYLE */
+          )
         ]);
       };
     }
   }));
-  const OneGradient_vue_vue_type_style_index_0_scoped_37c661dc_lang = "";
   const OneGradient = /* @__PURE__ */ _export_sfc(_sfc_main$13, [["__scopeId", "data-v-37c661dc"]]);
   const __default__$L = {
     name: "GradientElement"
@@ -13249,24 +14111,29 @@ var __async = (__this, __arguments, generator) => {
         }
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-gradient-element", { "znpb-gradient-element--active": _ctx.isActive }])
-        }, [
-          vue.createVNode(OneGradient, {
-            round: true,
-            config: localConfig.value,
-            onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("change-active-gradient", _ctx.config))
-          }, null, 8, ["config"]),
-          _ctx.showRemove ? (vue.openBlock(), vue.createBlock(_sfc_main$1z, {
-            key: 0,
-            icon: "close",
-            onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("delete-gradient"), ["stop"]))
-          })) : vue.createCommentVNode("", true)
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-gradient-element", { "znpb-gradient-element--active": __props.isActive }])
+          },
+          [
+            vue.createVNode(OneGradient, {
+              round: true,
+              config: localConfig.value,
+              onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("change-active-gradient", __props.config))
+            }, null, 8, ["config"]),
+            __props.showRemove ? (vue.openBlock(), vue.createBlock(_sfc_main$1z, {
+              key: 0,
+              icon: "close",
+              onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("delete-gradient"), ["stop"]))
+            })) : vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const GradientElement_vue_vue_type_style_index_0_lang = "";
   const cache = vue.ref({});
   function useSelectServerData() {
     let requester = vue.inject("serverRequester", null);
@@ -13306,11 +14173,11 @@ var __async = (__this, __arguments, generator) => {
     }
     function getItems(config) {
       const saveItemsCache = generateItemsCacheKey(vue.toRaw(config));
-      return get(items.value, saveItemsCache, []);
+      return get$1(items.value, saveItemsCache, []);
     }
     function getItem(config, id) {
       const saveItemsCache = generateItemsCacheKey(vue.toRaw(config));
-      const cachedItems = get(items.value, saveItemsCache, []);
+      const cachedItems = get$1(items.value, saveItemsCache, []);
       return cachedItems.find((item) => item.id === id);
     }
     function generateItemsCacheKey(config) {
@@ -13330,8 +14197,8 @@ var __async = (__this, __arguments, generator) => {
       });
     }
     function saveItems(key, newItems) {
-      const existingItems = get(items.value, key, []);
-      items.value[key] = unionBy$1(existingItems, newItems, "id");
+      const existingItems = get$1(items.value, key, []);
+      items.value[key] = unionBy(existingItems, newItems, "id");
     }
     return {
       fetch: fetch2,
@@ -13343,10 +14210,10 @@ var __async = (__this, __arguments, generator) => {
     key: 1,
     class: "znpb-option-selectOptionPlaceholderText"
   };
-  const _hoisted_2$A = { class: "znpb-inputDropdownIcon-wrapper" };
+  const _hoisted_2$z = { class: "znpb-inputDropdownIcon-wrapper" };
   const _hoisted_3$o = { class: "znpb-option-selectOptionListWrapper" };
-  const _hoisted_4$f = ["onClick"];
-  const _hoisted_5$b = {
+  const _hoisted_4$d = ["onClick"];
+  const _hoisted_5$a = {
     key: 1,
     class: "znpb-option-selectOptionListNoMoreText"
   };
@@ -13368,8 +14235,9 @@ var __async = (__this, __arguments, generator) => {
       filter_id: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const optionWrapper = vue.ref(null);
       const searchInput = vue.ref(null);
       const searchKeyword = vue.ref("");
@@ -13566,8 +14434,7 @@ var __async = (__this, __arguments, generator) => {
           return {
             fontFamily: font
           };
-        } else
-          return null;
+        } else return null;
       }
       function addItem() {
         onOptionSelect({
@@ -13592,7 +14459,7 @@ var __async = (__this, __arguments, generator) => {
           show: showDropdown.value,
           "onUpdate:show": _cache[2] || (_cache[2] = ($event) => showDropdown.value = $event),
           "append-to": "element",
-          placement: _ctx.placement,
+          placement: __props.placement,
           trigger: "click",
           "close-on-outside-click": true,
           "close-on-escape": true,
@@ -13621,33 +14488,42 @@ var __async = (__this, __arguments, generator) => {
         }, {
           content: vue.withCtx(() => [
             vue.createElementVNode("div", _hoisted_3$o, [
-              _ctx.filterable || _ctx.addable ? (vue.openBlock(), vue.createBlock(_component_BaseInput, {
+              __props.filterable || __props.addable ? (vue.openBlock(), vue.createBlock(_component_BaseInput, {
                 key: 0,
                 ref_key: "searchInput",
                 ref: searchInput,
                 modelValue: searchKeyword.value,
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchKeyword.value = $event),
                 class: "znpb-option-selectOptionListSearchInput",
-                placeholder: _ctx.addable ? i18n__namespace.__("Search or add new", "zionbuilder") : i18n__namespace.__("Search", "zionbuilder"),
+                placeholder: __props.addable ? i18n__namespace.__("Search or add new", "zionbuilder") : i18n__namespace.__("Search", "zionbuilder"),
                 clearable: true,
                 icon: "search",
                 autocomplete: "off",
                 onKeydown: onInputKeydown
-              }, vue.createSlots({ _: 2 }, [
-                _ctx.addable && searchKeyword.value.length > 0 ? {
+              }, vue.createSlots({
+                _: 2
+                /* DYNAMIC */
+              }, [
+                __props.addable && searchKeyword.value.length > 0 ? {
                   name: "after-input",
                   fn: vue.withCtx(() => [
-                    vue.withDirectives(vue.createVNode(_component_Icon, {
-                      icon: "plus",
-                      class: "znpb-inputAddableIcon",
-                      onClick: vue.withModifiers(addItem, ["stop", "prevent"])
-                    }, null, 8, ["onClick"]), [
+                    vue.withDirectives(vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "plus",
+                        class: "znpb-inputAddableIcon",
+                        onClick: vue.withModifiers(addItem, ["stop", "prevent"])
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
                       [_directive_znpb_tooltip, i18n__namespace.__("Add new item", "zionbuilder")]
                     ])
                   ]),
                   key: "0"
                 } : void 0
-              ]), 1032, ["modelValue", "placeholder"])) : vue.createCommentVNode("", true),
+              ]), 1032, ["modelValue", "placeholder"])) : vue.createCommentVNode("v-if", true),
               vue.createVNode(_component_ListScroll, {
                 loading: loading.value,
                 "onUpdate:loading": _cache[1] || (_cache[1] = ($event) => loading.value = $event),
@@ -13655,51 +14531,76 @@ var __async = (__this, __arguments, generator) => {
                 onScrollEnd
               }, {
                 default: vue.withCtx(() => [
-                  (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(visibleItems.value, (option) => {
-                    return vue.openBlock(), vue.createElementBlock("div", {
-                      key: option.id,
-                      class: vue.normalizeClass(["znpb-menuListItem", {
-                        "znpb-menuListItem--selected": !option.is_label && option.isSelected,
-                        "znpb-menuListItem--is-label": option.is_label,
-                        "znpb-menuListItem--is-group_item": option.is_group_item
-                      }]),
-                      style: vue.normalizeStyle(getStyle(option.name)),
-                      onClick: vue.withModifiers(($event) => onOptionSelect(option), ["stop"])
-                    }, vue.toDisplayString(option.name), 15, _hoisted_4$f);
-                  }), 128))
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(visibleItems.value, (option) => {
+                      return vue.openBlock(), vue.createElementBlock("div", {
+                        key: option.id,
+                        class: vue.normalizeClass(["znpb-menuListItem", {
+                          "znpb-menuListItem--selected": !option.is_label && option.isSelected,
+                          "znpb-menuListItem--is-label": option.is_label,
+                          "znpb-menuListItem--is-group_item": option.is_group_item
+                        }]),
+                        style: vue.normalizeStyle(getStyle(option.name)),
+                        onClick: vue.withModifiers(($event) => onOptionSelect(option), ["stop"])
+                      }, vue.toDisplayString(option.name), 15, _hoisted_4$d);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
                 ]),
                 _: 1
+                /* STABLE */
               }, 8, ["loading"]),
-              stopSearch.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$b, vue.toDisplayString(i18n__namespace.__("no more items", "zionbuilder")), 1)) : vue.createCommentVNode("", true)
+              stopSearch.value ? (vue.openBlock(), vue.createElementBlock(
+                "div",
+                _hoisted_5$a,
+                vue.toDisplayString(i18n__namespace.__("no more items", "zionbuilder")),
+                1
+                /* TEXT */
+              )) : vue.createCommentVNode("v-if", true)
             ])
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("div", {
-              ref_key: "optionWrapper",
-              ref: optionWrapper,
-              class: vue.normalizeClass(["znpb-option-selectOptionPlaceholder", {
-                [`znpb-option-selectOptionPlaceholder--real`]: showPlaceholder.value
-              }])
-            }, [
-              loadingTitle.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
-                key: 0,
-                size: 14
-              })) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$N, vue.toDisplayString(dropdownPlaceholder.value), 1)),
-              vue.createElementVNode("span", _hoisted_2$A, [
-                vue.createVNode(_component_Icon, {
-                  icon: "select",
-                  class: "znpb-inputDropdownIcon",
-                  rotate: showDropdown.value ? "180" : false
-                }, null, 8, ["rotate"])
-              ])
-            ], 2)
+            vue.createElementVNode(
+              "div",
+              {
+                ref_key: "optionWrapper",
+                ref: optionWrapper,
+                class: vue.normalizeClass(["znpb-option-selectOptionPlaceholder", {
+                  [`znpb-option-selectOptionPlaceholder--real`]: showPlaceholder.value
+                }])
+              },
+              [
+                loadingTitle.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
+                  key: 0,
+                  size: 14
+                })) : (vue.openBlock(), vue.createElementBlock(
+                  "span",
+                  _hoisted_1$N,
+                  vue.toDisplayString(dropdownPlaceholder.value),
+                  1
+                  /* TEXT */
+                )),
+                vue.createElementVNode("span", _hoisted_2$z, [
+                  vue.createVNode(_component_Icon, {
+                    icon: "select",
+                    class: "znpb-inputDropdownIcon",
+                    rotate: showDropdown.value ? "180" : false
+                  }, null, 8, ["rotate"])
+                ])
+              ],
+              2
+              /* CLASS */
+            )
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["show", "placement", "tooltip-style"]);
       };
     }
   });
-  const InputSelect_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$M = { class: "znpb-preset-input-wrapper" };
   const __default__$K = {
     name: "PresetInput"
@@ -13709,8 +14610,9 @@ var __async = (__this, __arguments, generator) => {
       isGradient: { type: Boolean, default: true }
     },
     emits: ["save-preset", "cancel"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const presetName = vue.ref("");
       const gradientType = vue.ref("local");
       const hasError = vue.ref(false);
@@ -13747,11 +14649,14 @@ var __async = (__this, __arguments, generator) => {
           vue.createVNode(vue.unref(_sfc_main$1w), {
             modelValue: presetName.value,
             "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => presetName.value = $event),
-            placeholder: _ctx.isGradient ? i18n__namespace.__("name", "zionbuilder") : i18n__namespace.__("Global color name", "zionbuilder"),
-            class: vue.normalizeClass({ "znpb-backgroundGradient__nameInput": _ctx.isGradient }),
+            placeholder: __props.isGradient ? i18n__namespace.__("name", "zionbuilder") : i18n__namespace.__("Global color name", "zionbuilder"),
+            class: vue.normalizeClass({ "znpb-backgroundGradient__nameInput": __props.isGradient }),
             error: hasError.value
-          }, vue.createSlots({ _: 2 }, [
-            _ctx.isGradient ? {
+          }, vue.createSlots({
+            _: 2
+            /* DYNAMIC */
+          }, [
+            __props.isGradient ? {
               name: "prepend",
               fn: vue.withCtx(() => [
                 vue.createVNode(vue.unref(_sfc_main$11), {
@@ -13769,7 +14674,7 @@ var __async = (__this, __arguments, generator) => {
                 vue.createVNode(vue.unref(_sfc_main$1z), {
                   icon: "check",
                   onMousedown: vue.withModifiers(savePreset, ["stop"])
-                }, null, 8, ["onMousedown"]),
+                }),
                 vue.createVNode(vue.unref(_sfc_main$1z), {
                   icon: "close",
                   onMousedown: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("cancel", true), ["prevent"]))
@@ -13778,28 +14683,40 @@ var __async = (__this, __arguments, generator) => {
               key: "1"
             }
           ]), 1032, ["modelValue", "placeholder", "class", "error"]),
-          _ctx.isGradient ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-            vue.createVNode(vue.unref(_sfc_main$1z), {
-              icon: "check",
-              class: "znpb-backgroundGradient__action",
-              onClick: vue.withModifiers(savePreset, ["stop"])
-            }, null, 8, ["onClick"]),
-            vue.createVNode(vue.unref(_sfc_main$1z), {
-              icon: "close",
-              class: "znpb-backgroundGradient__action",
-              onClick: _cache[3] || (_cache[3] = vue.withModifiers(($event) => _ctx.$emit("cancel", true), ["stop"]))
-            })
-          ], 64)) : vue.createCommentVNode("", true)
+          vue.createCommentVNode(" Actions "),
+          __props.isGradient ? (vue.openBlock(), vue.createElementBlock(
+            vue.Fragment,
+            { key: 0 },
+            [
+              vue.createVNode(vue.unref(_sfc_main$1z), {
+                icon: "check",
+                class: "znpb-backgroundGradient__action",
+                onClick: vue.withModifiers(savePreset, ["stop"])
+              }),
+              vue.createVNode(vue.unref(_sfc_main$1z), {
+                icon: "close",
+                class: "znpb-backgroundGradient__action",
+                onClick: _cache[3] || (_cache[3] = vue.withModifiers(($event) => _ctx.$emit("cancel", true), ["stop"]))
+              })
+            ],
+            64
+            /* STABLE_FRAGMENT */
+          )) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   }));
-  const PresetInput_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$$ = /* @__PURE__ */ vue.defineComponent({
     __name: "Draggable",
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", null, vue.toDisplayString(i18n__namespace.__("Draggable", "zionbuilder")), 1);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          null,
+          vue.toDisplayString(i18n__namespace.__("Draggable", "zionbuilder")),
+          1
+          /* TEXT */
+        );
       };
     }
   });
@@ -13825,7 +14742,7 @@ var __async = (__this, __arguments, generator) => {
           iframes.push(iframe);
         }
       });
-      return globalThis;
+      return void 0;
     };
     return {
       getHosts,
@@ -13932,7 +14849,7 @@ var __async = (__this, __arguments, generator) => {
     const memoizedMove = memoizeOne((event2) => {
       callbacks.onMove(event2);
     });
-    const move = rafSchd$1(memoizedMove);
+    const move = rafSchd(memoizedMove);
     const cancel = () => {
       move.cancel();
     };
@@ -14403,8 +15320,7 @@ var __async = (__this, __arguments, generator) => {
               draggedValueModel = props.duplicateCallback && duplicateValue ? props.duplicateCallback(props.modelValue[startIndex]) : props.modelValue[startIndex];
               if (from === to && startIndex !== newIndex && !duplicateValue) {
                 updatePositionInList(startIndex, updatedNewIndex);
-              } else if (from === to && startIndex === newIndex && !duplicateValue)
-                ;
+              } else if (from === to && startIndex === newIndex && !duplicateValue) ;
               else {
                 if (!duplicateValue) {
                   removeItemFromList(startIndex);
@@ -14444,17 +15360,17 @@ var __async = (__this, __arguments, generator) => {
           emit("update:modelValue", list);
         }
       };
-      const addItemToList = (item, index2) => {
+      const addItemToList = (item, index) => {
         if (props.modelValue) {
           const list = [...props.modelValue];
-          list.splice(index2, 0, item);
+          list.splice(index, 0, item);
           emit("update:modelValue", list);
         }
       };
-      const removeItemFromList = (index2) => {
+      const removeItemFromList = (index) => {
         if (props.modelValue) {
           const list = [...props.modelValue];
-          list.splice(index2, 1);
+          list.splice(index, 1);
           emit("update:modelValue", list);
         }
       };
@@ -14477,12 +15393,12 @@ var __async = (__this, __arguments, generator) => {
         const validItem = closest(target, props.draggable, sortableContainer.value);
         const sortableDomElements = getDomElementsFromSortableItems();
         const item = sortableDomElements.includes(validItem) ? validItem : false;
-        const index2 = sortableDomElements.indexOf(item);
+        const index = sortableDomElements.indexOf(item);
         return {
           container: sortableContainer.value,
           item,
-          index: index2,
-          newIndex: index2,
+          index,
+          newIndex: index,
           group: groupInfo
         };
       };
@@ -14518,8 +15434,7 @@ var __async = (__this, __arguments, generator) => {
         if (target) {
           const to2 = closest(target, getSortableContainer);
           const sameContainer = to2 === sortableContainer.value;
-          if (sameContainer && !props.sort)
-            ;
+          if (sameContainer && !props.sort) ;
           else if (to2) {
             const targetVM = to2.__SORTABLE_INFO__;
             const overItemInfo = targetVM.getInfoFromTarget(target);
@@ -14587,9 +15502,9 @@ var __async = (__this, __arguments, generator) => {
           return el.el;
         });
       };
-      const getItemFromList = (index2) => {
+      const getItemFromList = (index) => {
         const sortableDomElements = getDomElementsFromSortableItems();
-        return sortableDomElements[index2];
+        return sortableDomElements[index];
       };
       const getSortableContainer = (target) => {
         return target && target.__SORTABLE_INFO__ && target.__SORTABLE_INFO__.canPut(dragItemInfo);
@@ -14684,7 +15599,7 @@ var __async = (__this, __arguments, generator) => {
     }
   };
   const _hoisted_1$L = { class: "znpb-gradient-wrapper" };
-  const _hoisted_2$z = { class: "znpb-gradient-elements-wrapper" };
+  const _hoisted_2$y = { class: "znpb-gradient-elements-wrapper" };
   const __default__$J = {
     name: "GradientGenerator"
   };
@@ -14694,8 +15609,9 @@ var __async = (__this, __arguments, generator) => {
       saveToLibrary: { type: Boolean, default: true }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const showPresetInput = vue.ref(false);
       const activeGradientIndex = vue.ref(0);
       const { addLocalGradient, addGlobalGradient } = useBuilderOptionsStore();
@@ -14754,8 +15670,8 @@ var __async = (__this, __arguments, generator) => {
           changeActive(newGradientIndex);
         });
       }
-      function changeActive(index2) {
-        activeGradientIndex.value = index2;
+      function changeActive(index) {
+        activeGradientIndex.value = index;
       }
       function changePosition(position) {
         activeGradient.value = __spreadProps(__spreadValues({}, activeGradient.value), {
@@ -14767,7 +15683,7 @@ var __async = (__this, __arguments, generator) => {
       }
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$L, [
-          !_ctx.saveToLibrary ? (vue.openBlock(), vue.createBlock(_sfc_main$1e, {
+          !__props.saveToLibrary ? (vue.openBlock(), vue.createBlock(_sfc_main$1e, {
             key: 0,
             config: computedValue.value,
             activegrad: activeGradient.value,
@@ -14775,11 +15691,17 @@ var __async = (__this, __arguments, generator) => {
             onPositionChanged: _cache[1] || (_cache[1] = ($event) => changePosition($event))
           }, null, 8, ["config", "activegrad"])) : (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1x), { key: 1 }, {
             actions: vue.withCtx(() => [
-              !showPresetInput.value ? (vue.openBlock(), vue.createElementBlock("span", {
-                key: 0,
-                class: "znpb-gradient__show-preset",
-                onClick: _cache[4] || (_cache[4] = ($event) => showPresetInput.value = true)
-              }, vue.toDisplayString(i18n__namespace.__("Save to library", "zionbuilder")), 1)) : (vue.openBlock(), vue.createBlock(_sfc_main$10, {
+              !showPresetInput.value ? (vue.openBlock(), vue.createElementBlock(
+                "span",
+                {
+                  key: 0,
+                  class: "znpb-gradient__show-preset",
+                  onClick: _cache[4] || (_cache[4] = ($event) => showPresetInput.value = true)
+                },
+                vue.toDisplayString(i18n__namespace.__("Save to library", "zionbuilder")),
+                1
+                /* TEXT */
+              )) : (vue.openBlock(), vue.createBlock(_sfc_main$10, {
                 key: 1,
                 onSavePreset: addGlobalPattern,
                 onCancel: _cache[5] || (_cache[5] = ($event) => showPresetInput.value = false)
@@ -14790,7 +15712,7 @@ var __async = (__this, __arguments, generator) => {
                 "bg-size": 30,
                 class: "znpb-gradient-wrapper__delete-gradient",
                 onClick: vue.withModifiers(deleteGradientValue, ["stop"])
-              }, null, 8, ["onClick"])) : vue.createCommentVNode("", true)
+              })) : vue.createCommentVNode("v-if", true)
             ]),
             default: vue.withCtx(() => [
               vue.createVNode(_sfc_main$1e, {
@@ -14801,8 +15723,9 @@ var __async = (__this, __arguments, generator) => {
               }, null, 8, ["config", "activegrad"])
             ]),
             _: 1
+            /* STABLE */
           })),
-          vue.createElementVNode("div", _hoisted_2$z, [
+          vue.createElementVNode("div", _hoisted_2$y, [
             vue.createVNode(vue.unref(_sfc_main$_), {
               modelValue: computedValue.value,
               "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => computedValue.value = $event),
@@ -14815,19 +15738,26 @@ var __async = (__this, __arguments, generator) => {
               axis: "horizontal"
             }, {
               default: vue.withCtx(() => [
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(computedValue.value, (gradient, i) => {
-                  return vue.openBlock(), vue.createBlock(_sfc_main$12, {
-                    key: i,
-                    class: "znpb-gradient-elements__delete-button",
-                    config: gradient,
-                    "show-remove": computedValue.value.length > 1,
-                    "is-active": activeGradientIndex.value === i,
-                    onChangeActiveGradient: ($event) => changeActive(i),
-                    onDeleteGradient: ($event) => deleteGradient(gradient)
-                  }, null, 8, ["config", "show-remove", "is-active", "onChangeActiveGradient", "onDeleteGradient"]);
-                }), 128))
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList(computedValue.value, (gradient, i) => {
+                    return vue.openBlock(), vue.createBlock(_sfc_main$12, {
+                      key: i,
+                      class: "znpb-gradient-elements__delete-button",
+                      config: gradient,
+                      "show-remove": computedValue.value.length > 1,
+                      "is-active": activeGradientIndex.value === i,
+                      onChangeActiveGradient: ($event) => changeActive(i),
+                      onDeleteGradient: ($event) => deleteGradient(gradient)
+                    }, null, 8, ["config", "show-remove", "is-active", "onChangeActiveGradient", "onDeleteGradient"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["modelValue"]),
             vue.createVNode(_sfc_main$1z, {
               icon: "plus",
@@ -14843,7 +15773,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   }));
-  const GradientGenerator_vue_vue_type_style_index_0_lang = "";
   const __default__$I = {
     name: "LibraryElement"
   };
@@ -14854,38 +15783,50 @@ var __async = (__this, __arguments, generator) => {
       hasInput: { type: Boolean }
     },
     emits: ["close-library"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const onstart = vue.ref(true);
       const expand = vue.ref(false);
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-form-library-inner-pattern-wrapper", {
-            "znpb-form-library-inner-pattern-wrapper--start": onstart.value,
-            "znpb-form-library-inner-pattern-wrapper--stretch": !expand.value,
-            "znpb-form-library-inner-pattern-wrapper--expand": expand.value,
-            "znpb-form-library-inner-pattern-wrapper--hasInput": _ctx.hasInput
-          }])
-        }, [
-          !_ctx.hasInput ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-            _ctx.animation ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-              key: 0,
-              icon: "more",
-              class: "znpb-form-library-inner-action-icon",
-              onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => (expand.value = !expand.value, onstart.value = false), ["stop"]))
-            })) : vue.createCommentVNode("", true),
-            _ctx.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-              key: 1,
-              icon: _ctx.icon,
-              class: "znpb-form-library-inner-action-icon",
-              onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => emit("close-library"), ["stop"]))
-            }, null, 8, ["icon"])) : vue.createCommentVNode("", true)
-          ], 64)) : vue.createCommentVNode("", true),
-          vue.renderSlot(_ctx.$slots, "default")
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-form-library-inner-pattern-wrapper", {
+              "znpb-form-library-inner-pattern-wrapper--start": onstart.value,
+              "znpb-form-library-inner-pattern-wrapper--stretch": !expand.value,
+              "znpb-form-library-inner-pattern-wrapper--expand": expand.value,
+              "znpb-form-library-inner-pattern-wrapper--hasInput": __props.hasInput
+            }])
+          },
+          [
+            !__props.hasInput ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 0 },
+              [
+                __props.animation ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                  key: 0,
+                  icon: "more",
+                  class: "znpb-form-library-inner-action-icon",
+                  onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => (expand.value = !expand.value, onstart.value = false), ["stop"]))
+                })) : vue.createCommentVNode("v-if", true),
+                __props.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                  key: 1,
+                  icon: __props.icon,
+                  class: "znpb-form-library-inner-action-icon",
+                  onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => emit("close-library"), ["stop"]))
+                }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true)
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : vue.createCommentVNode("v-if", true),
+            vue.renderSlot(_ctx.$slots, "default")
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const LibraryElement_vue_vue_type_style_index_0_lang = "";
   const __default__$H = {
     name: "Label"
   };
@@ -14896,18 +15837,23 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("span", {
-          class: vue.normalizeClass(["znpb-label", { [`znpb-label--${_ctx.type}`]: _ctx.type }])
-        }, vue.toDisplayString(_ctx.text), 3);
+        return vue.openBlock(), vue.createElementBlock(
+          "span",
+          {
+            class: vue.normalizeClass(["znpb-label", { [`znpb-label--${__props.type}`]: __props.type }])
+          },
+          vue.toDisplayString(__props.text),
+          3
+          /* TEXT, CLASS */
+        );
       };
     }
   }));
-  const Label_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$K = {
     key: 0,
     class: "znpb-form-library-grid__panel-content-message"
   };
-  const _hoisted_2$y = {
+  const _hoisted_2$x = {
     key: 1,
     class: "znpb-form-library-grid__panel-content znpb-form-library-grid__panel-content--no-pd znpb-fancy-scrollbar"
   };
@@ -14915,11 +15861,11 @@ var __async = (__this, __arguments, generator) => {
     key: 0,
     class: "znpb-colorpicker-global-wrapper--pro"
   };
-  const _hoisted_4$e = {
+  const _hoisted_4$c = {
     key: 0,
     class: "znpb-form-library-grid__panel-content-message"
   };
-  const _hoisted_5$a = {
+  const _hoisted_5$9 = {
     key: 1,
     class: "znpb-form-library-grid__panel-content znpb-form-library-grid__panel-content--no-pd znpb-fancy-scrollbar"
   };
@@ -14931,7 +15877,8 @@ var __async = (__this, __arguments, generator) => {
       model: {}
     },
     emits: ["activate-gradient", "close-library"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const updateValueByPath = vue.inject("updateValueByPath");
       function getPro() {
         if (window.ZBCommonData !== void 0) {
@@ -14974,114 +15921,151 @@ var __async = (__this, __arguments, generator) => {
               default: vue.withCtx(() => [
                 vue.createVNode(_component_Tab, { name: "Local" }, {
                   default: vue.withCtx(() => [
-                    getLocalGradients.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$K, vue.toDisplayString(i18n__namespace.__("No local gradients were found", "zionbuilder")), 1)) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$y, [
-                      (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(getLocalGradients.value, (gradient, i) => {
-                        return vue.openBlock(), vue.createBlock(_sfc_main$1g, {
-                          key: i,
-                          config: gradient.config,
-                          round: true,
-                          onClick: ($event) => _ctx.$emit("activate-gradient", gradient.config)
-                        }, null, 8, ["config", "onClick"]);
-                      }), 128))
+                    getLocalGradients.value.length === 0 ? (vue.openBlock(), vue.createElementBlock(
+                      "div",
+                      _hoisted_1$K,
+                      vue.toDisplayString(i18n__namespace.__("No local gradients were found", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$x, [
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(getLocalGradients.value, (gradient, i) => {
+                          return vue.openBlock(), vue.createBlock(_sfc_main$1g, {
+                            key: i,
+                            config: gradient.config,
+                            round: true,
+                            onClick: ($event) => _ctx.$emit("activate-gradient", gradient.config)
+                          }, null, 8, ["config", "onClick"]);
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      ))
                     ]))
                   ]),
                   _: 1
+                  /* STABLE */
                 }),
                 vue.createVNode(_component_Tab, { name: "Global" }, {
                   default: vue.withCtx(() => [
                     !vue.unref(isPro) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$n, [
-                      vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("Global colors are available in", "zionbuilder")) + " ", 1),
+                      vue.createTextVNode(
+                        vue.toDisplayString(i18n__namespace.__("Global colors are available in", "zionbuilder")) + " ",
+                        1
+                        /* TEXT */
+                      ),
                       vue.createVNode(vue.unref(_sfc_main$X), {
                         text: i18n__namespace.__("pro", "zionbuilder"),
                         type: "pro"
                       }, null, 8, ["text"])
-                    ])) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 1 }, [
-                      getGlobalGradients.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$e, vue.toDisplayString(i18n__namespace.__("No global gradients were found", "zionbuilder")), 1)) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$a, [
-                        (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(getGlobalGradients.value, (gradient, i) => {
-                          return vue.withDirectives((vue.openBlock(), vue.createBlock(_sfc_main$1g, {
-                            key: i,
-                            config: gradient.config,
-                            round: true,
-                            onClick: ($event) => onGlobalGradientSelected(gradient)
-                          }, null, 8, ["config", "onClick"])), [
-                            [_directive_znpb_tooltip, gradient.name]
-                          ]);
-                        }), 128))
-                      ]))
-                    ], 64))
+                    ])) : (vue.openBlock(), vue.createElementBlock(
+                      vue.Fragment,
+                      { key: 1 },
+                      [
+                        getGlobalGradients.value.length === 0 ? (vue.openBlock(), vue.createElementBlock(
+                          "div",
+                          _hoisted_4$c,
+                          vue.toDisplayString(i18n__namespace.__("No global gradients were found", "zionbuilder")),
+                          1
+                          /* TEXT */
+                        )) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$9, [
+                          (vue.openBlock(true), vue.createElementBlock(
+                            vue.Fragment,
+                            null,
+                            vue.renderList(getGlobalGradients.value, (gradient, i) => {
+                              return vue.withDirectives((vue.openBlock(), vue.createBlock(_sfc_main$1g, {
+                                key: i,
+                                config: gradient.config,
+                                round: true,
+                                onClick: ($event) => onGlobalGradientSelected(gradient)
+                              }, null, 8, ["config", "onClick"])), [
+                                [_directive_znpb_tooltip, gradient.name]
+                              ]);
+                            }),
+                            128
+                            /* KEYED_FRAGMENT */
+                          ))
+                        ]))
+                      ],
+                      64
+                      /* STABLE_FRAGMENT */
+                    ))
                   ]),
                   _: 1
+                  /* STABLE */
                 })
               ]),
               _: 1
+              /* STABLE */
             })
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   }));
-  const GradientLibrary_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$J = { class: "znpb-options-breadcrumbs" };
-  const _hoisted_2$x = ["innerHTML"];
+  const _hoisted_2$w = ["onClick"];
+  const _hoisted_3$m = ["innerHTML"];
   const __default__$F = {
     name: "OptionBreadcrumbs"
   };
   const _sfc_main$V = /* @__PURE__ */ vue.defineComponent(__spreadProps(__spreadValues({}, __default__$F), {
     props: {
-      breadcrumbs: {},
-      showBackButton: { type: Boolean }
+      breadcrumbs: {}
     },
     setup(__props) {
       const props = __props;
-      const previousItem = vue.computed(() => {
-        var _a2;
-        return (_a2 = props.breadcrumbs) == null ? void 0 : _a2[props.breadcrumbs.length - 2];
-      });
       const computedBreadcrumbs = vue.computed(() => {
         var _a2;
-        return (_a2 = props.breadcrumbs) == null ? void 0 : _a2.slice(Math.max(props.breadcrumbs.length - 2, 1));
+        return ((_a2 = props.breadcrumbs) == null ? void 0 : _a2.slice(Math.max(props.breadcrumbs.length - 2, 0))) || [];
       });
-      function onItemClicked(breadcrumbItem) {
-        if (breadcrumbItem.callback !== void 0) {
-          breadcrumbItem.callback();
+      function goBack() {
+        var _a2;
+        const previousItem = (_a2 = props.breadcrumbs) == null ? void 0 : _a2[props.breadcrumbs.length - 1];
+        if ((previousItem == null ? void 0 : previousItem.callback) !== void 0) {
+          previousItem.callback();
         }
       }
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$J, [
-          _ctx.showBackButton ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-            key: 0,
-            class: "znpb-back-icon-breadcrumbs",
-            icon: "select",
-            onClick: _cache[0] || (_cache[0] = ($event) => onItemClicked(previousItem.value))
-          })) : vue.createCommentVNode("", true),
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(computedBreadcrumbs.value, (breadcrumb, i) => {
-            return vue.openBlock(), vue.createElementBlock("div", {
-              key: i,
-              class: vue.normalizeClass(["znpb-options-breadcrumbs-path", { ["znpb-options-breadcrumbs-path--current"]: i === computedBreadcrumbs.value.length - 1 }]),
-              onClick: _cache[1] || (_cache[1] = ($event) => onItemClicked(previousItem.value))
-            }, [
-              vue.createElementVNode("span", {
-                innerHTML: breadcrumb.title
-              }, null, 8, _hoisted_2$x),
-              i + 1 < computedBreadcrumbs.value.length ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                key: 0,
-                icon: "select",
-                class: "znpb-options-breadcrumbs-path-icon"
-              })) : vue.createCommentVNode("", true)
-            ], 2);
-          }), 128))
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(computedBreadcrumbs.value, (breadcrumb, i) => {
+              return vue.openBlock(), vue.createElementBlock("div", {
+                key: i,
+                class: vue.normalizeClass(["znpb-options-breadcrumbs-path", { ["znpb-options-breadcrumbs-path--current"]: i > 0 && i === computedBreadcrumbs.value.length - 1 }]),
+                onClick: ($event) => i > 0 && i === computedBreadcrumbs.value.length - 1 ? null : goBack()
+              }, [
+                vue.createVNode(vue.unref(_sfc_main$1z), {
+                  icon: "select",
+                  class: vue.normalizeClass({
+                    "znpb-options-breadcrumbs-path-icon": i > 0,
+                    "znpb-back-icon-breadcrumbs": i === 0
+                  })
+                }, null, 8, ["class"]),
+                vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
+                vue.createElementVNode("span", {
+                  innerHTML: breadcrumb.title
+                }, null, 8, _hoisted_3$m)
+              ], 10, _hoisted_2$w);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
         ]);
       };
     }
   }));
-  const OptionBreadcrumbs_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$I = {
     key: 0,
     class: "znpb-horizontal-accordion__title"
   };
-  const _hoisted_2$w = { class: "znpb-horizontal-accordion__header-actions" };
-  const _hoisted_3$m = {
+  const _hoisted_2$v = { class: "znpb-horizontal-accordion__header-actions" };
+  const _hoisted_3$l = {
     key: 0,
     class: "znpb-horizontal-accordion__content"
   };
@@ -15092,38 +16076,21 @@ var __async = (__this, __arguments, generator) => {
     props: {
       hasBreadcrumbs: { type: Boolean, default: true },
       collapsed: { type: Boolean, default: false },
-      title: {},
-      icon: {},
-      level: {},
-      showTriggerArrow: { type: Boolean, default: true },
-      showBackButton: { type: Boolean },
-      showHomeButton: { type: Boolean },
-      homeButtonText: {},
-      combineBreadcrumbs: { type: Boolean }
+      title: { default: "" },
+      icon: { default: "" },
+      showTriggerArrow: { type: Boolean, default: true }
     },
     emits: ["collapse", "expand"],
-    setup(__props, { expose: __expose, emit }) {
+    setup(__props, { expose: __expose, emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const parentAccordion = vue.inject("parentAccordion", null);
-      vue.provide(
-        "parentAccordion",
-        parentAccordion || {
-          addBreadcrumb,
-          removeBreadcrumb
-        }
-      );
-      __expose({
-        closeAccordion
-      });
       const root2 = vue.ref(null);
       const localCollapsed = vue.ref(props.collapsed);
       const breadcrumbs = vue.ref([
         {
-          title: props.homeButtonText,
+          title: props.title,
           callback: closeAccordion
-        },
-        {
-          title: props.title
         }
       ]);
       const breadCrumbConfig = vue.ref(null);
@@ -15139,16 +16106,12 @@ var __async = (__this, __arguments, generator) => {
       );
       const wrapperStyles = vue.computed(() => {
         const cssStyles = {};
-        if (!props.combineBreadcrumbs && parentAccordion === null && localCollapsed.value && firstChildOpen.value) {
+        if (parentAccordion === null && localCollapsed.value && firstChildOpen.value) {
           cssStyles["overflow"] = "hidden";
         }
         return cssStyles;
       });
       function addBreadcrumb(breadcrumb) {
-        if (typeof breadcrumb.previousCallback === "function") {
-          const lastItem = breadcrumbs.value[breadcrumbs.value.length - 1];
-          lastItem.callback = breadcrumb.previousCallback;
-        }
         breadcrumbs.value.push(breadcrumb);
         firstChildOpen.value = true;
       }
@@ -15162,7 +16125,7 @@ var __async = (__this, __arguments, generator) => {
       function closeAccordion() {
         localCollapsed.value = false;
         if (parentAccordion && breadCrumbConfig.value) {
-          removeBreadcrumb(breadCrumbConfig.value);
+          parentAccordion.removeBreadcrumb(breadCrumbConfig.value);
         }
         emit("collapse", true);
       }
@@ -15170,79 +16133,128 @@ var __async = (__this, __arguments, generator) => {
         var _a2, _b;
         localCollapsed.value = true;
         (_b = (_a2 = root2.value) == null ? void 0 : _a2.closest(".znpb-horizontal-accordion-wrapper")) == null ? void 0 : _b.scrollTo(0, 0);
-        if (props.combineBreadcrumbs && parentAccordion) {
-          injectBreadcrumbs();
+        if (parentAccordion) {
+          breadCrumbConfig.value = {
+            title: props.title,
+            callback: closeAccordion
+          };
+          parentAccordion.addBreadcrumb(breadCrumbConfig.value);
         }
         emit("expand", false);
       }
-      function injectBreadcrumbs() {
-        breadCrumbConfig.value = {
-          title: props.title || "",
-          previousCallback: closeAccordion
-        };
-        addBreadcrumb(breadCrumbConfig.value);
-      }
+      vue.onBeforeUnmount(() => {
+        if (parentAccordion && breadCrumbConfig.value) {
+          parentAccordion.removeBreadcrumb(breadCrumbConfig.value);
+        }
+      });
+      vue.provide(
+        "parentAccordion",
+        parentAccordion || {
+          addBreadcrumb,
+          removeBreadcrumb
+        }
+      );
+      __expose({
+        closeAccordion
+      });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-horizontal-accordion"
-        }, [
-          vue.createVNode(vue.Transition, { name: "slide-title" }, {
-            default: vue.withCtx(() => [
-              vue.withDirectives(vue.createElementVNode("div", {
-                class: vue.normalizeClass(["znpb-horizontal-accordion__header", { "znpb-horizontal-accordion__header--has-slots": hasHeaderSlot.value }]),
-                onClick: openAccordion
-              }, [
-                !hasHeaderSlot.value ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$I, [
-                  !hasTitleSlot.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-                    _ctx.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                      key: 0,
-                      icon: _ctx.icon
-                    }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-                    vue.createElementVNode("span", null, vue.toDisplayString(_ctx.title), 1)
-                  ], 64)) : vue.createCommentVNode("", true),
-                  vue.renderSlot(_ctx.$slots, "title")
-                ])) : vue.createCommentVNode("", true),
-                vue.renderSlot(_ctx.$slots, "header"),
-                vue.createElementVNode("div", _hoisted_2$w, [
-                  vue.renderSlot(_ctx.$slots, "actions"),
-                  _ctx.showTriggerArrow ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                    key: 0,
-                    icon: "right-arrow"
-                  })) : vue.createCommentVNode("", true)
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-horizontal-accordion"
+          },
+          [
+            vue.createVNode(vue.Transition, {
+              name: "slide-title",
+              persisted: ""
+            }, {
+              default: vue.withCtx(() => [
+                vue.withDirectives(vue.createElementVNode(
+                  "div",
+                  {
+                    class: vue.normalizeClass(["znpb-horizontal-accordion__header", { "znpb-horizontal-accordion__header--has-slots": hasHeaderSlot.value }]),
+                    onClick: openAccordion
+                  },
+                  [
+                    !hasHeaderSlot.value ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$I, [
+                      !hasTitleSlot.value ? (vue.openBlock(), vue.createElementBlock(
+                        vue.Fragment,
+                        { key: 0 },
+                        [
+                          __props.icon && __props.icon.length ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                            key: 0,
+                            icon: __props.icon
+                          }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+                          vue.createElementVNode(
+                            "span",
+                            null,
+                            vue.toDisplayString(__props.title),
+                            1
+                            /* TEXT */
+                          )
+                        ],
+                        64
+                        /* STABLE_FRAGMENT */
+                      )) : vue.createCommentVNode("v-if", true),
+                      vue.renderSlot(_ctx.$slots, "title")
+                    ])) : vue.createCommentVNode("v-if", true),
+                    vue.createCommentVNode(" @slot Content that will be placed inside the header "),
+                    vue.renderSlot(_ctx.$slots, "header"),
+                    vue.createCommentVNode(" @slot Actions that will be placed inside the header "),
+                    vue.createElementVNode("div", _hoisted_2$v, [
+                      vue.renderSlot(_ctx.$slots, "actions"),
+                      __props.showTriggerArrow ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                        key: 0,
+                        icon: "right-arrow"
+                      })) : vue.createCommentVNode("v-if", true)
+                    ])
+                  ],
+                  2
+                  /* CLASS */
+                ), [
+                  [vue.vShow, !localCollapsed.value]
                 ])
-              ], 2), [
-                [vue.vShow, !localCollapsed.value]
-              ])
-            ]),
-            _: 3
-          }),
-          vue.createVNode(vue.Transition, { name: "slide-body" }, {
-            default: vue.withCtx(() => [
-              localCollapsed.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$m, [
-                _ctx.hasBreadcrumbs && !(_ctx.combineBreadcrumbs && vue.unref(parentAccordion)) ? (vue.openBlock(), vue.createBlock(_sfc_main$V, {
-                  key: 0,
-                  "show-back-button": _ctx.showBackButton,
-                  breadcrumbs: breadcrumbs.value
-                }, null, 8, ["show-back-button", "breadcrumbs"])) : vue.createCommentVNode("", true),
-                vue.createElementVNode("div", {
-                  class: "znpb-horizontal-accordion-wrapper znpb-fancy-scrollbar",
-                  style: vue.normalizeStyle(wrapperStyles.value)
-                }, [
-                  vue.renderSlot(_ctx.$slots, "default")
-                ], 4)
-              ])) : vue.createCommentVNode("", true)
-            ]),
-            _: 3
-          })
-        ], 512);
+              ]),
+              _: 3
+              /* FORWARDED */
+            }),
+            vue.createVNode(vue.Transition, { name: "slide-body" }, {
+              default: vue.withCtx(() => [
+                localCollapsed.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$l, [
+                  __props.hasBreadcrumbs && !vue.unref(parentAccordion) ? (vue.openBlock(), vue.createBlock(_sfc_main$V, {
+                    key: 0,
+                    breadcrumbs: breadcrumbs.value
+                  }, null, 8, ["breadcrumbs"])) : vue.createCommentVNode("v-if", true),
+                  vue.createCommentVNode(" end bred "),
+                  vue.createElementVNode(
+                    "div",
+                    {
+                      class: "znpb-horizontal-accordion-wrapper znpb-fancy-scrollbar",
+                      style: vue.normalizeStyle(wrapperStyles.value)
+                    },
+                    [
+                      vue.createCommentVNode(" @slot Content that will be placed inside the content "),
+                      vue.renderSlot(_ctx.$slots, "default")
+                    ],
+                    4
+                    /* STYLE */
+                  )
+                ])) : vue.createCommentVNode("v-if", true)
+              ]),
+              _: 3
+              /* FORWARDED */
+            })
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   }));
-  const HorizontalAccordion_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$H = { class: "znpb-icon-pack-modal__search" };
-  const _hoisted_2$v = { class: "znpb-icon-pack-modal-scroll znpb-fancy-scrollbar" };
+  const _hoisted_2$u = { class: "znpb-icon-pack-modal-scroll znpb-fancy-scrollbar" };
   const __default__$D = {
     name: "IconsLibraryModalContent"
   };
@@ -15252,8 +16264,9 @@ var __async = (__this, __arguments, generator) => {
       specialFilterPack: {}
     },
     emits: ["update:modelValue", "selected"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const { dataSets } = pinia.storeToRefs(useDataSetsStore());
       const keyword = vue.ref("");
       const activeIcon = vue.ref(null);
@@ -15280,8 +16293,7 @@ var __async = (__this, __arguments, generator) => {
             filtered.push(copyPack);
           }
           return filtered;
-        } else
-          return packList.value;
+        } else return packList.value;
       });
       const getPlaceholder = vue.computed(() => {
         return `${i18n__namespace.__("Search through", "zionbuilder")} ${getIconNumber.value} ${i18n__namespace.__("icons", "zionbuilder")}`;
@@ -15350,51 +16362,61 @@ var __async = (__this, __arguments, generator) => {
         const _component_InputSelect = vue.resolveComponent("InputSelect");
         const _component_BaseInput = vue.resolveComponent("BaseInput");
         const _component_IconPackGrid = vue.resolveComponent("IconPackGrid");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-icon-pack-modal", { ["znpb-icon-pack-modal--has-special-filter"]: _ctx.specialFilterPack }])
-        }, [
-          vue.createElementVNode("div", _hoisted_1$H, [
-            vue.createVNode(_component_InputSelect, {
-              modelValue: activeCategory.value,
-              options: packsOptions.value,
-              class: "znpb-icons-category-select",
-              placement: "bottom-start",
-              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => activeCategory.value = $event)
-            }, null, 8, ["modelValue", "options"]),
-            vue.createVNode(_component_BaseInput, {
-              modelValue: searchModel.value,
-              "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => searchModel.value = $event),
-              placeholder: getPlaceholder.value,
-              clearable: true,
-              icon: "search"
-            }, null, 8, ["modelValue", "placeholder"])
-          ]),
-          vue.createElementVNode("div", _hoisted_2$v, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(filteredList.value, (pack, i) => {
-              var _a2, _b;
-              return vue.openBlock(), vue.createBlock(_component_IconPackGrid, {
-                key: i,
-                "icon-list": pack.icons,
-                family: pack.name,
-                "active-icon": (_a2 = _ctx.modelValue) == null ? void 0 : _a2.name,
-                "active-family": (_b = _ctx.modelValue) == null ? void 0 : _b.family,
-                onIconSelected: ($event) => selectIcon($event, pack.name),
-                "onUpdate:modelValue": ($event) => insertIcon($event, pack.name)
-              }, null, 8, ["icon-list", "family", "active-icon", "active-family", "onIconSelected", "onUpdate:modelValue"]);
-            }), 128))
-          ])
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-icon-pack-modal", { ["znpb-icon-pack-modal--has-special-filter"]: __props.specialFilterPack }])
+          },
+          [
+            vue.createElementVNode("div", _hoisted_1$H, [
+              vue.createVNode(_component_InputSelect, {
+                modelValue: activeCategory.value,
+                options: packsOptions.value,
+                class: "znpb-icons-category-select",
+                placement: "bottom-start",
+                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => activeCategory.value = $event)
+              }, null, 8, ["modelValue", "options"]),
+              vue.createVNode(_component_BaseInput, {
+                modelValue: searchModel.value,
+                "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => searchModel.value = $event),
+                placeholder: getPlaceholder.value,
+                clearable: true,
+                icon: "search"
+              }, null, 8, ["modelValue", "placeholder"])
+            ]),
+            vue.createElementVNode("div", _hoisted_2$u, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(filteredList.value, (pack, i) => {
+                  var _a2, _b;
+                  return vue.openBlock(), vue.createBlock(_component_IconPackGrid, {
+                    key: i,
+                    "icon-list": pack.icons,
+                    family: pack.name,
+                    "active-icon": (_a2 = __props.modelValue) == null ? void 0 : _a2.name,
+                    "active-family": (_b = __props.modelValue) == null ? void 0 : _b.family,
+                    onIconSelected: ($event) => selectIcon($event, pack.name),
+                    "onUpdate:modelValue": ($event) => insertIcon($event, pack.name)
+                  }, null, 8, ["icon-list", "family", "active-icon", "active-family", "onIconSelected", "onUpdate:modelValue"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const IconsLibraryModalContent_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$G = { class: "znpb-icon-options" };
-  const _hoisted_2$u = ["onClick"];
-  const _hoisted_3$l = {
+  const _hoisted_2$t = {
     key: 0,
     class: "znpb-icon-options__delete"
   };
-  const _hoisted_4$d = ["data-znpbiconfam", "data-znpbicon"];
+  const _hoisted_3$k = ["data-znpbiconfam", "data-znpbicon"];
   const __default__$C = {
     name: "IconLibrary"
   };
@@ -15405,8 +16427,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const showModal = vue.ref(false);
       const valueModel = vue.computed({
         get() {
@@ -15426,27 +16449,39 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _component_Modal = vue.resolveComponent("Modal");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$G, [
-          vue.createElementVNode("div", {
-            class: vue.normalizeClass(["znpb-icon-trigger", { ["znpb-icon-trigger--no-icon"]: !_ctx.modelValue }]),
-            onClick: vue.withModifiers(open2, ["self"])
-          }, [
-            _ctx.modelValue ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$l, [
-              vue.createElementVNode("span", {
-                class: "znpb-icon-preview",
-                "data-znpbiconfam": _ctx.modelValue.family,
-                "data-znpbicon": unicode(_ctx.modelValue.unicode),
-                onClickPassive: _cache[0] || (_cache[0] = vue.withModifiers(($event) => showModal.value = true, ["stop"]))
-              }, null, 40, _hoisted_4$d),
-              vue.createVNode(_component_Icon, {
-                icon: "delete",
-                rounded: true,
-                onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("update:modelValue", null), ["stop"]))
-              })
-            ])) : (vue.openBlock(), vue.createElementBlock("span", {
-              key: 1,
-              onClick: _cache[2] || (_cache[2] = ($event) => showModal.value = true)
-            }, vue.toDisplayString(i18n__namespace.__("Select an icon", "zionbuilder")), 1))
-          ], 10, _hoisted_2$u),
+          vue.createElementVNode(
+            "div",
+            {
+              class: vue.normalizeClass(["znpb-icon-trigger", { ["znpb-icon-trigger--no-icon"]: !__props.modelValue }]),
+              onClick: vue.withModifiers(open2, ["self"])
+            },
+            [
+              __props.modelValue ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$t, [
+                vue.createElementVNode("span", {
+                  class: "znpb-icon-preview",
+                  "data-znpbiconfam": __props.modelValue.family,
+                  "data-znpbicon": unicode(__props.modelValue.unicode),
+                  onClickPassive: _cache[0] || (_cache[0] = vue.withModifiers(($event) => showModal.value = true, ["stop"]))
+                }, null, 40, _hoisted_3$k),
+                vue.createVNode(_component_Icon, {
+                  icon: "delete",
+                  rounded: true,
+                  onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => _ctx.$emit("update:modelValue", null), ["stop"]))
+                })
+              ])) : (vue.openBlock(), vue.createElementBlock(
+                "span",
+                {
+                  key: 1,
+                  onClick: _cache[2] || (_cache[2] = ($event) => showModal.value = true)
+                },
+                vue.toDisplayString(i18n__namespace.__("Select an icon", "zionbuilder")),
+                1
+                /* TEXT */
+              ))
+            ],
+            2
+            /* CLASS */
+          ),
           vue.createVNode(_component_Modal, {
             show: showModal.value,
             "onUpdate:show": _cache[5] || (_cache[5] = ($event) => showModal.value = $event),
@@ -15461,17 +16496,17 @@ var __async = (__this, __arguments, generator) => {
               vue.createVNode(_sfc_main$T, {
                 modelValue: valueModel.value,
                 "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => valueModel.value = $event),
-                "special-filter-pack": _ctx.specialFilterPack,
+                "special-filter-pack": __props.specialFilterPack,
                 onSelected: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("update:modelValue", valueModel.value))
               }, null, 8, ["modelValue", "special-filter-pack"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["show", "title"])
         ]);
       };
     }
   }));
-  const InputIcon_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$F = ["readonly", "onKeydown"];
   const __default__$B = {
     name: "InlineEdit"
@@ -15483,8 +16518,9 @@ var __async = (__this, __arguments, generator) => {
       tag: { default: "div" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const root2 = vue.ref(null);
       const isEnabled = vue.ref(props.enabled);
       const computedModelValue = vue.computed({
@@ -15530,7 +16566,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   }));
-  const InlineEdit_vue_vue_type_style_index_0_lang = "";
   function createHooksInstance() {
     const filters = {};
     const actions = {};
@@ -15607,8 +16642,8 @@ var __async = (__this, __arguments, generator) => {
     trigger
   }, Symbol.toStringTag, { value: "Module" }));
   const _hoisted_1$E = { class: "znpb-forms-image-custom-size__wrapper" };
-  const _hoisted_2$t = { class: "znpb-forms-image-custom-size__option-separator" };
-  const _hoisted_3$k = { class: "znpb-forms-image-custom-size__option-wrapper" };
+  const _hoisted_2$s = { class: "znpb-forms-image-custom-size__option-separator" };
+  const _hoisted_3$j = { class: "znpb-forms-image-custom-size__option-wrapper" };
   const __default__$A = {
     name: "CustomSize",
     data() {
@@ -15621,9 +16656,10 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       var _a2, _b;
       const props = __props;
+      const emit = __emit;
       const width = vue.ref((_a2 = props.modelValue) == null ? void 0 : _a2.width);
       const height = vue.ref((_b = props.modelValue) == null ? void 0 : _b.height);
       function onCustomSizeClick() {
@@ -15648,8 +16684,9 @@ var __async = (__this, __arguments, generator) => {
               }, null, 8, ["modelValue"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["title"]),
-          vue.createElementVNode("div", _hoisted_2$t, [
+          vue.createElementVNode("div", _hoisted_2$s, [
             vue.createVNode(vue.unref(_sfc_main$1z), {
               icon: "close",
               size: 10
@@ -15667,18 +16704,24 @@ var __async = (__this, __arguments, generator) => {
               }, null, 8, ["modelValue"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["title"]),
-          vue.createElementVNode("div", _hoisted_3$k, [
-            vue.createElementVNode("button", {
-              class: "znpb-button znpb-button--line znpb-forms-image-custom-size__apply-button",
-              onClick: onCustomSizeClick
-            }, vue.toDisplayString(i18n__namespace.__("Apply", "zionbuilder")), 1)
+          vue.createElementVNode("div", _hoisted_3$j, [
+            vue.createElementVNode(
+              "button",
+              {
+                class: "znpb-button znpb-button--line znpb-forms-image-custom-size__apply-button",
+                onClick: onCustomSizeClick
+              },
+              vue.toDisplayString(i18n__namespace.__("Apply", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ])
         ]);
       };
     }
   }));
-  const CustomSize_vue_vue_type_style_index_0_lang = "";
   const registeredLocations = {};
   const useInjections = () => {
     const registerComponent = (location2, component) => {
@@ -15726,22 +16769,22 @@ var __async = (__this, __arguments, generator) => {
       const { getComponentsForLocation } = useInjections();
       const computedComponents = vue.computed(() => getComponentsForLocation(props.location));
       return (_ctx, _cache) => {
-        return vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(computedComponents.value, (customComponent, i) => {
-          return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(customComponent), { key: i });
-        }), 128);
+        return vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          vue.renderList(computedComponents.value, (customComponent, i) => {
+            return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(customComponent), { key: i });
+          }),
+          128
+          /* KEYED_FRAGMENT */
+        );
       };
     }
   }));
   const _hoisted_1$D = { class: "znpb-input-image__wrapper" };
-  const _hoisted_2$s = { class: "znpb-input-image-holder__image-actions" };
-  const _hoisted_3$j = ["onMousedown"];
-  const _hoisted_4$c = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-input-image-holder__drag-button" }, null, -1);
-  const _hoisted_5$9 = [
-    _hoisted_4$c
-  ];
-  const _hoisted_6$6 = ["onClick"];
-  const _hoisted_7$4 = { class: "znpb-actions-overlay__expander-text" };
-  const _hoisted_8$4 = {
+  const _hoisted_2$r = { class: "znpb-input-image-holder__image-actions" };
+  const _hoisted_3$i = { class: "znpb-actions-overlay__expander-text" };
+  const _hoisted_4$b = {
     key: 2,
     class: "znpb-input-image__custom-size-wrapper"
   };
@@ -15759,10 +16802,11 @@ var __async = (__this, __arguments, generator) => {
       show_size: { type: Boolean }
     },
     emits: ["background-position-change", "update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
       const inputWrapper = vue.inject("inputWrapper");
       const optionsForm = vue.inject("OptionsForm");
+      const emit = __emit;
       const imageComponent = vue.computed(() => {
         return applyFilters("zionbuilder/options/image/image_component", "img", props.modelValue);
       });
@@ -15816,7 +16860,7 @@ var __async = (__this, __arguments, generator) => {
         const customSizes = (_d = (_c = attachmentModel.value) == null ? void 0 : _c.attributes) == null ? void 0 : _d.zion_custom_sizes;
         const allSizes = __spreadValues(__spreadValues({}, imageSizes2), customSizes);
         Object.keys(allSizes).forEach((sizeKey) => {
-          const name = startCase$1(sizeKey);
+          const name = startCase(sizeKey);
           const width = allSizes[sizeKey].width;
           const height = allSizes[sizeKey].height;
           const optionName = `${name} ( ${width} x ${height} )`;
@@ -16050,68 +17094,108 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$D, [
-          customComponent.value ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(customComponent.value), { key: 0 })) : (vue.openBlock(), vue.createElementBlock("div", {
-            key: 1,
-            ref_key: "imageHolder",
-            ref: imageHolder,
-            class: "znpb-input-image-holder",
-            style: vue.normalizeStyle(wrapperStyles.value),
-            onClick: openMediaModal
-          }, [
-            vue.createVNode(vue.unref(_sfc_main$1x), {
-              "show-overlay": !isDragging.value
-            }, {
-              actions: vue.withCtx(() => [
-                vue.createElementVNode("div", _hoisted_2$s, [
-                  vue.createVNode(_sfc_main$1z, {
-                    rounded: true,
-                    icon: "delete",
-                    "bg-size": 30,
-                    onClick: vue.withModifiers(deleteImage, ["stop"])
-                  }, null, 8, ["onClick"]),
-                  vue.createVNode(vue.unref(_sfc_main$P), { location: "options/image/actions" })
-                ])
-              ]),
-              default: vue.withCtx(() => [
-                (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(imageComponent.value), {
-                  src: imageSrc.value,
-                  class: "znpb-input-image-holder__image"
-                }, null, 8, ["src"]))
-              ]),
-              _: 1
-            }, 8, ["show-overlay"]),
-            imageSrc.value && _ctx.shouldDragImage && (previewExpanded.value || !shouldDisplayExpander.value) ? (vue.openBlock(), vue.createElementBlock("div", {
-              key: 0,
-              ref_key: "dragButton",
-              ref: dragButton,
-              class: "znpb-drag-icon-wrapper",
-              style: vue.normalizeStyle(positionCircleStyle.value),
-              onMousedown: vue.withModifiers(startDrag, ["stop"])
-            }, _hoisted_5$9, 44, _hoisted_3$j)) : vue.createCommentVNode("", true),
-            !isDragging.value && _ctx.shouldDragImage && shouldDisplayExpander.value && imageSrc.value ? (vue.openBlock(), vue.createElementBlock("div", {
+          customComponent.value ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(customComponent.value), { key: 0 })) : (vue.openBlock(), vue.createElementBlock(
+            "div",
+            {
               key: 1,
-              class: vue.normalizeClass(["znpb-actions-overlay__expander", { "znpb-actions-overlay__expander--icon-rotated": previewExpanded.value }]),
-              onClick: vue.withModifiers(toggleExpand, ["stop"])
-            }, [
-              vue.createElementVNode("strong", _hoisted_7$4, vue.toDisplayString(previewExpanded.value ? "CONTRACT" : "EXPAND"), 1),
-              vue.createVNode(_sfc_main$1z, {
-                icon: "select",
-                "bg-size": 12
-              })
-            ], 10, _hoisted_6$6)) : vue.createCommentVNode("", true),
-            !imageSrc.value && !customComponent.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1h), {
-              key: 2,
-              class: "znpb-input-image-holder__empty",
-              "no-margin": true
-            }, {
-              default: vue.withCtx(() => [
-                vue.createTextVNode(vue.toDisplayString(_ctx.emptyText) + " ", 1),
-                vue.createVNode(vue.unref(_sfc_main$P), { location: "options/image/actions" })
-              ]),
-              _: 1
-            })) : vue.createCommentVNode("", true)
-          ], 4)),
-          _ctx.show_size && imageSrc.value && !isSVG.value && !loading.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_8$4, [
+              ref_key: "imageHolder",
+              ref: imageHolder,
+              class: "znpb-input-image-holder",
+              style: vue.normalizeStyle(wrapperStyles.value),
+              onClick: openMediaModal
+            },
+            [
+              vue.createVNode(vue.unref(_sfc_main$1x), {
+                "show-overlay": !isDragging.value
+              }, {
+                actions: vue.withCtx(() => [
+                  vue.createElementVNode("div", _hoisted_2$r, [
+                    vue.createVNode(_sfc_main$1z, {
+                      rounded: true,
+                      icon: "delete",
+                      "bg-size": 30,
+                      onClick: vue.withModifiers(deleteImage, ["stop"])
+                    }),
+                    vue.createCommentVNode(" Injection point "),
+                    vue.createVNode(vue.unref(_sfc_main$P), { location: "options/image/actions" })
+                  ])
+                ]),
+                default: vue.withCtx(() => [
+                  (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(imageComponent.value), {
+                    src: imageSrc.value,
+                    class: "znpb-input-image-holder__image"
+                  }, null, 8, ["src"]))
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["show-overlay"]),
+              imageSrc.value && __props.shouldDragImage && (previewExpanded.value || !shouldDisplayExpander.value) ? (vue.openBlock(), vue.createElementBlock(
+                "div",
+                {
+                  key: 0,
+                  ref_key: "dragButton",
+                  ref: dragButton,
+                  class: "znpb-drag-icon-wrapper",
+                  style: vue.normalizeStyle(positionCircleStyle.value),
+                  onMousedown: vue.withModifiers(startDrag, ["stop"])
+                },
+                [..._cache[2] || (_cache[2] = [
+                  vue.createElementVNode(
+                    "span",
+                    { class: "znpb-input-image-holder__drag-button" },
+                    null,
+                    -1
+                    /* CACHED */
+                  )
+                ])],
+                36
+                /* STYLE, NEED_HYDRATION */
+              )) : vue.createCommentVNode("v-if", true),
+              !isDragging.value && __props.shouldDragImage && shouldDisplayExpander.value && imageSrc.value ? (vue.openBlock(), vue.createElementBlock(
+                "div",
+                {
+                  key: 1,
+                  class: vue.normalizeClass(["znpb-actions-overlay__expander", { "znpb-actions-overlay__expander--icon-rotated": previewExpanded.value }]),
+                  onClick: vue.withModifiers(toggleExpand, ["stop"])
+                },
+                [
+                  vue.createElementVNode(
+                    "strong",
+                    _hoisted_3$i,
+                    vue.toDisplayString(previewExpanded.value ? "CONTRACT" : "EXPAND"),
+                    1
+                    /* TEXT */
+                  ),
+                  vue.createVNode(_sfc_main$1z, {
+                    icon: "select",
+                    "bg-size": 12
+                  })
+                ],
+                2
+                /* CLASS */
+              )) : vue.createCommentVNode("v-if", true),
+              !imageSrc.value && !customComponent.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1h), {
+                key: 2,
+                class: "znpb-input-image-holder__empty",
+                "no-margin": true
+              }, {
+                default: vue.withCtx(() => [
+                  vue.createTextVNode(
+                    vue.toDisplayString(__props.emptyText) + " ",
+                    1
+                    /* TEXT */
+                  ),
+                  vue.createVNode(vue.unref(_sfc_main$P), { location: "options/image/actions" })
+                ]),
+                _: 1
+                /* STABLE */
+              })) : vue.createCommentVNode("v-if", true)
+            ],
+            4
+            /* STYLE */
+          )),
+          vue.createCommentVNode(" Image size "),
+          __props.show_size && imageSrc.value && !isSVG.value && !loading.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$b, [
             vue.createVNode(vue.unref(_sfc_main$19), { title: "Image size" }, {
               default: vue.withCtx(() => [
                 vue.createVNode(vue.unref(_sfc_main$11), {
@@ -16121,6 +17205,7 @@ var __async = (__this, __arguments, generator) => {
                 }, null, 8, ["modelValue", "options"])
               ]),
               _: 1
+              /* STABLE */
             }),
             sizeValue.value === "custom" ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$19), { key: 0 }, {
               default: vue.withCtx(() => [
@@ -16130,13 +17215,13 @@ var __async = (__this, __arguments, generator) => {
                 }, null, 8, ["modelValue"])
               ]),
               _: 1
-            })) : vue.createCommentVNode("", true)
-          ])) : vue.createCommentVNode("", true)
+              /* STABLE */
+            })) : vue.createCommentVNode("v-if", true)
+          ])) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   }));
-  const InputImage_vue_vue_type_style_index_0_lang = "";
   const schemas = vue.ref({
     element_advanced: window.ZBCommonData.schemas.element_advanced,
     element_styles: window.ZBCommonData.schemas.styles,
@@ -16168,8 +17253,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const { getSchema } = useOptionsSchemas();
       const backgroundImageSchema = getSchema("backgroundImageSchema");
       const computedValue = vue.computed({
@@ -16213,7 +17299,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   }));
-  const BackgroundImage_vue_vue_type_style_index_0_lang = "";
   class Video {
     constructor(domNode, options2 = {}) {
       __publicField(this, "options");
@@ -16599,7 +17684,7 @@ var __async = (__this, __arguments, generator) => {
   window.zbScripts = window.zbScripts || {};
   window.zbScripts.video = Video;
   const _hoisted_1$B = { class: "znpb-input-background-video" };
-  const _hoisted_2$r = { class: "znpb-input-background-video__holder" };
+  const _hoisted_2$q = { class: "znpb-input-background-video__holder" };
   const __default__$w = {
     name: "InputBackgroundVideo"
   };
@@ -16610,8 +17695,9 @@ var __async = (__this, __arguments, generator) => {
       exclude_options: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const videoInstance = vue.ref(null);
       let mediaModal = null;
       const videoPreview = vue.ref(null);
@@ -16702,22 +17788,33 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_OptionsForm = vue.resolveComponent("OptionsForm");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$B, [
-          vue.createElementVNode("div", _hoisted_2$r, [
-            hasVideo.value ? (vue.openBlock(), vue.createElementBlock("div", {
-              key: 0,
-              ref_key: "videoPreview",
-              ref: videoPreview,
-              class: "znpb-input-background-video__source"
-            }, null, 512)) : (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1h), {
+          vue.createElementVNode("div", _hoisted_2$q, [
+            hasVideo.value ? (vue.openBlock(), vue.createElementBlock(
+              "div",
+              {
+                key: 0,
+                ref_key: "videoPreview",
+                ref: videoPreview,
+                class: "znpb-input-background-video__source"
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            )) : (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1h), {
               key: 1,
               class: "znpb-input-background-video__empty znpb-input-background-video__source",
               "no-margin": true,
               onClick: openMediaModal
             }, {
               default: vue.withCtx(() => [
-                vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("No video Selected", "zionbuilder")), 1)
+                vue.createTextVNode(
+                  vue.toDisplayString(i18n__namespace.__("No video Selected", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
+              /* STABLE */
             })),
             videoSourceModel.value == "local" && hasVideo.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
               key: 2,
@@ -16726,7 +17823,7 @@ var __async = (__this, __arguments, generator) => {
               "bg-size": 30,
               "bg-color": "#fff",
               onClick: vue.withModifiers(deleteVideo, ["stop"])
-            }, null, 8, ["onClick"])) : vue.createCommentVNode("", true)
+            })) : vue.createCommentVNode("v-if", true)
           ]),
           vue.createVNode(_component_OptionsForm, {
             modelValue: computedValue.value,
@@ -16738,7 +17835,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   }));
-  const InputBackgroundVideo_vue_vue_type_style_index_0_lang = "";
   const __default__$v = {
     name: "InputBorderControl"
   };
@@ -16751,8 +17847,9 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const schema = vue.computed(() => {
         return {
           color: {
@@ -16806,7 +17903,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   }));
-  const InputBorderControl_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$A = { class: "znpb-input-border-tabs-wrapper" };
   const __default__$u = {
     name: "InputBorderTabs"
@@ -16817,8 +17913,9 @@ var __async = (__this, __arguments, generator) => {
       placeholder: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const positions = [
         {
           name: "all",
@@ -16852,7 +17949,7 @@ var __async = (__this, __arguments, generator) => {
         if (newValue === null) {
           unset(clonedValue, position);
         } else {
-          set(clonedValue, position, newValue);
+          set$1(clonedValue, position, newValue);
         }
         if (Object.keys(clonedValue).length > 0) {
           emit("update:modelValue", clonedValue);
@@ -16869,37 +17966,44 @@ var __async = (__this, __arguments, generator) => {
             class: "znpb-input-border-tabs"
           }, {
             default: vue.withCtx(() => [
-              (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(positions, (tab) => {
-                return vue.createVNode(_component_Tab, {
-                  key: tab.id,
-                  name: tab.name,
-                  class: "znpb-input-border-tabs__tab"
-                }, {
-                  title: vue.withCtx(() => [
-                    vue.createElementVNode("div", null, [
-                      vue.createVNode(vue.unref(_sfc_main$1z), {
-                        icon: tab.icon
-                      }, null, 8, ["icon"])
-                    ])
-                  ]),
-                  default: vue.withCtx(() => [
-                    vue.createVNode(_sfc_main$L, {
-                      modelValue: computedValue.value[tab.id] || {},
-                      placeholder: _ctx.placeholder ? _ctx.placeholder[tab.id] : null,
-                      "onUpdate:modelValue": ($event) => onValueUpdated(tab.id, $event)
-                    }, null, 8, ["modelValue", "placeholder", "onUpdate:modelValue"])
-                  ]),
-                  _: 2
-                }, 1032, ["name"]);
-              }), 64))
+              (vue.openBlock(), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(positions, (tab) => {
+                  return vue.createVNode(_component_Tab, {
+                    key: tab.id,
+                    name: tab.name,
+                    class: "znpb-input-border-tabs__tab"
+                  }, {
+                    title: vue.withCtx(() => [
+                      vue.createElementVNode("div", null, [
+                        vue.createVNode(vue.unref(_sfc_main$1z), {
+                          icon: tab.icon
+                        }, null, 8, ["icon"])
+                      ])
+                    ]),
+                    default: vue.withCtx(() => [
+                      vue.createVNode(_sfc_main$L, {
+                        modelValue: computedValue.value[tab.id] || {},
+                        placeholder: __props.placeholder ? __props.placeholder[tab.id] : null,
+                        "onUpdate:modelValue": ($event) => onValueUpdated(tab.id, $event)
+                      }, null, 8, ["modelValue", "placeholder", "onUpdate:modelValue"])
+                    ]),
+                    _: 2
+                    /* DYNAMIC */
+                  }, 1032, ["name"]);
+                }),
+                64
+                /* STABLE_FRAGMENT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   }));
-  const InputBorderTabs_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$z = { class: "znpb-input-border-radius-wrapper" };
   const __default__$t = {
     name: "InputBorderRadius"
@@ -16910,8 +18014,9 @@ var __async = (__this, __arguments, generator) => {
       title: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const computedValue = vue.computed({
         get() {
           return props.modelValue;
@@ -16923,9 +18028,9 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_InputLabel = vue.resolveComponent("InputLabel");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$z, [
-          _ctx.title.length ? (vue.openBlock(), vue.createBlock(_component_InputLabel, {
+          __props.title.length ? (vue.openBlock(), vue.createBlock(_component_InputLabel, {
             key: 0,
-            label: _ctx.title,
+            label: __props.title,
             class: "znpb-typography-group-item znpb-typography-group-item-font-weight"
           }, {
             default: vue.withCtx(() => [
@@ -16939,22 +18044,22 @@ var __async = (__this, __arguments, generator) => {
               }, null, 8, ["modelValue"])
             ]),
             _: 1
-          }, 8, ["label"])) : vue.createCommentVNode("", true)
+            /* STABLE */
+          }, 8, ["label"])) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   }));
-  const InputBorderRadius_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$y = { class: "znpb-input-border-radius-tabs-wrapper" };
-  const _hoisted_2$q = /* @__PURE__ */ vue.createElementVNode("div", null, null, -1);
   const _sfc_main$I = /* @__PURE__ */ vue.defineComponent({
     __name: "InputBorderRadiusTabs",
     props: {
       modelValue: { default: () => ({}) }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const borderRadiusTabs = {
         all: {
           name: "all borders",
@@ -17002,40 +18107,54 @@ var __async = (__this, __arguments, generator) => {
             class: "znpb-input-border-radius-tabs"
           }, {
             default: vue.withCtx(() => [
-              (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(borderRadiusTabs, (tab, index2) => {
-                return vue.createVNode(_component_Tab, {
-                  key: index2,
-                  name: tab.name
-                }, {
-                  title: vue.withCtx(() => [
-                    _hoisted_2$q
-                  ]),
-                  default: vue.withCtx(() => [
-                    vue.createVNode(_sfc_main$J, {
-                      title: tab.name,
-                      modelValue: computedValue.value[tab.id] || null,
-                      "onUpdate:modelValue": ($event) => onValueUpdated(tab.id, $event)
-                    }, null, 8, ["title", "modelValue", "onUpdate:modelValue"])
-                  ]),
-                  _: 2
-                }, 1032, ["name"]);
-              }), 64))
+              (vue.openBlock(), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(borderRadiusTabs, (tab, index) => {
+                  return vue.createVNode(_component_Tab, {
+                    key: index,
+                    name: tab.name
+                  }, {
+                    title: vue.withCtx(() => [..._cache[0] || (_cache[0] = [
+                      vue.createElementVNode(
+                        "div",
+                        null,
+                        [
+                          vue.createCommentVNode(' <template v-slot:reference>\n							<Icon\n								:icon="tab.icon"\n							/>\n						</template> ')
+                        ],
+                        -1
+                        /* CACHED */
+                      )
+                    ])]),
+                    default: vue.withCtx(() => [
+                      vue.createVNode(_sfc_main$J, {
+                        title: tab.name,
+                        modelValue: computedValue.value[tab.id] || null,
+                        "onUpdate:modelValue": ($event) => onValueUpdated(tab.id, $event)
+                      }, null, 8, ["title", "modelValue", "onUpdate:modelValue"])
+                    ]),
+                    _: 2
+                    /* DYNAMIC */
+                  }, 1032, ["name"]);
+                }),
+                64
+                /* STABLE_FRAGMENT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   });
-  const InputBorderRadiusTabs_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$x = { class: "znpb-optSpacingInputWrapper" };
   const _hoisted_2$p = { class: "znpb-optSpacingInput" };
-  const _hoisted_3$i = { class: "znpb-optSpacingInputWrapper znpb-optSpacingInputWrapper--middle" };
-  const _hoisted_4$b = { class: "znpb-optSpacingInput" };
+  const _hoisted_3$h = { class: "znpb-optSpacingInputWrapper znpb-optSpacingInputWrapper--middle" };
+  const _hoisted_4$a = { class: "znpb-optSpacingInput" };
   const _hoisted_5$8 = { class: "znpb-optSpacingInput" };
   const _hoisted_6$5 = { class: "znpb-optSpacingInputWrapper" };
   const _hoisted_7$3 = { class: "znpb-optSpacingInput" };
-  const _hoisted_8$3 = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-optSpacing-label" }, "Link values", -1);
   const _sfc_main$H = /* @__PURE__ */ vue.defineComponent({
     __name: "InputBoxModel",
     props: {
@@ -17049,8 +18168,9 @@ var __async = (__this, __arguments, generator) => {
       positionTitle: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const positionValues = [
         `${props.positionType}-top`,
         `${props.positionType}-right`,
@@ -17139,109 +18259,120 @@ var __async = (__this, __arguments, generator) => {
         const _component_ChangesBullet = vue.resolveComponent("ChangesBullet");
         const _component_Icon = vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: "znpb-optSpacingContainer",
-          onKeydown: checkForOppositeChange,
-          onKeyup: _cache[8] || (_cache[8] = ($event) => oppositeChange.value = false)
-        }, [
-          vue.createElementVNode("div", null, [
-            vue.createElementVNode("div", _hoisted_1$x, [
-              vue.createElementVNode("div", _hoisted_2$p, [
-                vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
-                  class: "znpb-optSpacingInputField",
-                  "model-value": computedValues.value[`${_ctx.positionType}-top`],
-                  units: ["px", "rem", "pt", "vh", "%"],
-                  step: 1,
-                  placeholder: _ctx.placeholder && typeof _ctx.placeholder[`${_ctx.positionType}-top`] !== "undefined" ? _ctx.placeholder[`${_ctx.positionType}-top`] : "-",
-                  "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => onValueUpdated(`${_ctx.positionType}-top`, $event))
-                }, null, 8, ["model-value", "placeholder"]), [
-                  [_directive_znpb_tooltip, _ctx.positionTitle + " " + i18n__namespace.__("top", "zionbuilder")]
-                ]),
-                computedValues.value[`${_ctx.positionType}-top`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
-                  key: 0,
-                  content: i18n__namespace.__("Discard changes", "zionbuilder"),
-                  onRemoveStyles: _cache[1] || (_cache[1] = ($event) => onDiscardChanges(`${_ctx.positionType}-top`))
-                }, null, 8, ["content"])) : vue.createCommentVNode("", true)
-              ])
-            ]),
-            vue.createElementVNode("div", _hoisted_3$i, [
-              vue.createElementVNode("div", _hoisted_4$b, [
-                vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
-                  class: "znpb-optSpacingInputField",
-                  "model-value": computedValues.value[`${_ctx.positionType}-left`],
-                  units: ["px", "rem", "pt", "vh", "%"],
-                  step: 1,
-                  placeholder: _ctx.placeholder && typeof _ctx.placeholder[`${_ctx.positionType}-left`] !== "undefined" ? _ctx.placeholder[`${_ctx.positionType}-left`] : "-",
-                  "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => onValueUpdated(`${_ctx.positionType}-left`, $event))
-                }, null, 8, ["model-value", "placeholder"]), [
-                  [_directive_znpb_tooltip, _ctx.positionTitle + " " + i18n__namespace.__("left", "zionbuilder")]
-                ]),
-                computedValues.value[`${_ctx.positionType}-left`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
-                  key: 0,
-                  content: i18n__namespace.__("Discard changes", "zionbuilder"),
-                  onRemoveStyles: _cache[3] || (_cache[3] = ($event) => onDiscardChanges(`${_ctx.positionType}-left`))
-                }, null, 8, ["content"])) : vue.createCommentVNode("", true)
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: "znpb-optSpacingContainer",
+            onKeydown: checkForOppositeChange,
+            onKeyup: _cache[8] || (_cache[8] = ($event) => oppositeChange.value = false)
+          },
+          [
+            vue.createElementVNode("div", null, [
+              vue.createElementVNode("div", _hoisted_1$x, [
+                vue.createElementVNode("div", _hoisted_2$p, [
+                  vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
+                    class: "znpb-optSpacingInputField",
+                    "model-value": computedValues.value[`${__props.positionType}-top`],
+                    units: ["px", "rem", "pt", "vh", "%"],
+                    step: 1,
+                    placeholder: __props.placeholder && typeof __props.placeholder[`${__props.positionType}-top`] !== "undefined" ? __props.placeholder[`${__props.positionType}-top`] : "-",
+                    "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => onValueUpdated(`${__props.positionType}-top`, $event))
+                  }, null, 8, ["model-value", "placeholder"]), [
+                    [_directive_znpb_tooltip, __props.positionTitle + " " + i18n__namespace.__("top", "zionbuilder")]
+                  ]),
+                  computedValues.value[`${__props.positionType}-top`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
+                    key: 0,
+                    content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                    onRemoveStyles: _cache[1] || (_cache[1] = ($event) => onDiscardChanges(`${__props.positionType}-top`))
+                  }, null, 8, ["content"])) : vue.createCommentVNode("v-if", true)
+                ])
               ]),
-              vue.createElementVNode("div", _hoisted_5$8, [
-                vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
-                  class: "znpb-optSpacingInputField",
-                  "model-value": computedValues.value[`${_ctx.positionType}-right`],
-                  units: ["px", "rem", "pt", "vh", "%"],
-                  step: 1,
-                  placeholder: _ctx.placeholder && typeof _ctx.placeholder[`${_ctx.positionType}-right`] !== "undefined" ? _ctx.placeholder[`${_ctx.positionType}-right`] : "-",
-                  "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => onValueUpdated(`${_ctx.positionType}-right`, $event))
-                }, null, 8, ["model-value", "placeholder"]), [
-                  [_directive_znpb_tooltip, _ctx.positionTitle + " " + i18n__namespace.__("right", "zionbuilder")]
+              vue.createElementVNode("div", _hoisted_3$h, [
+                vue.createElementVNode("div", _hoisted_4$a, [
+                  vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
+                    class: "znpb-optSpacingInputField",
+                    "model-value": computedValues.value[`${__props.positionType}-left`],
+                    units: ["px", "rem", "pt", "vh", "%"],
+                    step: 1,
+                    placeholder: __props.placeholder && typeof __props.placeholder[`${__props.positionType}-left`] !== "undefined" ? __props.placeholder[`${__props.positionType}-left`] : "-",
+                    "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => onValueUpdated(`${__props.positionType}-left`, $event))
+                  }, null, 8, ["model-value", "placeholder"]), [
+                    [_directive_znpb_tooltip, __props.positionTitle + " " + i18n__namespace.__("left", "zionbuilder")]
+                  ]),
+                  computedValues.value[`${__props.positionType}-left`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
+                    key: 0,
+                    content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                    onRemoveStyles: _cache[3] || (_cache[3] = ($event) => onDiscardChanges(`${__props.positionType}-left`))
+                  }, null, 8, ["content"])) : vue.createCommentVNode("v-if", true)
                 ]),
-                computedValues.value[`${_ctx.positionType}-right`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
-                  key: 0,
-                  content: i18n__namespace.__("Discard changes", "zionbuilder"),
-                  onRemoveStyles: _cache[5] || (_cache[5] = ($event) => onDiscardChanges(`${_ctx.positionType}-right`))
-                }, null, 8, ["content"])) : vue.createCommentVNode("", true)
+                vue.createElementVNode("div", _hoisted_5$8, [
+                  vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
+                    class: "znpb-optSpacingInputField",
+                    "model-value": computedValues.value[`${__props.positionType}-right`],
+                    units: ["px", "rem", "pt", "vh", "%"],
+                    step: 1,
+                    placeholder: __props.placeholder && typeof __props.placeholder[`${__props.positionType}-right`] !== "undefined" ? __props.placeholder[`${__props.positionType}-right`] : "-",
+                    "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => onValueUpdated(`${__props.positionType}-right`, $event))
+                  }, null, 8, ["model-value", "placeholder"]), [
+                    [_directive_znpb_tooltip, __props.positionTitle + " " + i18n__namespace.__("right", "zionbuilder")]
+                  ]),
+                  computedValues.value[`${__props.positionType}-right`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
+                    key: 0,
+                    content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                    onRemoveStyles: _cache[5] || (_cache[5] = ($event) => onDiscardChanges(`${__props.positionType}-right`))
+                  }, null, 8, ["content"])) : vue.createCommentVNode("v-if", true)
+                ])
+              ]),
+              vue.createElementVNode("div", _hoisted_6$5, [
+                vue.createElementVNode("div", _hoisted_7$3, [
+                  vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
+                    class: "znpb-optSpacingInputField",
+                    "model-value": computedValues.value[`${__props.positionType}-bottom`],
+                    units: ["px", "rem", "pt", "vh", "%"],
+                    step: 1,
+                    placeholder: __props.placeholder && typeof __props.placeholder[`${__props.positionType}-bottom`] !== "undefined" ? __props.placeholder[`${__props.positionType}-bottom`] : "-",
+                    "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => onValueUpdated(`${__props.positionType}-bottom`, $event))
+                  }, null, 8, ["model-value", "placeholder"]), [
+                    [_directive_znpb_tooltip, __props.positionTitle + " " + i18n__namespace.__("bottom", "zionbuilder")]
+                  ]),
+                  computedValues.value[`${__props.positionType}-bottom`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
+                    key: 0,
+                    content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                    onRemoveStyles: _cache[7] || (_cache[7] = ($event) => onDiscardChanges(`${__props.positionType}-bottom`))
+                  }, null, 8, ["content"])) : vue.createCommentVNode("v-if", true)
+                ])
+              ]),
+              vue.createElementVNode("div", {
+                class: "znpb-optSpacing-labelWrapper",
+                onClick: linkValues
+              }, [
+                _cache[9] || (_cache[9] = vue.createElementVNode(
+                  "span",
+                  { class: "znpb-optSpacing-label" },
+                  "Link values",
+                  -1
+                  /* CACHED */
+                )),
+                vue.createVNode(_component_Icon, {
+                  icon: valuesAreLinked.value ? "link" : "unlink",
+                  title: valuesAreLinked.value ? i18n__namespace.__("Unlink", "zionbuilder") : i18n__namespace.__("Link", "zionbuilder"),
+                  size: 12,
+                  class: vue.normalizeClass(["znpb-optSpacing-link", {
+                    "znpb-optSpacing-link--linked": valuesAreLinked.value
+                  }])
+                }, null, 8, ["icon", "title", "class"])
               ])
-            ]),
-            vue.createElementVNode("div", _hoisted_6$5, [
-              vue.createElementVNode("div", _hoisted_7$3, [
-                vue.withDirectives(vue.createVNode(vue.unref(_sfc_main$1p), {
-                  class: "znpb-optSpacingInputField",
-                  "model-value": computedValues.value[`${_ctx.positionType}-bottom`],
-                  units: ["px", "rem", "pt", "vh", "%"],
-                  step: 1,
-                  placeholder: _ctx.placeholder && typeof _ctx.placeholder[`${_ctx.positionType}-bottom`] !== "undefined" ? _ctx.placeholder[`${_ctx.positionType}-bottom`] : "-",
-                  "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => onValueUpdated(`${_ctx.positionType}-bottom`, $event))
-                }, null, 8, ["model-value", "placeholder"]), [
-                  [_directive_znpb_tooltip, _ctx.positionTitle + " " + i18n__namespace.__("bottom", "zionbuilder")]
-                ]),
-                computedValues.value[`${_ctx.positionType}-bottom`] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
-                  key: 0,
-                  content: i18n__namespace.__("Discard changes", "zionbuilder"),
-                  onRemoveStyles: _cache[7] || (_cache[7] = ($event) => onDiscardChanges(`${_ctx.positionType}-bottom`))
-                }, null, 8, ["content"])) : vue.createCommentVNode("", true)
-              ])
-            ]),
-            vue.createElementVNode("div", {
-              class: "znpb-optSpacing-labelWrapper",
-              onClick: linkValues
-            }, [
-              _hoisted_8$3,
-              vue.createVNode(_component_Icon, {
-                icon: valuesAreLinked.value ? "link" : "unlink",
-                title: valuesAreLinked.value ? i18n__namespace.__("Unlink", "zionbuilder") : i18n__namespace.__("Link", "zionbuilder"),
-                size: 12,
-                class: vue.normalizeClass(["znpb-optSpacing-link", {
-                  "znpb-optSpacing-link--linked": valuesAreLinked.value
-                }])
-              }, null, 8, ["icon", "title", "class"])
             ])
-          ])
-        ], 32);
+          ],
+          32
+          /* NEED_HYDRATION */
+        );
       };
     }
   });
-  const InputBoxModel_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$w = ["aria-disabled"];
   const _hoisted_2$o = ["disabled", "value"];
-  const _hoisted_3$h = {
+  const _hoisted_3$g = {
     key: 0,
     class: "znpb-checkmark-option"
   };
@@ -17262,9 +18393,10 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue", "change"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
       const isLimitExceeded = vue.ref(false);
+      const emit = __emit;
       const slots = vue.useSlots();
       const model = vue.computed({
         get() {
@@ -17329,33 +18461,49 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("label", {
           class: "znpb-checkbox-wrapper",
-          "aria-disabled": _ctx.disabled
+          "aria-disabled": __props.disabled
         }, [
           vue.withDirectives(vue.createElementVNode("input", {
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => model.value = $event),
             type: "checkbox",
             "aria-hidden": "true",
-            disabled: _ctx.disabled,
-            value: _ctx.optionValue,
+            disabled: __props.disabled,
+            value: __props.optionValue,
             class: "znpb-form__input-checkbox",
             onChange
           }, null, 40, _hoisted_2$o), [
             [vue.vModelCheckbox, model.value]
           ]),
-          vue.createElementVNode("span", {
-            class: vue.normalizeClass(["znpb-checkmark", { "znpb-checkmark--rounded": _ctx.rounded }])
-          }, null, 2),
-          hasSlots.value || _ctx.label ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$h, [
+          vue.createElementVNode(
+            "span",
+            {
+              class: vue.normalizeClass(["znpb-checkmark", { "znpb-checkmark--rounded": __props.rounded }])
+            },
+            null,
+            2
+            /* CLASS */
+          ),
+          hasSlots.value || __props.label ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$g, [
+            vue.createCommentVNode(" @slot content for checkbox or label "),
             vue.renderSlot(_ctx.$slots, "default"),
-            _ctx.showLabel && _ctx.label ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-              vue.createTextVNode(vue.toDisplayString(_ctx.label), 1)
-            ], 64)) : vue.createCommentVNode("", true)
-          ])) : vue.createCommentVNode("", true)
+            __props.showLabel && __props.label ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 0 },
+              [
+                vue.createTextVNode(
+                  vue.toDisplayString(__props.label),
+                  1
+                  /* TEXT */
+                )
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : vue.createCommentVNode("v-if", true)
+          ])) : vue.createCommentVNode("v-if", true)
         ], 8, _hoisted_1$w);
       };
     }
   }));
-  const InputCheckbox_vue_vue_type_style_index_0_lang = "";
   const __default__$r = {
     name: "InputCheckboxGroup"
   };
@@ -17376,8 +18524,9 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const slots = vue.useSlots();
       const model = vue.computed({
         get() {
@@ -17413,42 +18562,54 @@ var __async = (__this, __arguments, generator) => {
         props
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-checkbox-list", wrapperClasses.value])
-        }, [
-          vue.renderSlot(_ctx.$slots, "default"),
-          !hasSlots.value ? (vue.openBlock(true), vue.createElementBlock(vue.Fragment, { key: 0 }, vue.renderList(_ctx.options, (option, i) => {
-            return vue.openBlock(), vue.createBlock(_sfc_main$G, {
-              key: i,
-              modelValue: model.value,
-              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => model.value = $event),
-              "option-value": option.id,
-              label: option.name,
-              disabled: _ctx.disabled,
-              placeholder: _ctx.placeholder,
-              title: option.icon ? option.name : false,
-              class: vue.normalizeClass({
-                [`znpb-checkbox-list--isPlaceholder`]: model.value.length === 0 && _ctx.placeholder && _ctx.placeholder.includes(option.id)
-              })
-            }, {
-              default: vue.withCtx(() => [
-                option.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                  key: 0,
-                  icon: option.icon
-                }, null, 8, ["icon"])) : vue.createCommentVNode("", true)
-              ]),
-              _: 2
-            }, 1032, ["modelValue", "option-value", "label", "disabled", "placeholder", "title", "class"]);
-          }), 128)) : vue.createCommentVNode("", true)
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-checkbox-list", wrapperClasses.value])
+          },
+          [
+            vue.createCommentVNode(" @slot content for checkbox if no checkbox "),
+            vue.renderSlot(_ctx.$slots, "default"),
+            !hasSlots.value ? (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              { key: 0 },
+              vue.renderList(__props.options, (option, i) => {
+                return vue.openBlock(), vue.createBlock(_sfc_main$G, {
+                  key: i,
+                  modelValue: model.value,
+                  "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => model.value = $event),
+                  "option-value": option.id,
+                  label: option.name,
+                  disabled: __props.disabled,
+                  placeholder: __props.placeholder,
+                  title: option.icon ? option.name : false,
+                  class: vue.normalizeClass({
+                    [`znpb-checkbox-list--isPlaceholder`]: model.value.length === 0 && __props.placeholder && __props.placeholder.includes(option.id)
+                  })
+                }, {
+                  default: vue.withCtx(() => [
+                    option.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                      key: 0,
+                      icon: option.icon
+                    }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true)
+                  ]),
+                  _: 2
+                  /* DYNAMIC */
+                }, 1032, ["modelValue", "option-value", "label", "disabled", "placeholder", "title", "class"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            )) : vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const InputCheckboxGroup_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$v = { class: "znpb-checkbox-switch-wrapper" };
   const _hoisted_2$n = ["content"];
-  const _hoisted_3$g = ["disabled", "modelValue"];
-  const _hoisted_4$a = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-checkbox-switch-wrapper__button" }, null, -1);
+  const _hoisted_3$f = ["disabled", "modelValue"];
   const _sfc_main$E = /* @__PURE__ */ vue.defineComponent({
     __name: "InputCheckboxSwitch",
     props: {
@@ -17461,8 +18622,9 @@ var __async = (__this, __arguments, generator) => {
       rounded: { type: Boolean, default: false }
     },
     emits: ["update:modelValue", "change"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const checkboxGroup = vue.inject("checkboxGroup", null);
       const isLimitExceeded = vue.ref(false);
       const model = vue.computed({
@@ -17508,19 +18670,24 @@ var __async = (__this, __arguments, generator) => {
             vue.withDirectives(vue.createElementVNode("input", {
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => model.value = $event),
               type: "checkbox",
-              disabled: _ctx.disabled,
+              disabled: __props.disabled,
               class: "znpb-checkbox-switch-wrapper__checkbox",
-              modelValue: _ctx.optionValue
-            }, null, 8, _hoisted_3$g), [
+              modelValue: __props.optionValue
+            }, null, 8, _hoisted_3$f), [
               [vue.vModelCheckbox, model.value]
             ]),
-            _hoisted_4$a
+            _cache[1] || (_cache[1] = vue.createElementVNode(
+              "span",
+              { class: "znpb-checkbox-switch-wrapper__button" },
+              null,
+              -1
+              /* CACHED */
+            ))
           ], 10, _hoisted_2$n)
         ]);
       };
     }
   });
-  const InputCheckboxSwitch_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$u = { class: "znpb-custom-code" };
   const _hoisted_2$m = ["placeholder"];
   const __default__$q = {
@@ -17533,8 +18700,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       let editor;
       const codeMirrorTextarea = vue.ref(null);
       let ignoreChange = false;
@@ -17671,13 +18839,12 @@ var __async = (__this, __arguments, generator) => {
             ref_key: "codeMirrorTextarea",
             ref: codeMirrorTextarea,
             class: "znpb-custom-code__text-area",
-            placeholder: _ctx.placeholder
+            placeholder: __props.placeholder
           }, null, 8, _hoisted_2$m)
         ]);
       };
     }
   }));
-  const InputCode_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$t = { class: "znpb-form-library-grid__panel-content znpb-fancy-scrollbar" };
   const _sfc_main$C = /* @__PURE__ */ vue.defineComponent({
     __name: "GridColor",
@@ -17695,10 +18862,9 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const GridColor_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$s = { key: 0 };
   const _hoisted_2$l = ["onClick"];
-  const _hoisted_3$f = {
+  const _hoisted_3$e = {
     key: 0,
     class: "znpb-colorpicker-global-wrapper--pro"
   };
@@ -17715,8 +18881,9 @@ var __async = (__this, __arguments, generator) => {
       model: { default: "#000" }
     },
     emits: ["color-updated"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const formApi = vue.inject("OptionsForm");
       const getValueByPath = vue.inject("getValueByPath");
       const schema = vue.inject("schema", {});
@@ -17777,29 +18944,41 @@ var __async = (__this, __arguments, generator) => {
                   vue.createVNode(_component_Tab, { name: "Local" }, {
                     default: vue.withCtx(() => [
                       vue.createVNode(_sfc_main$C, {
-                        onAddNewColor: _cache[0] || (_cache[0] = ($event) => vue.unref(addLocalColor)(_ctx.model))
+                        onAddNewColor: _cache[0] || (_cache[0] = ($event) => vue.unref(addLocalColor)(__props.model))
                       }, {
                         default: vue.withCtx(() => [
-                          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(localColorPatterns.value, (color, i) => {
-                            return vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", {
-                              key: i,
-                              class: "znpb-colorpicker-circle znpb-colorpicker-circle-color",
-                              style: vue.normalizeStyle({ "background-color": color }),
-                              onClick: ($event) => emit("color-updated", color)
-                            }, null, 12, _hoisted_2$l)), [
-                              [_directive_znpb_tooltip, `${color})`]
-                            ]);
-                          }), 128))
+                          (vue.openBlock(true), vue.createElementBlock(
+                            vue.Fragment,
+                            null,
+                            vue.renderList(localColorPatterns.value, (color, i) => {
+                              return vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", {
+                                key: i,
+                                class: "znpb-colorpicker-circle znpb-colorpicker-circle-color",
+                                style: vue.normalizeStyle({ "background-color": color }),
+                                onClick: ($event) => emit("color-updated", color)
+                              }, null, 12, _hoisted_2$l)), [
+                                [_directive_znpb_tooltip, `${color})`]
+                              ]);
+                            }),
+                            128
+                            /* KEYED_FRAGMENT */
+                          ))
                         ]),
                         _: 1
+                        /* STABLE */
                       })
                     ]),
                     _: 1
+                    /* STABLE */
                   }),
                   vue.createVNode(_component_Tab, { name: "Global" }, {
                     default: vue.withCtx(() => [
-                      !isPro.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$f, [
-                        vue.createTextVNode(" Global colors are available in "),
+                      !isPro.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$e, [
+                        _cache[4] || (_cache[4] = vue.createTextVNode(
+                          " Global colors are available in ",
+                          -1
+                          /* CACHED */
+                        )),
                         vue.createVNode(vue.unref(_sfc_main$X), {
                           text: "PRO",
                           type: "pro"
@@ -17809,45 +18988,60 @@ var __async = (__this, __arguments, generator) => {
                         onAddNewColor: _cache[1] || (_cache[1] = ($event) => showPresetInput.value = !showPresetInput.value)
                       }, {
                         default: vue.withCtx(() => [
-                          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(globalColorPatterns.value, (colorConfig, i) => {
-                            return vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", {
-                              key: i,
-                              class: vue.normalizeClass(["znpb-colorpicker-circle znpb-colorpicker-circle-color", { "znpb-colorpicker-circle--active": colorConfig.id === selectedGlobalColor.value }]),
-                              style: vue.normalizeStyle({ backgroundColor: colorConfig.id === selectedGlobalColor.value ? "" : colorConfig.color }),
-                              onClick: vue.withModifiers(($event) => onGlobalColorSelected(colorConfig), ["stop"])
-                            }, [
-                              colorConfig.id === selectedGlobalColor.value ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_5$7, [
-                                vue.createElementVNode("span", {
-                                  style: vue.normalizeStyle({ "background-color": colorConfig.color })
-                                }, null, 4)
-                              ])) : vue.createCommentVNode("", true)
-                            ], 14, _hoisted_4$9)), [
-                              [_directive_znpb_tooltip, `${colorConfig.name} (${colorConfig.color})`]
-                            ]);
-                          }), 128))
+                          (vue.openBlock(true), vue.createElementBlock(
+                            vue.Fragment,
+                            null,
+                            vue.renderList(globalColorPatterns.value, (colorConfig, i) => {
+                              return vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", {
+                                key: i,
+                                class: vue.normalizeClass(["znpb-colorpicker-circle znpb-colorpicker-circle-color", { "znpb-colorpicker-circle--active": colorConfig.id === selectedGlobalColor.value }]),
+                                style: vue.normalizeStyle({ backgroundColor: colorConfig.id === selectedGlobalColor.value ? "" : colorConfig.color }),
+                                onClick: vue.withModifiers(($event) => onGlobalColorSelected(colorConfig), ["stop"])
+                              }, [
+                                colorConfig.id === selectedGlobalColor.value ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_5$7, [
+                                  vue.createElementVNode(
+                                    "span",
+                                    {
+                                      style: vue.normalizeStyle({ "background-color": colorConfig.color })
+                                    },
+                                    null,
+                                    4
+                                    /* STYLE */
+                                  )
+                                ])) : vue.createCommentVNode("v-if", true)
+                              ], 14, _hoisted_4$9)), [
+                                [_directive_znpb_tooltip, `${colorConfig.name} (${colorConfig.color})`]
+                              ]);
+                            }),
+                            128
+                            /* KEYED_FRAGMENT */
+                          ))
                         ]),
                         _: 1
+                        /* STABLE */
                       }))
                     ]),
                     _: 1
+                    /* STABLE */
                   })
                 ]),
                 _: 1
+                /* STABLE */
               }, 8, ["active-tab"])
-            ])) : vue.createCommentVNode("", true),
+            ])) : vue.createCommentVNode("v-if", true),
             showPresetInput.value ? (vue.openBlock(), vue.createBlock(_sfc_main$10, {
               key: 1,
               "is-gradient": false,
               onSavePreset: _cache[2] || (_cache[2] = ($event) => addGlobal($event)),
               onCancel: _cache[3] || (_cache[3] = ($event) => showPresetInput.value = false)
-            })) : vue.createCommentVNode("", true)
+            })) : vue.createCommentVNode("v-if", true)
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["has-input"]);
       };
     }
   }));
-  const PatternContainer_vue_vue_type_style_index_0_lang = "";
   const __default__$o = {
     name: "Color"
   };
@@ -17859,7 +19053,8 @@ var __async = (__this, __arguments, generator) => {
       placeholder: {}
     },
     emits: ["update:modelValue", "option-updated", "open", "close"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const popper2 = vue.ref(null);
       const colorPickerHolder = vue.ref(null);
       const isDragging = vue.ref(false);
@@ -17900,8 +19095,7 @@ var __async = (__this, __arguments, generator) => {
         if (((_a2 = popper2.value) == null ? void 0 : _a2.$el.contains(event2.target)) || ((_b = colorPickerHolder.value) == null ? void 0 : _b.$refs.colorPicker.contains(event2.target))) {
           return;
         }
-        if (!isDragging.value && popper2.value)
-          ;
+        if (!isDragging.value && popper2.value) ;
         isDragging.value = false;
       }
       vue.onBeforeUnmount(() => {
@@ -17912,66 +19106,73 @@ var __async = (__this, __arguments, generator) => {
         }
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1q), {
-          ref_key: "popper",
-          ref: popper2,
-          "tooltip-class": "hg-popper--no-padding",
-          trigger: "click",
-          "close-on-outside-click": true,
-          "append-to": "body",
-          modifiers: [
-            {
-              name: "preventOverflow",
-              options: {
-                rootBoundary: "viewport"
+        return vue.openBlock(), vue.createBlock(
+          vue.unref(_sfc_main$1q),
+          {
+            ref_key: "popper",
+            ref: popper2,
+            "tooltip-class": "hg-popper--no-padding",
+            trigger: "click",
+            "close-on-outside-click": true,
+            "append-to": "body",
+            modifiers: [
+              {
+                name: "preventOverflow",
+                options: {
+                  rootBoundary: "viewport"
+                }
+              },
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 15]
+                }
+              },
+              {
+                name: "flip",
+                options: {
+                  fallbackPlacements: ["left", "right", "bottom", "top"]
+                }
               }
-            },
-            {
-              name: "offset",
-              options: {
-                offset: [0, 15]
-              }
-            },
-            {
-              name: "flip",
-              options: {
-                fallbackPlacements: ["left", "right", "bottom", "top"]
-              }
-            }
-          ],
-          strategy: "fixed",
-          onShow: openColorPicker,
-          onHide: closeColorPicker
-        }, {
-          content: vue.withCtx(() => [
-            vue.createVNode(vue.unref(_sfc_main$1i), {
-              ref_key: "colorPickerHolder",
-              ref: colorPickerHolder,
-              model: _ctx.modelValue && _ctx.modelValue.length > 0 ? _ctx.modelValue : _ctx.placeholder,
-              onColorChanged: updateColor,
-              onClick: vue.withModifiers(onColorPickerClick, ["stop"]),
-              onMousedown: vue.withModifiers(onColorPickerMousedown, ["stop"])
-            }, {
-              end: vue.withCtx(() => [
-                _ctx.showLibrary ? (vue.openBlock(), vue.createBlock(_sfc_main$B, {
-                  key: 0,
-                  model: _ctx.modelValue,
-                  "active-tab": _ctx.dynamicContentConfig ? "global" : "local",
-                  onColorUpdated: onLibraryUpdate
-                }, null, 8, ["model", "active-tab"])) : vue.createCommentVNode("", true)
-              ]),
-              _: 1
-            }, 8, ["model", "onClick", "onMousedown"])
-          ]),
-          default: vue.withCtx(() => [
-            vue.renderSlot(_ctx.$slots, "trigger")
-          ]),
-          _: 3
-        }, 512);
+            ],
+            strategy: "fixed",
+            onShow: openColorPicker,
+            onHide: closeColorPicker
+          },
+          {
+            content: vue.withCtx(() => [
+              vue.createVNode(vue.unref(_sfc_main$1i), {
+                ref_key: "colorPickerHolder",
+                ref: colorPickerHolder,
+                model: __props.modelValue && __props.modelValue.length > 0 ? __props.modelValue : __props.placeholder,
+                onColorChanged: updateColor,
+                onClick: vue.withModifiers(onColorPickerClick, ["stop"]),
+                onMousedown: vue.withModifiers(onColorPickerMousedown, ["stop"])
+              }, {
+                end: vue.withCtx(() => [
+                  __props.showLibrary ? (vue.openBlock(), vue.createBlock(_sfc_main$B, {
+                    key: 0,
+                    model: __props.modelValue,
+                    "active-tab": __props.dynamicContentConfig ? "global" : "local",
+                    onColorUpdated: onLibraryUpdate
+                  }, null, 8, ["model", "active-tab"])) : vue.createCommentVNode("v-if", true)
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["model"])
+            ]),
+            default: vue.withCtx(() => [
+              vue.renderSlot(_ctx.$slots, "trigger")
+            ]),
+            _: 3
+            /* FORWARDED */
+          },
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   }));
-  const Color_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$r = {
     key: 1,
     class: "znpb-form-colorpicker__color-trigger znpb-colorpicker-circle znpb-colorpicker-circle--no-color"
@@ -17990,8 +19191,9 @@ var __async = (__this, __arguments, generator) => {
       placeholder: { default: null }
     },
     emits: ["update:modelValue", "open", "close"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const color = vue.ref(null);
       const computedPlaceholder = vue.computed(() => {
         return props.placeholder || i18n__namespace.__("Color", "zionbuilder");
@@ -18006,96 +19208,128 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-form-colorpicker", {
-            [`znpb-form-colorPicker--${_ctx.display}`]: _ctx.display
-          }])
-        }, [
-          _ctx.display === "simple" ? (vue.openBlock(), vue.createBlock(_sfc_main$A, {
-            key: 0,
-            ref_key: "color",
-            ref: color,
-            modelValue: colorModel.value,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => colorModel.value = $event),
-            "show-library": _ctx.showLibrary,
-            placeholder: _ctx.placeholder,
-            class: "znpb-colorpicker-circle znpb-colorpicker-circle--trigger znpb-colorpicker-circle--opacity",
-            onOpen: _cache[1] || (_cache[1] = ($event) => emit("open")),
-            onClose: _cache[2] || (_cache[2] = ($event) => emit("close"))
-          }, {
-            trigger: vue.withCtx(() => [
-              vue.createElementVNode("span", {
-                style: vue.normalizeStyle({ backgroundColor: _ctx.modelValue }),
-                class: "znpb-form-colorpicker__color-trigger znpb-colorpicker-circle"
-              }, null, 4),
-              _ctx.dynamicContentConfig ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                key: 0,
-                icon: "globe",
-                rounded: true,
-                "bg-color": "#fff",
-                "bg-size": 16,
-                size: 12,
-                class: "znpb-colorpicker-circle__global-icon"
-              })) : vue.createCommentVNode("", true),
-              !_ctx.modelValue ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", _hoisted_1$r, null, 512)), [
-                [_directive_znpb_tooltip, i18n__namespace.__("No color chosen", "zionbuilder")]
-              ]) : vue.createCommentVNode("", true)
-            ]),
-            _: 1
-          }, 8, ["modelValue", "show-library", "placeholder"])) : (vue.openBlock(), vue.createBlock(_sfc_main$1w, {
-            key: 1,
-            modelValue: colorModel.value,
-            "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => colorModel.value = $event),
-            placeholder: computedPlaceholder.value
-          }, {
-            prepend: vue.withCtx(() => [
-              vue.createVNode(_sfc_main$A, {
-                modelValue: colorModel.value,
-                "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => colorModel.value = $event),
-                "show-library": _ctx.showLibrary,
-                class: "znpb-colorpicker-circle znpb-colorpicker-circle--trigger znpb-colorpicker-circle--opacity",
-                placeholder: _ctx.placeholder,
-                onOpen: _cache[4] || (_cache[4] = ($event) => emit("open")),
-                onClose: _cache[5] || (_cache[5] = ($event) => emit("close"))
-              }, {
-                trigger: vue.withCtx(() => [
-                  vue.createElementVNode("span", null, [
-                    !_ctx.modelValue || _ctx.modelValue === void 0 ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", _hoisted_2$k, [
-                      vue.createElementVNode("span", {
-                        style: vue.normalizeStyle({ backgroundColor: _ctx.modelValue || _ctx.placeholder }),
-                        class: "znpb-form-colorpicker__color-trigger znpb-colorpicker-circle"
-                      }, null, 4)
-                    ])), [
-                      [_directive_znpb_tooltip, i18n__namespace.__("No color chosen", "zionbuilder")]
-                    ]) : (vue.openBlock(), vue.createElementBlock("span", {
-                      key: 1,
-                      style: vue.normalizeStyle({ backgroundColor: _ctx.modelValue || _ctx.placeholder }),
-                      class: "znpb-form-colorpicker__color-trigger znpb-colorpicker-circle"
-                    }, null, 4)),
-                    _ctx.dynamicContentConfig ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                      key: 2,
-                      icon: "globe",
-                      rounded: true,
-                      "bg-color": "#fff",
-                      "bg-size": 16,
-                      size: 12,
-                      class: "znpb-colorpicker-circle__global-icon"
-                    })) : vue.createCommentVNode("", true)
-                  ])
-                ]),
-                _: 1
-              }, 8, ["modelValue", "show-library", "placeholder"])
-            ]),
-            _: 1
-          }, 8, ["modelValue", "placeholder"]))
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-form-colorpicker", {
+              [`znpb-form-colorPicker--${__props.display}`]: __props.display
+            }])
+          },
+          [
+            __props.display === "simple" ? (vue.openBlock(), vue.createBlock(_sfc_main$A, {
+              key: 0,
+              ref_key: "color",
+              ref: color,
+              modelValue: colorModel.value,
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => colorModel.value = $event),
+              "show-library": __props.showLibrary,
+              placeholder: __props.placeholder,
+              class: "znpb-colorpicker-circle znpb-colorpicker-circle--trigger znpb-colorpicker-circle--opacity",
+              onOpen: _cache[1] || (_cache[1] = ($event) => emit("open")),
+              onClose: _cache[2] || (_cache[2] = ($event) => emit("close"))
+            }, {
+              trigger: vue.withCtx(() => [
+                vue.createElementVNode(
+                  "span",
+                  {
+                    style: vue.normalizeStyle({ backgroundColor: __props.modelValue }),
+                    class: "znpb-form-colorpicker__color-trigger znpb-colorpicker-circle"
+                  },
+                  null,
+                  4
+                  /* STYLE */
+                ),
+                __props.dynamicContentConfig ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                  key: 0,
+                  icon: "globe",
+                  rounded: true,
+                  "bg-color": "#fff",
+                  "bg-size": 16,
+                  size: 12,
+                  class: "znpb-colorpicker-circle__global-icon"
+                })) : vue.createCommentVNode("v-if", true),
+                !__props.modelValue ? vue.withDirectives((vue.openBlock(), vue.createElementBlock(
+                  "span",
+                  _hoisted_1$r,
+                  null,
+                  512
+                  /* NEED_PATCH */
+                )), [
+                  [_directive_znpb_tooltip, i18n__namespace.__("No color chosen", "zionbuilder")]
+                ]) : vue.createCommentVNode("v-if", true)
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["modelValue", "show-library", "placeholder"])) : (vue.openBlock(), vue.createBlock(_sfc_main$1w, {
+              key: 1,
+              modelValue: colorModel.value,
+              "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => colorModel.value = $event),
+              placeholder: computedPlaceholder.value
+            }, {
+              prepend: vue.withCtx(() => [
+                vue.createVNode(_sfc_main$A, {
+                  modelValue: colorModel.value,
+                  "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => colorModel.value = $event),
+                  "show-library": __props.showLibrary,
+                  class: "znpb-colorpicker-circle znpb-colorpicker-circle--trigger znpb-colorpicker-circle--opacity",
+                  placeholder: __props.placeholder,
+                  onOpen: _cache[4] || (_cache[4] = ($event) => emit("open")),
+                  onClose: _cache[5] || (_cache[5] = ($event) => emit("close"))
+                }, {
+                  trigger: vue.withCtx(() => [
+                    vue.createElementVNode("span", null, [
+                      !__props.modelValue || __props.modelValue === void 0 ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("span", _hoisted_2$k, [
+                        vue.createElementVNode(
+                          "span",
+                          {
+                            style: vue.normalizeStyle({ backgroundColor: __props.modelValue || __props.placeholder }),
+                            class: "znpb-form-colorpicker__color-trigger znpb-colorpicker-circle"
+                          },
+                          null,
+                          4
+                          /* STYLE */
+                        )
+                      ])), [
+                        [_directive_znpb_tooltip, i18n__namespace.__("No color chosen", "zionbuilder")]
+                      ]) : (vue.openBlock(), vue.createElementBlock(
+                        "span",
+                        {
+                          key: 1,
+                          style: vue.normalizeStyle({ backgroundColor: __props.modelValue || __props.placeholder }),
+                          class: "znpb-form-colorpicker__color-trigger znpb-colorpicker-circle"
+                        },
+                        null,
+                        4
+                        /* STYLE */
+                      )),
+                      __props.dynamicContentConfig ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                        key: 2,
+                        icon: "globe",
+                        rounded: true,
+                        "bg-color": "#fff",
+                        "bg-size": 16,
+                        size: 12,
+                        class: "znpb-colorpicker-circle__global-icon"
+                      })) : vue.createCommentVNode("v-if", true)
+                    ])
+                  ]),
+                  _: 1
+                  /* STABLE */
+                }, 8, ["modelValue", "show-library", "placeholder"])
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["modelValue", "placeholder"]))
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const InputColorPicker_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$q = { class: "znpb-custom-selector" };
   const _hoisted_2$j = { class: "znpb-custom-selector__list-wrapper" };
-  const _hoisted_3$e = ["onClick"];
+  const _hoisted_3$d = ["onClick"];
   const _hoisted_4$8 = {
     key: 0,
     class: "znpb-custom-selector__item-name"
@@ -18120,8 +19354,9 @@ var __async = (__this, __arguments, generator) => {
       placeholder: { type: [String, Number, Boolean, null] }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       function changeValue(newValue) {
         let valueToSend = newValue;
         if (props.modelValue === newValue) {
@@ -18133,39 +19368,55 @@ var __async = (__this, __arguments, generator) => {
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$q, [
           vue.createElementVNode("ul", _hoisted_2$j, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.options, (option, index2) => {
-              return vue.withDirectives((vue.openBlock(), vue.createElementBlock("li", {
-                key: index2,
-                class: vue.normalizeClass(["znpb-custom-selector__item", {
-                  ["znpb-custom-selector__item--activePlaceholder"]: typeof _ctx.modelValue === "undefined" && typeof _ctx.placeholder !== "undefined" && _ctx.placeholder === option.id,
-                  ["znpb-custom-selector__item--active"]: _ctx.modelValue === option.id,
-                  [`znpb-custom-selector__columns-${_ctx.columns}`]: _ctx.columns
-                }]),
-                onClick: ($event) => changeValue(option.id)
-              }, [
-                !option.icon ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$8, vue.toDisplayString(option.name), 1)) : vue.createCommentVNode("", true),
-                !_ctx.textIcon && option.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                  key: 1,
-                  icon: option.icon
-                }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-                _ctx.textIcon ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$6, [
-                  option.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                    key: 0,
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(__props.options, (option, index) => {
+                return vue.withDirectives((vue.openBlock(), vue.createElementBlock("li", {
+                  key: index,
+                  class: vue.normalizeClass(["znpb-custom-selector__item", {
+                    ["znpb-custom-selector__item--activePlaceholder"]: typeof __props.modelValue === "undefined" && typeof __props.placeholder !== "undefined" && __props.placeholder === option.id,
+                    ["znpb-custom-selector__item--active"]: __props.modelValue === option.id,
+                    [`znpb-custom-selector__columns-${__props.columns}`]: __props.columns
+                  }]),
+                  onClick: ($event) => changeValue(option.id)
+                }, [
+                  !option.icon ? (vue.openBlock(), vue.createElementBlock(
+                    "span",
+                    _hoisted_4$8,
+                    vue.toDisplayString(option.name),
+                    1
+                    /* TEXT */
+                  )) : vue.createCommentVNode("v-if", true),
+                  !__props.textIcon && option.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                    key: 1,
                     icon: option.icon
-                  }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-                  option.name ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_6$4, vue.toDisplayString(option.name), 1)) : vue.createCommentVNode("", true)
-                ])) : vue.createCommentVNode("", true)
-              ], 10, _hoisted_3$e)), [
-                [_directive_znpb_tooltip, option.icon ? option.name : ""]
-              ]);
-            }), 128))
+                  }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+                  __props.textIcon ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$6, [
+                    option.icon ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                      key: 0,
+                      icon: option.icon
+                    }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+                    option.name ? (vue.openBlock(), vue.createElementBlock(
+                      "span",
+                      _hoisted_6$4,
+                      vue.toDisplayString(option.name),
+                      1
+                      /* TEXT */
+                    )) : vue.createCommentVNode("v-if", true)
+                  ])) : vue.createCommentVNode("v-if", true)
+                ], 10, _hoisted_3$d)), [
+                  [_directive_znpb_tooltip, option.icon ? option.name : ""]
+                ]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ])
         ]);
       };
     }
   }));
-  const InputCustomSelector_vue_vue_type_style_index_0_lang = "";
-  const vueDatePick_vue_vue_type_style_index_0_lang = "";
   const formatRE = /,|\.|-| |:|\/|\\/;
   const dayRE = /D+/;
   const monthRE = /M+/;
@@ -18634,13 +19885,13 @@ var __async = (__this, __arguments, generator) => {
   }
   const _hoisted_1$p = ["readonly", "value"];
   const _hoisted_2$i = { class: "vdpInnerWrap" };
-  const _hoisted_3$d = { class: "vdpHeader" };
+  const _hoisted_3$c = { class: "vdpHeader" };
   const _hoisted_4$7 = ["title"];
   const _hoisted_5$5 = ["title"];
   const _hoisted_6$3 = { class: "vdpPeriodControls" };
   const _hoisted_7$2 = { class: "vdpPeriodControl" };
-  const _hoisted_8$2 = ["value"];
-  const _hoisted_9$2 = { class: "vdpPeriodControl" };
+  const _hoisted_8$1 = ["value"];
+  const _hoisted_9$1 = { class: "vdpPeriodControl" };
   const _hoisted_10 = ["value"];
   const _hoisted_11 = { class: "vdpTable" };
   const _hoisted_12 = { class: "vdpHeadCellContent" };
@@ -18652,228 +19903,352 @@ var __async = (__this, __arguments, generator) => {
   };
   const _hoisted_16 = { class: "vdpTimeCaption" };
   const _hoisted_17 = { class: "vdpTimeUnit" };
-  const _hoisted_18 = /* @__PURE__ */ vue.createElementVNode("br", null, null, -1);
-  const _hoisted_19 = ["disabled", "value"];
-  const _hoisted_20 = {
+  const _hoisted_18 = ["disabled", "value"];
+  const _hoisted_19 = {
     key: 0,
     class: "vdpTimeSeparator"
   };
-  const _hoisted_21 = {
+  const _hoisted_20 = {
     key: 1,
     class: "vdpTimeUnit"
   };
-  const _hoisted_22 = /* @__PURE__ */ vue.createElementVNode("br", null, null, -1);
-  const _hoisted_23 = ["disabled", "value"];
-  const _hoisted_24 = {
+  const _hoisted_21 = ["disabled", "value"];
+  const _hoisted_22 = {
     key: 2,
     class: "vdpTimeSeparator"
   };
-  const _hoisted_25 = {
+  const _hoisted_23 = {
     key: 3,
     class: "vdpTimeUnit"
   };
-  const _hoisted_26 = /* @__PURE__ */ vue.createElementVNode("br", null, null, -1);
-  const _hoisted_27 = ["disabled", "value"];
-  const _hoisted_28 = ["disabled"];
+  const _hoisted_24 = ["disabled", "value"];
+  const _hoisted_25 = ["disabled"];
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", {
-      class: vue.normalizeClass(["vdpComponent", { vdpWithInput: $props.hasInputElement }])
-    }, [
-      vue.renderSlot(_ctx.$slots, "default", {
-        open: $options.open,
-        close: $options.close,
-        toggle: $options.toggle,
-        inputValue: $data.inputValue,
-        processUserInput: $options.processUserInput,
-        valueToInputFormat: $options.valueToInputFormat
-      }, () => [
-        $props.hasInputElement ? (vue.openBlock(), vue.createElementBlock("input", vue.mergeProps({
-          key: 0,
-          type: "text"
-        }, $props.inputAttributes, {
-          readonly: $options.isReadOnly,
-          value: $data.inputValue,
-          onInput: _cache[0] || (_cache[0] = ($event) => $props.editable && $options.processUserInput($event.target.value)),
-          onFocus: _cache[1] || (_cache[1] = ($event) => $props.editable && $options.open()),
-          onClick: _cache[2] || (_cache[2] = ($event) => $props.editable && $options.open())
-        }), null, 16, _hoisted_1$p)) : vue.createCommentVNode("", true),
-        $props.editable && $props.hasInputElement && $data.inputValue ? (vue.openBlock(), vue.createElementBlock("button", {
-          key: 1,
-          class: "vdpClearInput",
-          type: "button",
-          onClick: _cache[3] || (_cache[3] = (...args) => $options.clear && $options.clear(...args))
-        })) : vue.createCommentVNode("", true)
-      ]),
-      vue.createVNode(vue.Transition, { name: "vdp-toggle-calendar" }, {
-        default: vue.withCtx(() => [
-          $data.opened ? (vue.openBlock(), vue.createElementBlock("div", {
+    return vue.openBlock(), vue.createElementBlock(
+      "div",
+      {
+        class: vue.normalizeClass(["vdpComponent", { vdpWithInput: $props.hasInputElement }])
+      },
+      [
+        vue.renderSlot(_ctx.$slots, "default", {
+          open: $options.open,
+          close: $options.close,
+          toggle: $options.toggle,
+          inputValue: $data.inputValue,
+          processUserInput: $options.processUserInput,
+          valueToInputFormat: $options.valueToInputFormat
+        }, () => [
+          $props.hasInputElement ? (vue.openBlock(), vue.createElementBlock("input", vue.mergeProps({
             key: 0,
-            ref: "outerWrap",
-            class: vue.normalizeClass(["vdpOuterWrap", [$data.positionClass, { vdpFloating: $props.hasInputElement }]]),
-            onClick: _cache[15] || (_cache[15] = (...args) => $options.closeViaOverlay && $options.closeViaOverlay(...args))
-          }, [
-            vue.createElementVNode("div", _hoisted_2$i, [
-              vue.createElementVNode("header", _hoisted_3$d, [
-                vue.createElementVNode("button", {
-                  class: "vdpArrow vdpArrowPrev",
-                  title: $props.prevMonthCaption,
-                  type: "button",
-                  onClick: _cache[4] || (_cache[4] = ($event) => $options.incrementMonth(-1))
-                }, vue.toDisplayString($props.prevMonthCaption), 9, _hoisted_4$7),
-                vue.createElementVNode("button", {
-                  class: "vdpArrow vdpArrowNext",
-                  type: "button",
-                  title: $props.nextMonthCaption,
-                  onClick: _cache[5] || (_cache[5] = ($event) => $options.incrementMonth(1))
-                }, vue.toDisplayString($props.nextMonthCaption), 9, _hoisted_5$5),
-                vue.createElementVNode("div", _hoisted_6$3, [
-                  vue.createElementVNode("div", _hoisted_7$2, [
-                    (vue.openBlock(), vue.createElementBlock("button", {
-                      key: $data.currentPeriod.month,
-                      class: vue.normalizeClass($options.directionClass),
-                      type: "button"
-                    }, vue.toDisplayString($props.months[$data.currentPeriod.month]), 3)),
-                    vue.withDirectives(vue.createElementVNode("select", {
-                      "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => $data.currentPeriod.month = $event)
-                    }, [
-                      (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($props.months, (month, index2) => {
-                        return vue.openBlock(), vue.createElementBlock("option", {
-                          key: month,
-                          value: index2
-                        }, vue.toDisplayString(month), 9, _hoisted_8$2);
-                      }), 128))
-                    ], 512), [
-                      [vue.vModelSelect, $data.currentPeriod.month]
-                    ])
-                  ]),
-                  vue.createElementVNode("div", _hoisted_9$2, [
-                    (vue.openBlock(), vue.createElementBlock("button", {
-                      key: $data.currentPeriod.year,
-                      class: vue.normalizeClass($options.directionClass),
-                      type: "button"
-                    }, vue.toDisplayString($data.currentPeriod.year), 3)),
-                    vue.withDirectives(vue.createElementVNode("select", {
-                      "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => $data.currentPeriod.year = $event)
-                    }, [
-                      (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.yearRange, (year) => {
-                        return vue.openBlock(), vue.createElementBlock("option", {
-                          key: year,
-                          value: year
-                        }, vue.toDisplayString(year), 9, _hoisted_10);
-                      }), 128))
-                    ], 512), [
-                      [vue.vModelSelect, $data.currentPeriod.year]
-                    ])
-                  ])
-                ])
-              ]),
-              vue.createElementVNode("table", _hoisted_11, [
-                vue.createElementVNode("thead", null, [
-                  vue.createElementVNode("tr", null, [
-                    (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.weekdaysSorted, (weekday, weekdayIndex) => {
-                      return vue.openBlock(), vue.createElementBlock("th", {
-                        key: weekdayIndex,
-                        class: "vdpHeadCell"
-                      }, [
-                        vue.createElementVNode("span", _hoisted_12, vue.toDisplayString(weekday), 1)
-                      ]);
-                    }), 128))
-                  ])
-                ]),
-                (vue.openBlock(), vue.createElementBlock("tbody", {
-                  key: $data.currentPeriod.year + "-" + $data.currentPeriod.month,
-                  class: vue.normalizeClass($options.directionClass)
-                }, [
-                  (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.currentPeriodDates, (week, weekIndex) => {
-                    return vue.openBlock(), vue.createElementBlock("tr", {
-                      key: weekIndex,
-                      class: "vdpRow"
-                    }, [
-                      (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(week, (item) => {
-                        return vue.openBlock(), vue.createElementBlock("td", {
-                          key: item.dateKey,
-                          class: vue.normalizeClass(["vdpCell", {
-                            selectable: $props.editable && !item.disabled,
-                            selected: item.selected,
-                            disabled: item.disabled,
-                            today: item.today,
-                            outOfRange: item.outOfRange
-                          }]),
-                          "data-id": item.dateKey,
-                          onClick: ($event) => $props.editable && $options.selectDateItem(item)
-                        }, [
-                          vue.createElementVNode("div", _hoisted_14, vue.toDisplayString(item.date.getDate()), 1)
-                        ], 10, _hoisted_13);
-                      }), 128))
-                    ]);
-                  }), 128))
-                ], 2))
-              ]),
-              $props.pickTime && $options.currentTime ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_15, [
-                vue.createElementVNode("span", _hoisted_16, vue.toDisplayString($props.setTimeCaption), 1),
-                vue.createElementVNode("div", _hoisted_17, [
-                  vue.createElementVNode("pre", null, [
-                    vue.createElementVNode("span", null, vue.toDisplayString($options.currentTime.hoursFormatted), 1),
-                    _hoisted_18
-                  ]),
-                  vue.createElementVNode("input", {
-                    type: "number",
-                    pattern: "\\d*",
-                    class: "vdpHoursInput",
-                    disabled: !$props.editable,
-                    value: $options.currentTime.hoursFormatted,
-                    onInput: _cache[8] || (_cache[8] = vue.withModifiers((...args) => $options.inputHours && $options.inputHours(...args), ["prevent"])),
-                    onFocusin: _cache[9] || (_cache[9] = (...args) => $options.onTimeInputFocus && $options.onTimeInputFocus(...args))
-                  }, null, 40, _hoisted_19)
-                ]),
-                $props.pickMinutes ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_20, ":")) : vue.createCommentVNode("", true),
-                $props.pickMinutes ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_21, [
-                  vue.createElementVNode("pre", null, [
-                    vue.createElementVNode("span", null, vue.toDisplayString($options.currentTime.minutesFormatted), 1),
-                    _hoisted_22
-                  ]),
-                  $props.pickMinutes ? (vue.openBlock(), vue.createElementBlock("input", {
-                    key: 0,
-                    type: "number",
-                    pattern: "\\d*",
-                    class: "vdpMinutesInput",
-                    disabled: !$props.editable,
-                    value: $options.currentTime.minutesFormatted,
-                    onInput: _cache[10] || (_cache[10] = ($event) => $options.inputTime("setMinutes", $event)),
-                    onFocusin: _cache[11] || (_cache[11] = (...args) => $options.onTimeInputFocus && $options.onTimeInputFocus(...args))
-                  }, null, 40, _hoisted_23)) : vue.createCommentVNode("", true)
-                ])) : vue.createCommentVNode("", true),
-                $props.pickSeconds ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_24, ":")) : vue.createCommentVNode("", true),
-                $props.pickSeconds ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_25, [
-                  vue.createElementVNode("pre", null, [
-                    vue.createElementVNode("span", null, vue.toDisplayString($options.currentTime.secondsFormatted), 1),
-                    _hoisted_26
-                  ]),
-                  $props.pickSeconds ? (vue.openBlock(), vue.createElementBlock("input", {
-                    key: 0,
-                    type: "number",
-                    pattern: "\\d*",
-                    class: "vdpSecondsInput",
-                    disabled: !$props.editable,
-                    value: $options.currentTime.secondsFormatted,
-                    onInput: _cache[12] || (_cache[12] = ($event) => $options.inputTime("setSeconds", $event)),
-                    onFocusin: _cache[13] || (_cache[13] = (...args) => $options.onTimeInputFocus && $options.onTimeInputFocus(...args))
-                  }, null, 40, _hoisted_27)) : vue.createCommentVNode("", true)
-                ])) : vue.createCommentVNode("", true),
-                $props.use12HourClock ? (vue.openBlock(), vue.createElementBlock("button", {
-                  key: 4,
-                  type: "button",
-                  class: "vdp12HourToggleBtn",
-                  disabled: !$props.editable,
-                  onClick: _cache[14] || (_cache[14] = ($event) => $options.set12HourClock($options.currentTime.isPM ? "AM" : "PM"))
-                }, vue.toDisplayString($options.currentTime.isPM ? "PM" : "AM"), 9, _hoisted_28)) : vue.createCommentVNode("", true)
-              ])) : vue.createCommentVNode("", true)
-            ])
-          ], 2)) : vue.createCommentVNode("", true)
+            type: "text"
+          }, $props.inputAttributes, {
+            readonly: $options.isReadOnly,
+            value: $data.inputValue,
+            onInput: _cache[0] || (_cache[0] = ($event) => $props.editable && $options.processUserInput($event.target.value)),
+            onFocus: _cache[1] || (_cache[1] = ($event) => $props.editable && $options.open()),
+            onClick: _cache[2] || (_cache[2] = ($event) => $props.editable && $options.open())
+          }), null, 16, _hoisted_1$p)) : vue.createCommentVNode("v-if", true),
+          $props.editable && $props.hasInputElement && $data.inputValue ? (vue.openBlock(), vue.createElementBlock("button", {
+            key: 1,
+            class: "vdpClearInput",
+            type: "button",
+            onClick: _cache[3] || (_cache[3] = (...args) => $options.clear && $options.clear(...args))
+          })) : vue.createCommentVNode("v-if", true)
         ]),
-        _: 1
-      })
-    ], 2);
+        vue.createVNode(vue.Transition, { name: "vdp-toggle-calendar" }, {
+          default: vue.withCtx(() => [
+            $data.opened ? (vue.openBlock(), vue.createElementBlock(
+              "div",
+              {
+                key: 0,
+                ref: "outerWrap",
+                class: vue.normalizeClass(["vdpOuterWrap", [$data.positionClass, { vdpFloating: $props.hasInputElement }]]),
+                onClick: _cache[15] || (_cache[15] = (...args) => $options.closeViaOverlay && $options.closeViaOverlay(...args))
+              },
+              [
+                vue.createElementVNode("div", _hoisted_2$i, [
+                  vue.createElementVNode("header", _hoisted_3$c, [
+                    vue.createElementVNode("button", {
+                      class: "vdpArrow vdpArrowPrev",
+                      title: $props.prevMonthCaption,
+                      type: "button",
+                      onClick: _cache[4] || (_cache[4] = ($event) => $options.incrementMonth(-1))
+                    }, vue.toDisplayString($props.prevMonthCaption), 9, _hoisted_4$7),
+                    vue.createElementVNode("button", {
+                      class: "vdpArrow vdpArrowNext",
+                      type: "button",
+                      title: $props.nextMonthCaption,
+                      onClick: _cache[5] || (_cache[5] = ($event) => $options.incrementMonth(1))
+                    }, vue.toDisplayString($props.nextMonthCaption), 9, _hoisted_5$5),
+                    vue.createElementVNode("div", _hoisted_6$3, [
+                      vue.createElementVNode("div", _hoisted_7$2, [
+                        (vue.openBlock(), vue.createElementBlock(
+                          "button",
+                          {
+                            key: $data.currentPeriod.month,
+                            class: vue.normalizeClass($options.directionClass),
+                            type: "button"
+                          },
+                          vue.toDisplayString($props.months[$data.currentPeriod.month]),
+                          3
+                          /* TEXT, CLASS */
+                        )),
+                        vue.withDirectives(vue.createElementVNode(
+                          "select",
+                          {
+                            "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => $data.currentPeriod.month = $event)
+                          },
+                          [
+                            (vue.openBlock(true), vue.createElementBlock(
+                              vue.Fragment,
+                              null,
+                              vue.renderList($props.months, (month, index) => {
+                                return vue.openBlock(), vue.createElementBlock("option", {
+                                  key: month,
+                                  value: index
+                                }, vue.toDisplayString(month), 9, _hoisted_8$1);
+                              }),
+                              128
+                              /* KEYED_FRAGMENT */
+                            ))
+                          ],
+                          512
+                          /* NEED_PATCH */
+                        ), [
+                          [vue.vModelSelect, $data.currentPeriod.month]
+                        ])
+                      ]),
+                      vue.createElementVNode("div", _hoisted_9$1, [
+                        (vue.openBlock(), vue.createElementBlock(
+                          "button",
+                          {
+                            key: $data.currentPeriod.year,
+                            class: vue.normalizeClass($options.directionClass),
+                            type: "button"
+                          },
+                          vue.toDisplayString($data.currentPeriod.year),
+                          3
+                          /* TEXT, CLASS */
+                        )),
+                        vue.withDirectives(vue.createElementVNode(
+                          "select",
+                          {
+                            "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => $data.currentPeriod.year = $event)
+                          },
+                          [
+                            (vue.openBlock(true), vue.createElementBlock(
+                              vue.Fragment,
+                              null,
+                              vue.renderList($options.yearRange, (year) => {
+                                return vue.openBlock(), vue.createElementBlock("option", {
+                                  key: year,
+                                  value: year
+                                }, vue.toDisplayString(year), 9, _hoisted_10);
+                              }),
+                              128
+                              /* KEYED_FRAGMENT */
+                            ))
+                          ],
+                          512
+                          /* NEED_PATCH */
+                        ), [
+                          [vue.vModelSelect, $data.currentPeriod.year]
+                        ])
+                      ])
+                    ])
+                  ]),
+                  vue.createElementVNode("table", _hoisted_11, [
+                    vue.createElementVNode("thead", null, [
+                      vue.createElementVNode("tr", null, [
+                        (vue.openBlock(true), vue.createElementBlock(
+                          vue.Fragment,
+                          null,
+                          vue.renderList($options.weekdaysSorted, (weekday, weekdayIndex) => {
+                            return vue.openBlock(), vue.createElementBlock("th", {
+                              key: weekdayIndex,
+                              class: "vdpHeadCell"
+                            }, [
+                              vue.createElementVNode(
+                                "span",
+                                _hoisted_12,
+                                vue.toDisplayString(weekday),
+                                1
+                                /* TEXT */
+                              )
+                            ]);
+                          }),
+                          128
+                          /* KEYED_FRAGMENT */
+                        ))
+                      ])
+                    ]),
+                    (vue.openBlock(), vue.createElementBlock(
+                      "tbody",
+                      {
+                        key: $data.currentPeriod.year + "-" + $data.currentPeriod.month,
+                        class: vue.normalizeClass($options.directionClass)
+                      },
+                      [
+                        (vue.openBlock(true), vue.createElementBlock(
+                          vue.Fragment,
+                          null,
+                          vue.renderList($options.currentPeriodDates, (week, weekIndex) => {
+                            return vue.openBlock(), vue.createElementBlock("tr", {
+                              key: weekIndex,
+                              class: "vdpRow"
+                            }, [
+                              (vue.openBlock(true), vue.createElementBlock(
+                                vue.Fragment,
+                                null,
+                                vue.renderList(week, (item) => {
+                                  return vue.openBlock(), vue.createElementBlock("td", {
+                                    key: item.dateKey,
+                                    class: vue.normalizeClass(["vdpCell", {
+                                      selectable: $props.editable && !item.disabled,
+                                      selected: item.selected,
+                                      disabled: item.disabled,
+                                      today: item.today,
+                                      outOfRange: item.outOfRange
+                                    }]),
+                                    "data-id": item.dateKey,
+                                    onClick: ($event) => $props.editable && $options.selectDateItem(item)
+                                  }, [
+                                    vue.createElementVNode(
+                                      "div",
+                                      _hoisted_14,
+                                      vue.toDisplayString(item.date.getDate()),
+                                      1
+                                      /* TEXT */
+                                    )
+                                  ], 10, _hoisted_13);
+                                }),
+                                128
+                                /* KEYED_FRAGMENT */
+                              ))
+                            ]);
+                          }),
+                          128
+                          /* KEYED_FRAGMENT */
+                        ))
+                      ],
+                      2
+                      /* CLASS */
+                    ))
+                  ]),
+                  $props.pickTime && $options.currentTime ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_15, [
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_16,
+                      vue.toDisplayString($props.setTimeCaption),
+                      1
+                      /* TEXT */
+                    ),
+                    vue.createElementVNode("div", _hoisted_17, [
+                      vue.createElementVNode("pre", null, [
+                        vue.createElementVNode(
+                          "span",
+                          null,
+                          vue.toDisplayString($options.currentTime.hoursFormatted),
+                          1
+                          /* TEXT */
+                        ),
+                        _cache[16] || (_cache[16] = vue.createElementVNode(
+                          "br",
+                          null,
+                          null,
+                          -1
+                          /* CACHED */
+                        ))
+                      ]),
+                      vue.createElementVNode("input", {
+                        type: "number",
+                        pattern: "\\d*",
+                        class: "vdpHoursInput",
+                        disabled: !$props.editable,
+                        value: $options.currentTime.hoursFormatted,
+                        onInput: _cache[8] || (_cache[8] = vue.withModifiers((...args) => $options.inputHours && $options.inputHours(...args), ["prevent"])),
+                        onFocusin: _cache[9] || (_cache[9] = (...args) => $options.onTimeInputFocus && $options.onTimeInputFocus(...args))
+                      }, null, 40, _hoisted_18)
+                    ]),
+                    $props.pickMinutes ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_19, ":")) : vue.createCommentVNode("v-if", true),
+                    $props.pickMinutes ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_20, [
+                      vue.createElementVNode("pre", null, [
+                        vue.createElementVNode(
+                          "span",
+                          null,
+                          vue.toDisplayString($options.currentTime.minutesFormatted),
+                          1
+                          /* TEXT */
+                        ),
+                        _cache[17] || (_cache[17] = vue.createElementVNode(
+                          "br",
+                          null,
+                          null,
+                          -1
+                          /* CACHED */
+                        ))
+                      ]),
+                      $props.pickMinutes ? (vue.openBlock(), vue.createElementBlock("input", {
+                        key: 0,
+                        type: "number",
+                        pattern: "\\d*",
+                        class: "vdpMinutesInput",
+                        disabled: !$props.editable,
+                        value: $options.currentTime.minutesFormatted,
+                        onInput: _cache[10] || (_cache[10] = ($event) => $options.inputTime("setMinutes", $event)),
+                        onFocusin: _cache[11] || (_cache[11] = (...args) => $options.onTimeInputFocus && $options.onTimeInputFocus(...args))
+                      }, null, 40, _hoisted_21)) : vue.createCommentVNode("v-if", true)
+                    ])) : vue.createCommentVNode("v-if", true),
+                    $props.pickSeconds ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_22, ":")) : vue.createCommentVNode("v-if", true),
+                    $props.pickSeconds ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_23, [
+                      vue.createElementVNode("pre", null, [
+                        vue.createElementVNode(
+                          "span",
+                          null,
+                          vue.toDisplayString($options.currentTime.secondsFormatted),
+                          1
+                          /* TEXT */
+                        ),
+                        _cache[18] || (_cache[18] = vue.createElementVNode(
+                          "br",
+                          null,
+                          null,
+                          -1
+                          /* CACHED */
+                        ))
+                      ]),
+                      $props.pickSeconds ? (vue.openBlock(), vue.createElementBlock("input", {
+                        key: 0,
+                        type: "number",
+                        pattern: "\\d*",
+                        class: "vdpSecondsInput",
+                        disabled: !$props.editable,
+                        value: $options.currentTime.secondsFormatted,
+                        onInput: _cache[12] || (_cache[12] = ($event) => $options.inputTime("setSeconds", $event)),
+                        onFocusin: _cache[13] || (_cache[13] = (...args) => $options.onTimeInputFocus && $options.onTimeInputFocus(...args))
+                      }, null, 40, _hoisted_24)) : vue.createCommentVNode("v-if", true)
+                    ])) : vue.createCommentVNode("v-if", true),
+                    $props.use12HourClock ? (vue.openBlock(), vue.createElementBlock("button", {
+                      key: 4,
+                      type: "button",
+                      class: "vdp12HourToggleBtn",
+                      disabled: !$props.editable,
+                      onClick: _cache[14] || (_cache[14] = ($event) => $options.set12HourClock($options.currentTime.isPM ? "AM" : "PM"))
+                    }, vue.toDisplayString($options.currentTime.isPM ? "PM" : "AM"), 9, _hoisted_25)) : vue.createCommentVNode("v-if", true)
+                  ])) : vue.createCommentVNode("v-if", true)
+                ])
+              ],
+              2
+              /* CLASS */
+            )) : vue.createCommentVNode("v-if", true)
+          ]),
+          _: 1
+          /* STABLE */
+        })
+      ],
+      2
+      /* CLASS */
+    );
   }
   const vueDatePick = /* @__PURE__ */ _export_sfc(_sfc_main$x, [["render", _sfc_render$4]]);
   const _sfc_main$w = /* @__PURE__ */ vue.defineComponent({
@@ -18888,8 +20263,9 @@ var __async = (__this, __arguments, generator) => {
       futureDisabled: { type: Boolean, default: false }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const weekdaysStrings = [
         i18n__namespace.__("Mon", "zionbuilder"),
         i18n__namespace.__("Tue", "zionbuilder"),
@@ -18928,8 +20304,7 @@ var __async = (__this, __arguments, generator) => {
           return date < currentDate;
         } else if (props.futureDisabled) {
           return date > currentDate;
-        } else
-          return false;
+        } else return false;
       }
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createBlock(vueDatePick, {
@@ -18941,16 +20316,16 @@ var __async = (__this, __arguments, generator) => {
           "set-time-caption": i18n__namespace.__("Set time", "zionbuilder"),
           weekdays: weekdaysStrings,
           months: monthsStrings,
-          "pick-time": _ctx.pickTime,
-          "use-12-hour-clock": _ctx.use12HourClock,
-          format: _ctx.format,
+          "pick-time": __props.pickTime,
+          "use-12-hour-clock": __props.use12HourClock,
+          format: __props.format,
           "is-date-disabled": disableDate
         }, {
           default: vue.withCtx(({ toggle }) => [
             vue.createVNode(_sfc_main$1w, vue.mergeProps({
               modelValue: valueModel.value,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event),
-              readonly: _ctx.readonly,
+              readonly: __props.readonly,
               class: "znpb-input-number__input"
             }, _ctx.$attrs, {
               onKeydown: toggle,
@@ -18958,6 +20333,7 @@ var __async = (__this, __arguments, generator) => {
             }), null, 16, ["modelValue", "readonly", "onKeydown", "onMouseup"])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["modelValue", "next-month-caption", "previous-month-caption", "set-time-caption", "pick-time", "use-12-hour-clock", "format"]);
       };
     }
@@ -18970,8 +20346,9 @@ var __async = (__this, __arguments, generator) => {
       modelValue: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       let editorTextarea;
       const root2 = vue.ref(null);
       let editor;
@@ -19042,15 +20419,20 @@ var __async = (__this, __arguments, generator) => {
         emit("update:modelValue", editorTextarea.value);
       }
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-wp-editor__wrapper znpb-wp-editor-custom"
-        }, null, 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-wp-editor__wrapper znpb-wp-editor-custom"
+          },
+          null,
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   }));
-  const InputEditor_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$o = { class: "znpb-input-media-wrapper" };
   const __default__$k = {
     name: "InputMedia"
@@ -19068,9 +20450,10 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { applyFilters: applyFilters2 } = window.zb.hooks;
+      const props = __props;
+      const emit = __emit;
       const inputComponent = vue.computed(() => {
         return applyFilters2("zionbuilder/options/media/input_component", "BaseInput", props.modelValue);
       });
@@ -19110,8 +20493,7 @@ var __async = (__this, __arguments, generator) => {
         }
       }
       function getSelection() {
-        if (typeof props.modelValue === "undefined")
-          return;
+        if (typeof props.modelValue === "undefined") return;
         const idArray = props.modelValue.split(",");
         const args = { orderby: "post__in", order: "ASC", type: "image", perPage: -1, post__in: idArray };
         const attachments = window.wp.media.query(args);
@@ -19136,24 +20518,29 @@ var __async = (__this, __arguments, generator) => {
               vue.createVNode(_component_Injection, { location: "options/media/append" })
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["modelValue"])),
           vue.createVNode(_component_Button, {
             type: "line",
             onClick: openMediaModal
           }, {
             default: vue.withCtx(() => [
-              vue.createTextVNode(vue.toDisplayString(_ctx.selectButtonText), 1)
+              vue.createTextVNode(
+                vue.toDisplayString(__props.selectButtonText),
+                1
+                /* TEXT */
+              )
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   }));
-  const InputMedia_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$n = { class: "znpb-input-media-wrapper" };
   const _hoisted_2$h = ["accept"];
-  const _hoisted_3$c = { key: 1 };
+  const _hoisted_3$b = { key: 1 };
   const __default__$j = {
     name: "InputFile"
   };
@@ -19164,8 +20551,9 @@ var __async = (__this, __arguments, generator) => {
       selectButtonText: { default: "select" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const fileInput = vue.ref(null);
       const loading = vue.ref(false);
       const inputValue = vue.computed({
@@ -19184,8 +20572,7 @@ var __async = (__this, __arguments, generator) => {
       function uploadFiles(fieldName, fileList) {
         return __async(this, null, function* () {
           const formData = new FormData();
-          if (!fileList || !fileList.length)
-            return;
+          if (!fileList || !fileList.length) return;
           Array.from(fileList).forEach((file) => {
             formData.append(fieldName, file, file.name);
           });
@@ -19216,7 +20603,7 @@ var __async = (__this, __arguments, generator) => {
             ref: fileInput,
             type: "file",
             style: { "display": "none" },
-            accept: _ctx.type,
+            accept: __props.type,
             name: "file",
             onChange: _cache[1] || (_cache[1] = ($event) => uploadFiles($event.target.name, $event.target.files))
           }, null, 40, _hoisted_2$h),
@@ -19228,15 +20615,21 @@ var __async = (__this, __arguments, generator) => {
               loading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
                 key: 0,
                 size: 14
-              })) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$c, vue.toDisplayString(_ctx.selectButtonText), 1))
+              })) : (vue.openBlock(), vue.createElementBlock(
+                "span",
+                _hoisted_3$b,
+                vue.toDisplayString(__props.selectButtonText),
+                1
+                /* TEXT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   }));
-  const InputFile_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$s = /* @__PURE__ */ vue.defineComponent({
     __name: "InputRadioGroup",
     props: {
@@ -19244,18 +20637,23 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["zion-radio-group", {
-            [`zion-radio-group--${_ctx.layout}`]: _ctx.layout
-          }])
-        }, [
-          vue.renderSlot(_ctx.$slots, "default")
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["zion-radio-group", {
+              [`zion-radio-group--${__props.layout}`]: __props.layout
+            }])
+          },
+          [
+            vue.createCommentVNode(" @slot Content for radiogroup <RadioGroupItem> "),
+            vue.renderSlot(_ctx.$slots, "default")
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const InputRadioGroup_vue_vue_type_style_index_0_lang = "";
-  const InputRadio_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$r = {
     name: "InputRadio",
     props: {
@@ -19310,33 +20708,50 @@ var __async = (__this, __arguments, generator) => {
     methods: {}
   };
   const _hoisted_1$m = ["modelValue"];
-  const _hoisted_2$g = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-radio-item-input" }, null, -1);
-  const _hoisted_3$b = {
+  const _hoisted_2$g = {
     key: 0,
     class: "znpb-radio-item-label"
   };
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("label", {
-      class: vue.normalizeClass(["znpb-radio-item", {
-        "znpb-radio-item--active": $options.isSelected,
-        "znpb-radio-item--hidden-input": $props.hideInput
-      }])
-    }, [
-      vue.withDirectives(vue.createElementVNode("input", {
-        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.radioButtonValue = $event),
-        modelValue: $props.optionValue,
-        type: "radio",
-        class: "znpb-form__input-toggle"
-      }, null, 8, _hoisted_1$m), [
-        [vue.vModelRadio, $options.radioButtonValue]
-      ]),
-      _hoisted_2$g,
-      vue.renderSlot(_ctx.$slots, "default"),
-      $props.label ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$b, vue.toDisplayString($props.label), 1)) : vue.createCommentVNode("", true)
-    ], 2);
+    return vue.openBlock(), vue.createElementBlock(
+      "label",
+      {
+        class: vue.normalizeClass(["znpb-radio-item", {
+          "znpb-radio-item--active": $options.isSelected,
+          "znpb-radio-item--hidden-input": $props.hideInput
+        }])
+      },
+      [
+        vue.withDirectives(vue.createElementVNode("input", {
+          "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.radioButtonValue = $event),
+          modelValue: $props.optionValue,
+          type: "radio",
+          class: "znpb-form__input-toggle"
+        }, null, 8, _hoisted_1$m), [
+          [vue.vModelRadio, $options.radioButtonValue]
+        ]),
+        _cache[1] || (_cache[1] = vue.createElementVNode(
+          "span",
+          { class: "znpb-radio-item-input" },
+          null,
+          -1
+          /* CACHED */
+        )),
+        vue.createCommentVNode(" @slot Content such as Icon "),
+        vue.renderSlot(_ctx.$slots, "default"),
+        $props.label ? (vue.openBlock(), vue.createElementBlock(
+          "span",
+          _hoisted_2$g,
+          vue.toDisplayString($props.label),
+          1
+          /* TEXT */
+        )) : vue.createCommentVNode("v-if", true)
+      ],
+      2
+      /* CLASS */
+    );
   }
   const InputRadio = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["render", _sfc_render$3]]);
-  const InputRadioIcon_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$q = {
     name: "InputRadioIcon",
     components: {
@@ -19400,27 +20815,37 @@ var __async = (__this, __arguments, generator) => {
   const _hoisted_1$l = ["modelValue"];
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_Icon = vue.resolveComponent("Icon");
-    return vue.openBlock(), vue.createElementBlock("label", {
-      class: vue.normalizeClass(["znpb-radio-icon-item", {
-        "znpb-radio-icon-item--active": $options.isSelected
-      }])
-    }, [
-      vue.withDirectives(vue.createElementVNode("input", {
-        "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.radioButtonValue = $event),
-        modelValue: $props.optionValue,
-        type: "radio",
-        class: "znpb-form__input-toggle"
-      }, null, 8, _hoisted_1$l), [
-        [vue.vModelRadio, $options.radioButtonValue]
-      ]),
-      $props.icon ? (vue.openBlock(), vue.createBlock(_component_Icon, {
-        key: 0,
-        icon: $props.icon,
-        "bg-size": $props.bgSize,
-        class: "znpb-radio-icon-item__icon"
-      }, null, 8, ["icon", "bg-size"])) : vue.createCommentVNode("", true),
-      vue.createTextVNode(" " + vue.toDisplayString($props.label), 1)
-    ], 2);
+    return vue.openBlock(), vue.createElementBlock(
+      "label",
+      {
+        class: vue.normalizeClass(["znpb-radio-icon-item", {
+          "znpb-radio-icon-item--active": $options.isSelected
+        }])
+      },
+      [
+        vue.withDirectives(vue.createElementVNode("input", {
+          "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.radioButtonValue = $event),
+          modelValue: $props.optionValue,
+          type: "radio",
+          class: "znpb-form__input-toggle"
+        }, null, 8, _hoisted_1$l), [
+          [vue.vModelRadio, $options.radioButtonValue]
+        ]),
+        $props.icon ? (vue.openBlock(), vue.createBlock(_component_Icon, {
+          key: 0,
+          icon: $props.icon,
+          "bg-size": $props.bgSize,
+          class: "znpb-radio-icon-item__icon"
+        }, null, 8, ["icon", "bg-size"])) : vue.createCommentVNode("v-if", true),
+        vue.createTextVNode(
+          " " + vue.toDisplayString($props.label),
+          1
+          /* TEXT */
+        )
+      ],
+      2
+      /* CLASS */
+    );
   }
   const InputRadioIcon = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$2]]);
   const _hoisted_1$k = ["innerHTML"];
@@ -19466,8 +20891,8 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-shape-divider-icon zb-mask", [_ctx.position === "top" ? "zb-mask-pos--top" : "zb-mask-pos--bottom", _ctx.flip ? "zb-mask-pos--flip" : ""]]),
-          style: vue.normalizeStyle({ color: _ctx.color }),
+          class: vue.normalizeClass(["znpb-shape-divider-icon zb-mask", [__props.position === "top" ? "zb-mask-pos--top" : "zb-mask-pos--bottom", __props.flip ? "zb-mask-pos--flip" : ""]]),
+          style: vue.normalizeStyle({ color: __props.color }),
           innerHTML: getSvgIcon.value
         }, null, 14, _hoisted_1$k);
       };
@@ -19483,8 +20908,9 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const maskPosOptions = vue.ref([
         {
           id: "top",
@@ -19546,7 +20972,7 @@ var __async = (__this, __arguments, generator) => {
             emit("update:modelValue", null);
             return;
           }
-          const shape = get(props.modelValue, `${activeMaskPosition.value}.shape`);
+          const shape = get$1(props.modelValue, `${activeMaskPosition.value}.shape`);
           if (shape !== newValue["shape"] && newValue["height"]) {
             newValue["height"] = "auto";
           }
@@ -19573,7 +20999,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   }));
-  const InputShapeDividers_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$j = { class: "znpb-editor-shapeWrapper" };
   const __default__$g = {
     name: "Shape"
@@ -19587,16 +21012,15 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$j, [
           vue.renderSlot(_ctx.$slots, "default"),
-          _ctx.shapePath ? (vue.openBlock(), vue.createBlock(_sfc_main$p, {
+          __props.shapePath ? (vue.openBlock(), vue.createBlock(_sfc_main$p, {
             key: 0,
-            "shape-path": _ctx.shapePath,
-            position: _ctx.position
-          }, null, 8, ["shape-path", "position"])) : vue.createCommentVNode("", true)
+            "shape-path": __props.shapePath,
+            position: __props.position
+          }, null, 8, ["shape-path", "position"])) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   }));
-  const Shape_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$i = { class: "znpb-option__upgrade-to-pro" };
   const _hoisted_2$f = { class: "znpb-option__upgrade-to-pro-container" };
   const _hoisted_3$a = ["href"];
@@ -19624,22 +21048,39 @@ var __async = (__this, __arguments, generator) => {
               type: "warning",
               class: "znpb-option__upgrade-to-pro-label"
             }, null, 8, ["text"]),
-            vue.createElementVNode("h4", null, vue.toDisplayString(_ctx.message_title), 1),
-            vue.createElementVNode("p", null, vue.toDisplayString(_ctx.message_description), 1),
-            _ctx.info_text ? (vue.openBlock(), vue.createElementBlock("a", {
+            vue.createElementVNode(
+              "h4",
+              null,
+              vue.toDisplayString(__props.message_title),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "p",
+              null,
+              vue.toDisplayString(__props.message_description),
+              1
+              /* TEXT */
+            ),
+            __props.info_text ? (vue.openBlock(), vue.createElementBlock("a", {
               key: 0,
-              href: _ctx.info_link,
+              href: __props.info_link,
               target: "_blank"
-            }, vue.toDisplayString(_ctx.info_text), 9, _hoisted_3$a)) : vue.createCommentVNode("", true),
+            }, vue.toDisplayString(__props.info_text), 9, _hoisted_3$a)) : vue.createCommentVNode("v-if", true),
             vue.createElementVNode("div", null, [
-              vue.createElementVNode("a", _hoisted_4$6, vue.toDisplayString(i18n__namespace.__("Upgrade to PRO", "zionbuilder")), 1)
+              vue.createElementVNode(
+                "a",
+                _hoisted_4$6,
+                vue.toDisplayString(i18n__namespace.__("Upgrade to PRO", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ])
           ])
         ]);
       };
     }
   }));
-  const UpgradeToPro_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$h = { class: "znpb-shape-list znpb-fancy-scrollbar" };
   const __default__$e = {
     name: "ShapeDividerComponent"
@@ -19657,69 +21098,87 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", null, [
           vue.createVNode(_sfc_main$n, {
-            class: vue.normalizeClass(["znpb-active-shape-preview", [{ "mask-active": _ctx.modelValue }]]),
-            "shape-path": _ctx.modelValue,
-            position: _ctx.position
+            class: vue.normalizeClass(["znpb-active-shape-preview", [{ "mask-active": __props.modelValue }]]),
+            "shape-path": __props.modelValue,
+            position: __props.position
           }, {
             default: vue.withCtx(() => [
-              !_ctx.modelValue ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1h), {
+              !__props.modelValue ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1h), {
                 key: 0,
                 class: "znpb-style-shape__empty",
                 "no-margin": true
               }, {
                 default: vue.withCtx(() => [
-                  vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("Select shape divider", "zionbuilder")), 1)
+                  vue.createTextVNode(
+                    vue.toDisplayString(i18n__namespace.__("Select shape divider", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
                 ]),
                 _: 1
-              })) : (vue.openBlock(), vue.createElementBlock("span", {
-                key: 1,
-                class: "znpb-active-shape-preview__action",
-                onMouseover: _cache[1] || (_cache[1] = ($event) => showDelete.value = true),
-                onMouseleave: _cache[2] || (_cache[2] = ($event) => showDelete.value = false)
-              }, [
-                vue.createVNode(vue.Transition, {
-                  name: "slide-fade",
-                  mode: "out-in"
-                }, {
-                  default: vue.withCtx(() => [
-                    !showDelete.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                      key: "1",
-                      icon: "check",
-                      size: 10
-                    })) : (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
-                      key: "2",
-                      icon: "close",
-                      size: 10,
-                      onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => (_ctx.$emit("update:modelValue", null), showDelete.value = false), ["stop"]))
-                    }))
-                  ]),
-                  _: 1
-                })
-              ], 32))
+                /* STABLE */
+              })) : (vue.openBlock(), vue.createElementBlock(
+                "span",
+                {
+                  key: 1,
+                  class: "znpb-active-shape-preview__action",
+                  onMouseover: _cache[1] || (_cache[1] = ($event) => showDelete.value = true),
+                  onMouseleave: _cache[2] || (_cache[2] = ($event) => showDelete.value = false)
+                },
+                [
+                  vue.createVNode(vue.Transition, {
+                    name: "slide-fade",
+                    mode: "out-in"
+                  }, {
+                    default: vue.withCtx(() => [
+                      !showDelete.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                        key: "1",
+                        icon: "check",
+                        size: 10
+                      })) : (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1z), {
+                        key: "2",
+                        icon: "close",
+                        size: 10,
+                        onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => (_ctx.$emit("update:modelValue", null), showDelete.value = false), ["stop"]))
+                      }))
+                    ]),
+                    _: 1
+                    /* STABLE */
+                  })
+                ],
+                32
+                /* NEED_HYDRATION */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["shape-path", "class", "position"]),
           vue.createElementVNode("div", _hoisted_1$h, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(masks), (shape, shapeID) => {
-              return vue.openBlock(), vue.createBlock(_sfc_main$n, {
-                key: shapeID,
-                "shape-path": shapeID,
-                position: _ctx.position,
-                onClick: ($event) => _ctx.$emit("update:modelValue", shapeID)
-              }, null, 8, ["shape-path", "position", "onClick"]);
-            }), 128)),
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(vue.unref(masks), (shape, shapeID) => {
+                return vue.openBlock(), vue.createBlock(_sfc_main$n, {
+                  key: shapeID,
+                  "shape-path": shapeID,
+                  position: __props.position,
+                  onClick: ($event) => _ctx.$emit("update:modelValue", shapeID)
+                }, null, 8, ["shape-path", "position", "onClick"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            )),
             !vue.unref(isPro) ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$m), {
               key: 0,
               message_title: i18n__namespace.__("More shape dividers", "zionbuilder"),
               message_description: i18n__namespace.__("The shape you were looking for is not listed above ?", "zionbuilder"),
               info_text: i18n__namespace.__("Click here to learn more about PRO.", "zionbuilder")
-            }, null, 8, ["message_title", "message_description", "info_text"])) : vue.createCommentVNode("", true)
+            }, null, 8, ["message_title", "message_description", "info_text"])) : vue.createCommentVNode("v-if", true)
           ])
         ]);
       };
     }
   }));
-  const ShapeDividerComponent_vue_vue_type_style_index_0_lang = "";
   const __default__$d = {
     name: "InputTextAlign"
   };
@@ -19729,8 +21188,9 @@ var __async = (__this, __arguments, generator) => {
       placeholder: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const textAlignOptions = [
         {
           icon: "align--left",
@@ -19766,7 +21226,7 @@ var __async = (__this, __arguments, generator) => {
           vue.createVNode(vue.unref(_sfc_main$y), {
             modelValue: textAlignModel.value,
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => textAlignModel.value = $event),
-            placeholder: _ctx.placeholder,
+            placeholder: __props.placeholder,
             options: textAlignOptions,
             columns: 4
           }, null, 8, ["modelValue", "placeholder"])
@@ -19789,13 +21249,14 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const { getSchema } = useOptionsSchemas();
       const schema = vue.computed(() => {
         let schema2 = getSchema("shadowSchema");
         if (props.shadow_type === "text-shadow") {
-          schema2 = omit$1(schema2, ["inset", "spread"]);
+          schema2 = omit(schema2, ["inset", "spread"]);
         }
         if (Object.keys(props.placeholder).length > 0) {
           Object.keys(schema2).forEach((singleSchemaID) => {
@@ -19817,20 +21278,25 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_OptionsForm = vue.resolveComponent("OptionsForm");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-shadow-option-wrapper__outer", `znpb-shadow-option--${_ctx.shadow_type}`])
-        }, [
-          vue.createVNode(_component_OptionsForm, {
-            modelValue: valueModel.value,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event),
-            schema: schema.value,
-            class: "znpb-shadow-option"
-          }, null, 8, ["modelValue", "schema"])
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-shadow-option-wrapper__outer", `znpb-shadow-option--${__props.shadow_type}`])
+          },
+          [
+            vue.createVNode(_component_OptionsForm, {
+              modelValue: valueModel.value,
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event),
+              schema: schema.value,
+              class: "znpb-shadow-option"
+            }, null, 8, ["modelValue", "schema"])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const InputTextShadow_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$g = { class: "znpb-radio-image-container" };
   const _hoisted_2$e = { class: "znpb-radio-image-wrapper znpb-fancy-scrollbar" };
   const _hoisted_3$9 = ["onClick"];
@@ -19844,8 +21310,8 @@ var __async = (__this, __arguments, generator) => {
     class: "znpb-radio-image-search--noItems"
   };
   const _hoisted_7$1 = { class: "znpb-radio-image-preview" };
-  const _hoisted_8$1 = ["src"];
-  const _hoisted_9$1 = {
+  const _hoisted_8 = ["src"];
+  const _hoisted_9 = {
     key: 1,
     class: "znpb-radio-image-noImage"
   };
@@ -19863,8 +21329,9 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const searchKeyword = vue.ref("");
       const selectedOptionData = vue.computed(() => {
         return props.options.find((option) => option.value === props.modelValue);
@@ -19891,75 +21358,123 @@ var __async = (__this, __arguments, generator) => {
             "show-arrows": true
           }, {
             content: vue.withCtx(() => [
-              _ctx.useSearch ? (vue.openBlock(), vue.createBlock(_component_BaseInput, {
+              __props.useSearch ? (vue.openBlock(), vue.createBlock(_component_BaseInput, {
                 key: 0,
                 modelValue: searchKeyword.value,
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchKeyword.value = $event),
-                placeholder: _ctx.searchText,
+                placeholder: __props.searchText,
                 clearable: true,
                 class: "znpb-radio-image-search"
-              }, null, 8, ["modelValue", "placeholder"])) : vue.createCommentVNode("", true),
+              }, null, 8, ["modelValue", "placeholder"])) : vue.createCommentVNode("v-if", true),
               vue.createElementVNode("div", _hoisted_2$e, [
-                vue.createElementVNode("ul", {
-                  class: vue.normalizeClass(["znpb-radio-image-list", [`znpb-radio-image-list--columns-${_ctx.columns}`]])
-                }, [
-                  (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(visibleItems.value, (option, index2) => {
-                    return vue.openBlock(), vue.createElementBlock("li", {
-                      key: index2,
-                      class: "znpb-radio-image-list__item-wrapper",
-                      onClick: ($event) => changeValue(option.value)
-                    }, [
-                      vue.createElementVNode("div", {
-                        class: vue.normalizeClass(["znpb-radio-image-list__item", { ["znpb-radio-image-list__item--active"]: _ctx.modelValue === option.value }])
-                      }, [
-                        option.image ? (vue.openBlock(), vue.createElementBlock("img", {
-                          key: 0,
-                          src: option.image,
-                          class: "znpb-image-wrapper"
-                        }, null, 8, _hoisted_4$5)) : vue.createCommentVNode("", true),
-                        option.class ? (vue.openBlock(), vue.createElementBlock("span", {
-                          key: 1,
-                          class: vue.normalizeClass(["znpb-radio-image-list__preview-element animated", option.value])
-                        }, null, 2)) : vue.createCommentVNode("", true),
-                        option.icon ? (vue.openBlock(), vue.createBlock(_sfc_main$1z, {
-                          key: 2,
-                          class: "znpb-radio-image-list__icon",
-                          icon: option.icon
-                        }, null, 8, ["icon"])) : vue.createCommentVNode("", true)
-                      ], 2),
-                      option.name ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_5$4, vue.toDisplayString(option.name), 1)) : vue.createCommentVNode("", true)
-                    ], 8, _hoisted_3$9);
-                  }), 128)),
-                  _ctx.useSearch && visibleItems.value.length === 0 ? (vue.openBlock(), vue.createElementBlock("li", _hoisted_6$2, vue.toDisplayString(i18n__namespace.__("No items found", "zionbuilder")), 1)) : vue.createCommentVNode("", true)
-                ], 2)
+                vue.createElementVNode(
+                  "ul",
+                  {
+                    class: vue.normalizeClass(["znpb-radio-image-list", [`znpb-radio-image-list--columns-${__props.columns}`]])
+                  },
+                  [
+                    (vue.openBlock(true), vue.createElementBlock(
+                      vue.Fragment,
+                      null,
+                      vue.renderList(visibleItems.value, (option, index) => {
+                        return vue.openBlock(), vue.createElementBlock("li", {
+                          key: index,
+                          class: "znpb-radio-image-list__item-wrapper",
+                          onClick: ($event) => changeValue(option.value)
+                        }, [
+                          vue.createElementVNode(
+                            "div",
+                            {
+                              class: vue.normalizeClass(["znpb-radio-image-list__item", { ["znpb-radio-image-list__item--active"]: __props.modelValue === option.value }])
+                            },
+                            [
+                              option.image ? (vue.openBlock(), vue.createElementBlock("img", {
+                                key: 0,
+                                src: option.image,
+                                class: "znpb-image-wrapper"
+                              }, null, 8, _hoisted_4$5)) : vue.createCommentVNode("v-if", true),
+                              option.class ? (vue.openBlock(), vue.createElementBlock(
+                                "span",
+                                {
+                                  key: 1,
+                                  class: vue.normalizeClass(["znpb-radio-image-list__preview-element animated", option.value])
+                                },
+                                null,
+                                2
+                                /* CLASS */
+                              )) : vue.createCommentVNode("v-if", true),
+                              option.icon ? (vue.openBlock(), vue.createBlock(_sfc_main$1z, {
+                                key: 2,
+                                class: "znpb-radio-image-list__icon",
+                                icon: option.icon
+                              }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true)
+                            ],
+                            2
+                            /* CLASS */
+                          ),
+                          option.name ? (vue.openBlock(), vue.createElementBlock(
+                            "span",
+                            _hoisted_5$4,
+                            vue.toDisplayString(option.name),
+                            1
+                            /* TEXT */
+                          )) : vue.createCommentVNode("v-if", true)
+                        ], 8, _hoisted_3$9);
+                      }),
+                      128
+                      /* KEYED_FRAGMENT */
+                    )),
+                    __props.useSearch && visibleItems.value.length === 0 ? (vue.openBlock(), vue.createElementBlock(
+                      "li",
+                      _hoisted_6$2,
+                      vue.toDisplayString(i18n__namespace.__("No items found", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )) : vue.createCommentVNode("v-if", true)
+                  ],
+                  2
+                  /* CLASS */
+                )
               ])
             ]),
             default: vue.withCtx(() => [
               vue.createElementVNode("div", _hoisted_7$1, [
-                selectedOptionData.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-                  vue.createElementVNode("img", {
-                    src: selectedOptionData.value.image,
-                    class: "znpb-image-wrapper"
-                  }, null, 8, _hoisted_8$1),
-                  selectedOptionData.value.class ? (vue.openBlock(), vue.createElementBlock("span", {
-                    key: 0,
-                    class: vue.normalizeClass(["znpb-radio-image-list__preview-element animated", selectedOptionData.value.value])
-                  }, null, 2)) : vue.createCommentVNode("", true),
-                  selectedOptionData.value.icon ? (vue.openBlock(), vue.createBlock(_sfc_main$1z, {
-                    key: 1,
-                    class: "znpb-radio-image-list__icon",
-                    icon: selectedOptionData.value.icon
-                  }, null, 8, ["icon"])) : vue.createCommentVNode("", true)
-                ], 64)) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_9$1))
+                selectedOptionData.value ? (vue.openBlock(), vue.createElementBlock(
+                  vue.Fragment,
+                  { key: 0 },
+                  [
+                    vue.createElementVNode("img", {
+                      src: selectedOptionData.value.image,
+                      class: "znpb-image-wrapper"
+                    }, null, 8, _hoisted_8),
+                    selectedOptionData.value.class ? (vue.openBlock(), vue.createElementBlock(
+                      "span",
+                      {
+                        key: 0,
+                        class: vue.normalizeClass(["znpb-radio-image-list__preview-element animated", selectedOptionData.value.value])
+                      },
+                      null,
+                      2
+                      /* CLASS */
+                    )) : vue.createCommentVNode("v-if", true),
+                    selectedOptionData.value.icon ? (vue.openBlock(), vue.createBlock(_sfc_main$1z, {
+                      key: 1,
+                      class: "znpb-radio-image-list__icon",
+                      icon: selectedOptionData.value.icon
+                    }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true)
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_9))
               ])
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   }));
-  const InputRadioImage_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$f = { class: "znpb-repeaterOptionTitle" };
   const _hoisted_2$d = { class: "znpb-repeaterOptionActions" };
   const __default__$a = {
@@ -19978,9 +21493,10 @@ var __async = (__this, __arguments, generator) => {
       clonable: { type: Boolean, default: true }
     },
     emits: ["update:modelValue", "clone-option", "delete-option"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
       const expanded = vue.ref(false);
+      const emit = __emit;
       const selectedOptionModel = vue.computed({
         get() {
           return props.modelValue;
@@ -20002,55 +21518,78 @@ var __async = (__this, __arguments, generator) => {
       function deleteOption(propertyIndex) {
         emit("delete-option", propertyIndex);
       }
-      function onItemChange(newValues, index2) {
-        emit("update:modelValue", { newValues, index: index2 });
+      function onItemChange(newValues, index) {
+        emit("update:modelValue", { newValues, index });
       }
       return (_ctx, _cache) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _component_OptionsForm = vue.resolveComponent("OptionsForm");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-repeaterOptionWrapper", { "znpb-repeaterOptionWrapper--expanded": expanded.value }])
-        }, [
-          vue.createElementVNode("div", {
-            class: "znpb-repeaterOptionHeader",
-            onClick: _cache[1] || (_cache[1] = ($event) => expanded.value = !expanded.value)
-          }, [
-            vue.createElementVNode("div", _hoisted_1$f, vue.toDisplayString(title.value), 1),
-            vue.createElementVNode("div", _hoisted_2$d, [
-              _ctx.clonable ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_Icon, {
-                key: 0,
-                class: "znpb-option-repeater-selector__clone-icon",
-                icon: "copy",
-                onClick: vue.withModifiers(cloneOption, ["stop"])
-              }, null, 8, ["onClick"])), [
-                [_directive_znpb_tooltip, i18n__namespace.__("Clone", "zionbuilder")]
-              ]) : vue.createCommentVNode("", true),
-              _ctx.deletable ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_Icon, {
-                key: 1,
-                class: "znpb-option-repeater-selector__delete-icon",
-                icon: "delete",
-                onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => deleteOption(_ctx.propertyIndex), ["stop"]))
-              }, null, 512)), [
-                [_directive_znpb_tooltip, i18n__namespace.__("Delete", "zionbuilder")]
-              ]) : vue.createCommentVNode("", true),
-              vue.createVNode(_component_Icon, {
-                icon: "right-arrow",
-                rotate: expanded.value ? 90 : 0
-              }, null, 8, ["rotate"])
-            ])
-          ]),
-          vue.createVNode(_component_OptionsForm, {
-            schema: _ctx.schema,
-            modelValue: selectedOptionModel.value,
-            class: "znpb-repeaterOptionContent",
-            "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => onItemChange($event, _ctx.propertyIndex))
-          }, null, 8, ["schema", "modelValue"])
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-repeaterOptionWrapper", { "znpb-repeaterOptionWrapper--expanded": expanded.value }])
+          },
+          [
+            vue.createElementVNode("div", {
+              class: "znpb-repeaterOptionHeader",
+              onClick: _cache[1] || (_cache[1] = ($event) => expanded.value = !expanded.value)
+            }, [
+              vue.createElementVNode(
+                "div",
+                _hoisted_1$f,
+                vue.toDisplayString(title.value),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode("div", _hoisted_2$d, [
+                __props.clonable ? vue.withDirectives((vue.openBlock(), vue.createBlock(
+                  _component_Icon,
+                  {
+                    key: 0,
+                    class: "znpb-option-repeater-selector__clone-icon",
+                    icon: "copy",
+                    onClick: vue.withModifiers(cloneOption, ["stop"])
+                  },
+                  null,
+                  512
+                  /* NEED_PATCH */
+                )), [
+                  [_directive_znpb_tooltip, i18n__namespace.__("Clone", "zionbuilder")]
+                ]) : vue.createCommentVNode("v-if", true),
+                __props.deletable ? vue.withDirectives((vue.openBlock(), vue.createBlock(
+                  _component_Icon,
+                  {
+                    key: 1,
+                    class: "znpb-option-repeater-selector__delete-icon",
+                    icon: "delete",
+                    onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => deleteOption(__props.propertyIndex), ["stop"]))
+                  },
+                  null,
+                  512
+                  /* NEED_PATCH */
+                )), [
+                  [_directive_znpb_tooltip, i18n__namespace.__("Delete", "zionbuilder")]
+                ]) : vue.createCommentVNode("v-if", true),
+                vue.createVNode(_component_Icon, {
+                  icon: "right-arrow",
+                  rotate: expanded.value ? 90 : 0
+                }, null, 8, ["rotate"])
+              ])
+            ]),
+            vue.createVNode(_component_OptionsForm, {
+              schema: __props.schema,
+              modelValue: selectedOptionModel.value,
+              class: "znpb-repeaterOptionContent",
+              "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => onItemChange($event, __props.propertyIndex))
+            }, null, 8, ["schema", "modelValue"])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   }));
-  const RepeaterOption_vue_vue_type_style_index_0_lang = "";
   const __default__$9 = {
     name: "Repeater"
   };
@@ -20070,8 +21609,9 @@ var __async = (__this, __arguments, generator) => {
       add_template: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const sortableItems = vue.computed({
         get() {
           return props.modelValue || [];
@@ -20087,13 +21627,13 @@ var __async = (__this, __arguments, generator) => {
         return !props.addable ? false : !props.maxItems ? props.clonable : sortableItems.value.length < props.maxItems;
       });
       function onItemChange(payload) {
-        const { index: index2, newValues } = payload;
+        const { index, newValues } = payload;
         let copiedValues = [...sortableItems.value];
         let clonedNewValue = newValues;
         if (newValues === null) {
           clonedNewValue = [];
         }
-        copiedValues[index2] = clonedNewValue;
+        copiedValues[index] = clonedNewValue;
         emit("update:modelValue", copiedValues);
       }
       function addProperty() {
@@ -20103,10 +21643,10 @@ var __async = (__this, __arguments, generator) => {
         clone.push(newItem);
         emit("update:modelValue", clone);
       }
-      function cloneOption(event2, index2) {
+      function cloneOption(event2, index) {
         if (props.maxItems && props.addable && sortableItems.value.length < props.maxItems || props.maxItems === void 0) {
           const repeaterClone = [...sortableItems.value];
-          repeaterClone.splice(index2, 0, event2);
+          repeaterClone.splice(index, 0, event2);
           emit("update:modelValue", repeaterClone);
         }
       }
@@ -20132,36 +21672,47 @@ var __async = (__this, __arguments, generator) => {
               onClick: addProperty
             }, {
               default: vue.withCtx(() => [
-                vue.createTextVNode(vue.toDisplayString(_ctx.add_button_text), 1)
+                vue.createTextVNode(
+                  vue.toDisplayString(__props.add_button_text),
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
-            })) : vue.createCommentVNode("", true)
+              /* STABLE */
+            })) : vue.createCommentVNode("v-if", true)
           ]),
           default: vue.withCtx(() => [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(sortableItems.value, (item, index2) => {
-              return vue.openBlock(), vue.createBlock(_sfc_main$h, {
-                key: index2,
-                ref_for: true,
-                ref: "repeaterItem",
-                schema: _ctx.child_options,
-                modelValue: item,
-                "property-index": index2,
-                item_title: _ctx.item_title,
-                default_item_title: _ctx.default_item_title,
-                deletable: !_ctx.addable ? false : _ctx.deletable,
-                clonable: checkClonable.value,
-                onCloneOption: ($event) => cloneOption($event, index2),
-                onDeleteOption: deleteOption,
-                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => onItemChange($event))
-              }, null, 8, ["schema", "modelValue", "property-index", "item_title", "default_item_title", "deletable", "clonable", "onCloneOption"]);
-            }), 128))
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(sortableItems.value, (item, index) => {
+                return vue.openBlock(), vue.createBlock(_sfc_main$h, {
+                  key: index,
+                  ref_for: true,
+                  ref: "repeaterItem",
+                  schema: __props.child_options,
+                  modelValue: item,
+                  "property-index": index,
+                  item_title: __props.item_title,
+                  default_item_title: __props.default_item_title,
+                  deletable: !__props.addable ? false : __props.deletable,
+                  clonable: checkClonable.value,
+                  onCloneOption: ($event) => cloneOption($event, index),
+                  onDeleteOption: deleteOption,
+                  "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => onItemChange($event))
+                }, null, 8, ["schema", "modelValue", "property-index", "item_title", "default_item_title", "deletable", "clonable", "onCloneOption"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["modelValue"]);
       };
     }
   }));
-  const Repeater_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$e = { class: "znpb-loader-wrapper" };
   const __default__$8 = {
     name: "Loader"
@@ -20173,18 +21724,23 @@ var __async = (__this, __arguments, generator) => {
     setup(__props) {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$e, [
-          vue.createElementVNode("div", {
-            class: "znpb-loader",
-            style: vue.normalizeStyle({
-              height: `${_ctx.size}px`,
-              width: `${_ctx.size}px`
-            })
-          }, null, 4)
+          vue.createElementVNode(
+            "div",
+            {
+              class: "znpb-loader",
+              style: vue.normalizeStyle({
+                height: `${__props.size}px`,
+                width: `${__props.size}px`
+              })
+            },
+            null,
+            4
+            /* STYLE */
+          )
         ]);
       };
     }
   }));
-  const Loader_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$d = { class: "znpb-cornerLoaderWrapper" };
   const _hoisted_2$c = {
     key: 0,
@@ -20201,17 +21757,17 @@ var __async = (__this, __arguments, generator) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$d, [
           vue.createVNode(vue.Transition, { name: "save" }, {
             default: vue.withCtx(() => [
-              _ctx.isLoading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$c, [
+              __props.isLoading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$c, [
                 vue.createVNode(_component_Icon, { icon: "check" })
-              ])) : vue.createCommentVNode("", true)
+              ])) : vue.createCommentVNode("v-if", true)
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   });
-  const CornerLoader_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$c = { class: "znpb-notices-wrapper" };
   const _hoisted_2$b = {
     key: 0,
@@ -20226,8 +21782,9 @@ var __async = (__this, __arguments, generator) => {
       error: {}
     },
     emits: ["close-notice"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       function hideOnEscape(event2) {
         if (event2.key === "Escape") {
           emit("close-notice");
@@ -20255,99 +21812,121 @@ var __async = (__this, __arguments, generator) => {
         }, {
           default: vue.withCtx(() => [
             vue.createElementVNode("div", _hoisted_1$c, [
-              vue.createElementVNode("div", {
-                class: vue.normalizeClass(["znpb-notice", `znpb-notice--${_ctx.error.type || "success"}`])
-              }, [
-                vue.createVNode(vue.unref(_sfc_main$1z), {
-                  class: "znpb-notice__close",
-                  icon: "close",
-                  size: 12,
-                  onClick: _cache[0] || (_cache[0] = ($event) => emit("close-notice"))
-                }),
-                _ctx.error.title ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$b, vue.toDisplayString(_ctx.error.title), 1)) : vue.createCommentVNode("", true),
-                vue.createElementVNode("div", _hoisted_3$8, vue.toDisplayString(_ctx.error.message), 1)
-              ], 2)
+              vue.createElementVNode(
+                "div",
+                {
+                  class: vue.normalizeClass(["znpb-notice", `znpb-notice--${__props.error.type || "success"}`])
+                },
+                [
+                  vue.createVNode(vue.unref(_sfc_main$1z), {
+                    class: "znpb-notice__close",
+                    icon: "close",
+                    size: 12,
+                    onClick: _cache[0] || (_cache[0] = ($event) => emit("close-notice"))
+                  }),
+                  __props.error.title ? (vue.openBlock(), vue.createElementBlock(
+                    "div",
+                    _hoisted_2$b,
+                    vue.toDisplayString(__props.error.title),
+                    1
+                    /* TEXT */
+                  )) : vue.createCommentVNode("v-if", true),
+                  vue.createElementVNode(
+                    "div",
+                    _hoisted_3$8,
+                    vue.toDisplayString(__props.error.message),
+                    1
+                    /* TEXT */
+                  )
+                ],
+                2
+                /* CLASS */
+              )
             ])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   }));
-  const Notice_vue_vue_type_style_index_0_lang = "";
-  var FileSaver_min = { exports: {} };
-  (function(module2, exports2) {
-    (function(a, b) {
-      b();
-    })(commonjsGlobal, function() {
-      function b(a2, b2) {
-        return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
-      }
-      function c(a2, b2, c2) {
-        var d2 = new XMLHttpRequest();
-        d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
-          g(d2.response, b2, c2);
-        }, d2.onerror = function() {
-          console.error("could not download file");
-        }, d2.send();
-      }
-      function d(a2) {
-        var b2 = new XMLHttpRequest();
-        b2.open("HEAD", a2, false);
-        try {
-          b2.send();
-        } catch (a3) {
+  var FileSaver_min$1 = { exports: {} };
+  var FileSaver_min = FileSaver_min$1.exports;
+  var hasRequiredFileSaver_min;
+  function requireFileSaver_min() {
+    if (hasRequiredFileSaver_min) return FileSaver_min$1.exports;
+    hasRequiredFileSaver_min = 1;
+    (function(module2, exports2) {
+      (function(a, b) {
+        b();
+      })(FileSaver_min, function() {
+        function b(a2, b2) {
+          return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
         }
-        return 200 <= b2.status && 299 >= b2.status;
-      }
-      function e(a2) {
-        try {
-          a2.dispatchEvent(new MouseEvent("click"));
-        } catch (c2) {
-          var b2 = document.createEvent("MouseEvents");
-          b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
+        function c(a2, b2, c2) {
+          var d2 = new XMLHttpRequest();
+          d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
+            g(d2.response, b2, c2);
+          }, d2.onerror = function() {
+            console.error("could not download file");
+          }, d2.send();
         }
-      }
-      var f = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f.saveAs || ("object" != typeof window || window !== f ? function() {
-      } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
-        var i = f.URL || f.webkitURL, j = document.createElement("a");
-        g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
-          i.revokeObjectURL(j.href);
-        }, 4e4), setTimeout(function() {
-          e(j);
-        }, 0));
-      } : "msSaveOrOpenBlob" in navigator ? function(f2, g2, h) {
-        if (g2 = g2 || f2.name || "download", "string" != typeof f2)
-          navigator.msSaveOrOpenBlob(b(f2, h), g2);
-        else if (d(f2))
-          c(f2, g2, h);
-        else {
-          var i = document.createElement("a");
-          i.href = f2, i.target = "_blank", setTimeout(function() {
-            e(i);
-          });
+        function d(a2) {
+          var b2 = new XMLHttpRequest();
+          b2.open("HEAD", a2, false);
+          try {
+            b2.send();
+          } catch (a3) {
+          }
+          return 200 <= b2.status && 299 >= b2.status;
         }
-      } : function(b2, d2, e2, g2) {
-        if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2)
-          return c(b2, d2, e2);
-        var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f.HTMLElement) || f.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
-        if ((j || h && i || a) && "undefined" != typeof FileReader) {
-          var k = new FileReader();
-          k.onloadend = function() {
-            var a2 = k.result;
-            a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
-          }, k.readAsDataURL(b2);
-        } else {
-          var l = f.URL || f.webkitURL, m = l.createObjectURL(b2);
-          g2 ? g2.location = m : location.href = m, g2 = null, setTimeout(function() {
-            l.revokeObjectURL(m);
-          }, 4e4);
+        function e(a2) {
+          try {
+            a2.dispatchEvent(new MouseEvent("click"));
+          } catch (c2) {
+            var b2 = document.createEvent("MouseEvents");
+            b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
+          }
         }
+        var f = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f.saveAs || ("object" != typeof window || window !== f ? function() {
+        } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
+          var i = f.URL || f.webkitURL, j = document.createElement("a");
+          g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
+            i.revokeObjectURL(j.href);
+          }, 4e4), setTimeout(function() {
+            e(j);
+          }, 0));
+        } : "msSaveOrOpenBlob" in navigator ? function(f2, g2, h) {
+          if (g2 = g2 || f2.name || "download", "string" != typeof f2) navigator.msSaveOrOpenBlob(b(f2, h), g2);
+          else if (d(f2)) c(f2, g2, h);
+          else {
+            var i = document.createElement("a");
+            i.href = f2, i.target = "_blank", setTimeout(function() {
+              e(i);
+            });
+          }
+        } : function(b2, d2, e2, g2) {
+          if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2) return c(b2, d2, e2);
+          var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f.HTMLElement) || f.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
+          if ((j || h && i || a) && "undefined" != typeof FileReader) {
+            var k = new FileReader();
+            k.onloadend = function() {
+              var a2 = k.result;
+              a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
+            }, k.readAsDataURL(b2);
+          } else {
+            var l = f.URL || f.webkitURL, m = l.createObjectURL(b2);
+            g2 ? g2.location = m : location.href = m, g2 = null, setTimeout(function() {
+              l.revokeObjectURL(m);
+            }, 4e4);
+          }
+        });
+        f.saveAs = g.saveAs = g, module2.exports = g;
       });
-      f.saveAs = g.saveAs = g, module2.exports = g;
-    });
-  })(FileSaver_min);
-  var FileSaver_minExports = FileSaver_min.exports;
+    })(FileSaver_min$1);
+    return FileSaver_min$1.exports;
+  }
+  var FileSaver_minExports = requireFileSaver_min();
   class LibraryItem {
     constructor(item, librarySource) {
       __publicField(this, "id", "");
@@ -20406,25 +21985,42 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   }
-  var ls = {
-    set: function(variable, value, ttl_ms) {
-      var data = { value, expires_at: (/* @__PURE__ */ new Date()).getTime() + ttl_ms / 1 };
-      localStorage.setItem(variable.toString(), JSON.stringify(data));
-    },
-    get: function(variable) {
-      var data = JSON.parse(localStorage.getItem(variable.toString()));
-      if (data !== null) {
-        if (data.expires_at !== null && data.expires_at < (/* @__PURE__ */ new Date()).getTime()) {
-          localStorage.removeItem(variable.toString());
-        } else {
-          return data.value;
+  function set(variable, value, ttl_ms) {
+    if (localStorage) {
+      let data = {
+        value
+      };
+      if (ttl_ms) {
+        data.expires_at = Date.now() + ttl_ms;
+      }
+      localStorage.setItem(variable, JSON.stringify(data));
+    }
+  }
+  function remove(variable) {
+    if (localStorage) {
+      localStorage.removeItem(variable);
+    }
+  }
+  function get(variable) {
+    if (localStorage) {
+      const item = localStorage.getItem(variable);
+      if (item) {
+        try {
+          const data = JSON.parse(item);
+          if (data.expires_at && data.expires_at < Date.now()) {
+            localStorage.removeItem(variable);
+            return null;
+          } else {
+            return data.value;
+          }
+        } catch (e) {
+          localStorage.removeItem(variable);
         }
       }
-      return null;
     }
-  };
-  var localstorageTtl = ls;
-  const localSt = /* @__PURE__ */ getDefaultExportFromCjs(localstorageTtl);
+    return null;
+  }
+  const ls = { set, get, remove };
   class LibrarySource {
     constructor(librarySource) {
       __publicField(this, "name", "");
@@ -20448,8 +22044,8 @@ var __async = (__this, __arguments, generator) => {
     getData(useCache = true) {
       if (this.loaded && useCache) {
         return;
-      } else if (useCache && this.use_cache && localSt.get(`znpbLibraryCache_${this.id}`)) {
-        const savedData = localSt.get(`znpbLibraryCache_${this.id}`);
+      } else if (useCache && this.use_cache && ls.get(`znpbLibraryCache_${this.id}`)) {
+        const savedData = ls.get(`znpbLibraryCache_${this.id}`);
         if (savedData) {
           const { items, categories } = savedData;
           this.categories = categories;
@@ -20490,8 +22086,8 @@ var __async = (__this, __arguments, generator) => {
       this.items = items.map((item) => new LibraryItem(item, this));
     }
     removeItem(item) {
-      const index2 = this.items.indexOf(item);
-      this.items.splice(index2, 1);
+      const index = this.items.indexOf(item);
+      this.items.splice(index, 1);
       this.deleteCache();
     }
     /**
@@ -20505,7 +22101,7 @@ var __async = (__this, __arguments, generator) => {
       this.deleteCache();
     }
     saveToCache(categories, items) {
-      localSt.set(
+      ls.set(
         `znpbLibraryCache_${this.id}`,
         {
           categories,
@@ -20557,17 +22153,17 @@ var __async = (__this, __arguments, generator) => {
           element
         };
       } else {
-        const index2 = element.getIndexInParent() + 1;
+        const index = element.getIndexInParent() + 1;
         return {
           element: element.parent,
-          index: index2
+          index
         };
       }
     }
     function insertElement(newElement) {
-      const { element, index: index2 = -1 } = getElementForInsert();
+      const { element, index = -1 } = getElementForInsert();
       newElement = Array.isArray(newElement) ? newElement : [newElement];
-      element.addChildren(newElement, index2);
+      element.addChildren(newElement, index);
     }
     function addSources(sources) {
       Object.keys(sources).forEach((sourceID) => {
@@ -20617,12 +22213,10 @@ var __async = (__this, __arguments, generator) => {
   const _hoisted_1$b = { class: "znpb-optSpacing-margin" };
   const _hoisted_2$a = ["onMouseenter"];
   const _hoisted_3$7 = { class: "znpb-optSpacing-labelWrapper" };
-  const _hoisted_4$4 = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-optSpacing-label" }, "Margin", -1);
-  const _hoisted_5$3 = { class: "znpb-optSpacing-padding" };
-  const _hoisted_6$1 = ["onMouseenter"];
-  const _hoisted_7 = { class: "znpb-optSpacing-labelWrapper" };
-  const _hoisted_8 = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-optSpacing-label" }, "Padding", -1);
-  const _hoisted_9 = { class: "znpb-optSpacing-info" };
+  const _hoisted_4$4 = { class: "znpb-optSpacing-padding" };
+  const _hoisted_5$3 = ["onMouseenter"];
+  const _hoisted_6$1 = { class: "znpb-optSpacing-labelWrapper" };
+  const _hoisted_7 = { class: "znpb-optSpacing-info" };
   const __default__$6 = {
     name: "InputSpacing"
   };
@@ -20636,8 +22230,9 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const marginPositionId = [
         {
           position: "margin-top",
@@ -20821,94 +22416,129 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_ChangesBullet = vue.resolveComponent("ChangesBullet");
         const _component_Icon = vue.resolveComponent("Icon");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: "znpb-optSpacing",
-          onKeydown: checkForOppositeChange,
-          onKeyup: _cache[4] || (_cache[4] = ($event) => oppositeChange.value = false)
-        }, [
-          vue.createElementVNode("div", _hoisted_1$b, [
-            (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(marginPositionId, (position) => {
-              return vue.createElementVNode("div", {
-                key: position.position,
-                class: vue.normalizeClass([{
-                  [`znpb-optSpacing-${position.position}`]: true
-                }, "znpb-optSpacing-value znpb-optSpacing-value--margin"]),
-                onMouseenter: ($event) => activeHover.value = position,
-                onMouseleave: _cache[0] || (_cache[0] = ($event) => activeHover.value = null)
-              }, [
-                vue.createVNode(vue.unref(_sfc_main$1p), {
-                  "model-value": computedValues.value[position.position],
-                  units: ["px", "rem", "pt", "vh", "%"],
-                  step: 1,
-                  "default-unit": "px",
-                  placeholder: _ctx.placeholder && typeof _ctx.placeholder[position.position] !== "undefined" ? _ctx.placeholder[position.position] : "-",
-                  "onUpdate:modelValue": ($event) => onValueUpdated(position.position, "margin", $event)
-                }, null, 8, ["model-value", "placeholder", "onUpdate:modelValue"]),
-                computedValues.value[position.position] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
-                  key: 0,
-                  content: i18n__namespace.__("Discard changes", "zionbuilder"),
-                  onRemoveStyles: ($event) => onDiscardChanges(position.position)
-                }, null, 8, ["content", "onRemoveStyles"])) : vue.createCommentVNode("", true)
-              ], 42, _hoisted_2$a);
-            }), 64)),
-            vue.createElementVNode("div", _hoisted_3$7, [
-              _hoisted_4$4,
-              vue.createVNode(_component_Icon, {
-                icon: linkedMargin.value ? "link" : "unlink",
-                title: linkedMargin.value ? i18n__namespace.__("Unlink", "zionbuilder") : i18n__namespace.__("Link", "zionbuilder"),
-                size: 12,
-                class: vue.normalizeClass(["znpb-optSpacing-link", {
-                  "znpb-optSpacing-link--linked": linkedMargin.value
-                }]),
-                onClick: _cache[1] || (_cache[1] = ($event) => linkValues("margin"))
-              }, null, 8, ["icon", "title", "class"])
-            ])
-          ]),
-          vue.createElementVNode("div", _hoisted_5$3, [
-            (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(paddingPositionId, (position) => {
-              return vue.createElementVNode("div", {
-                key: position.position,
-                class: vue.normalizeClass([{
-                  [`znpb-optSpacing-${position.position}`]: true
-                }, "znpb-optSpacing-value znpb-optSpacing-value--padding"]),
-                onMouseenter: ($event) => activeHover.value = position,
-                onMouseleave: _cache[2] || (_cache[2] = ($event) => activeHover.value = null)
-              }, [
-                vue.createVNode(vue.unref(_sfc_main$1p), {
-                  "model-value": computedValues.value[position.position],
-                  units: ["px", "rem", "pt", "vh", "%"],
-                  step: 1,
-                  "default-unit": "px",
-                  min: 0,
-                  placeholder: _ctx.placeholder && typeof _ctx.placeholder[position.position] !== "undefined" ? _ctx.placeholder[position.position] : "-",
-                  "onUpdate:modelValue": ($event) => onValueUpdated(position.position, "padding", $event)
-                }, null, 8, ["model-value", "placeholder", "onUpdate:modelValue"]),
-                computedValues.value[position.position] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
-                  key: 0,
-                  content: i18n__namespace.__("Discard changes", "zionbuilder"),
-                  onRemoveStyles: ($event) => onDiscardChanges(position.position)
-                }, null, 8, ["content", "onRemoveStyles"])) : vue.createCommentVNode("", true)
-              ], 42, _hoisted_6$1);
-            }), 64)),
-            vue.createElementVNode("div", _hoisted_7, [
-              _hoisted_8,
-              vue.createVNode(_component_Icon, {
-                icon: linkedPadding.value ? "link" : "unlink",
-                title: linkedPadding.value ? i18n__namespace.__("Unlink", "zionbuilder") : i18n__namespace.__("Link", "zionbuilder"),
-                size: 12,
-                class: vue.normalizeClass(["znpb-optSpacing-link", {
-                  "znpb-optSpacing-link--linked": linkedPadding.value
-                }]),
-                onClick: _cache[3] || (_cache[3] = ($event) => linkValues("padding"))
-              }, null, 8, ["icon", "title", "class"])
-            ])
-          ]),
-          vue.createElementVNode("span", _hoisted_9, vue.toDisplayString(activeHover.value ? activeHover.value.title : ""), 1)
-        ], 32);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: "znpb-optSpacing",
+            onKeydown: checkForOppositeChange,
+            onKeyup: _cache[4] || (_cache[4] = ($event) => oppositeChange.value = false)
+          },
+          [
+            vue.createElementVNode("div", _hoisted_1$b, [
+              (vue.openBlock(), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(marginPositionId, (position) => {
+                  return vue.createElementVNode("div", {
+                    key: position.position,
+                    class: vue.normalizeClass([{
+                      [`znpb-optSpacing-${position.position}`]: true
+                    }, "znpb-optSpacing-value znpb-optSpacing-value--margin"]),
+                    onMouseenter: ($event) => activeHover.value = position,
+                    onMouseleave: _cache[0] || (_cache[0] = ($event) => activeHover.value = null)
+                  }, [
+                    vue.createVNode(vue.unref(_sfc_main$1p), {
+                      "model-value": computedValues.value[position.position],
+                      units: ["px", "rem", "pt", "vh", "%"],
+                      step: 1,
+                      "default-unit": "px",
+                      placeholder: __props.placeholder && typeof __props.placeholder[position.position] !== "undefined" ? __props.placeholder[position.position] : "-",
+                      "onUpdate:modelValue": ($event) => onValueUpdated(position.position, "margin", $event)
+                    }, null, 8, ["model-value", "placeholder", "onUpdate:modelValue"]),
+                    computedValues.value[position.position] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
+                      key: 0,
+                      content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                      onRemoveStyles: ($event) => onDiscardChanges(position.position)
+                    }, null, 8, ["content", "onRemoveStyles"])) : vue.createCommentVNode("v-if", true)
+                  ], 42, _hoisted_2$a);
+                }),
+                64
+                /* STABLE_FRAGMENT */
+              )),
+              vue.createElementVNode("div", _hoisted_3$7, [
+                _cache[5] || (_cache[5] = vue.createElementVNode(
+                  "span",
+                  { class: "znpb-optSpacing-label" },
+                  "Margin",
+                  -1
+                  /* CACHED */
+                )),
+                vue.createVNode(_component_Icon, {
+                  icon: linkedMargin.value ? "link" : "unlink",
+                  title: linkedMargin.value ? i18n__namespace.__("Unlink", "zionbuilder") : i18n__namespace.__("Link", "zionbuilder"),
+                  size: 12,
+                  class: vue.normalizeClass(["znpb-optSpacing-link", {
+                    "znpb-optSpacing-link--linked": linkedMargin.value
+                  }]),
+                  onClick: _cache[1] || (_cache[1] = ($event) => linkValues("margin"))
+                }, null, 8, ["icon", "title", "class"])
+              ])
+            ]),
+            vue.createElementVNode("div", _hoisted_4$4, [
+              (vue.openBlock(), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(paddingPositionId, (position) => {
+                  return vue.createElementVNode("div", {
+                    key: position.position,
+                    class: vue.normalizeClass([{
+                      [`znpb-optSpacing-${position.position}`]: true
+                    }, "znpb-optSpacing-value znpb-optSpacing-value--padding"]),
+                    onMouseenter: ($event) => activeHover.value = position,
+                    onMouseleave: _cache[2] || (_cache[2] = ($event) => activeHover.value = null)
+                  }, [
+                    vue.createVNode(vue.unref(_sfc_main$1p), {
+                      "model-value": computedValues.value[position.position],
+                      units: ["px", "rem", "pt", "vh", "%"],
+                      step: 1,
+                      "default-unit": "px",
+                      min: 0,
+                      placeholder: __props.placeholder && typeof __props.placeholder[position.position] !== "undefined" ? __props.placeholder[position.position] : "-",
+                      "onUpdate:modelValue": ($event) => onValueUpdated(position.position, "padding", $event)
+                    }, null, 8, ["model-value", "placeholder", "onUpdate:modelValue"]),
+                    computedValues.value[position.position] ? (vue.openBlock(), vue.createBlock(_component_ChangesBullet, {
+                      key: 0,
+                      content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                      onRemoveStyles: ($event) => onDiscardChanges(position.position)
+                    }, null, 8, ["content", "onRemoveStyles"])) : vue.createCommentVNode("v-if", true)
+                  ], 42, _hoisted_5$3);
+                }),
+                64
+                /* STABLE_FRAGMENT */
+              )),
+              vue.createElementVNode("div", _hoisted_6$1, [
+                _cache[6] || (_cache[6] = vue.createElementVNode(
+                  "span",
+                  { class: "znpb-optSpacing-label" },
+                  "Padding",
+                  -1
+                  /* CACHED */
+                )),
+                vue.createVNode(_component_Icon, {
+                  icon: linkedPadding.value ? "link" : "unlink",
+                  title: linkedPadding.value ? i18n__namespace.__("Unlink", "zionbuilder") : i18n__namespace.__("Link", "zionbuilder"),
+                  size: 12,
+                  class: vue.normalizeClass(["znpb-optSpacing-link", {
+                    "znpb-optSpacing-link--linked": linkedPadding.value
+                  }]),
+                  onClick: _cache[3] || (_cache[3] = ($event) => linkValues("padding"))
+                }, null, 8, ["icon", "title", "class"])
+              ])
+            ]),
+            vue.createElementVNode(
+              "span",
+              _hoisted_7,
+              vue.toDisplayString(activeHover.value ? activeHover.value.title : ""),
+              1
+              /* TEXT */
+            )
+          ],
+          32
+          /* NEED_HYDRATION */
+        );
       };
     }
   }));
-  const InputSpacing_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$a = { class: "znpb-dimensions-wrapper" };
   const _hoisted_2$9 = {
     key: 0,
@@ -20934,8 +22564,9 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const linked = vue.ref(false);
       const computedDimensions = vue.computed(() => {
         return [
@@ -20977,42 +22608,53 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Icon = vue.resolveComponent("Icon");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$a, [
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(computedDimensions.value, (dimension, i) => {
-            return vue.openBlock(), vue.createElementBlock("div", {
-              key: i,
-              class: vue.normalizeClass(["znpb-dimension", `znpb-dimension--${i}`])
-            }, [
-              dimension.name !== "link" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$9, [
-                vue.createVNode(_component_Icon, {
-                  icon: dimension.icon
-                }, null, 8, ["icon"])
-              ])) : vue.createCommentVNode("", true),
-              dimension.name !== "link" ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1p), {
-                key: 1,
-                "model-value": _ctx.modelValue[dimension.id],
-                title: dimension.id,
-                min: _ctx.min,
-                max: _ctx.max,
-                step: 1,
-                placeholder: _ctx.placeholder ? _ctx.placeholder[dimension.id] : "",
-                "onUpdate:modelValue": ($event) => onValueUpdated(dimension.id, $event),
-                onLinkedValue: handleLinkValues
-              }, null, 8, ["model-value", "title", "min", "max", "placeholder", "onUpdate:modelValue"])) : vue.createCommentVNode("", true),
-              dimension.name === "link" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$6, [
-                vue.createVNode(_component_Icon, {
-                  icon: linked.value ? "link" : "unlink",
-                  title: linked.value ? "Unlink" : "Link",
-                  class: vue.normalizeClass(["znpb-dimensions__link", { ["znpb-dimensions__link--linked"]: linked.value }]),
-                  onClick: handleLinkValues
-                }, null, 8, ["icon", "title", "class"])
-              ])) : vue.createCommentVNode("", true)
-            ], 2);
-          }), 128))
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(computedDimensions.value, (dimension, i) => {
+              return vue.openBlock(), vue.createElementBlock(
+                "div",
+                {
+                  key: i,
+                  class: vue.normalizeClass(["znpb-dimension", `znpb-dimension--${i}`])
+                },
+                [
+                  dimension.name !== "link" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$9, [
+                    vue.createVNode(_component_Icon, {
+                      icon: dimension.icon
+                    }, null, 8, ["icon"])
+                  ])) : vue.createCommentVNode("v-if", true),
+                  dimension.name !== "link" ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1p), {
+                    key: 1,
+                    "model-value": __props.modelValue[dimension.id],
+                    title: dimension.id,
+                    min: __props.min,
+                    max: __props.max,
+                    step: 1,
+                    placeholder: __props.placeholder ? __props.placeholder[dimension.id] : "",
+                    "onUpdate:modelValue": ($event) => onValueUpdated(dimension.id, $event),
+                    onLinkedValue: handleLinkValues
+                  }, null, 8, ["model-value", "title", "min", "max", "placeholder", "onUpdate:modelValue"])) : vue.createCommentVNode("v-if", true),
+                  dimension.name === "link" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$6, [
+                    vue.createVNode(_component_Icon, {
+                      icon: linked.value ? "link" : "unlink",
+                      title: linked.value ? "Unlink" : "Link",
+                      class: vue.normalizeClass(["znpb-dimensions__link", { ["znpb-dimensions__link--linked"]: linked.value }]),
+                      onClick: handleLinkValues
+                    }, null, 8, ["icon", "title", "class"])
+                  ])) : vue.createCommentVNode("v-if", true)
+                ],
+                2
+                /* CLASS */
+              );
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
         ]);
       };
     }
   }));
-  const InputDimensions_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$9 = ["innerHTML"];
   const __default__$4 = {
     name: "HTML"
@@ -21025,7 +22667,7 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", {
           class: "znpb-option__html",
-          innerHTML: _ctx.content
+          innerHTML: __props.content
         }, null, 8, _hoisted_1$9);
       };
     }
@@ -21039,8 +22681,9 @@ var __async = (__this, __arguments, generator) => {
       canDelete: { type: Boolean, default: true }
     },
     emits: ["update-attribute", "delete"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const computedModel = vue.computed({
         get() {
           return props.attributeConfig;
@@ -21078,15 +22721,14 @@ var __async = (__this, __arguments, generator) => {
           vue.createElementVNode("div", _hoisted_2$8, [
             vue.createVNode(_component_Icon, {
               icon: "delete",
-              class: vue.normalizeClass({ "znpb-link-optionsAttributeDelete--disabled": !_ctx.canDelete }),
-              onClick: _cache[1] || (_cache[1] = ($event) => emit("delete", _ctx.attributeConfig))
+              class: vue.normalizeClass({ "znpb-link-optionsAttributeDelete--disabled": !__props.canDelete }),
+              onClick: _cache[1] || (_cache[1] = ($event) => emit("delete", __props.attributeConfig))
             }, null, 8, ["class"])
           ])
         ]);
       };
     }
   });
-  const LinkAttributeForm_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$7 = {
     key: 1,
     class: "znpb-menuList znpb-mh-200 znpb-fancy-scrollbar"
@@ -21106,9 +22748,10 @@ var __async = (__this, __arguments, generator) => {
       show_target: { type: Boolean, default: true }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { applyFilters: applyFilters2 } = window.zb.hooks;
+      const props = __props;
+      const emit = __emit;
       const targetOptions = [
         {
           id: "_blank",
@@ -21185,7 +22828,7 @@ var __async = (__this, __arguments, generator) => {
       });
       const linkAttributes = vue.computed({
         get() {
-          const attributes = get(props.modelValue, "attributes");
+          const attributes = get$1(props.modelValue, "attributes");
           if (Array.isArray(attributes) && attributes.length > 0) {
             return attributes;
           } else {
@@ -21212,14 +22855,14 @@ var __async = (__this, __arguments, generator) => {
           }
         ];
       }
-      function deleteAttribute(index2) {
+      function deleteAttribute(index) {
         const clone = [...linkAttributes.value];
-        clone.splice(index2, 1);
+        clone.splice(index, 1);
         linkAttributes.value = clone;
       }
-      function onAttributeUpdate(index2, attribute) {
+      function onAttributeUpdate(index, attribute) {
         const clone = [...linkAttributes.value];
-        clone.splice(index2, 1, attribute);
+        clone.splice(index, 1, attribute);
         linkAttributes.value = clone;
       }
       vue.watchEffect(
@@ -21277,118 +22920,158 @@ var __async = (__this, __arguments, generator) => {
         const _component_InputWrapper = vue.resolveComponent("InputWrapper");
         const _component_OptionsForm = vue.resolveComponent("OptionsForm");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "rootRef",
-          ref: rootRef,
-          class: "znpb-link-wrapper"
-        }, [
-          vue.createVNode(_component_InputWrapper, { layout: "full" }, {
-            default: vue.withCtx(() => [
-              vue.createVNode(_component_Tooltip, {
-                show: showResults.value,
-                "onUpdate:show": _cache[1] || (_cache[1] = ($event) => showResults.value = $event),
-                placement: "bottom",
-                "append-to": "element",
-                strategy: "fixed",
-                "show-arrows": false,
-                trigger: null,
-                "close-on-outside-click": true,
-                "tooltip-class": "hg-popper--no-padding",
-                class: "znpb-optionLinkTooltip"
-              }, {
-                content: vue.withCtx(() => [
-                  isSearchLoading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
-                    key: 0,
-                    size: 14
-                  })) : (vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$7, [
-                    (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(searchResults.value, (post, index2) => {
-                      return vue.openBlock(), vue.createElementBlock("li", {
-                        key: index2,
-                        class: "znpb-menuListItem",
-                        onClick: ($event) => onSearchItemClick(post.url)
-                      }, vue.toDisplayString(post.post_title), 9, _hoisted_2$7);
-                    }), 128))
-                  ]))
-                ]),
-                default: vue.withCtx(() => [
-                  (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(linkURLComponent.value), {
-                    ref_key: "urlInput",
-                    ref: urlInput,
-                    modelValue: linkModel.value,
-                    "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => linkModel.value = $event),
-                    placeholder: i18n__namespace.__("Type to search or enter URL", "zionbuilder"),
-                    spellcheck: "false"
-                  }, {
-                    prepend: vue.withCtx(() => [
-                      isSearchLoading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
-                        key: 0,
-                        size: 14
-                      })) : (vue.openBlock(), vue.createBlock(_component_Icon, {
-                        key: 1,
-                        icon: "link"
-                      }))
-                    ]),
-                    append: vue.withCtx(() => [
-                      vue.createVNode(_component_Tooltip, {
-                        trigger: "click",
-                        "close-on-outside-click": true,
-                        "tooltip-class": "znpb-link-optionsTooltip",
-                        placement: "bottom",
-                        class: "znpb-flex znpb-flex--vcenter"
-                      }, {
-                        content: vue.withCtx(() => [
-                          vue.createElementVNode("div", _hoisted_3$5, [
-                            vue.createElementVNode("div", _hoisted_4$3, vue.toDisplayString(i18n__namespace.__("Link attributes", "zionbuilder")), 1),
-                            vue.createElementVNode("div", _hoisted_5$2, [
-                              (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(linkAttributes.value, (attribute, index2) => {
-                                return vue.openBlock(), vue.createBlock(_sfc_main$9, {
-                                  key: index2,
-                                  "attribute-config": attribute,
-                                  onUpdateAttribute: ($event) => onAttributeUpdate(index2, $event),
-                                  onDelete: ($event) => deleteAttribute(index2)
-                                }, null, 8, ["attribute-config", "onUpdateAttribute", "onDelete"]);
-                              }), 128)),
-                              vue.createElementVNode("div", {
-                                class: "znpb-link-optionsAttributesAdd",
-                                onClick: addLinkAttribute
-                              }, [
-                                vue.createVNode(_component_Icon, { icon: "plus" }),
-                                vue.createTextVNode(),
-                                vue.createElementVNode("span", null, vue.toDisplayString(i18n__namespace.__("Add custom link attribute", "zionbuilder")), 1)
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "rootRef",
+            ref: rootRef,
+            class: "znpb-link-wrapper"
+          },
+          [
+            vue.createVNode(_component_InputWrapper, { layout: "full" }, {
+              default: vue.withCtx(() => [
+                vue.createVNode(_component_Tooltip, {
+                  show: showResults.value,
+                  "onUpdate:show": _cache[1] || (_cache[1] = ($event) => showResults.value = $event),
+                  placement: "bottom",
+                  "append-to": "element",
+                  strategy: "fixed",
+                  "show-arrows": false,
+                  trigger: null,
+                  "close-on-outside-click": true,
+                  "tooltip-class": "hg-popper--no-padding",
+                  class: "znpb-optionLinkTooltip"
+                }, {
+                  content: vue.withCtx(() => [
+                    isSearchLoading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
+                      key: 0,
+                      size: 14
+                    })) : (vue.openBlock(), vue.createElementBlock("ul", _hoisted_1$7, [
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(searchResults.value, (post, index) => {
+                          return vue.openBlock(), vue.createElementBlock("li", {
+                            key: index,
+                            class: "znpb-menuListItem",
+                            onClick: ($event) => onSearchItemClick(post.url)
+                          }, vue.toDisplayString(post.post_title), 9, _hoisted_2$7);
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      ))
+                    ]))
+                  ]),
+                  default: vue.withCtx(() => [
+                    (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(linkURLComponent.value), {
+                      ref_key: "urlInput",
+                      ref: urlInput,
+                      modelValue: linkModel.value,
+                      "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => linkModel.value = $event),
+                      placeholder: i18n__namespace.__("Type to search or enter URL", "zionbuilder"),
+                      spellcheck: "false"
+                    }, {
+                      prepend: vue.withCtx(() => [
+                        isSearchLoading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
+                          key: 0,
+                          size: 14
+                        })) : (vue.openBlock(), vue.createBlock(_component_Icon, {
+                          key: 1,
+                          icon: "link"
+                        }))
+                      ]),
+                      append: vue.withCtx(() => [
+                        vue.createVNode(_component_Tooltip, {
+                          trigger: "click",
+                          "close-on-outside-click": true,
+                          "tooltip-class": "znpb-link-optionsTooltip",
+                          placement: "bottom",
+                          class: "znpb-flex znpb-flex--vcenter"
+                        }, {
+                          content: vue.withCtx(() => [
+                            vue.createElementVNode("div", _hoisted_3$5, [
+                              vue.createElementVNode(
+                                "div",
+                                _hoisted_4$3,
+                                vue.toDisplayString(i18n__namespace.__("Link attributes", "zionbuilder")),
+                                1
+                                /* TEXT */
+                              ),
+                              vue.createElementVNode("div", _hoisted_5$2, [
+                                (vue.openBlock(true), vue.createElementBlock(
+                                  vue.Fragment,
+                                  null,
+                                  vue.renderList(linkAttributes.value, (attribute, index) => {
+                                    return vue.openBlock(), vue.createBlock(_sfc_main$9, {
+                                      key: index,
+                                      "attribute-config": attribute,
+                                      onUpdateAttribute: ($event) => onAttributeUpdate(index, $event),
+                                      onDelete: ($event) => deleteAttribute(index)
+                                    }, null, 8, ["attribute-config", "onUpdateAttribute", "onDelete"]);
+                                  }),
+                                  128
+                                  /* KEYED_FRAGMENT */
+                                )),
+                                vue.createElementVNode("div", {
+                                  class: "znpb-link-optionsAttributesAdd",
+                                  onClick: addLinkAttribute
+                                }, [
+                                  vue.createVNode(_component_Icon, { icon: "plus" }),
+                                  _cache[3] || (_cache[3] = vue.createTextVNode()),
+                                  vue.createElementVNode(
+                                    "span",
+                                    null,
+                                    vue.toDisplayString(i18n__namespace.__("Add custom link attribute", "zionbuilder")),
+                                    1
+                                    /* TEXT */
+                                  )
+                                ])
                               ])
                             ])
-                          ])
-                        ]),
-                        default: vue.withCtx(() => [
-                          vue.withDirectives(vue.createVNode(_component_Icon, { icon: "tags-attributes" }, null, 512), [
-                            [_directive_znpb_tooltip, i18n__namespace.__("Edit link attributes", "zionbuilder")]
-                          ])
-                        ]),
-                        _: 1
-                      }),
-                      vue.createVNode(_component_Injection, { location: "options/link/append" })
-                    ]),
-                    _: 1
-                  }, 8, ["modelValue", "placeholder"]))
-                ]),
-                _: 1
-              }, 8, ["show"])
-            ]),
-            _: 1
-          }),
-          vue.createVNode(_component_OptionsForm, {
-            modelValue: computedModel.value,
-            "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => computedModel.value = $event),
-            class: "znpb-link--optionsForm",
-            schema: targetTitleSchema,
-            "enable-dynamic-data": true,
-            "no-space": true
-          }, null, 8, ["modelValue"])
-        ], 512);
+                          ]),
+                          default: vue.withCtx(() => [
+                            vue.withDirectives(vue.createVNode(
+                              _component_Icon,
+                              { icon: "tags-attributes" },
+                              null,
+                              512
+                              /* NEED_PATCH */
+                            ), [
+                              [_directive_znpb_tooltip, i18n__namespace.__("Edit link attributes", "zionbuilder")]
+                            ])
+                          ]),
+                          _: 1
+                          /* STABLE */
+                        }),
+                        vue.createCommentVNode(" Injection point "),
+                        vue.createVNode(_component_Injection, { location: "options/link/append" })
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    }, 8, ["modelValue", "placeholder"]))
+                  ]),
+                  _: 1
+                  /* STABLE */
+                }, 8, ["show"])
+              ]),
+              _: 1
+              /* STABLE */
+            }),
+            vue.createVNode(_component_OptionsForm, {
+              modelValue: computedModel.value,
+              "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => computedModel.value = $event),
+              class: "znpb-link--optionsForm",
+              schema: targetTitleSchema,
+              "enable-dynamic-data": true,
+              "no-space": true
+            }, null, 8, ["modelValue"])
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });
-  const InputLink_vue_vue_type_style_index_0_lang = "";
   const options = [
     {
       id: "text",
@@ -21714,8 +23397,8 @@ var __async = (__this, __arguments, generator) => {
       return __async(this, null, function* () {
         const deviceConfig = responsiveDevices.value.find((deviceConfig2) => deviceConfig2.id === breakpointID);
         if (deviceConfig) {
-          const index2 = responsiveDevices.value.indexOf(deviceConfig);
-          responsiveDevices.value.splice(index2, 1);
+          const index = responsiveDevices.value.indexOf(deviceConfig);
+          responsiveDevices.value.splice(index, 1);
           yield saveDevices();
           const AssetsStore = useAssetsStore();
           yield AssetsStore.regenerateCache();
@@ -21837,8 +23520,9 @@ var __async = (__this, __arguments, generator) => {
       width: { default: void 0 }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const { getOption } = useOptions();
       const {
         deleteValueByPath,
@@ -21909,7 +23593,7 @@ var __async = (__this, __arguments, generator) => {
         if (props.schema.is_layout) {
           const childOptionsIds = getChildOptionsIds(props.schema);
           const savedValues = childOptionsIds.find((optionId) => {
-            const hasDynamicValue = get(props.modelValue, `__dynamic_content__[${optionId}]`);
+            const hasDynamicValue = get$1(props.modelValue, `__dynamic_content__[${optionId}]`);
             return (typeof savedOptionValue.value !== "undefined" && typeof savedOptionValue.value[optionId]) !== "undefined" || hasDynamicValue !== void 0;
           });
           return savedValues !== void 0 && savedValues.length > 0;
@@ -22112,168 +23796,239 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return isValidInput.value && (_ctx.schema.barebone || optionTypeConfig.value.config && optionTypeConfig.value.config.barebone) ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(optionTypeConfig.value.component), vue.mergeProps({ key: 0 }, compiledSchema.value, {
-          title: _ctx.schema.title,
+        return isValidInput.value && (__props.schema.barebone || optionTypeConfig.value.config && optionTypeConfig.value.config.barebone) ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(optionTypeConfig.value.component), vue.mergeProps({ key: 0 }, compiledSchema.value, {
+          title: __props.schema.title,
           "onUpdate:modelValue": _cache[0] || (_cache[0] = (newValue) => optionValue.value = newValue),
           onDiscardChanges: onDeleteOption
         }), {
           default: vue.withCtx(() => [
-            _ctx.schema.content ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-              vue.createTextVNode(vue.toDisplayString(_ctx.schema.content), 1)
-            ], 64)) : vue.createCommentVNode("", true)
+            __props.schema.content ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 0 },
+              [
+                vue.createTextVNode(
+                  vue.toDisplayString(__props.schema.content),
+                  1
+                  /* TEXT */
+                )
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : vue.createCommentVNode("v-if", true)
           ]),
           _: 1
-        }, 16, ["title"])) : isValidInput.value ? (vue.openBlock(), vue.createElementBlock("div", {
-          key: 1,
-          class: vue.normalizeClass(["znpb-input-wrapper", {
-            [`znpb-input-type--${_ctx.schema.type}`]: true,
-            [`${_ctx.schema.css_class}`]: _ctx.schema.css_class,
-            [`znpb-forms-input-wrapper--${_ctx.schema.layout}`]: _ctx.schema.layout
-          }]),
-          style: vue.normalizeStyle(computedWrapperStyle.value)
-        }, [
-          _ctx.schema.title && computedShowTitle.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$6, [
-            vue.createElementVNode("span", {
-              innerHTML: _ctx.schema.title
-            }, null, 8, _hoisted_2$6),
-            vue.unref(showChanges) && hasChanges.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1u), {
-              key: 0,
-              content: i18n__namespace.__("Discard changes", "zionbuilder"),
-              onRemoveStyles: onDeleteOption
-            }, null, 8, ["content"])) : vue.createCommentVNode("", true),
-            _ctx.schema.description ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_Icon, {
-              key: 1,
-              icon: "question-mark",
-              class: "znpb-popper-trigger znpb-popper-trigger--circle"
-            }, null, 512)), [
-              [_directive_znpb_tooltip, _ctx.schema.description]
-            ]) : vue.createCommentVNode("", true),
-            _ctx.schema.pseudo_options ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1q), {
-              key: 2,
-              show: showPseudo.value,
-              "close-on-outside-click": true,
-              "show-arrows": false,
-              "append-to": "element",
-              trigger: null,
-              onShow: openPseudo,
-              onHide: closePseudo
-            }, {
-              content: vue.withCtx(() => [
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.schema.pseudo_options, (pseudo_selector, index2) => {
-                  return vue.openBlock(), vue.createElementBlock("div", {
-                    key: index2,
-                    class: "znpb-has-pseudo-options__icon-button znpb-options-devices-buttons",
-                    onClick: ($event) => activatePseudo(pseudo_selector)
+          /* STABLE */
+        }, 16, ["title"])) : isValidInput.value ? (vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            key: 1,
+            class: vue.normalizeClass(["znpb-input-wrapper", {
+              [`znpb-input-type--${__props.schema.type}`]: true,
+              [`${__props.schema.css_class}`]: __props.schema.css_class,
+              [`znpb-forms-input-wrapper--${__props.schema.layout}`]: __props.schema.layout
+            }]),
+            style: vue.normalizeStyle(computedWrapperStyle.value)
+          },
+          [
+            __props.schema.title && computedShowTitle.value ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$6, [
+              vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
+              vue.createElementVNode("span", {
+                innerHTML: __props.schema.title
+              }, null, 8, _hoisted_2$6),
+              vue.unref(showChanges) && hasChanges.value ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1u), {
+                key: 0,
+                content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                onRemoveStyles: onDeleteOption
+              }, null, 8, ["content"])) : vue.createCommentVNode("v-if", true),
+              __props.schema.description ? vue.withDirectives((vue.openBlock(), vue.createBlock(
+                _component_Icon,
+                {
+                  key: 1,
+                  icon: "question-mark",
+                  class: "znpb-popper-trigger znpb-popper-trigger--circle"
+                },
+                null,
+                512
+                /* NEED_PATCH */
+              )), [
+                [_directive_znpb_tooltip, __props.schema.description]
+              ]) : vue.createCommentVNode("v-if", true),
+              __props.schema.pseudo_options ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1q), {
+                key: 2,
+                show: showPseudo.value,
+                "close-on-outside-click": true,
+                "show-arrows": false,
+                "append-to": "element",
+                trigger: null,
+                onShow: openPseudo,
+                onHide: closePseudo
+              }, {
+                content: vue.withCtx(() => [
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(__props.schema.pseudo_options, (pseudo_selector, index) => {
+                      return vue.openBlock(), vue.createElementBlock("div", {
+                        key: index,
+                        class: "znpb-has-pseudo-options__icon-button znpb-options-devices-buttons",
+                        onClick: ($event) => activatePseudo(pseudo_selector)
+                      }, [
+                        vue.createVNode(_component_Icon, {
+                          icon: getPseudoIcon(pseudo_selector)
+                        }, null, 8, ["icon"])
+                      ], 8, _hoisted_3$4);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
+                ]),
+                default: vue.withCtx(() => [
+                  vue.createElementVNode("div", {
+                    class: "znpb-has-pseudo-options__icon-button znpb-options-devices-buttons znpb-has-responsive-options__icon-button--trigger",
+                    onClick: _cache[1] || (_cache[1] = ($event) => showPseudo.value = !showPseudo.value)
                   }, [
                     vue.createVNode(_component_Icon, {
-                      icon: getPseudoIcon(pseudo_selector)
+                      icon: getPseudoIcon(activePseudo.value)
                     }, null, 8, ["icon"])
-                  ], 8, _hoisted_3$4);
-                }), 128))
-              ]),
-              default: vue.withCtx(() => [
-                vue.createElementVNode("div", {
-                  class: "znpb-has-pseudo-options__icon-button znpb-options-devices-buttons znpb-has-responsive-options__icon-button--trigger",
-                  onClick: _cache[1] || (_cache[1] = ($event) => showPseudo.value = !showPseudo.value)
-                }, [
-                  vue.createVNode(_component_Icon, {
-                    icon: getPseudoIcon(activePseudo.value)
-                  }, null, 8, ["icon"])
-                ])
-              ]),
-              _: 1
-            }, 8, ["show"])) : vue.createCommentVNode("", true),
-            _ctx.schema.responsive_options || _ctx.schema.show_responsive_buttons ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1q), {
-              key: 3,
-              show: showDevices.value,
-              "show-arrows": false,
-              "append-to": "element",
-              trigger: null,
-              placement: "bottom",
-              "tooltip-class": "znpb-has-responsive-options",
-              "close-on-outside-click": true,
-              onShow: openResponsive,
-              onHide: closeResponsive
-            }, {
-              content: vue.withCtx(() => [
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(builtInResponsiveDevices2), (device, index2) => {
-                  return vue.openBlock(), vue.createElementBlock("div", {
-                    key: index2,
-                    ref_for: true,
-                    ref: "dropdown",
-                    class: "znpb-options-devices-buttons znpb-has-responsive-options__icon-button",
-                    onClick: ($event) => activateDevice(device)
+                  ])
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["show"])) : vue.createCommentVNode("v-if", true),
+              __props.schema.responsive_options || __props.schema.show_responsive_buttons ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1q), {
+                key: 3,
+                show: showDevices.value,
+                "show-arrows": false,
+                "append-to": "element",
+                trigger: null,
+                placement: "bottom",
+                "tooltip-class": "znpb-has-responsive-options",
+                "close-on-outside-click": true,
+                onShow: openResponsive,
+                onHide: closeResponsive
+              }, {
+                content: vue.withCtx(() => [
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(vue.unref(builtInResponsiveDevices2), (device, index) => {
+                      return vue.openBlock(), vue.createElementBlock("div", {
+                        key: index,
+                        ref_for: true,
+                        ref: "dropdown",
+                        class: "znpb-options-devices-buttons znpb-has-responsive-options__icon-button",
+                        onClick: ($event) => activateDevice(device)
+                      }, [
+                        vue.createVNode(_component_Icon, {
+                          icon: device.icon
+                        }, null, 8, ["icon"])
+                      ], 8, _hoisted_4$2);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
+                ]),
+                default: vue.withCtx(() => [
+                  vue.createElementVNode("div", {
+                    class: "znpb-has-responsive-options__icon-button--trigger",
+                    onClick: _cache[2] || (_cache[2] = ($event) => showDevices.value = !showDevices.value)
                   }, [
                     vue.createVNode(_component_Icon, {
-                      icon: device.icon
+                      icon: vue.unref(activeResponsiveDeviceInfo2).icon
                     }, null, 8, ["icon"])
-                  ], 8, _hoisted_4$2);
-                }), 128))
-              ]),
-              default: vue.withCtx(() => [
-                vue.createElementVNode("div", {
-                  class: "znpb-has-responsive-options__icon-button--trigger",
-                  onClick: _cache[2] || (_cache[2] = ($event) => showDevices.value = !showDevices.value)
-                }, [
-                  vue.createVNode(_component_Icon, {
-                    icon: vue.unref(activeResponsiveDeviceInfo2).icon
-                  }, null, 8, ["icon"])
-                ])
-              ]),
-              _: 1
-            }, 8, ["show"])) : vue.createCommentVNode("", true),
-            vue.createVNode(vue.unref(_sfc_main$P), {
-              location: "input_wrapper/end",
-              class: "znpb-options-injection--after-title"
-            }),
-            vue.createVNode(vue.unref(_sfc_main$P), {
-              location: `input_wrapper/end/${_ctx.schema.type}`,
-              class: "znpb-options-injection--after-title"
-            }, null, 8, ["location"])
-          ])) : vue.createCommentVNode("", true),
-          vue.createElementVNode("div", _hoisted_5$1, [
-            _ctx.schema.itemIcon ? (vue.openBlock(), vue.createBlock(_component_Icon, {
-              key: 0,
-              icon: _ctx.schema.itemIcon
-            }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-            _ctx.schema.label || _ctx.schema["label-icon"] ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1o), {
-              key: 1,
-              label: _ctx.schema.label,
-              align: _ctx.schema["label-align"],
-              position: _ctx.schema["label-position"],
-              title: _ctx.schema["label-title"],
-              icon: _ctx.schema["label-icon"]
-            }, {
-              default: vue.withCtx(() => [
-                (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(optionTypeConfig.value.component), vue.mergeProps(compiledSchema.value, {
-                  "onUpdate:modelValue": _cache[3] || (_cache[3] = (newValue) => optionValue.value = newValue)
-                }), {
+                  ])
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["show"])) : vue.createCommentVNode("v-if", true),
+              vue.createVNode(vue.unref(_sfc_main$P), {
+                location: "input_wrapper/end",
+                class: "znpb-options-injection--after-title"
+              }),
+              vue.createVNode(vue.unref(_sfc_main$P), {
+                location: `input_wrapper/end/${__props.schema.type}`,
+                class: "znpb-options-injection--after-title"
+              }, null, 8, ["location"])
+            ])) : vue.createCommentVNode("v-if", true),
+            vue.createElementVNode("div", _hoisted_5$1, [
+              __props.schema.itemIcon ? (vue.openBlock(), vue.createBlock(_component_Icon, {
+                key: 0,
+                icon: __props.schema.itemIcon
+              }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+              __props.schema.label || __props.schema["label-icon"] ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1o), {
+                key: 1,
+                label: __props.schema.label,
+                align: __props.schema["label-align"],
+                position: __props.schema["label-position"],
+                title: __props.schema["label-title"],
+                icon: __props.schema["label-icon"]
+              }, {
+                default: vue.withCtx(() => [
+                  (vue.openBlock(), vue.createBlock(
+                    vue.resolveDynamicComponent(optionTypeConfig.value.component),
+                    vue.mergeProps(compiledSchema.value, {
+                      "onUpdate:modelValue": _cache[3] || (_cache[3] = (newValue) => optionValue.value = newValue)
+                    }),
+                    {
+                      default: vue.withCtx(() => [
+                        __props.schema.content ? (vue.openBlock(), vue.createElementBlock(
+                          vue.Fragment,
+                          { key: 0 },
+                          [
+                            vue.createTextVNode(
+                              vue.toDisplayString(__props.schema.content),
+                              1
+                              /* TEXT */
+                            )
+                          ],
+                          64
+                          /* STABLE_FRAGMENT */
+                        )) : vue.createCommentVNode("v-if", true)
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    },
+                    16
+                    /* FULL_PROPS */
+                  ))
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["label", "align", "position", "title", "icon"])) : (vue.openBlock(), vue.createBlock(
+                vue.resolveDynamicComponent(optionTypeConfig.value.component),
+                vue.mergeProps({ key: 2 }, compiledSchema.value, {
+                  "onUpdate:modelValue": _cache[4] || (_cache[4] = (newValue) => optionValue.value = newValue)
+                }),
+                {
                   default: vue.withCtx(() => [
-                    _ctx.schema.content ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-                      vue.createTextVNode(vue.toDisplayString(_ctx.schema.content), 1)
-                    ], 64)) : vue.createCommentVNode("", true)
+                    __props.schema.content ? (vue.openBlock(), vue.createElementBlock(
+                      vue.Fragment,
+                      { key: 0 },
+                      [
+                        vue.createTextVNode(
+                          vue.toDisplayString(__props.schema.content),
+                          1
+                          /* TEXT */
+                        )
+                      ],
+                      64
+                      /* STABLE_FRAGMENT */
+                    )) : vue.createCommentVNode("v-if", true)
                   ]),
                   _: 1
-                }, 16))
-              ]),
-              _: 1
-            }, 8, ["label", "align", "position", "title", "icon"])) : (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(optionTypeConfig.value.component), vue.mergeProps({ key: 2 }, compiledSchema.value, {
-              "onUpdate:modelValue": _cache[4] || (_cache[4] = (newValue) => optionValue.value = newValue)
-            }), {
-              default: vue.withCtx(() => [
-                _ctx.schema.content ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-                  vue.createTextVNode(vue.toDisplayString(_ctx.schema.content), 1)
-                ], 64)) : vue.createCommentVNode("", true)
-              ]),
-              _: 1
-            }, 16))
-          ])
-        ], 6)) : vue.createCommentVNode("", true);
+                  /* STABLE */
+                },
+                16
+                /* FULL_PROPS */
+              ))
+            ])
+          ],
+          6
+          /* CLASS, STYLE */
+        )) : vue.createCommentVNode("v-if", true);
       };
     }
   }));
-  const OptionWrapper_vue_vue_type_style_index_0_lang = "";
-  const OptionsForm_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$6 = {
     name: "OptionsForm",
     components: {
@@ -22331,21 +24086,21 @@ var __async = (__this, __arguments, generator) => {
       const { activeResponsiveDeviceInfo: activeResponsiveDeviceInfo2 } = useResponsiveDevices();
       const { activePseudoSelector: activePseudoSelector2 } = usePseudoSelectors();
       function updateTopModelValueByPath(path, newValue) {
-        set(topModelValue.value, path, newValue);
+        set$1(topModelValue.value, path, newValue);
       }
       function deleteTopModelValueByPath(path) {
         unset(topModelValue.value, path);
         deleteNested(path, topModelValue.value);
       }
       function getTopModelValueByPath(path, defaultValue = void 0) {
-        return get(topModelValue.value, path, defaultValue);
+        return get$1(topModelValue.value, path, defaultValue);
       }
       const getValueByPath = (path, defaultValue = null) => {
-        return get(props.modelValue, path, defaultValue);
+        return get$1(props.modelValue, path, defaultValue);
       };
       const updateValueByPath = (path, newValue) => {
         const clonedValue = cloneDeep(props.modelValue);
-        set(clonedValue, path, newValue);
+        set$1(clonedValue, path, newValue);
         emit("update:modelValue", clonedValue);
       };
       function deleteNestedEmptyObjects(paths, object) {
@@ -22379,9 +24134,9 @@ var __async = (__this, __arguments, generator) => {
         const newValues = __spreadValues({}, props.modelValue);
         allPaths.forEach((path) => {
           const paths = path.split(".");
-          paths.reduce((acc, key, index2) => {
-            if (index2 === paths.length - 1) {
-              const dynamicValue = get(acc, `__dynamic_content__[${key}]`);
+          paths.reduce((acc, key, index) => {
+            if (index === paths.length - 1) {
+              const dynamicValue = get$1(acc, `__dynamic_content__[${key}]`);
               dynamicValue !== void 0 ? delete acc.__dynamic_content__ : delete acc[key];
               return true;
             }
@@ -22491,7 +24246,7 @@ var __async = (__this, __arguments, generator) => {
             this.$emit("update:modelValue", null);
           } else {
             const clonedValue = __spreadValues({}, this.modelValue);
-            Object.keys(clonedValue).reduce((acc, key, index2) => {
+            Object.keys(clonedValue).reduce((acc, key, index) => {
               if (typeof newValue[key] === "undefined") {
                 delete acc[key];
               }
@@ -22529,7 +24284,7 @@ var __async = (__this, __arguments, generator) => {
       },
       getOptionSchemaFromPath(optionPath) {
         const pathArray = optionPath.split(".");
-        return pathArray.reduce((acc, path, index2) => {
+        return pathArray.reduce((acc, path, index) => {
           if (acc[path]) {
             return acc[path];
           } else {
@@ -22617,42 +24372,66 @@ var __async = (__this, __arguments, generator) => {
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_Icon = vue.resolveComponent("Icon");
     const _component_OptionWrapper = vue.resolveComponent("OptionWrapper");
-    return vue.openBlock(), vue.createElementBlock("div", {
-      class: vue.normalizeClass(["znpb-options-form-wrapper", { "znpb-options-form-wrapper--noSpace": $props.noSpace }])
-    }, [
-      (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList($options.optionsSchema, (optionConfig, optionId) => {
-        return vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: optionId }, [
-          optionConfig.breadcrumbs ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$5, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(optionConfig.breadcrumbs, (breadcrumb, i) => {
-              return vue.openBlock(), vue.createElementBlock("div", {
-                key: i,
-                class: "znpb-options-breadcrumbs-path"
-              }, [
-                vue.createElementVNode("span", {
-                  innerHTML: optionConfig.breadcrumbs[i]
-                }, null, 8, _hoisted_2$5),
-                i <= optionConfig.breadcrumbs.length ? (vue.openBlock(), vue.createBlock(_component_Icon, {
-                  key: 0,
-                  icon: "select",
-                  class: "znpb-options-breadcrumbs-path-icon"
-                })) : vue.createCommentVNode("", true)
-              ]);
-            }), 128)),
-            vue.createElementVNode("span", {
-              innerHTML: optionConfig.title
-            }, null, 8, _hoisted_3$3)
-          ])) : vue.createCommentVNode("", true),
-          vue.createVNode(_component_OptionWrapper, {
-            schema: optionConfig,
-            "option-id": optionId,
-            modelValue: optionConfig.is_layout ? $props.modelValue : $props.modelValue[optionId],
-            "compile-placeholder": $options.compilePlaceholder,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.setValue(...$event)),
-            onChange: $options.onOptionChange
-          }, null, 8, ["schema", "option-id", "modelValue", "compile-placeholder", "onChange"])
-        ], 64);
-      }), 128))
-    ], 2);
+    return vue.openBlock(), vue.createElementBlock(
+      "div",
+      {
+        class: vue.normalizeClass(["znpb-options-form-wrapper", { "znpb-options-form-wrapper--noSpace": $props.noSpace }])
+      },
+      [
+        (vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          vue.renderList($options.optionsSchema, (optionConfig, optionId) => {
+            return vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: optionId },
+              [
+                optionConfig.breadcrumbs ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$5, [
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(optionConfig.breadcrumbs, (breadcrumb, i) => {
+                      return vue.openBlock(), vue.createElementBlock("div", {
+                        key: i,
+                        class: "znpb-options-breadcrumbs-path"
+                      }, [
+                        vue.createElementVNode("span", {
+                          innerHTML: optionConfig.breadcrumbs[i]
+                        }, null, 8, _hoisted_2$5),
+                        i <= optionConfig.breadcrumbs.length ? (vue.openBlock(), vue.createBlock(_component_Icon, {
+                          key: 0,
+                          icon: "select",
+                          class: "znpb-options-breadcrumbs-path-icon"
+                        })) : vue.createCommentVNode("v-if", true)
+                      ]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  )),
+                  vue.createElementVNode("span", {
+                    innerHTML: optionConfig.title
+                  }, null, 8, _hoisted_3$3)
+                ])) : vue.createCommentVNode("v-if", true),
+                vue.createVNode(_component_OptionWrapper, {
+                  schema: optionConfig,
+                  "option-id": optionId,
+                  modelValue: optionConfig.is_layout ? $props.modelValue : $props.modelValue[optionId],
+                  "compile-placeholder": $options.compilePlaceholder,
+                  "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.setValue(...$event)),
+                  onChange: $options.onOptionChange
+                }, null, 8, ["schema", "option-id", "modelValue", "compile-placeholder", "onChange"])
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            );
+          }),
+          128
+          /* KEYED_FRAGMENT */
+        ))
+      ],
+      2
+      /* CLASS */
+    );
   }
   const OptionsForm = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$1]]);
   const _hoisted_1$4 = { class: "znpb-menu" };
@@ -22670,8 +24449,9 @@ var __async = (__this, __arguments, generator) => {
       actions: {}
     },
     emits: ["action"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       function performAction(action) {
         action.action();
         emit("action");
@@ -22682,26 +24462,43 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Icon = vue.resolveComponent("Icon");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$4, [
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(availableActions.value, (action) => {
-            return vue.openBlock(), vue.createElementBlock("div", {
-              key: action.title,
-              class: vue.normalizeClass(["znpb-menu-item", [{ "znpb-menu-item--disabled": action.show === false }, action.cssClasses]]),
-              onClick: vue.withModifiers(($event) => performAction(action), ["stop"])
-            }, [
-              action.icon ? (vue.openBlock(), vue.createBlock(_component_Icon, {
-                key: 0,
-                class: "znpb-menu-itemIcon",
-                icon: action.icon
-              }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-              vue.createElementVNode("span", _hoisted_3$2, vue.toDisplayString(action.title), 1),
-              action.append ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$1, vue.toDisplayString(action.append), 1)) : vue.createCommentVNode("", true)
-            ], 10, _hoisted_2$4);
-          }), 128))
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(availableActions.value, (action) => {
+              return vue.openBlock(), vue.createElementBlock("div", {
+                key: action.title,
+                class: vue.normalizeClass(["znpb-menu-item", [{ "znpb-menu-item--disabled": action.show === false }, action.cssClasses]]),
+                onClick: vue.withModifiers(($event) => performAction(action), ["stop"])
+              }, [
+                action.icon ? (vue.openBlock(), vue.createBlock(_component_Icon, {
+                  key: 0,
+                  class: "znpb-menu-itemIcon",
+                  icon: action.icon
+                }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+                vue.createElementVNode(
+                  "span",
+                  _hoisted_3$2,
+                  vue.toDisplayString(action.title),
+                  1
+                  /* TEXT */
+                ),
+                action.append ? (vue.openBlock(), vue.createElementBlock(
+                  "span",
+                  _hoisted_4$1,
+                  vue.toDisplayString(action.append),
+                  1
+                  /* TEXT */
+                )) : vue.createCommentVNode("v-if", true)
+              ], 10, _hoisted_2$4);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
         ]);
       };
     }
   }));
-  const Menu_vue_vue_type_style_index_0_lang = "";
   const __default__$1 = {
     name: "HiddenMenu"
   };
@@ -22726,7 +24523,7 @@ var __async = (__this, __arguments, generator) => {
         }, {
           content: vue.withCtx(() => [
             vue.createVNode(_sfc_main$5, {
-              actions: _ctx.actions,
+              actions: __props.actions,
               onAction: _cache[0] || (_cache[0] = ($event) => expanded.value = !expanded.value)
             }, null, 8, ["actions"])
           ]),
@@ -22738,11 +24535,11 @@ var __async = (__this, __arguments, generator) => {
             })
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["show"]);
       };
     }
   }));
-  const Modal_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$3 = {
     name: "Modal",
     components: {
@@ -22837,8 +24634,7 @@ var __async = (__this, __arguments, generator) => {
           top2 = 0;
         } else if (this.position.top > window.innerHeight / 2) {
           top2 = this.position.top - 90;
-        } else
-          top2 = this.position.top;
+        } else top2 = this.position.top;
         return top2;
       },
       hasHeaderSlot() {
@@ -22892,8 +24688,7 @@ var __async = (__this, __arguments, generator) => {
       fullscreen(newValue) {
         if (newValue) {
           this.fullSize = newValue;
-        } else
-          this.fullSize = this.fullscreen;
+        } else this.fullSize = this.fullscreen;
       },
       showBackdrop(newValue) {
         this.bg = newValue;
@@ -22986,55 +24781,78 @@ var __async = (__this, __arguments, generator) => {
     const _component_Icon = vue.resolveComponent("Icon");
     return vue.openBlock(), vue.createBlock(vue.Transition, { name: "modal-fade" }, {
       default: vue.withCtx(() => [
-        $props.show ? (vue.openBlock(), vue.createElementBlock("div", {
-          key: 0,
-          class: vue.normalizeClass(["znpb-modal__backdrop", { "znpb-modal__backdrop--nobg": !_ctx.bg }]),
-          style: vue.normalizeStyle($options.modalStyle),
-          onClick: _cache[3] || (_cache[3] = (...args) => $options.closeOnBackdropClick && $options.closeOnBackdropClick(...args))
-        }, [
-          vue.createElementVNode("div", {
-            ref: "modalContent",
-            style: vue.normalizeStyle($options.modalContentStyle),
-            class: vue.normalizeClass(["znpb-modal__wrapper", { "znpb-modal__wrapper--full-size": _ctx.fullSize }])
-          }, [
-            ($props.title || $props.showClose || $props.showMaximize) && !$options.hasHeaderSlot ? (vue.openBlock(), vue.createElementBlock("header", _hoisted_1$3, [
-              vue.createElementVNode("div", {
-                class: "znpb-modal__header-title",
-                style: vue.normalizeStyle(
-                  $props.enableDrag ? {
-                    cursor: "pointer",
-                    "user-select": "none"
-                  } : null
-                ),
-                onMousedown: _cache[0] || (_cache[0] = (...args) => $options.activateDrag && $options.activateDrag(...args))
-              }, [
-                vue.createTextVNode(vue.toDisplayString($props.title) + " ", 1),
-                vue.renderSlot(_ctx.$slots, "title")
-              ], 36),
-              $props.showMaximize ? (vue.openBlock(), vue.createBlock(_component_Icon, {
-                key: 0,
-                icon: _ctx.fullSize ? "shrink" : "maximize",
-                class: "znpb-modal__header-button",
-                onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => (_ctx.fullSize = !_ctx.fullSize, _ctx.$emit("update:fullscreen", _ctx.fullSize)), ["stop"]))
-              }, null, 8, ["icon"])) : vue.createCommentVNode("", true),
-              $props.showClose ? (vue.openBlock(), vue.createElementBlock("span", {
-                key: 1,
-                class: "znpb-modal__header-button",
-                onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.closeModal && $options.closeModal(...args), ["stop"]))
-              }, [
-                vue.renderSlot(_ctx.$slots, "close"),
-                vue.createVNode(_component_Icon, { icon: "close" })
-              ])) : vue.createCommentVNode("", true)
-            ])) : vue.createCommentVNode("", true),
-            vue.renderSlot(_ctx.$slots, "header"),
-            vue.createElementVNode("div", _hoisted_2$3, [
-              vue.renderSlot(_ctx.$slots, "default")
-            ]),
-            vue.renderSlot(_ctx.$slots, "footer")
-          ], 6)
-        ], 6)) : vue.createCommentVNode("", true)
+        $props.show ? (vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            key: 0,
+            class: vue.normalizeClass(["znpb-modal__backdrop", { "znpb-modal__backdrop--nobg": !_ctx.bg }]),
+            style: vue.normalizeStyle($options.modalStyle),
+            onClick: _cache[3] || (_cache[3] = (...args) => $options.closeOnBackdropClick && $options.closeOnBackdropClick(...args))
+          },
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                ref: "modalContent",
+                style: vue.normalizeStyle($options.modalContentStyle),
+                class: vue.normalizeClass(["znpb-modal__wrapper", { "znpb-modal__wrapper--full-size": _ctx.fullSize }])
+              },
+              [
+                ($props.title || $props.showClose || $props.showMaximize) && !$options.hasHeaderSlot ? (vue.openBlock(), vue.createElementBlock("header", _hoisted_1$3, [
+                  vue.createElementVNode(
+                    "div",
+                    {
+                      class: "znpb-modal__header-title",
+                      style: vue.normalizeStyle(
+                        $props.enableDrag ? {
+                          cursor: "pointer",
+                          "user-select": "none"
+                        } : null
+                      ),
+                      onMousedown: _cache[0] || (_cache[0] = (...args) => $options.activateDrag && $options.activateDrag(...args))
+                    },
+                    [
+                      vue.createTextVNode(
+                        vue.toDisplayString($props.title) + " ",
+                        1
+                        /* TEXT */
+                      ),
+                      vue.renderSlot(_ctx.$slots, "title")
+                    ],
+                    36
+                    /* STYLE, NEED_HYDRATION */
+                  ),
+                  $props.showMaximize ? (vue.openBlock(), vue.createBlock(_component_Icon, {
+                    key: 0,
+                    icon: _ctx.fullSize ? "shrink" : "maximize",
+                    class: "znpb-modal__header-button",
+                    onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => (_ctx.fullSize = !_ctx.fullSize, _ctx.$emit("update:fullscreen", _ctx.fullSize)), ["stop"]))
+                  }, null, 8, ["icon"])) : vue.createCommentVNode("v-if", true),
+                  $props.showClose ? (vue.openBlock(), vue.createElementBlock("span", {
+                    key: 1,
+                    class: "znpb-modal__header-button",
+                    onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.closeModal && $options.closeModal(...args), ["stop"]))
+                  }, [
+                    vue.renderSlot(_ctx.$slots, "close"),
+                    vue.createVNode(_component_Icon, { icon: "close" })
+                  ])) : vue.createCommentVNode("v-if", true)
+                ])) : vue.createCommentVNode("v-if", true),
+                vue.renderSlot(_ctx.$slots, "header"),
+                vue.createElementVNode("div", _hoisted_2$3, [
+                  vue.renderSlot(_ctx.$slots, "default")
+                ]),
+                vue.renderSlot(_ctx.$slots, "footer")
+              ],
+              6
+              /* CLASS, STYLE */
+            )
+          ],
+          6
+          /* CLASS, STYLE */
+        )) : vue.createCommentVNode("v-if", true)
       ]),
       _: 3
+      /* FORWARDED */
     });
   }
   const Modal = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render]]);
@@ -23048,48 +24866,60 @@ var __async = (__this, __arguments, generator) => {
       width: { default: 470 }
     },
     emits: ["confirm", "cancel"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createBlock(Modal, {
           "show-close": false,
           "show-maximize": false,
           show: true,
           "append-to": "body",
-          width: _ctx.width
+          width: __props.width
         }, {
           default: vue.withCtx(() => [
             vue.createElementVNode("div", _hoisted_1$2, [
+              vue.createCommentVNode(" @slot Content that will be placed inside the modal body "),
               vue.renderSlot(_ctx.$slots, "default")
             ]),
             vue.createElementVNode("div", _hoisted_2$2, [
-              _ctx.confirmText ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1v), {
+              __props.confirmText ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1v), {
                 key: 0,
                 type: "danger",
                 onClick: _cache[0] || (_cache[0] = ($event) => emit("confirm"))
               }, {
                 default: vue.withCtx(() => [
-                  vue.createTextVNode(vue.toDisplayString(_ctx.confirmText), 1)
+                  vue.createTextVNode(
+                    vue.toDisplayString(__props.confirmText),
+                    1
+                    /* TEXT */
+                  )
                 ]),
                 _: 1
-              })) : vue.createCommentVNode("", true),
-              _ctx.cancelText ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1v), {
+                /* STABLE */
+              })) : vue.createCommentVNode("v-if", true),
+              __props.cancelText ? (vue.openBlock(), vue.createBlock(vue.unref(_sfc_main$1v), {
                 key: 1,
                 type: "gray",
                 onClick: _cache[1] || (_cache[1] = ($event) => emit("cancel"))
               }, {
                 default: vue.withCtx(() => [
-                  vue.createTextVNode(vue.toDisplayString(_ctx.cancelText), 1)
+                  vue.createTextVNode(
+                    vue.toDisplayString(__props.cancelText),
+                    1
+                    /* TEXT */
+                  )
                 ]),
                 _: 1
-              })) : vue.createCommentVNode("", true)
+                /* STABLE */
+              })) : vue.createCommentVNode("v-if", true)
             ])
           ]),
           _: 3
+          /* FORWARDED */
         }, 8, ["width"]);
       };
     }
   });
-  const ModalConfirm_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$1 = { class: "znpb-modal-content-save-button" };
   const _hoisted_2$1 = { class: "znpb-modal-content-wrapper znpb-fancy-scrollbar" };
   const _hoisted_3$1 = { class: "znpb-modal-content-save-button__button" };
@@ -23099,8 +24929,9 @@ var __async = (__this, __arguments, generator) => {
       disabled: { type: Boolean, default: false }
     },
     emits: ["save-modal"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const buttonType = vue.computed(() => {
         return props.disabled ? "gray" : "secondary";
       });
@@ -23120,16 +24951,20 @@ var __async = (__this, __arguments, generator) => {
               onClick: onButtonClick
             }, {
               default: vue.withCtx(() => [
-                vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("Save", "zionbuilder")), 1)
+                vue.createTextVNode(
+                  vue.toDisplayString(i18n__namespace.__("Save", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["type"])
           ])
         ]);
       };
     }
   });
-  const ModalTemplateSaveButton_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1 = { class: "znpb-icon-pack-modal__icons" };
   const _hoisted_2 = {
     key: 0,
@@ -23156,31 +24991,48 @@ var __async = (__this, __arguments, generator) => {
       }
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [
-          _ctx.iconList.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.iconList, (icon, i) => {
-              return vue.openBlock(), vue.createElementBlock("div", {
-                key: i,
-                class: "znpb-icon-pack-modal-icon"
-              }, [
-                vue.createElementVNode("div", {
-                  class: vue.normalizeClass(["znpb-modal-icon-wrapper", { "znpb-modal-icon-wrapper--active": _ctx.activeIcon === icon.name && _ctx.activeFamily === _ctx.family }]),
-                  onClick: ($event) => _ctx.$emit("icon-selected", icon),
-                  onDblclick: ($event) => _ctx.$emit("update:modelValue", icon)
+          __props.iconList.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2, [
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(__props.iconList, (icon, i) => {
+                return vue.openBlock(), vue.createElementBlock("div", {
+                  key: i,
+                  class: "znpb-icon-pack-modal-icon"
                 }, [
-                  vue.createElementVNode("span", {
-                    "data-znpbiconfam": _ctx.family,
-                    "data-znpbicon": unicode(icon.unicode)
-                  }, null, 8, _hoisted_4)
-                ], 42, _hoisted_3),
-                vue.createElementVNode("h4", _hoisted_5, vue.toDisplayString(icon.name), 1)
-              ]);
-            }), 128))
-          ])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_6, vue.toDisplayString(i18n__namespace.__("No icons were found in package", "zionbuilder")) + " " + vue.toDisplayString(_ctx.family), 1))
+                  vue.createElementVNode("div", {
+                    class: vue.normalizeClass(["znpb-modal-icon-wrapper", { "znpb-modal-icon-wrapper--active": __props.activeIcon === icon.name && __props.activeFamily === __props.family }]),
+                    onClick: ($event) => _ctx.$emit("icon-selected", icon),
+                    onDblclick: ($event) => _ctx.$emit("update:modelValue", icon)
+                  }, [
+                    vue.createElementVNode("span", {
+                      "data-znpbiconfam": __props.family,
+                      "data-znpbicon": unicode(icon.unicode)
+                    }, null, 8, _hoisted_4)
+                  ], 42, _hoisted_3),
+                  vue.createElementVNode(
+                    "h4",
+                    _hoisted_5,
+                    vue.toDisplayString(icon.name),
+                    1
+                    /* TEXT */
+                  )
+                ]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ])) : (vue.openBlock(), vue.createElementBlock(
+            "span",
+            _hoisted_6,
+            vue.toDisplayString(i18n__namespace.__("No icons were found in package", "zionbuilder")) + " " + vue.toDisplayString(__props.family),
+            1
+            /* TEXT */
+          ))
         ]);
       };
     }
   }));
-  const IconPackGrid_vue_vue_type_style_index_0_lang = "";
   const components = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
     Accordion: _sfc_main$1y,
@@ -23279,4 +25131,4 @@ var __async = (__this, __arguments, generator) => {
     installCommonAPP,
     store
   });
-})(zb.pinia, zb.vue, wp.i18n);
+})(zb.vue, zb.pinia, wp.i18n);

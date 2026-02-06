@@ -1,9 +1,8 @@
 (function(vue) {
   "use strict";
-  var isVue2 = false;
   /*!
-   * pinia v2.1.6
-   * (c) 2023 Eduardo San Martin Morote
+   * pinia v3.0.3
+   * (c) 2025 Eduardo San Martin Morote
    * @license MIT
    */
   let activePinia;
@@ -22,7 +21,6 @@
     MutationType2["patchObject"] = "patch object";
     MutationType2["patchFunction"] = "patch function";
   })(MutationType || (MutationType = {}));
-  const IS_CLIENT = typeof window !== "undefined";
   function createPinia() {
     const scope = vue.effectScope(true);
     const state = scope.run(() => vue.ref({}));
@@ -31,16 +29,14 @@
     const pinia2 = vue.markRaw({
       install(app) {
         setActivePinia(pinia2);
-        {
-          pinia2._a = app;
-          app.provide(piniaSymbol, pinia2);
-          app.config.globalProperties.$pinia = pinia2;
-          toBeInstalled.forEach((plugin) => _p.push(plugin));
-          toBeInstalled = [];
-        }
+        pinia2._a = app;
+        app.provide(piniaSymbol, pinia2);
+        app.config.globalProperties.$pinia = pinia2;
+        toBeInstalled.forEach((plugin) => _p.push(plugin));
+        toBeInstalled = [];
       },
       use(plugin) {
-        if (!this._a && !isVue2) {
+        if (!this._a) {
           toBeInstalled.push(plugin);
         } else {
           _p.push(plugin);
@@ -56,6 +52,13 @@
       state
     });
     return pinia2;
+  }
+  function disposePinia(pinia2) {
+    pinia2._e.stop();
+    pinia2._s.clear();
+    pinia2._p.splice(0);
+    pinia2.state.value = {};
+    pinia2._a = null;
   }
   function acceptHMRUpdate(initialUseStore, hot) {
     {
@@ -85,11 +88,12 @@
     });
   }
   const fallbackRunWithContext = (fn) => fn();
+  const ACTION_MARKER = Symbol();
+  const ACTION_NAME = Symbol();
   function mergeReactiveObjects(target, patchToApply) {
     if (target instanceof Map && patchToApply instanceof Map) {
       patchToApply.forEach((value, key) => target.set(key, value));
-    }
-    if (target instanceof Set && patchToApply instanceof Set) {
+    } else if (target instanceof Set && patchToApply instanceof Set) {
       patchToApply.forEach(target.add, target);
     }
     for (const key in patchToApply) {
@@ -113,7 +117,7 @@
     return Object.defineProperty(obj, skipHydrateSymbol, {});
   }
   function shouldHydrate(obj) {
-    return !isPlainObject(obj) || !obj.hasOwnProperty(skipHydrateSymbol);
+    return !isPlainObject(obj) || !Object.prototype.hasOwnProperty.call(obj, skipHydrateSymbol);
   }
   const { assign } = Object;
   function isComputed(o) {
@@ -125,9 +129,7 @@
     let store;
     function setup() {
       if (!initialState && true) {
-        {
-          pinia2.state.value[id] = state ? state() : {};
-        }
+        pinia2.state.value[id] = state ? state() : {};
       }
       const localState = vue.toRefs(pinia2.state.value[id]);
       return assign(localState, actions, Object.keys(getters || {}).reduce((computedGetters, name) => {
@@ -145,10 +147,7 @@
   function createSetupStore($id, setup, options = {}, pinia2, hot, isOptionsStore) {
     let scope;
     const optionsForPlugin = assign({ actions: {} }, options);
-    const $subscribeOptions = {
-      deep: true
-      // flush: 'post',
-    };
+    const $subscribeOptions = { deep: true };
     let isListening;
     let isSyncListening;
     let subscriptions = [];
@@ -156,9 +155,7 @@
     let debuggerEvents;
     const initialState = pinia2.state.value[$id];
     if (!isOptionsStore && !initialState && true) {
-      {
-        pinia2.state.value[$id] = {};
-      }
+      pinia2.state.value[$id] = {};
     }
     vue.ref({});
     let activeListener;
@@ -206,8 +203,12 @@
       actionSubscriptions = [];
       pinia2._s.delete($id);
     }
-    function wrapAction(name, action) {
-      return function() {
+    const action = (fn, name = "") => {
+      if (ACTION_MARKER in fn) {
+        fn[ACTION_NAME] = name;
+        return fn;
+      }
+      const wrappedAction = function() {
         setActivePinia(pinia2);
         const args = Array.from(arguments);
         const afterCallbackList = [];
@@ -220,14 +221,14 @@
         }
         triggerSubscriptions(actionSubscriptions, {
           args,
-          name,
+          name: wrappedAction[ACTION_NAME],
           store,
           after,
           onError
         });
         let ret;
         try {
-          ret = action.apply(this && this.$id === $id ? this : store, args);
+          ret = fn.apply(this && this.$id === $id ? this : store, args);
         } catch (error) {
           triggerSubscriptions(onErrorCallbackList, error);
           throw error;
@@ -244,7 +245,10 @@
         triggerSubscriptions(afterCallbackList, ret);
         return ret;
       };
-    }
+      wrappedAction[ACTION_MARKER] = true;
+      wrappedAction[ACTION_NAME] = name;
+      return wrappedAction;
+    };
     const partialStore = {
       _p: pinia2,
       // _s: scope,
@@ -270,10 +274,7 @@
     const store = vue.reactive(partialStore);
     pinia2._s.set($id, store);
     const runWithContext = pinia2._a && pinia2._a.runWithContext || fallbackRunWithContext;
-    const setupStore = pinia2._e.run(() => {
-      scope = vue.effectScope();
-      return runWithContext(() => scope.run(setup));
-    });
+    const setupStore = runWithContext(() => pinia2._e.run(() => (scope = vue.effectScope()).run(() => setup({ action }))));
     for (const key in setupStore) {
       const prop = setupStore[key];
       if (vue.isRef(prop) && !isComputed(prop) || vue.isReactive(prop)) {
@@ -285,23 +286,16 @@
               mergeReactiveObjects(prop, initialState[key]);
             }
           }
-          {
-            pinia2.state.value[$id][key] = prop;
-          }
+          pinia2.state.value[$id][key] = prop;
         }
       } else if (typeof prop === "function") {
-        const actionValue = wrapAction(key, prop);
-        {
-          setupStore[key] = actionValue;
-        }
+        const actionValue = action(prop, key);
+        setupStore[key] = actionValue;
         optionsForPlugin.actions[key] = prop;
-      } else
-        ;
+      } else ;
     }
-    {
-      assign(store, setupStore);
-      assign(vue.toRaw(store), setupStore);
-    }
+    assign(store, setupStore);
+    assign(vue.toRaw(store), setupStore);
     Object.defineProperty(store, "$state", {
       get: () => pinia2.state.value[$id],
       set: (state) => {
@@ -327,17 +321,12 @@
     isSyncListening = true;
     return store;
   }
-  function defineStore(idOrOptions, setup, setupOptions) {
-    let id;
+  /*! #__NO_SIDE_EFFECTS__ */
+  // @__NO_SIDE_EFFECTS__
+  function defineStore(id, setup, setupOptions) {
     let options;
     const isSetupStore = typeof setup === "function";
-    if (typeof idOrOptions === "string") {
-      id = idOrOptions;
-      options = isSetupStore ? setupOptions : setup;
-    } else {
-      options = idOrOptions;
-      id = idOrOptions.id;
-    }
+    options = isSetupStore ? setupOptions : setup;
     function useStore(pinia2, hot) {
       const hasContext = vue.hasInjectionContext();
       pinia2 = // in test mode, ignore the argument provided as we can always retrieve a
@@ -381,7 +370,10 @@
       reduced[key] = function() {
         const store = useStore(this.$pinia);
         const storeKey = keysOrMapper[key];
-        return typeof storeKey === "function" ? storeKey.call(this, store) : store[storeKey];
+        return typeof storeKey === "function" ? storeKey.call(this, store) : (
+          // @ts-expect-error: FIXME: should work?
+          store[storeKey]
+        );
       };
       return reduced;
     }, {});
@@ -424,58 +416,34 @@
     }, {});
   }
   function storeToRefs(store) {
-    {
-      store = vue.toRaw(store);
-      const refs = {};
-      for (const key in store) {
-        const value = store[key];
-        if (vue.isRef(value) || vue.isReactive(value)) {
-          refs[key] = // ---
-          vue.toRef(store, key);
-        }
+    const rawStore = vue.toRaw(store);
+    const refs = {};
+    for (const key in rawStore) {
+      const value = rawStore[key];
+      if (value.effect) {
+        refs[key] = // ...
+        vue.computed({
+          get: () => store[key],
+          set(value2) {
+            store[key] = value2;
+          }
+        });
+      } else if (vue.isRef(value) || vue.isReactive(value)) {
+        refs[key] = // ---
+        vue.toRef(store, key);
       }
-      return refs;
     }
+    return refs;
   }
-  const PiniaVuePlugin = function(_Vue) {
-    _Vue.mixin({
-      beforeCreate() {
-        const options = this.$options;
-        if (options.pinia) {
-          const pinia2 = options.pinia;
-          if (!this._provided) {
-            const provideCache = {};
-            Object.defineProperty(this, "_provided", {
-              get: () => provideCache,
-              set: (v) => Object.assign(provideCache, v)
-            });
-          }
-          this._provided[piniaSymbol] = pinia2;
-          if (!this.$pinia) {
-            this.$pinia = pinia2;
-          }
-          pinia2._a = this;
-          if (IS_CLIENT) {
-            setActivePinia(pinia2);
-          }
-        } else if (!this.$pinia && options.parent && options.parent.$pinia) {
-          this.$pinia = options.parent.$pinia;
-        }
-      },
-      destroyed() {
-        delete this._pStores;
-      }
-    });
-  };
   const pinia = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
     get MutationType() {
       return MutationType;
     },
-    PiniaVuePlugin,
     acceptHMRUpdate,
     createPinia,
     defineStore,
+    disposePinia,
     getActivePinia,
     mapActions,
     mapGetters,
@@ -484,6 +452,7 @@
     mapWritableState,
     setActivePinia,
     setMapStoreSuffix,
+    shouldHydrate,
     skipHydrate,
     storeToRefs
   }, Symbol.toStringTag, { value: "Module" }));

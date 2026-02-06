@@ -98,11 +98,11 @@ class Soundcloud extends Element {
 				'title_width' => 50,
 				'options'     => [
 					[
-						'name' => esc_html__( 'Simple' ),
+						'name' => esc_html__( 'Simple', 'zionbuilder' ),
 						'id'   => false,
 					],
 					[
-						'name' => esc_html__( 'Artistic graphic' ),
+						'name' => esc_html__( 'Artistic graphic', 'zionbuilder' ),
 						'id'   => true,
 					],
 				],

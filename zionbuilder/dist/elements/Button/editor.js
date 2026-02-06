@@ -32,21 +32,28 @@
         const _component_ElementIcon = vue.resolveComponent("ElementIcon");
         return vue.openBlock(), vue.createElementBlock("div", null, [
           vue.renderSlot(_ctx.$slots, "start"),
-          (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(getTag.value), vue.mergeProps(_ctx.api.getAttributesForTag("button_styles", getButtonAttributes.value), {
+          (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(getTag.value), vue.mergeProps(__props.api.getAttributesForTag("button_styles", getButtonAttributes.value), {
             ref: "button",
-            class: ["zb-el-button", [_ctx.api.getStyleClasses("button_styles"), { "zb-el-button--has-icon": _ctx.options.icon }]]
+            class: ["zb-el-button", [__props.api.getStyleClasses("button_styles"), { "zb-el-button--has-icon": __props.options.icon }]]
           }), {
             default: vue.withCtx(() => [
-              _ctx.options.icon ? (vue.openBlock(), vue.createBlock(_component_ElementIcon, vue.mergeProps({
+              __props.options.icon ? (vue.openBlock(), vue.createBlock(_component_ElementIcon, vue.mergeProps({
                 key: 0,
                 class: "zb-el-button__icon"
-              }, _ctx.api.getAttributesForTag("icon_styles"), {
+              }, __props.api.getAttributesForTag("icon_styles"), {
                 "icon-config": iconConfig.value,
-                class: _ctx.api.getStyleClasses("icon_styles")
-              }), null, 16, ["icon-config", "class"])) : vue.createCommentVNode("", true),
-              _ctx.options.button_text ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1, vue.toDisplayString(_ctx.options.button_text), 1)) : vue.createCommentVNode("", true)
+                class: __props.api.getStyleClasses("icon_styles")
+              }), null, 16, ["icon-config", "class"])) : vue.createCommentVNode("v-if", true),
+              __props.options.button_text ? (vue.openBlock(), vue.createElementBlock(
+                "span",
+                _hoisted_1,
+                vue.toDisplayString(__props.options.button_text),
+                1
+                /* TEXT */
+              )) : vue.createCommentVNode("v-if", true)
             ]),
             _: 1
+            /* STABLE */
           }, 16, ["class"])),
           vue.renderSlot(_ctx.$slots, "end")
         ]);

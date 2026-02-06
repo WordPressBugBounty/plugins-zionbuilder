@@ -94,7 +94,6 @@
 }
 
 /* animations */
-
 @keyframes Rotate {
   from {
     transform: rotate(0deg);
@@ -103,7 +102,6 @@
     transform: rotate(360deg);
   }
 }
-
 .znpb-fancy-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
@@ -113,21 +111,18 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 .znpb-fancy-scrollbar .znpb-fancy-scrollbar::-webkit-scrollbar-thumb {
   display: block;
   background: var(--zb-surface-lighter-color);
 }
 
 /* Track */
-
 .znpb-fancy-scrollbar::-webkit-scrollbar-track {
   display: block;
   background: transparent;
 }
 
 /* Handle */
-
 .znpb-fancy-scrollbar::-webkit-scrollbar-thumb {
   background: transparent;
 }
@@ -506,7 +501,7 @@ body .zion-input__append {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
-body .zion-input__prepend, body .zion-input__append {
+body .zion-input__prepend, body .zion-input__append:not(body .zion-input__append:empty) {
   display: flex;
   align-items: center;
   height: 100%;
@@ -631,7 +626,7 @@ body .zion-input--size-big input {
   background: #e35364;
 }
 .znpb-button--danger:hover {
-  background: #e14658;
+  background: rgb(224.858, 69.842, 88.1425);
 }
 .znpb-button--gray {
   color: var(--zb-surface-text-color);
@@ -1463,9 +1458,6 @@ body .hg-popper-tooltip {
   display: flex;
   align-items: center;
   width: 100%;
-  /* Special styling for WebKit/Blink */
-  /* for Firefox */
-  /* All for IE */
 }
 .znpb-input-range input[type=range]:focus {
   padding: 0;
@@ -1522,6 +1514,9 @@ body .hg-popper-tooltip {
 .znpb-input-range input[type=range]:focus {
   outline: none;
 }
+.znpb-input-range {
+  /* Special styling for WebKit/Blink */
+}
 .znpb-input-range input[type=range]::-webkit-slider-thumb {
   z-index: 1;
   width: 18px;
@@ -1534,6 +1529,9 @@ body .hg-popper-tooltip {
 .znpb-input-range input[type=range]::-webkit-slider-thumb:active {
   transform: scale(1.1);
 }
+.znpb-input-range {
+  /* for Firefox */
+}
 .znpb-input-range input[type=range]::-moz-range-thumb {
   width: 18px;
   height: 18px;
@@ -1542,6 +1540,9 @@ body .hg-popper-tooltip {
   transform: translate(0px, 0px);
   transition: all 0.2s ease;
   cursor: pointer;
+}
+.znpb-input-range {
+  /* All for IE */
 }
 .znpb-input-range input[type=range]::-ms-thumb {
   width: 18px;
@@ -2150,7 +2151,6 @@ body .hg-popper-tooltip {
   display: flex;
   align-items: center;
   padding: 20px;
-  cursor: pointer;
 }
 .znpb-options-breadcrumbs .znpb-back-icon-breadcrumbs {
   width: 22px;
@@ -2177,12 +2177,14 @@ body .hg-popper-tooltip {
   font-size: 13px;
   font-weight: 500;
   transition: color 0.15s ease-out;
+  cursor: pointer;
 }
 .znpb-options-breadcrumbs-path:hover:not(.znpb-options-breadcrumbs-path--current) {
   color: var(--zb-surface-text-color);
 }
 .znpb-options-breadcrumbs-path--current {
   color: var(--zb-surface-text-hover-color);
+  cursor: text;
 }
 .znpb-options-breadcrumbs-path__home:hover {
   color: var(--zb-surface-text-hover-color);
@@ -2205,7 +2207,7 @@ body .hg-popper-tooltip {
 .znpb-options-breadcrumbs-path--back:hover .znpb-editor-icon-wrapper {
   color: var(--zb-surface-icon-color);
 }
-.znpb-options-breadcrumbs-path .znpb-editor-icon-wrapper {
+.znpb-options-breadcrumbs-path-icon {
   width: 10px;
   margin-right: 5px;
   margin-left: 5px;

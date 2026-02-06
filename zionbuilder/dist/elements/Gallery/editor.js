@@ -32,20 +32,38 @@
         return {};
       }
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", vue.normalizeProps(vue.guardReactiveProps(getWrapperAttributes.value)), [
-          vue.renderSlot(_ctx.$slots, "start"),
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(getImages.value, (image, index) => {
-            return vue.openBlock(), vue.createElementBlock("div", vue.mergeProps({
-              key: index,
-              class: ["zb-el-gallery-item", _ctx.api.getStyleClasses("image_wrapper_styles")]
-            }, _ctx.api.getAttributesForTag("image_wrapper_styles", getImageWrapperAttrs(image))), [
-              vue.createElementVNode("img", {
-                src: image.image
-              }, null, 8, _hoisted_1)
-            ], 16);
-          }), 128)),
-          vue.renderSlot(_ctx.$slots, "end")
-        ], 16);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          vue.normalizeProps(vue.guardReactiveProps(getWrapperAttributes.value)),
+          [
+            vue.renderSlot(_ctx.$slots, "start"),
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(getImages.value, (image, index) => {
+                return vue.openBlock(), vue.createElementBlock(
+                  "div",
+                  vue.mergeProps({
+                    key: index,
+                    class: ["zb-el-gallery-item", __props.api.getStyleClasses("image_wrapper_styles")]
+                  }, { ref_for: true }, __props.api.getAttributesForTag("image_wrapper_styles", getImageWrapperAttrs(image))),
+                  [
+                    vue.createElementVNode("img", {
+                      src: image.image
+                    }, null, 8, _hoisted_1)
+                  ],
+                  16
+                  /* FULL_PROPS */
+                );
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            )),
+            vue.renderSlot(_ctx.$slots, "end")
+          ],
+          16
+          /* FULL_PROPS */
+        );
       };
     }
   });

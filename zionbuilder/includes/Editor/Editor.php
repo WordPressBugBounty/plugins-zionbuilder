@@ -13,9 +13,10 @@ use ZionBuilder\User;
 use ZionBuilder\Nonces;
 use ZionBuilder\CommonJS;
 use ZionBuilder\Scripts;
+use ZionBuilder\ThemeStyles;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -24,7 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Will handle the editor part of the page builder. Will hook into 'admin_action_zion_builder_active' action
  */
-class Editor {
+class Editor
+{
 	/**
 	 * Holds a reference to the current post id
 	 *
@@ -42,20 +44,22 @@ class Editor {
 	 *
 	 * Will hook into 'admin_action_zion_builder_active' action to show the PB editor
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		// load preview
 		$this->preview = new Preview();
-		add_action( 'admin_action_zion_builder_active', [ $this, 'init' ] );
+		add_action('admin_action_zion_builder_active', [$this, 'init']);
 	}
 
-	public function set_builder_theme( $classes ) {
-		$builder_theme = Settings::get_value_from_path( 'appearance.builder_theme', 'light' );
+	public function set_builder_theme($classes)
+	{
+		$builder_theme = Settings::get_value_from_path('appearance.builder_theme', 'light');
 
-		$classes = explode( ' ', $classes );
+		$classes = explode(' ', $classes);
 
-		$classes[] = sprintf( 'znpb znpb-theme-%s', $builder_theme );
+		$classes[] = sprintf('znpb znpb-theme-%s', $builder_theme);
 
-		return implode( ' ', $classes );
+		return implode(' ', $classes);
 	}
 
 	/**
@@ -65,62 +69,63 @@ class Editor {
 	 *
 	 * @return void
 	 */
-	public function init() {
+	public function init()
+	{
 		// Get the post id
-		$post_id = isset( $_GET['post_id'] ) ? absint( $_GET['post_id'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification
+		$post_id = isset($_GET['post_id']) ? absint($_GET['post_id']) : false; // phpcs:ignore WordPress.Security.NonceVerification
 
 		// Don't proceed if the post id is missing
-		if ( ! $post_id ) {
+		if (! $post_id) {
 			return;
 		}
 
 		// Check permissions
-		if ( ! Permissions::can_edit_post( $post_id ) ) {
+		if (! Permissions::can_edit_post($post_id)) {
 			return;
 		}
 
 		// Set active post instance and global post data
-		Plugin::$instance->post_manager->switch_to_post( $post_id );
+		Plugin::$instance->post_manager->switch_to_post($post_id);
 		$this->post_id = $post_id;
 
 		// Activate the builder for the post
-		$post_instance = Plugin::$instance->post_manager->get_post_instance( $post_id );
+		$post_instance = Plugin::$instance->post_manager->get_post_instance($post_id);
 
-		if ( $post_instance ) {
-			$post_instance->set_builder_status( true );
+		if ($post_instance) {
+			$post_instance->set_builder_status(true);
 		}
 
 		// Set post lock if not locked already
-		if ( ! $this->get_locked_user( $this->post_id ) ) {
-			wp_set_post_lock( $this->post_id );
+		if (! $this->get_locked_user($this->post_id)) {
+			wp_set_post_lock($this->post_id);
 		}
 
-		add_filter( 'heartbeat_settings', [ $this, 'set_heartbeat_settings' ] );
+		add_filter('heartbeat_settings', [$this, 'set_heartbeat_settings']);
 
 		// Remove admin bar
-		add_filter( 'show_admin_bar', '__return_false' );
-		add_filter( 'zionbulder/editor/body_class', [ $this, 'set_builder_theme' ] );
+		add_filter('show_admin_bar', '__return_false');
+		add_filter('zionbuilder/editor/body_class', [$this, 'set_builder_theme']);
 
 		// Remove title tag as it is manually added by the template
-		remove_theme_support( 'title-tag' );
+		remove_theme_support('title-tag');
 
 		// remove all actions
 		$this->remove_wp_actions();
 
 		// Add head actions again
-		add_action( 'wp_head', '_wp_render_title_tag', 1 );
-		add_action( 'wp_head', 'wp_enqueue_scripts', 1 );
+		add_action('wp_head', '_wp_render_title_tag', 1);
+		add_action('wp_head', 'wp_enqueue_scripts', 1);
 		// @phpstan-ignore-next-line
-		add_action( 'wp_head', 'wp_print_styles', 8 );
+		add_action('wp_head', 'wp_print_styles', 8);
 		// @phpstan-ignore-next-line
-		add_action( 'wp_head', 'wp_print_head_scripts', 9 );
-		add_action( 'wp_head', 'wp_site_icon', 99 );
+		add_action('wp_head', 'wp_print_head_scripts', 9);
+		add_action('wp_head', 'wp_site_icon', 99);
 
 		// Add our scripts last so we can get a list of other scripts
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
 
 		// Add footer actions
-		add_action( 'wp_footer', 'wp_print_footer_scripts', 20 );
+		add_action('wp_footer', 'wp_print_footer_scripts', 20);
 
 		$this->print_editor_template();
 
@@ -134,14 +139,15 @@ class Editor {
 	 *
 	 * @return boolean|\WP_User
 	 */
-	public function get_locked_user( $post_id ) {
-		$locked_user = wp_check_post_lock( $post_id );
+	public function get_locked_user($post_id)
+	{
+		$locked_user = wp_check_post_lock($post_id);
 
-		if ( ! $locked_user ) {
+		if (! $locked_user) {
 			return false;
 		}
 
-		return get_user_by( 'ID', $locked_user );
+		return get_user_by('ID', $locked_user);
 	}
 
 	/**
@@ -151,7 +157,8 @@ class Editor {
 	 *
 	 * @return array<string, mixed> Modified settings for heartbeat
 	 */
-	public function set_heartbeat_settings( $settings = [] ) {
+	public function set_heartbeat_settings($settings = [])
+	{
 		$settings['interval'] = 15;
 		return $settings;
 	}
@@ -163,12 +170,13 @@ class Editor {
 	 *
 	 * @return void
 	 */
-	public function remove_wp_actions() {
-		remove_all_actions( 'wp_head' );
-		remove_all_actions( 'wp_print_styles' );
-		remove_all_actions( 'wp_print_head_scripts' );
-		remove_all_actions( 'wp_footer' );
-		remove_all_actions( 'wp_enqueue_scripts' );
+	public function remove_wp_actions()
+	{
+		remove_all_actions('wp_head');
+		remove_all_actions('wp_print_styles');
+		remove_all_actions('wp_print_head_scripts');
+		remove_all_actions('wp_footer');
+		remove_all_actions('wp_enqueue_scripts');
 	}
 
 	/**
@@ -178,26 +186,27 @@ class Editor {
 	 *
 	 * @return void
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 		global $wp_styles, $wp_scripts;
 		// Reset global variables
 		$wp_styles  = new \WP_Styles(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 		$wp_scripts = new \WP_Scripts(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 
-		do_action( 'zionbuilder/editor/before_scripts' );
+		do_action('zionbuilder/editor/before_scripts');
 
 		// Custom HTML widgets
-		$wp_scripts->add( 'custom-html-widgets', admin_url( 'js/widgets/custom-html-widgets.js' ), [ 'jquery', 'backbone', 'wp-util', 'jquery-ui-core', 'wp-a11y' ] );
+		$wp_scripts->add('custom-html-widgets', admin_url('js/widgets/custom-html-widgets.js'), ['jquery', 'backbone', 'wp-util', 'jquery-ui-core', 'wp-a11y']);
 
-		wp_enqueue_style( 'widgets' );
-		wp_enqueue_style( 'media-views' );
+		wp_enqueue_style('widgets');
+		wp_enqueue_style('media-views');
 
-		do_action( 'admin_print_scripts-widgets.php' ); // phpcs:ignore WordPress.NamingConventions.ValidHookName
-		do_action( 'admin_footer-widgets.php' ); // phpcs:ignore WordPress.NamingConventions.ValidHookName
+		do_action('admin_print_scripts-widgets.php'); // phpcs:ignore WordPress.NamingConventions.ValidHookName
+		do_action('admin_footer-widgets.php'); // phpcs:ignore WordPress.NamingConventions.ValidHookName
 
 		// Load Scripts
 		// Load animation css file
-		wp_enqueue_style( 'zion-frontend-animations', plugins_url( 'zionbuilder/assets/vendors/css/animate.css' ), [], Plugin::instance()->get_version() );
+		wp_enqueue_style('zion-frontend-animations', Utils::get_file_url('assets/vendors/css/animate.css'), [], Plugin::instance()->get_version());
 
 		// Enqueue common js and css
 		Scripts::enqueue_common();
@@ -211,7 +220,7 @@ class Editor {
 			Plugin::instance()->get_version()
 		);
 
-		wp_add_inline_style( 'zion-editor-style', Plugin::instance()->icons->get_icons_css() );
+		wp_add_inline_style('zion-editor-style', Plugin::instance()->icons->get_icons_css());
 
 		Plugin::instance()->scripts->enqueue_script(
 			'zb-editor',
@@ -226,10 +235,10 @@ class Editor {
 			true
 		);
 
-		wp_set_script_translations( 'zb-editor', 'zionbuilder' );
-		wp_localize_script( 'zb-editor', 'ZnPbInitialData', $this->get_editor_initial_data() );
+		wp_set_script_translations('zb-editor', 'zionbuilder');
+		wp_localize_script('zb-editor', 'ZnPbInitialData', $this->get_editor_initial_data());
 
-		do_action( 'zionbuilder/editor/after_scripts' );
+		do_action('zionbuilder/editor/after_scripts');
 	}
 
 	/**
@@ -239,28 +248,29 @@ class Editor {
 	 *
 	 * @return array<string, mixed> The initial data required by the editor interface
 	 */
-	private function get_editor_initial_data() {
+	private function get_editor_initial_data()
+	{
 		$locked_user_name = null;
 
 		$post_instance = Plugin::$instance->post_manager->get_active_post_instance();
 
-		if ( ! $post_instance ) {
+		if (! $post_instance) {
 			return [];
 		}
 
-		$locked_user_data = $this->get_locked_user( $this->post_id );
-		if ( $locked_user_data ) {
+		$locked_user_data = $this->get_locked_user($this->post_id);
+		if ($locked_user_data) {
 			$locked_user_name = [
 				/* translators: %s: The username who is locked from editing */
-				'message' => sprintf( __( 'Post is locked by %s', 'zionbuilder' ), $locked_user_data->display_name ),
-				'avatar'  => get_avatar_url( $locked_user_data->ID ),
+				'message' => sprintf(__('Post is locked by %s', 'zionbuilder'), $locked_user_data->display_name),
+				'avatar'  => get_avatar_url($locked_user_data->ID),
 			];
 		}
 
-		$autosave_instance = Plugin::$instance->post_manager->get_post_or_autosave_instance( $post_instance->get_post_id() );
+		$autosave_instance = Plugin::$instance->post_manager->get_post_or_autosave_instance($post_instance->get_post_id());
 
 		// Prepare content data
-		Plugin::instance()->frontend->prepare_content_for_post_id( $this->post_id );
+		Plugin::instance()->frontend->prepare_content_for_post_id($this->post_id);
 
 		return apply_filters(
 			'zionbuilder/editor/initial_data',
@@ -270,12 +280,12 @@ class Editor {
 					'values' => $autosave_instance->get_page_settings_values(),
 				],
 				'urls'               => [
-					'assets_url'            => Utils::get_file_url( 'assets' ),
+					'assets_url'            => Utils::get_file_url('assets'),
 					'logo'                  => Whitelabel::get_logo_url(),
 					'loader'                => Whitelabel::get_loader_url(),
 					'getting_started_video' => Whitelabel::get_getting_started_video(),
-					'edit_page'             => get_edit_post_link( $this->post_id, '' ),
-					'zion_admin'            => admin_url( sprintf( 'admin.php?page=%s', Whitelabel::get_id() ) ),
+					'edit_page'             => get_edit_post_link($this->post_id, ''),
+					'zion_admin'            => admin_url(sprintf('admin.php?page=%s', Whitelabel::get_id())),
 					'wp_admin'              => admin_url(),
 					'preview_frame_url'     => $post_instance->get_preview_frame_url(),
 					'preview_url'           => $post_instance->get_preview_url(),
@@ -284,13 +294,12 @@ class Editor {
 					'documentation_url'     => 'https://zionbuilder.io/help-center/',
 					'free_changelog'        => 'https://zionbuilder.io/changelog-free-version/',
 					'pro_changelog'         => 'https://zionbuilder.io/changelog-pro-version/',
-					'ajax_url'              => admin_url( 'admin-ajax.php', 'relative' ),
+					'ajax_url'              => admin_url('admin-ajax.php', 'relative'),
 					'plugin_root'           => Utils::get_file_url(),
 				],
 				'masks'              => Masks::get_shapes(),
-				'builder_settings'   => [],
 				'page_id'            => $this->post_id,
-				'page_data'          => get_post( $this->post_id ),
+				'page_data'          => get_post($this->post_id),
 				'autosaveInterval'   => AUTOSAVE_INTERVAL,
 
 				// User data
@@ -299,12 +308,6 @@ class Editor {
 				// Css classes
 				'css_classes'        => CSSClasses::get_classes(),
 				'css_static_classes' => CSSClasses::get_static_classes(),
-
-				// Plugin info
-				'plugin_info'        => [
-					'is_pro_active'    => Utils::is_pro_active(),
-					'is_pro_installed' => Utils::is_pro_installed(),
-				],
 
 				// Templates
 				'template_types'     => Plugin::$instance->templates->get_template_types(),
@@ -316,6 +319,9 @@ class Editor {
 				// User data
 				'user_data'          => User::get_user_data(),
 				'user_permissions'   => Permissions::get_user_permissions(),
+
+				// Theme styles
+				'theme_styles' => ThemeStyles::get_styles(),
 			]
 		);
 	}
@@ -331,7 +337,8 @@ class Editor {
 	 *
 	 * @return void
 	 */
-	private function print_editor_template() {
-		include Utils::get_file_path( 'includes/Editor/partials/editor-template.php' );
+	private function print_editor_template()
+	{
+		include Utils::get_file_path('includes/Editor/partials/editor-template.php');
 	}
 }

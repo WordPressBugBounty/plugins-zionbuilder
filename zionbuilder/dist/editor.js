@@ -30,10 +30,7 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -74,8 +71,7 @@ var __async = (__this, __arguments, generator) => {
   }
   const Vue__namespace = /* @__PURE__ */ _interopNamespaceDefault(Vue);
   const i18n__namespace = /* @__PURE__ */ _interopNamespaceDefault(i18n);
-  const index = "";
-  const _sfc_main$1E = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1H = /* @__PURE__ */ Vue.defineComponent({
     __name: "Label",
     props: {
       text: {},
@@ -83,34 +79,37 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("span", {
-          class: Vue.normalizeClass(["znpb-label", { [`znpb-label--${_ctx.type}`]: _ctx.type }])
-        }, Vue.toDisplayString(_ctx.text), 3);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "span",
+          {
+            class: Vue.normalizeClass(["znpb-label", { [`znpb-label--${__props.type}`]: __props.type }])
+          },
+          Vue.toDisplayString(__props.text),
+          3
+          /* TEXT, CLASS */
+        );
       };
     }
   });
-  const Label_vue_vue_type_style_index_0_lang = "";
-  const _sfc_main$1D = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$1e = ["innerHTML"];
+  const _sfc_main$1G = /* @__PURE__ */ Vue.defineComponent({
     __name: "AccordionMenu",
     props: {
       child_options: { default: () => ({}) },
       title: {},
       modelValue: { default: () => ({}) },
-      homeButtonText: { default: "" },
-      add_to_parent_breadcrumbs: { type: Boolean, default: false },
       label: { default: () => ({
         text: "",
         type: ""
       }) }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const slots = Vue.useSlots();
       const root2 = Vue.ref(null);
-      const parentAccordion = Vue.inject("parentAccordion", null);
       const showChanges = Vue.inject("showChanges", true);
-      const showBreadcrumbs = Vue.ref(parentAccordion === null);
       const expanded = Vue.ref(false);
       const optionsValue = Vue.computed({
         get() {
@@ -120,30 +119,12 @@ var __async = (__this, __arguments, generator) => {
           emit("update:modelValue", newValue);
         }
       });
-      let breadCrumbConfig = null;
       function onAccordionExpanded() {
-        if (parentAccordion !== null) {
-          breadCrumbConfig = {
-            title: props.title,
-            previousCallback: root2.value.closeAccordion
-          };
-          parentAccordion.addBreadcrumb(breadCrumbConfig);
-        }
         expanded.value = true;
       }
       function onAccordionCollapsed() {
-        if (parentAccordion !== null && parentAccordion) {
-          parentAccordion.removeBreadcrumb(breadCrumbConfig);
-        }
         expanded.value = false;
       }
-      Vue.onMounted(() => {
-      });
-      Vue.onBeforeUnmount(() => {
-        if (breadCrumbConfig) {
-          parentAccordion.removeBreadcrumb(breadCrumbConfig);
-        }
-      });
       const hasHeaderSlot = Vue.computed(() => !!slots.header);
       const hasTitleSlot = Vue.computed(() => !!slots.title);
       const InputWrapper = Vue.inject("inputWrapper");
@@ -159,12 +140,9 @@ var __async = (__this, __arguments, generator) => {
           ref_key: "root",
           ref: root2,
           class: "znpb-option-layout__menu",
-          title: _ctx.title,
+          title: __props.title,
           icon: _ctx.$attrs.icon,
-          "show-back-button": true,
           "show-home-button": true,
-          "home-button-text": _ctx.homeButtonText || "Options",
-          "has-breadcrumbs": showBreadcrumbs.value,
           onExpand: onAccordionExpanded,
           onCollapse: onAccordionCollapsed
         }, Vue.createSlots({
@@ -177,11 +155,12 @@ var __async = (__this, __arguments, generator) => {
               modelValue: optionsValue.value,
               "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => optionsValue.value = $event),
               class: "znpb-option-layout__menu-options-form",
-              schema: _ctx.child_options,
+              schema: __props.child_options,
               "show-changes": Vue.unref(showChanges)
-            }, null, 8, ["modelValue", "schema", "show-changes"])) : Vue.createCommentVNode("", true)
+            }, null, 8, ["modelValue", "schema", "show-changes"])) : Vue.createCommentVNode("v-if", true)
           ]),
           _: 2
+          /* DYNAMIC */
         }, [
           hasHeaderSlot.value ? {
             name: "header",
@@ -202,38 +181,38 @@ var __async = (__this, __arguments, generator) => {
               _ctx.$attrs.icon ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
                 key: 0,
                 icon: _ctx.$attrs.icon
-              }, null, 8, ["icon"])) : Vue.createCommentVNode("", true),
-              Vue.createElementVNode("span", { innerHTML: _ctx.title }, null, 8, ["innerHTML"]),
-              _ctx.label.text ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1E, {
+              }, null, 8, ["icon"])) : Vue.createCommentVNode("v-if", true),
+              Vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
+              Vue.createElementVNode("span", { innerHTML: __props.title }, null, 8, _hoisted_1$1e),
+              __props.label.text ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1H, {
                 key: 1,
-                text: _ctx.label.text,
-                type: _ctx.label.type
-              }, null, 8, ["text", "type"])) : Vue.createCommentVNode("", true),
+                text: __props.label.text,
+                type: __props.label.type
+              }, null, 8, ["text", "type"])) : Vue.createCommentVNode("v-if", true),
               Vue.unref(showChanges) && hasChanges.value ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
                 key: 2,
                 onRemoveStyles: _cache[0] || (_cache[0] = ($event) => emit("update:modelValue", null))
-              })) : Vue.createCommentVNode("", true)
+              })) : Vue.createCommentVNode("v-if", true)
             ]),
             key: "2"
           }
-        ]), 1032, ["title", "icon", "home-button-text", "has-breadcrumbs"]);
+        ]), 1032, ["title", "icon"]);
       };
     }
   });
-  const AccordionMenu_vue_vue_type_style_index_0_lang = "";
   const AccordionMenu$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    default: _sfc_main$1D
+    default: _sfc_main$1G
   }, Symbol.toStringTag, { value: "Module" }));
   const AccordionMenu = {
     id: "accordion_menu",
-    component: _sfc_main$1D,
+    component: _sfc_main$1G,
     config: {
       // Can be one of the following
       barebone: true
     }
   };
-  const _sfc_main$1C = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1F = /* @__PURE__ */ Vue.defineComponent({
     __name: "PseudoGroup",
     props: {
       modelValue: { default: () => {
@@ -243,9 +222,10 @@ var __async = (__this, __arguments, generator) => {
       save_to_id: { type: Boolean, default: false }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { usePseudoSelectors: usePseudoSelectors2 } = window.zb.composables;
+      const props = __props;
+      const emit = __emit;
       const { activePseudoSelector } = usePseudoSelectors2();
       const valueModel = Vue.computed({
         get() {
@@ -267,30 +247,30 @@ var __async = (__this, __arguments, generator) => {
           modelValue: valueModel.value,
           "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event),
           class: "znpb-option--pseudo-group",
-          schema: _ctx.child_options
+          schema: __props.child_options
         }, null, 8, ["modelValue", "schema"]);
       };
     }
   });
-  const PseudoGroup_vue_vue_type_style_index_0_lang = "";
   const PseudoGroup = {
     id: "pseudo_group",
-    component: _sfc_main$1C,
+    component: _sfc_main$1F,
     config: {
       // Don't add input wrappers
       barebone: true
     }
   };
-  const _hoisted_1$1c = { class: "znpb-style-background-color" };
-  const _sfc_main$1B = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$1d = { class: "znpb-style-background-color" };
+  const _sfc_main$1E = /* @__PURE__ */ Vue.defineComponent({
     __name: "BackgroundColor",
     props: {
       modelValue: { default: "" },
       placeholder: { default: null }
     },
     emits: ["update:modelValue", "open", "close"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       Vue.ref(false);
       Vue.ref(false);
       Vue.ref(false);
@@ -300,8 +280,7 @@ var __async = (__this, __arguments, generator) => {
           if (props.modelValue !== void 0) {
             if (typeof props.modelValue === "string") {
               computedValue = props.modelValue;
-            } else
-              computedValue = props.modelValue.value;
+            } else computedValue = props.modelValue.value;
           }
           return computedValue !== null ? computedValue : props.placeholder;
         },
@@ -329,62 +308,81 @@ var __async = (__this, __arguments, generator) => {
           onClose: _cache[2] || (_cache[2] = ($event) => emit("close"))
         }, {
           trigger: Vue.withCtx(() => [
-            Vue.createElementVNode("div", _hoisted_1$1c, [
-              !_ctx.modelValue && !_ctx.placeholder ? (Vue.openBlock(), Vue.createBlock(_component_EmptyList, {
+            Vue.createElementVNode("div", _hoisted_1$1d, [
+              !__props.modelValue && !__props.placeholder ? (Vue.openBlock(), Vue.createBlock(_component_EmptyList, {
                 key: 0,
                 class: "znpb-input-background-image__empty",
                 "no-margin": true
               }, {
                 default: Vue.withCtx(() => [
-                  Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Select background color", "zionbuilder")), 1)
+                  Vue.createTextVNode(
+                    Vue.toDisplayString(i18n__namespace.__("Select background color", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
                 ]),
                 _: 1
-              })) : (Vue.openBlock(), Vue.createBlock(_component_ActionsOverlay, { key: 1 }, Vue.createSlots({
-                default: Vue.withCtx(() => [
-                  Vue.createElementVNode("div", {
-                    class: "znpb-style-background-color__holder",
-                    style: Vue.normalizeStyle(getColorStyle.value)
-                  }, null, 4)
-                ]),
-                _: 2
-              }, [
-                _ctx.modelValue ? {
-                  name: "actions",
-                  fn: Vue.withCtx(() => [
-                    Vue.createElementVNode("div", null, [
-                      Vue.createVNode(_component_Icon, {
-                        rounded: true,
-                        icon: "delete",
-                        "bg-size": 30,
-                        onClick: Vue.withModifiers(deleteColor, ["stop"])
-                      }, null, 8, ["onClick"])
-                    ])
+                /* STABLE */
+              })) : (Vue.openBlock(), Vue.createBlock(
+                _component_ActionsOverlay,
+                { key: 1 },
+                Vue.createSlots({
+                  default: Vue.withCtx(() => [
+                    Vue.createElementVNode(
+                      "div",
+                      {
+                        class: "znpb-style-background-color__holder",
+                        style: Vue.normalizeStyle(getColorStyle.value)
+                      },
+                      null,
+                      4
+                      /* STYLE */
+                    )
                   ]),
-                  key: "0"
-                } : void 0
-              ]), 1024))
+                  _: 2
+                  /* DYNAMIC */
+                }, [
+                  __props.modelValue ? {
+                    name: "actions",
+                    fn: Vue.withCtx(() => [
+                      Vue.createElementVNode("div", null, [
+                        Vue.createVNode(_component_Icon, {
+                          rounded: true,
+                          icon: "delete",
+                          "bg-size": 30,
+                          onClick: Vue.withModifiers(deleteColor, ["stop"])
+                        })
+                      ])
+                    ]),
+                    key: "0"
+                  } : void 0
+                ]),
+                1024
+                /* DYNAMIC_SLOTS */
+              ))
             ])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["modelValue"]);
       };
     }
   });
-  const BackgroundColor_vue_vue_type_style_index_0_lang = "";
   const BackgroundColor = {
     id: "background_color",
-    component: _sfc_main$1B
+    component: _sfc_main$1E
   };
-  const _sfc_main$1A = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1D = /* @__PURE__ */ Vue.defineComponent({
     __name: "Background",
     props: {
       modelValue: { default: () => ({}) },
       placeholder: { default: () => ({}) }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { useResponsiveDevices: useResponsiveDevices2, usePseudoSelectors: usePseudoSelectors2 } = window.zb.composables;
+      const props = __props;
+      const emit = __emit;
       const bgGradientSchema = {
         id: "background-gradient",
         type: "background_gradient"
@@ -449,14 +447,15 @@ var __async = (__this, __arguments, generator) => {
                 Vue.createVNode(_component_Icon, { icon: "drop" })
               ]),
               default: Vue.withCtx(() => [
-                Vue.createVNode(Vue.unref(_sfc_main$1B), {
+                Vue.createVNode(Vue.unref(_sfc_main$1E), {
                   modelValue: valueModel.value["background-color"],
                   "delete-value": onDeleteOption,
-                  placeholder: _ctx.placeholder ? _ctx.placeholder["background-color"] : null,
+                  placeholder: __props.placeholder ? __props.placeholder["background-color"] : null,
                   "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => onOptionUpdate("background-color", $event))
                 }, null, 8, ["modelValue", "placeholder"])
               ]),
               _: 1
+              /* STABLE */
             }),
             Vue.createVNode(_component_Tab, {
               name: "background-gradient",
@@ -475,6 +474,7 @@ var __async = (__this, __arguments, generator) => {
                 }, null, 8, ["option-id", "modelValue"])
               ]),
               _: 1
+              /* STABLE */
             }),
             Vue.createVNode(_component_Tab, {
               name: "background-image",
@@ -491,6 +491,7 @@ var __async = (__this, __arguments, generator) => {
                 }, null, 8, ["modelValue"])
               ]),
               _: 1
+              /* STABLE */
             }),
             canShowBackground.value ? (Vue.openBlock(), Vue.createBlock(_component_Tab, {
               key: 0,
@@ -508,28 +509,30 @@ var __async = (__this, __arguments, generator) => {
                 }, null, 8, ["modelValue"])
               ]),
               _: 1
-            })) : Vue.createCommentVNode("", true)
+              /* STABLE */
+            })) : Vue.createCommentVNode("v-if", true)
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const Background_vue_vue_type_style_index_0_lang = "";
   const Background = {
     id: "background",
-    component: _sfc_main$1A
+    component: _sfc_main$1D
   };
-  const _hoisted_1$1b = { class: "znpb-style-background-gradient" };
-  const _sfc_main$1z = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$1c = { class: "znpb-style-background-gradient" };
+  const _sfc_main$1C = /* @__PURE__ */ Vue.defineComponent({
     __name: "BackgroundGradient",
     props: {
       modelValue: { default: null },
       hasLibrary: { type: Boolean, default: true }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const showLibrary = Vue.ref(false);
       const gradientModel = Vue.computed({
         get() {
@@ -546,44 +549,68 @@ var __async = (__this, __arguments, generator) => {
         const _component_EmptyList = Vue.resolveComponent("EmptyList");
         const _component_GradientGenerator = Vue.resolveComponent("GradientGenerator");
         const _component_GradientLibrary = Vue.resolveComponent("GradientLibrary");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$1b, [
-          !_ctx.modelValue && !showLibrary.value ? (Vue.openBlock(), Vue.createBlock(_component_EmptyList, {
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$1c, [
+          !__props.modelValue && !showLibrary.value ? (Vue.openBlock(), Vue.createBlock(_component_EmptyList, {
             key: 0,
             class: "znpb-style-background-gradient__empty",
             "no-margin": true
           }, {
             default: Vue.withCtx(() => [
-              Vue.createElementVNode("a", { onClick: addNewGradient }, Vue.toDisplayString(i18n__namespace.__("Add new background gradient", "zionbuilder")), 1),
-              _ctx.hasLibrary ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-                Vue.createElementVNode("div", null, Vue.toDisplayString(i18n__namespace.__("or", "zionbuilder")), 1),
-                Vue.createElementVNode("a", {
-                  onClick: _cache[0] || (_cache[0] = ($event) => showLibrary.value = true)
-                }, Vue.toDisplayString(i18n__namespace.__("Select from library", "zionbuilder")), 1)
-              ], 64)) : Vue.createCommentVNode("", true)
+              Vue.createElementVNode(
+                "a",
+                { onClick: addNewGradient },
+                Vue.toDisplayString(i18n__namespace.__("Add new background gradient", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              __props.hasLibrary ? (Vue.openBlock(), Vue.createElementBlock(
+                Vue.Fragment,
+                { key: 0 },
+                [
+                  Vue.createElementVNode(
+                    "div",
+                    null,
+                    Vue.toDisplayString(i18n__namespace.__("or", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  ),
+                  Vue.createElementVNode(
+                    "a",
+                    {
+                      onClick: _cache[0] || (_cache[0] = ($event) => showLibrary.value = true)
+                    },
+                    Vue.toDisplayString(i18n__namespace.__("Select from library", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              )) : Vue.createCommentVNode("v-if", true)
             ]),
             _: 1
-          })) : Vue.createCommentVNode("", true),
-          _ctx.modelValue ? (Vue.openBlock(), Vue.createBlock(_component_GradientGenerator, {
+            /* STABLE */
+          })) : Vue.createCommentVNode("v-if", true),
+          __props.modelValue ? (Vue.openBlock(), Vue.createBlock(_component_GradientGenerator, {
             key: 1,
             ref: "gradientGenerator",
             modelValue: gradientModel.value,
             "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => gradientModel.value = $event)
-          }, null, 8, ["modelValue"])) : Vue.createCommentVNode("", true),
+          }, null, 8, ["modelValue"])) : Vue.createCommentVNode("v-if", true),
           showLibrary.value ? (Vue.openBlock(), Vue.createBlock(_component_GradientLibrary, {
             key: 2,
             onCloseLibrary: _cache[2] || (_cache[2] = ($event) => showLibrary.value = false),
             onActivateGradient: _cache[3] || (_cache[3] = ($event) => (gradientModel.value = $event, showLibrary.value = false))
-          })) : Vue.createCommentVNode("", true)
+          })) : Vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   });
-  const BackgroundGradient_vue_vue_type_style_index_0_lang = "";
   const BackgroundGradient = {
     id: "background_gradient",
-    component: _sfc_main$1z
+    component: _sfc_main$1C
   };
-  const _sfc_main$1y = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1B = /* @__PURE__ */ Vue.defineComponent({
     __name: "Typography",
     props: {
       modelValue: { default: () => {
@@ -592,8 +619,9 @@ var __async = (__this, __arguments, generator) => {
       placeholder: { default: null }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const { useOptionsSchemas: useOptionsSchemas2 } = window.zb.composables;
       const valueModel = Vue.computed({
         get() {
@@ -631,12 +659,11 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const Typography_vue_vue_type_style_index_0_lang = "";
   const Typography = {
     id: "typography",
-    component: _sfc_main$1y
+    component: _sfc_main$1B
   };
-  const _sfc_main$1x = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1A = /* @__PURE__ */ Vue.defineComponent({
     __name: "Group",
     props: {
       modelValue: { default: () => ({}) },
@@ -644,8 +671,9 @@ var __async = (__this, __arguments, generator) => {
       optionsLayout: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const valueModel = Vue.computed({
         get() {
           return props.modelValue || {};
@@ -656,27 +684,26 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_OptionsForm = Vue.resolveComponent("OptionsForm");
-        return _ctx.child_options ? (Vue.openBlock(), Vue.createBlock(_component_OptionsForm, {
+        return __props.child_options ? (Vue.openBlock(), Vue.createBlock(_component_OptionsForm, {
           key: 0,
           modelValue: valueModel.value,
           "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event),
           class: Vue.normalizeClass(["znpb-option__type-option-group", {
-            [`znpb-option__type-option-group-layout--${_ctx.optionsLayout}`]: _ctx.optionsLayout.length
+            [`znpb-option__type-option-group-layout--${__props.optionsLayout}`]: __props.optionsLayout.length
           }]),
-          schema: _ctx.child_options
-        }, null, 8, ["modelValue", "class", "schema"])) : Vue.createCommentVNode("", true);
+          schema: __props.child_options
+        }, null, 8, ["modelValue", "class", "schema"])) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const Group_vue_vue_type_style_index_0_lang = "";
   const Group = {
     id: "group",
-    component: _sfc_main$1x
+    component: _sfc_main$1A
   };
-  const _hoisted_1$1a = { class: "znpb-panel-accordion" };
-  const _hoisted_2$O = { class: "znpb-panel-accordion__header-title" };
-  const _hoisted_3$A = ["innerHTML"];
-  const _sfc_main$1w = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$1b = { class: "znpb-panel-accordion" };
+  const _hoisted_2$L = { class: "znpb-panel-accordion__header-title" };
+  const _hoisted_3$z = ["innerHTML"];
+  const _sfc_main$1z = /* @__PURE__ */ Vue.defineComponent({
     __name: "PanelAccordion",
     props: {
       modelValue: { default: () => ({}) },
@@ -686,8 +713,9 @@ var __async = (__this, __arguments, generator) => {
       hasChanges: { type: Boolean, default: false }
     },
     emits: ["update:modelValue", "discard-changes"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const expanded = Vue.ref(!props.collapsed);
       const valueModel = Vue.computed({
         get() {
@@ -704,55 +732,51 @@ var __async = (__this, __arguments, generator) => {
         const _component_ChangesBullet = Vue.resolveComponent("ChangesBullet");
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_OptionsForm = Vue.resolveComponent("OptionsForm");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$1a, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$1b, [
           Vue.createElementVNode("div", {
             class: "znpb-panel-accordion__header",
             onClick: toggle
           }, [
-            Vue.createElementVNode("div", _hoisted_2$O, [
-              Vue.createElementVNode("span", { innerHTML: _ctx.title }, null, 8, _hoisted_3$A),
-              _ctx.hasChanges ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
+            Vue.createElementVNode("div", _hoisted_2$L, [
+              Vue.createElementVNode("span", { innerHTML: __props.title }, null, 8, _hoisted_3$z),
+              __props.hasChanges ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
                 key: 0,
                 content: i18n__namespace.__("Discard changes", "zionbuilder"),
                 onRemoveStyles: _cache[0] || (_cache[0] = ($event) => emit("discard-changes"))
-              }, null, 8, ["content"])) : Vue.createCommentVNode("", true)
+              }, null, 8, ["content"])) : Vue.createCommentVNode("v-if", true)
             ]),
             Vue.createVNode(_component_Icon, {
               class: "znpb-option-group-selector__clone-icon",
               icon: expanded.value ? "minus" : "plus"
             }, null, 8, ["icon"])
           ]),
-          _ctx.child_options && expanded.value ? (Vue.openBlock(), Vue.createBlock(_component_OptionsForm, {
+          __props.child_options && expanded.value ? (Vue.openBlock(), Vue.createBlock(_component_OptionsForm, {
             key: 0,
             ref: "accordionOption",
             modelValue: valueModel.value,
             "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => valueModel.value = $event),
             class: "znpb-option__type-option-accordion",
-            schema: _ctx.child_options
-          }, null, 8, ["modelValue", "schema"])) : Vue.createCommentVNode("", true)
+            schema: __props.child_options
+          }, null, 8, ["modelValue", "schema"])) : Vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   });
-  const PanelAccordion_vue_vue_type_style_index_0_lang = "";
   const PanelAccordion = {
     id: "panel_accordion",
-    component: _sfc_main$1w,
+    component: _sfc_main$1z,
     config: {
       barebone: true
     }
   };
   var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
-  const freeGlobal$1 = freeGlobal;
   var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-  var root = freeGlobal$1 || freeSelf || Function("return this")();
-  const root$1 = root;
-  var Symbol$1 = root$1.Symbol;
-  const Symbol$2 = Symbol$1;
+  var root = freeGlobal || freeSelf || Function("return this")();
+  var Symbol$1 = root.Symbol;
   var objectProto$f = Object.prototype;
   var hasOwnProperty$c = objectProto$f.hasOwnProperty;
   var nativeObjectToString$1 = objectProto$f.toString;
-  var symToStringTag$1 = Symbol$2 ? Symbol$2.toStringTag : void 0;
+  var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : void 0;
   function getRawTag(value) {
     var isOwn = hasOwnProperty$c.call(value, symToStringTag$1), tag = value[symToStringTag$1];
     try {
@@ -776,7 +800,7 @@ var __async = (__this, __arguments, generator) => {
     return nativeObjectToString.call(value);
   }
   var nullTag = "[object Null]", undefinedTag = "[object Undefined]";
-  var symToStringTag = Symbol$2 ? Symbol$2.toStringTag : void 0;
+  var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : void 0;
   function baseGetTag(value) {
     if (value == null) {
       return value === void 0 ? undefinedTag : nullTag;
@@ -791,35 +815,33 @@ var __async = (__this, __arguments, generator) => {
     return typeof value == "symbol" || isObjectLike(value) && baseGetTag(value) == symbolTag$3;
   }
   function arrayMap(array, iteratee) {
-    var index2 = -1, length = array == null ? 0 : array.length, result = Array(length);
-    while (++index2 < length) {
-      result[index2] = iteratee(array[index2], index2, array);
+    var index = -1, length = array == null ? 0 : array.length, result = Array(length);
+    while (++index < length) {
+      result[index] = iteratee(array[index], index, array);
     }
     return result;
   }
   var isArray = Array.isArray;
-  const isArray$1 = isArray;
-  var INFINITY$3 = 1 / 0;
-  var symbolProto$2 = Symbol$2 ? Symbol$2.prototype : void 0, symbolToString = symbolProto$2 ? symbolProto$2.toString : void 0;
+  var symbolProto$2 = Symbol$1 ? Symbol$1.prototype : void 0, symbolToString = symbolProto$2 ? symbolProto$2.toString : void 0;
   function baseToString(value) {
     if (typeof value == "string") {
       return value;
     }
-    if (isArray$1(value)) {
+    if (isArray(value)) {
       return arrayMap(value, baseToString) + "";
     }
     if (isSymbol(value)) {
       return symbolToString ? symbolToString.call(value) : "";
     }
     var result = value + "";
-    return result == "0" && 1 / value == -INFINITY$3 ? "-0" : result;
+    return result == "0" && 1 / value == -Infinity ? "-0" : result;
   }
   var reWhitespace = /\s/;
   function trimmedEndIndex(string) {
-    var index2 = string.length;
-    while (index2-- && reWhitespace.test(string.charAt(index2))) {
+    var index = string.length;
+    while (index-- && reWhitespace.test(string.charAt(index))) {
     }
-    return index2;
+    return index;
   }
   var reTrimStart = /^\s+/;
   function baseTrim(string) {
@@ -852,13 +874,13 @@ var __async = (__this, __arguments, generator) => {
     var isBinary = reIsBinary.test(value);
     return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
   }
-  var INFINITY$2 = 1 / 0, MAX_INTEGER = 17976931348623157e292;
+  var INFINITY$1 = 1 / 0, MAX_INTEGER = 17976931348623157e292;
   function toFinite(value) {
     if (!value) {
       return value === 0 ? value : 0;
     }
     value = toNumber(value);
-    if (value === INFINITY$2 || value === -INFINITY$2) {
+    if (value === INFINITY$1 || value === -INFINITY$1) {
       var sign = value < 0 ? -1 : 1;
       return sign * MAX_INTEGER;
     }
@@ -879,12 +901,11 @@ var __async = (__this, __arguments, generator) => {
     var tag = baseGetTag(value);
     return tag == funcTag$2 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
   }
-  var coreJsData = root$1["__core-js_shared__"];
-  const coreJsData$1 = coreJsData;
-  var maskSrcKey = function() {
-    var uid = /[^.]+$/.exec(coreJsData$1 && coreJsData$1.keys && coreJsData$1.keys.IE_PROTO || "");
+  var coreJsData = root["__core-js_shared__"];
+  var maskSrcKey = (function() {
+    var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
     return uid ? "Symbol(src)_1." + uid : "";
-  }();
+  })();
   function isMasked(func) {
     return !!maskSrcKey && maskSrcKey in func;
   }
@@ -925,10 +946,9 @@ var __async = (__this, __arguments, generator) => {
     var value = getValue(object, key);
     return baseIsNative(value) ? value : void 0;
   }
-  var WeakMap = getNative(root$1, "WeakMap");
-  const WeakMap$1 = WeakMap;
+  var WeakMap = getNative(root, "WeakMap");
   var objectCreate = Object.create;
-  var baseCreate = function() {
+  var baseCreate = /* @__PURE__ */ (function() {
     function object() {
     }
     return function(proto) {
@@ -943,8 +963,7 @@ var __async = (__this, __arguments, generator) => {
       object.prototype = void 0;
       return result;
     };
-  }();
-  const baseCreate$1 = baseCreate;
+  })();
   function apply(func, thisArg, args) {
     switch (args.length) {
       case 0:
@@ -961,10 +980,10 @@ var __async = (__this, __arguments, generator) => {
   function noop() {
   }
   function copyArray(source, array) {
-    var index2 = -1, length = source.length;
+    var index = -1, length = source.length;
     array || (array = Array(length));
-    while (++index2 < length) {
-      array[index2] = source[index2];
+    while (++index < length) {
+      array[index] = source[index];
     }
     return array;
   }
@@ -990,40 +1009,37 @@ var __async = (__this, __arguments, generator) => {
       return value;
     };
   }
-  var defineProperty = function() {
+  var defineProperty = (function() {
     try {
       var func = getNative(Object, "defineProperty");
       func({}, "", {});
       return func;
     } catch (e) {
     }
-  }();
-  const defineProperty$1 = defineProperty;
-  var baseSetToString = !defineProperty$1 ? identity : function(func, string) {
-    return defineProperty$1(func, "toString", {
+  })();
+  var baseSetToString = !defineProperty ? identity : function(func, string) {
+    return defineProperty(func, "toString", {
       "configurable": true,
       "enumerable": false,
       "value": constant(string),
       "writable": true
     });
   };
-  const baseSetToString$1 = baseSetToString;
-  var setToString = shortOut(baseSetToString$1);
-  const setToString$1 = setToString;
+  var setToString = shortOut(baseSetToString);
   function arrayEach(array, iteratee) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    while (++index2 < length) {
-      if (iteratee(array[index2], index2, array) === false) {
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      if (iteratee(array[index], index, array) === false) {
         break;
       }
     }
     return array;
   }
   function baseFindIndex(array, predicate, fromIndex, fromRight) {
-    var length = array.length, index2 = fromIndex + (fromRight ? 1 : -1);
-    while (fromRight ? index2-- : ++index2 < length) {
-      if (predicate(array[index2], index2, array)) {
-        return index2;
+    var length = array.length, index = fromIndex + -1;
+    while (++index < length) {
+      if (predicate(array[index], index, array)) {
+        return index;
       }
     }
     return -1;
@@ -1032,10 +1048,10 @@ var __async = (__this, __arguments, generator) => {
     return value !== value;
   }
   function strictIndexOf(array, value, fromIndex) {
-    var index2 = fromIndex - 1, length = array.length;
-    while (++index2 < length) {
-      if (array[index2] === value) {
-        return index2;
+    var index = fromIndex - 1, length = array.length;
+    while (++index < length) {
+      if (array[index] === value) {
+        return index;
       }
     }
     return -1;
@@ -1055,8 +1071,8 @@ var __async = (__this, __arguments, generator) => {
     return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
   }
   function baseAssignValue(object, key, value) {
-    if (key == "__proto__" && defineProperty$1) {
-      defineProperty$1(object, key, {
+    if (key == "__proto__" && defineProperty) {
+      defineProperty(object, key, {
         "configurable": true,
         "enumerable": true,
         "value": value,
@@ -1080,10 +1096,10 @@ var __async = (__this, __arguments, generator) => {
   function copyObject(source, props, object, customizer) {
     var isNew = !object;
     object || (object = {});
-    var index2 = -1, length = props.length;
-    while (++index2 < length) {
-      var key = props[index2];
-      var newValue = customizer ? customizer(object[key], source[key], key, object, source) : void 0;
+    var index = -1, length = props.length;
+    while (++index < length) {
+      var key = props[index];
+      var newValue = void 0;
       if (newValue === void 0) {
         newValue = source[key];
       }
@@ -1099,21 +1115,21 @@ var __async = (__this, __arguments, generator) => {
   function overRest(func, start, transform) {
     start = nativeMax$2(start === void 0 ? func.length - 1 : start, 0);
     return function() {
-      var args = arguments, index2 = -1, length = nativeMax$2(args.length - start, 0), array = Array(length);
-      while (++index2 < length) {
-        array[index2] = args[start + index2];
+      var args = arguments, index = -1, length = nativeMax$2(args.length - start, 0), array = Array(length);
+      while (++index < length) {
+        array[index] = args[start + index];
       }
-      index2 = -1;
+      index = -1;
       var otherArgs = Array(start + 1);
-      while (++index2 < start) {
-        otherArgs[index2] = args[index2];
+      while (++index < start) {
+        otherArgs[index] = args[index];
       }
       otherArgs[start] = transform(array);
       return apply(func, this, otherArgs);
     };
   }
   function baseRest(func, start) {
-    return setToString$1(overRest(func, start, identity), func + "");
+    return setToString(overRest(func, start, identity), func + "");
   }
   var MAX_SAFE_INTEGER = 9007199254740991;
   function isLength(value) {
@@ -1122,29 +1138,29 @@ var __async = (__this, __arguments, generator) => {
   function isArrayLike(value) {
     return value != null && isLength(value.length) && !isFunction(value);
   }
-  function isIterateeCall(value, index2, object) {
+  function isIterateeCall(value, index, object) {
     if (!isObject(object)) {
       return false;
     }
-    var type = typeof index2;
-    if (type == "number" ? isArrayLike(object) && isIndex(index2, object.length) : type == "string" && index2 in object) {
-      return eq(object[index2], value);
+    var type = typeof index;
+    if (type == "number" ? isArrayLike(object) && isIndex(index, object.length) : type == "string" && index in object) {
+      return eq(object[index], value);
     }
     return false;
   }
   function createAssigner(assigner) {
     return baseRest(function(object, sources) {
-      var index2 = -1, length = sources.length, customizer = length > 1 ? sources[length - 1] : void 0, guard = length > 2 ? sources[2] : void 0;
+      var index = -1, length = sources.length, customizer = length > 1 ? sources[length - 1] : void 0, guard = length > 2 ? sources[2] : void 0;
       customizer = assigner.length > 3 && typeof customizer == "function" ? (length--, customizer) : void 0;
       if (guard && isIterateeCall(sources[0], sources[1], guard)) {
         customizer = length < 3 ? void 0 : customizer;
         length = 1;
       }
       object = Object(object);
-      while (++index2 < length) {
-        var source = sources[index2];
+      while (++index < length) {
+        var source = sources[index];
         if (source) {
-          assigner(object, source, index2, customizer);
+          assigner(object, source, index, customizer);
         }
       }
       return object;
@@ -1156,9 +1172,9 @@ var __async = (__this, __arguments, generator) => {
     return value === proto;
   }
   function baseTimes(n, iteratee) {
-    var index2 = -1, result = Array(n);
-    while (++index2 < n) {
-      result[index2] = iteratee(index2);
+    var index = -1, result = Array(n);
+    while (++index < n) {
+      result[index] = iteratee(index);
     }
     return result;
   }
@@ -1169,22 +1185,20 @@ var __async = (__this, __arguments, generator) => {
   var objectProto$a = Object.prototype;
   var hasOwnProperty$9 = objectProto$a.hasOwnProperty;
   var propertyIsEnumerable$1 = objectProto$a.propertyIsEnumerable;
-  var isArguments = baseIsArguments(function() {
+  var isArguments = baseIsArguments(/* @__PURE__ */ (function() {
     return arguments;
-  }()) ? baseIsArguments : function(value) {
+  })()) ? baseIsArguments : function(value) {
     return isObjectLike(value) && hasOwnProperty$9.call(value, "callee") && !propertyIsEnumerable$1.call(value, "callee");
   };
-  const isArguments$1 = isArguments;
   function stubFalse() {
     return false;
   }
   var freeExports$2 = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule$2 = freeExports$2 && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports$2 = freeModule$2 && freeModule$2.exports === freeExports$2;
-  var Buffer$1 = moduleExports$2 ? root$1.Buffer : void 0;
+  var Buffer$1 = moduleExports$2 ? root.Buffer : void 0;
   var nativeIsBuffer = Buffer$1 ? Buffer$1.isBuffer : void 0;
   var isBuffer = nativeIsBuffer || stubFalse;
-  const isBuffer$1 = isBuffer;
   var argsTag$2 = "[object Arguments]", arrayTag$2 = "[object Array]", boolTag$3 = "[object Boolean]", dateTag$3 = "[object Date]", errorTag$2 = "[object Error]", funcTag$1 = "[object Function]", mapTag$5 = "[object Map]", numberTag$3 = "[object Number]", objectTag$4 = "[object Object]", regexpTag$3 = "[object RegExp]", setTag$5 = "[object Set]", stringTag$3 = "[object String]", weakMapTag$2 = "[object WeakMap]";
   var arrayBufferTag$3 = "[object ArrayBuffer]", dataViewTag$4 = "[object DataView]", float32Tag$2 = "[object Float32Array]", float64Tag$2 = "[object Float64Array]", int8Tag$2 = "[object Int8Array]", int16Tag$2 = "[object Int16Array]", int32Tag$2 = "[object Int32Array]", uint8Tag$2 = "[object Uint8Array]", uint8ClampedTag$2 = "[object Uint8ClampedArray]", uint16Tag$2 = "[object Uint16Array]", uint32Tag$2 = "[object Uint32Array]";
   var typedArrayTags = {};
@@ -1201,8 +1215,8 @@ var __async = (__this, __arguments, generator) => {
   var freeExports$1 = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule$1 = freeExports$1 && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports$1 = freeModule$1 && freeModule$1.exports === freeExports$1;
-  var freeProcess = moduleExports$1 && freeGlobal$1.process;
-  var nodeUtil = function() {
+  var freeProcess = moduleExports$1 && freeGlobal.process;
+  var nodeUtil = (function() {
     try {
       var types = freeModule$1 && freeModule$1.require && freeModule$1.require("util").types;
       if (types) {
@@ -1211,15 +1225,13 @@ var __async = (__this, __arguments, generator) => {
       return freeProcess && freeProcess.binding && freeProcess.binding("util");
     } catch (e) {
     }
-  }();
-  const nodeUtil$1 = nodeUtil;
-  var nodeIsTypedArray = nodeUtil$1 && nodeUtil$1.isTypedArray;
+  })();
+  var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
   var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
-  const isTypedArray$1 = isTypedArray;
   var objectProto$9 = Object.prototype;
   var hasOwnProperty$8 = objectProto$9.hasOwnProperty;
   function arrayLikeKeys(value, inherited) {
-    var isArr = isArray$1(value), isArg = !isArr && isArguments$1(value), isBuff = !isArr && !isArg && isBuffer$1(value), isType = !isArr && !isArg && !isBuff && isTypedArray$1(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
+    var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer(value), isType = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
     for (var key in value) {
       if ((inherited || hasOwnProperty$8.call(value, key)) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
       (key == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
@@ -1237,12 +1249,11 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var nativeKeys = overArg(Object.keys, Object);
-  const nativeKeys$1 = nativeKeys;
   var objectProto$8 = Object.prototype;
   var hasOwnProperty$7 = objectProto$8.hasOwnProperty;
   function baseKeys(object) {
     if (!isPrototype(object)) {
-      return nativeKeys$1(object);
+      return nativeKeys(object);
     }
     var result = [];
     for (var key in Object(object)) {
@@ -1283,7 +1294,7 @@ var __async = (__this, __arguments, generator) => {
   }
   var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/, reIsPlainProp = /^\w*$/;
   function isKey(value, object) {
-    if (isArray$1(value)) {
+    if (isArray(value)) {
       return false;
     }
     var type = typeof value;
@@ -1293,9 +1304,8 @@ var __async = (__this, __arguments, generator) => {
     return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
   }
   var nativeCreate = getNative(Object, "create");
-  const nativeCreate$1 = nativeCreate;
   function hashClear() {
-    this.__data__ = nativeCreate$1 ? nativeCreate$1(null) : {};
+    this.__data__ = nativeCreate ? nativeCreate(null) : {};
     this.size = 0;
   }
   function hashDelete(key) {
@@ -1308,7 +1318,7 @@ var __async = (__this, __arguments, generator) => {
   var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
   function hashGet(key) {
     var data = this.__data__;
-    if (nativeCreate$1) {
+    if (nativeCreate) {
       var result = data[key];
       return result === HASH_UNDEFINED$2 ? void 0 : result;
     }
@@ -1318,20 +1328,20 @@ var __async = (__this, __arguments, generator) => {
   var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
   function hashHas(key) {
     var data = this.__data__;
-    return nativeCreate$1 ? data[key] !== void 0 : hasOwnProperty$4.call(data, key);
+    return nativeCreate ? data[key] !== void 0 : hasOwnProperty$4.call(data, key);
   }
   var HASH_UNDEFINED$1 = "__lodash_hash_undefined__";
   function hashSet(key, value) {
     var data = this.__data__;
     this.size += this.has(key) ? 0 : 1;
-    data[key] = nativeCreate$1 && value === void 0 ? HASH_UNDEFINED$1 : value;
+    data[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED$1 : value;
     return this;
   }
   function Hash(entries) {
-    var index2 = -1, length = entries == null ? 0 : entries.length;
+    var index = -1, length = entries == null ? 0 : entries.length;
     this.clear();
-    while (++index2 < length) {
-      var entry = entries[index2];
+    while (++index < length) {
+      var entry = entries[index];
       this.set(entry[0], entry[1]);
     }
   }
@@ -1356,41 +1366,41 @@ var __async = (__this, __arguments, generator) => {
   var arrayProto$1 = Array.prototype;
   var splice$1 = arrayProto$1.splice;
   function listCacheDelete(key) {
-    var data = this.__data__, index2 = assocIndexOf(data, key);
-    if (index2 < 0) {
+    var data = this.__data__, index = assocIndexOf(data, key);
+    if (index < 0) {
       return false;
     }
     var lastIndex = data.length - 1;
-    if (index2 == lastIndex) {
+    if (index == lastIndex) {
       data.pop();
     } else {
-      splice$1.call(data, index2, 1);
+      splice$1.call(data, index, 1);
     }
     --this.size;
     return true;
   }
   function listCacheGet(key) {
-    var data = this.__data__, index2 = assocIndexOf(data, key);
-    return index2 < 0 ? void 0 : data[index2][1];
+    var data = this.__data__, index = assocIndexOf(data, key);
+    return index < 0 ? void 0 : data[index][1];
   }
   function listCacheHas(key) {
     return assocIndexOf(this.__data__, key) > -1;
   }
   function listCacheSet(key, value) {
-    var data = this.__data__, index2 = assocIndexOf(data, key);
-    if (index2 < 0) {
+    var data = this.__data__, index = assocIndexOf(data, key);
+    if (index < 0) {
       ++this.size;
       data.push([key, value]);
     } else {
-      data[index2][1] = value;
+      data[index][1] = value;
     }
     return this;
   }
   function ListCache(entries) {
-    var index2 = -1, length = entries == null ? 0 : entries.length;
+    var index = -1, length = entries == null ? 0 : entries.length;
     this.clear();
-    while (++index2 < length) {
-      var entry = entries[index2];
+    while (++index < length) {
+      var entry = entries[index];
       this.set(entry[0], entry[1]);
     }
   }
@@ -1399,13 +1409,12 @@ var __async = (__this, __arguments, generator) => {
   ListCache.prototype.get = listCacheGet;
   ListCache.prototype.has = listCacheHas;
   ListCache.prototype.set = listCacheSet;
-  var Map = getNative(root$1, "Map");
-  const Map$1 = Map;
+  var Map = getNative(root, "Map");
   function mapCacheClear() {
     this.size = 0;
     this.__data__ = {
       "hash": new Hash(),
-      "map": new (Map$1 || ListCache)(),
+      "map": new (Map || ListCache)(),
       "string": new Hash()
     };
   }
@@ -1435,10 +1444,10 @@ var __async = (__this, __arguments, generator) => {
     return this;
   }
   function MapCache(entries) {
-    var index2 = -1, length = entries == null ? 0 : entries.length;
+    var index = -1, length = entries == null ? 0 : entries.length;
     this.clear();
-    while (++index2 < length) {
-      var entry = entries[index2];
+    while (++index < length) {
+      var entry = entries[index];
       this.set(entry[0], entry[1]);
     }
   }
@@ -1488,45 +1497,42 @@ var __async = (__this, __arguments, generator) => {
     });
     return result;
   });
-  const stringToPath$1 = stringToPath;
   function toString(value) {
     return value == null ? "" : baseToString(value);
   }
   function castPath(value, object) {
-    if (isArray$1(value)) {
+    if (isArray(value)) {
       return value;
     }
-    return isKey(value, object) ? [value] : stringToPath$1(toString(value));
+    return isKey(value, object) ? [value] : stringToPath(toString(value));
   }
-  var INFINITY$1 = 1 / 0;
   function toKey(value) {
     if (typeof value == "string" || isSymbol(value)) {
       return value;
     }
     var result = value + "";
-    return result == "0" && 1 / value == -INFINITY$1 ? "-0" : result;
+    return result == "0" && 1 / value == -Infinity ? "-0" : result;
   }
   function baseGet(object, path) {
     path = castPath(path, object);
-    var index2 = 0, length = path.length;
-    while (object != null && index2 < length) {
-      object = object[toKey(path[index2++])];
+    var index = 0, length = path.length;
+    while (object != null && index < length) {
+      object = object[toKey(path[index++])];
     }
-    return index2 && index2 == length ? object : void 0;
+    return index && index == length ? object : void 0;
   }
   function get(object, path, defaultValue) {
     var result = object == null ? void 0 : baseGet(object, path);
     return result === void 0 ? defaultValue : result;
   }
   function arrayPush(array, values) {
-    var index2 = -1, length = values.length, offset = array.length;
-    while (++index2 < length) {
-      array[offset + index2] = values[index2];
+    var index = -1, length = values.length, offset = array.length;
+    while (++index < length) {
+      array[offset + index] = values[index];
     }
     return array;
   }
   var getPrototype = overArg(Object.getPrototypeOf, Object);
-  const getPrototype$1 = getPrototype;
   var objectTag$3 = "[object Object]";
   var funcProto = Function.prototype, objectProto$4 = Object.prototype;
   var funcToString = funcProto.toString;
@@ -1536,7 +1542,7 @@ var __async = (__this, __arguments, generator) => {
     if (!isObjectLike(value) || baseGetTag(value) != objectTag$3) {
       return false;
     }
-    var proto = getPrototype$1(value);
+    var proto = getPrototype(value);
     if (proto === null) {
       return true;
     }
@@ -1544,7 +1550,7 @@ var __async = (__this, __arguments, generator) => {
     return typeof Ctor == "function" && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
   }
   function baseSlice(array, start, end) {
-    var index2 = -1, length = array.length;
+    var index = -1, length = array.length;
     if (start < 0) {
       start = -start > length ? 0 : length + start;
     }
@@ -1555,8 +1561,8 @@ var __async = (__this, __arguments, generator) => {
     length = start > end ? 0 : end - start >>> 0;
     start >>>= 0;
     var result = Array(length);
-    while (++index2 < length) {
-      result[index2] = array[index2 + start];
+    while (++index < length) {
+      result[index] = array[index + start];
     }
     return result;
   }
@@ -1594,17 +1600,13 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var upperFirst = createCaseFirst("toUpperCase");
-  const upperFirst$1 = upperFirst;
   function capitalize(string) {
-    return upperFirst$1(toString(string).toLowerCase());
+    return upperFirst(toString(string).toLowerCase());
   }
   function arrayReduce(array, iteratee, accumulator, initAccum) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    if (initAccum && length) {
-      accumulator = array[++index2];
-    }
-    while (++index2 < length) {
-      accumulator = iteratee(accumulator, array[index2], index2, array);
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      accumulator = iteratee(accumulator, array[index], index, array);
     }
     return accumulator;
   }
@@ -1808,14 +1810,13 @@ var __async = (__this, __arguments, generator) => {
     "ſ": "s"
   };
   var deburrLetter = basePropertyOf(deburredLetters);
-  const deburrLetter$1 = deburrLetter;
   var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
   var rsComboMarksRange$1 = "\\u0300-\\u036f", reComboHalfMarksRange$1 = "\\ufe20-\\ufe2f", rsComboSymbolsRange$1 = "\\u20d0-\\u20ff", rsComboRange$1 = rsComboMarksRange$1 + reComboHalfMarksRange$1 + rsComboSymbolsRange$1;
   var rsCombo$1 = "[" + rsComboRange$1 + "]";
   var reComboMark = RegExp(rsCombo$1, "g");
   function deburr(string) {
     string = toString(string);
-    return string && string.replace(reLatin, deburrLetter$1).replace(reComboMark, "");
+    return string && string.replace(reLatin, deburrLetter).replace(reComboMark, "");
   }
   var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
   function asciiWords(string) {
@@ -1843,7 +1844,7 @@ var __async = (__this, __arguments, generator) => {
   }
   function words(string, pattern, guard) {
     string = toString(string);
-    pattern = guard ? void 0 : pattern;
+    pattern = pattern;
     if (pattern === void 0) {
       return hasUnicodeWord(string) ? unicodeWords(string) : asciiWords(string);
     }
@@ -1856,11 +1857,10 @@ var __async = (__this, __arguments, generator) => {
       return arrayReduce(words(deburr(string).replace(reApos, "")), callback, "");
     };
   }
-  var camelCase = createCompounder(function(result, word, index2) {
+  var camelCase = createCompounder(function(result, word, index) {
     word = word.toLowerCase();
-    return result + (index2 ? capitalize(word) : word);
+    return result + (index ? capitalize(word) : word);
   });
-  const camelCase$1 = camelCase;
   function stackClear() {
     this.__data__ = new ListCache();
     this.size = 0;
@@ -1881,7 +1881,7 @@ var __async = (__this, __arguments, generator) => {
     var data = this.__data__;
     if (data instanceof ListCache) {
       var pairs = data.__data__;
-      if (!Map$1 || pairs.length < LARGE_ARRAY_SIZE$1 - 1) {
+      if (!Map || pairs.length < LARGE_ARRAY_SIZE$1 - 1) {
         pairs.push([key, value]);
         this.size = ++data.size;
         return this;
@@ -1901,16 +1901,10 @@ var __async = (__this, __arguments, generator) => {
   Stack.prototype.get = stackGet;
   Stack.prototype.has = stackHas;
   Stack.prototype.set = stackSet;
-  function baseAssign(object, source) {
-    return object && copyObject(source, keys(source), object);
-  }
-  function baseAssignIn(object, source) {
-    return object && copyObject(source, keysIn(source), object);
-  }
   var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
   var freeModule = freeExports && typeof module == "object" && module && !module.nodeType && module;
   var moduleExports = freeModule && freeModule.exports === freeExports;
-  var Buffer2 = moduleExports ? root$1.Buffer : void 0, allocUnsafe = Buffer2 ? Buffer2.allocUnsafe : void 0;
+  var Buffer2 = moduleExports ? root.Buffer : void 0, allocUnsafe = Buffer2 ? Buffer2.allocUnsafe : void 0;
   function cloneBuffer(buffer, isDeep) {
     if (isDeep) {
       return buffer.slice();
@@ -1920,10 +1914,10 @@ var __async = (__this, __arguments, generator) => {
     return result;
   }
   function arrayFilter(array, predicate) {
-    var index2 = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
-    while (++index2 < length) {
-      var value = array[index2];
-      if (predicate(value, index2, array)) {
+    var index = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
+    while (++index < length) {
+      var value = array[index];
+      if (predicate(value, index, array)) {
         result[resIndex++] = value;
       }
     }
@@ -1934,54 +1928,31 @@ var __async = (__this, __arguments, generator) => {
   }
   var objectProto$3 = Object.prototype;
   var propertyIsEnumerable = objectProto$3.propertyIsEnumerable;
-  var nativeGetSymbols$1 = Object.getOwnPropertySymbols;
-  var getSymbols = !nativeGetSymbols$1 ? stubArray : function(object) {
+  var nativeGetSymbols = Object.getOwnPropertySymbols;
+  var getSymbols = !nativeGetSymbols ? stubArray : function(object) {
     if (object == null) {
       return [];
     }
     object = Object(object);
-    return arrayFilter(nativeGetSymbols$1(object), function(symbol) {
+    return arrayFilter(nativeGetSymbols(object), function(symbol) {
       return propertyIsEnumerable.call(object, symbol);
     });
   };
-  const getSymbols$1 = getSymbols;
-  function copySymbols(source, object) {
-    return copyObject(source, getSymbols$1(source), object);
-  }
-  var nativeGetSymbols = Object.getOwnPropertySymbols;
-  var getSymbolsIn = !nativeGetSymbols ? stubArray : function(object) {
-    var result = [];
-    while (object) {
-      arrayPush(result, getSymbols$1(object));
-      object = getPrototype$1(object);
-    }
-    return result;
-  };
-  const getSymbolsIn$1 = getSymbolsIn;
-  function copySymbolsIn(source, object) {
-    return copyObject(source, getSymbolsIn$1(source), object);
-  }
   function baseGetAllKeys(object, keysFunc, symbolsFunc) {
     var result = keysFunc(object);
-    return isArray$1(object) ? result : arrayPush(result, symbolsFunc(object));
+    return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
   }
   function getAllKeys(object) {
-    return baseGetAllKeys(object, keys, getSymbols$1);
+    return baseGetAllKeys(object, keys, getSymbols);
   }
-  function getAllKeysIn(object) {
-    return baseGetAllKeys(object, keysIn, getSymbolsIn$1);
-  }
-  var DataView = getNative(root$1, "DataView");
-  const DataView$1 = DataView;
-  var Promise$1 = getNative(root$1, "Promise");
-  const Promise$2 = Promise$1;
-  var Set = getNative(root$1, "Set");
-  const Set$1 = Set;
+  var DataView = getNative(root, "DataView");
+  var Promise$1 = getNative(root, "Promise");
+  var Set$1 = getNative(root, "Set");
   var mapTag$4 = "[object Map]", objectTag$2 = "[object Object]", promiseTag = "[object Promise]", setTag$4 = "[object Set]", weakMapTag$1 = "[object WeakMap]";
   var dataViewTag$3 = "[object DataView]";
-  var dataViewCtorString = toSource(DataView$1), mapCtorString = toSource(Map$1), promiseCtorString = toSource(Promise$2), setCtorString = toSource(Set$1), weakMapCtorString = toSource(WeakMap$1);
+  var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map), promiseCtorString = toSource(Promise$1), setCtorString = toSource(Set$1), weakMapCtorString = toSource(WeakMap);
   var getTag = baseGetTag;
-  if (DataView$1 && getTag(new DataView$1(new ArrayBuffer(1))) != dataViewTag$3 || Map$1 && getTag(new Map$1()) != mapTag$4 || Promise$2 && getTag(Promise$2.resolve()) != promiseTag || Set$1 && getTag(new Set$1()) != setTag$4 || WeakMap$1 && getTag(new WeakMap$1()) != weakMapTag$1) {
+  if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag$3 || Map && getTag(new Map()) != mapTag$4 || Promise$1 && getTag(Promise$1.resolve()) != promiseTag || Set$1 && getTag(new Set$1()) != setTag$4 || WeakMap && getTag(new WeakMap()) != weakMapTag$1) {
     getTag = function(value) {
       var result = baseGetTag(value), Ctor = result == objectTag$2 ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
       if (ctorString) {
@@ -2001,7 +1972,6 @@ var __async = (__this, __arguments, generator) => {
       return result;
     };
   }
-  const getTag$1 = getTag;
   var objectProto$2 = Object.prototype;
   var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
   function initCloneArray(array) {
@@ -2012,15 +1982,14 @@ var __async = (__this, __arguments, generator) => {
     }
     return result;
   }
-  var Uint8Array$1 = root$1.Uint8Array;
-  const Uint8Array$2 = Uint8Array$1;
+  var Uint8Array$1 = root.Uint8Array;
   function cloneArrayBuffer(arrayBuffer) {
     var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
-    new Uint8Array$2(result).set(new Uint8Array$2(arrayBuffer));
+    new Uint8Array$1(result).set(new Uint8Array$1(arrayBuffer));
     return result;
   }
   function cloneDataView(dataView, isDeep) {
-    var buffer = isDeep ? cloneArrayBuffer(dataView.buffer) : dataView.buffer;
+    var buffer = cloneArrayBuffer(dataView.buffer);
     return new dataView.constructor(buffer, dataView.byteOffset, dataView.byteLength);
   }
   var reFlags = /\w*$/;
@@ -2029,7 +1998,7 @@ var __async = (__this, __arguments, generator) => {
     result.lastIndex = regexp.lastIndex;
     return result;
   }
-  var symbolProto$1 = Symbol$2 ? Symbol$2.prototype : void 0, symbolValueOf$1 = symbolProto$1 ? symbolProto$1.valueOf : void 0;
+  var symbolProto$1 = Symbol$1 ? Symbol$1.prototype : void 0, symbolValueOf$1 = symbolProto$1 ? symbolProto$1.valueOf : void 0;
   function cloneSymbol(symbol) {
     return symbolValueOf$1 ? Object(symbolValueOf$1.call(symbol)) : {};
   }
@@ -2048,7 +2017,7 @@ var __async = (__this, __arguments, generator) => {
       case dateTag$2:
         return new Ctor(+object);
       case dataViewTag$2:
-        return cloneDataView(object, isDeep);
+        return cloneDataView(object);
       case float32Tag$1:
       case float64Tag$1:
       case int8Tag$1:
@@ -2073,55 +2042,44 @@ var __async = (__this, __arguments, generator) => {
     }
   }
   function initCloneObject(object) {
-    return typeof object.constructor == "function" && !isPrototype(object) ? baseCreate$1(getPrototype$1(object)) : {};
+    return typeof object.constructor == "function" && !isPrototype(object) ? baseCreate(getPrototype(object)) : {};
   }
   var mapTag$2 = "[object Map]";
   function baseIsMap(value) {
-    return isObjectLike(value) && getTag$1(value) == mapTag$2;
+    return isObjectLike(value) && getTag(value) == mapTag$2;
   }
-  var nodeIsMap = nodeUtil$1 && nodeUtil$1.isMap;
+  var nodeIsMap = nodeUtil && nodeUtil.isMap;
   var isMap = nodeIsMap ? baseUnary(nodeIsMap) : baseIsMap;
-  const isMap$1 = isMap;
   var setTag$2 = "[object Set]";
   function baseIsSet(value) {
-    return isObjectLike(value) && getTag$1(value) == setTag$2;
+    return isObjectLike(value) && getTag(value) == setTag$2;
   }
-  var nodeIsSet = nodeUtil$1 && nodeUtil$1.isSet;
+  var nodeIsSet = nodeUtil && nodeUtil.isSet;
   var isSet = nodeIsSet ? baseUnary(nodeIsSet) : baseIsSet;
-  const isSet$1 = isSet;
-  var CLONE_DEEP_FLAG$1 = 1, CLONE_FLAT_FLAG = 2, CLONE_SYMBOLS_FLAG$1 = 4;
+  var CLONE_DEEP_FLAG$1 = 1;
   var argsTag$1 = "[object Arguments]", arrayTag$1 = "[object Array]", boolTag$1 = "[object Boolean]", dateTag$1 = "[object Date]", errorTag$1 = "[object Error]", funcTag = "[object Function]", genTag = "[object GeneratorFunction]", mapTag$1 = "[object Map]", numberTag$1 = "[object Number]", objectTag$1 = "[object Object]", regexpTag$1 = "[object RegExp]", setTag$1 = "[object Set]", stringTag$1 = "[object String]", symbolTag$1 = "[object Symbol]", weakMapTag = "[object WeakMap]";
   var arrayBufferTag$1 = "[object ArrayBuffer]", dataViewTag$1 = "[object DataView]", float32Tag = "[object Float32Array]", float64Tag = "[object Float64Array]", int8Tag = "[object Int8Array]", int16Tag = "[object Int16Array]", int32Tag = "[object Int32Array]", uint8Tag = "[object Uint8Array]", uint8ClampedTag = "[object Uint8ClampedArray]", uint16Tag = "[object Uint16Array]", uint32Tag = "[object Uint32Array]";
   var cloneableTags = {};
   cloneableTags[argsTag$1] = cloneableTags[arrayTag$1] = cloneableTags[arrayBufferTag$1] = cloneableTags[dataViewTag$1] = cloneableTags[boolTag$1] = cloneableTags[dateTag$1] = cloneableTags[float32Tag] = cloneableTags[float64Tag] = cloneableTags[int8Tag] = cloneableTags[int16Tag] = cloneableTags[int32Tag] = cloneableTags[mapTag$1] = cloneableTags[numberTag$1] = cloneableTags[objectTag$1] = cloneableTags[regexpTag$1] = cloneableTags[setTag$1] = cloneableTags[stringTag$1] = cloneableTags[symbolTag$1] = cloneableTags[uint8Tag] = cloneableTags[uint8ClampedTag] = cloneableTags[uint16Tag] = cloneableTags[uint32Tag] = true;
   cloneableTags[errorTag$1] = cloneableTags[funcTag] = cloneableTags[weakMapTag] = false;
   function baseClone(value, bitmask, customizer, key, object, stack) {
-    var result, isDeep = bitmask & CLONE_DEEP_FLAG$1, isFlat = bitmask & CLONE_FLAT_FLAG, isFull = bitmask & CLONE_SYMBOLS_FLAG$1;
-    if (customizer) {
-      result = object ? customizer(value, key, object, stack) : customizer(value);
-    }
+    var result, isDeep = bitmask & CLONE_DEEP_FLAG$1;
     if (result !== void 0) {
       return result;
     }
     if (!isObject(value)) {
       return value;
     }
-    var isArr = isArray$1(value);
+    var isArr = isArray(value);
     if (isArr) {
       result = initCloneArray(value);
-      if (!isDeep) {
-        return copyArray(value, result);
-      }
     } else {
-      var tag = getTag$1(value), isFunc = tag == funcTag || tag == genTag;
-      if (isBuffer$1(value)) {
+      var tag = getTag(value), isFunc = tag == funcTag || tag == genTag;
+      if (isBuffer(value)) {
         return cloneBuffer(value, isDeep);
       }
       if (tag == objectTag$1 || tag == argsTag$1 || isFunc && !object) {
-        result = isFlat || isFunc ? {} : initCloneObject(value);
-        if (!isDeep) {
-          return isFlat ? copySymbolsIn(value, baseAssignIn(result, value)) : copySymbols(value, baseAssign(result, value));
-        }
+        result = isFunc ? {} : initCloneObject(value);
       } else {
         if (!cloneableTags[tag]) {
           return object ? value : {};
@@ -2135,16 +2093,16 @@ var __async = (__this, __arguments, generator) => {
       return stacked;
     }
     stack.set(value, result);
-    if (isSet$1(value)) {
+    if (isSet(value)) {
       value.forEach(function(subValue) {
         result.add(baseClone(subValue, bitmask, customizer, subValue, value, stack));
       });
-    } else if (isMap$1(value)) {
+    } else if (isMap(value)) {
       value.forEach(function(subValue, key2) {
         result.set(key2, baseClone(subValue, bitmask, customizer, key2, value, stack));
       });
     }
-    var keysFunc = isFull ? isFlat ? getAllKeysIn : getAllKeys : isFlat ? keysIn : keys;
+    var keysFunc = getAllKeys;
     var props = isArr ? void 0 : keysFunc(value);
     arrayEach(props || value, function(subValue, key2) {
       if (props) {
@@ -2168,18 +2126,18 @@ var __async = (__this, __arguments, generator) => {
     return this.__data__.has(value);
   }
   function SetCache(values) {
-    var index2 = -1, length = values == null ? 0 : values.length;
+    var index = -1, length = values == null ? 0 : values.length;
     this.__data__ = new MapCache();
-    while (++index2 < length) {
-      this.add(values[index2]);
+    while (++index < length) {
+      this.add(values[index]);
     }
   }
   SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
   SetCache.prototype.has = setCacheHas;
   function arraySome(array, predicate) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    while (++index2 < length) {
-      if (predicate(array[index2], index2, array)) {
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      if (predicate(array[index], index, array)) {
         return true;
       }
     }
@@ -2199,13 +2157,13 @@ var __async = (__this, __arguments, generator) => {
     if (arrStacked && othStacked) {
       return arrStacked == other && othStacked == array;
     }
-    var index2 = -1, result = true, seen2 = bitmask & COMPARE_UNORDERED_FLAG$3 ? new SetCache() : void 0;
+    var index = -1, result = true, seen2 = bitmask & COMPARE_UNORDERED_FLAG$3 ? new SetCache() : void 0;
     stack.set(array, other);
     stack.set(other, array);
-    while (++index2 < arrLength) {
-      var arrValue = array[index2], othValue = other[index2];
+    while (++index < arrLength) {
+      var arrValue = array[index], othValue = other[index];
       if (customizer) {
-        var compared = isPartial ? customizer(othValue, arrValue, index2, other, array, stack) : customizer(arrValue, othValue, index2, array, other, stack);
+        var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
       }
       if (compared !== void 0) {
         if (compared) {
@@ -2233,23 +2191,23 @@ var __async = (__this, __arguments, generator) => {
     return result;
   }
   function mapToArray(map) {
-    var index2 = -1, result = Array(map.size);
+    var index = -1, result = Array(map.size);
     map.forEach(function(value, key) {
-      result[++index2] = [key, value];
+      result[++index] = [key, value];
     });
     return result;
   }
   function setToArray(set2) {
-    var index2 = -1, result = Array(set2.size);
+    var index = -1, result = Array(set2.size);
     set2.forEach(function(value) {
-      result[++index2] = value;
+      result[++index] = value;
     });
     return result;
   }
   var COMPARE_PARTIAL_FLAG$4 = 1, COMPARE_UNORDERED_FLAG$2 = 2;
   var boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", mapTag = "[object Map]", numberTag = "[object Number]", regexpTag = "[object RegExp]", setTag = "[object Set]", stringTag = "[object String]", symbolTag = "[object Symbol]";
   var arrayBufferTag = "[object ArrayBuffer]", dataViewTag = "[object DataView]";
-  var symbolProto = Symbol$2 ? Symbol$2.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
+  var symbolProto = Symbol$1 ? Symbol$1.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
   function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
     switch (tag) {
       case dataViewTag:
@@ -2259,7 +2217,7 @@ var __async = (__this, __arguments, generator) => {
         object = object.buffer;
         other = other.buffer;
       case arrayBufferTag:
-        if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array$2(object), new Uint8Array$2(other))) {
+        if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array$1(object), new Uint8Array$1(other))) {
           return false;
         }
         return true;
@@ -2304,9 +2262,9 @@ var __async = (__this, __arguments, generator) => {
     if (objLength != othLength && !isPartial) {
       return false;
     }
-    var index2 = objLength;
-    while (index2--) {
-      var key = objProps[index2];
+    var index = objLength;
+    while (index--) {
+      var key = objProps[index];
       if (!(isPartial ? key in other : hasOwnProperty$1.call(other, key))) {
         return false;
       }
@@ -2320,8 +2278,8 @@ var __async = (__this, __arguments, generator) => {
     stack.set(object, other);
     stack.set(other, object);
     var skipCtor = isPartial;
-    while (++index2 < objLength) {
-      key = objProps[index2];
+    while (++index < objLength) {
+      key = objProps[index];
       var objValue = object[key], othValue = other[key];
       if (customizer) {
         var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
@@ -2347,12 +2305,12 @@ var __async = (__this, __arguments, generator) => {
   var objectProto = Object.prototype;
   var hasOwnProperty = objectProto.hasOwnProperty;
   function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
-    var objIsArr = isArray$1(object), othIsArr = isArray$1(other), objTag = objIsArr ? arrayTag : getTag$1(object), othTag = othIsArr ? arrayTag : getTag$1(other);
+    var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
     objTag = objTag == argsTag ? objectTag : objTag;
     othTag = othTag == argsTag ? objectTag : othTag;
     var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
-    if (isSameTag && isBuffer$1(object)) {
-      if (!isBuffer$1(other)) {
+    if (isSameTag && isBuffer(object)) {
+      if (!isBuffer(other)) {
         return false;
       }
       objIsArr = true;
@@ -2360,7 +2318,7 @@ var __async = (__this, __arguments, generator) => {
     }
     if (isSameTag && !objIsObj) {
       stack || (stack = new Stack());
-      return objIsArr || isTypedArray$1(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+      return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
     }
     if (!(bitmask & COMPARE_PARTIAL_FLAG$2)) {
       var objIsWrapped = objIsObj && hasOwnProperty.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty.call(other, "__wrapped__");
@@ -2387,29 +2345,27 @@ var __async = (__this, __arguments, generator) => {
   }
   var COMPARE_PARTIAL_FLAG$1 = 1, COMPARE_UNORDERED_FLAG$1 = 2;
   function baseIsMatch(object, source, matchData, customizer) {
-    var index2 = matchData.length, length = index2, noCustomizer = !customizer;
+    var index = matchData.length, length = index;
     if (object == null) {
       return !length;
     }
     object = Object(object);
-    while (index2--) {
-      var data = matchData[index2];
-      if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+    while (index--) {
+      var data = matchData[index];
+      if (data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
         return false;
       }
     }
-    while (++index2 < length) {
-      data = matchData[index2];
+    while (++index < length) {
+      data = matchData[index];
       var key = data[0], objValue = object[key], srcValue = data[1];
-      if (noCustomizer && data[2]) {
+      if (data[2]) {
         if (objValue === void 0 && !(key in object)) {
           return false;
         }
       } else {
         var stack = new Stack();
-        if (customizer) {
-          var result = customizer(objValue, srcValue, key, object, source, stack);
-        }
+        var result;
         if (!(result === void 0 ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG$1 | COMPARE_UNORDERED_FLAG$1, customizer, stack) : result)) {
           return false;
         }
@@ -2450,19 +2406,19 @@ var __async = (__this, __arguments, generator) => {
   }
   function hasPath(object, path, hasFunc) {
     path = castPath(path, object);
-    var index2 = -1, length = path.length, result = false;
-    while (++index2 < length) {
-      var key = toKey(path[index2]);
+    var index = -1, length = path.length, result = false;
+    while (++index < length) {
+      var key = toKey(path[index]);
       if (!(result = object != null && hasFunc(object, key))) {
         break;
       }
       object = object[key];
     }
-    if (result || ++index2 != length) {
+    if (result || ++index != length) {
       return result;
     }
     length = object == null ? 0 : object.length;
-    return !!length && isLength(length) && isIndex(key, length) && (isArray$1(object) || isArguments$1(object));
+    return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
   }
   function hasIn(object, path) {
     return object != null && hasPath(object, path, baseHasIn);
@@ -2498,15 +2454,15 @@ var __async = (__this, __arguments, generator) => {
       return identity;
     }
     if (typeof value == "object") {
-      return isArray$1(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+      return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
     }
     return property(value);
   }
   function createBaseFor(fromRight) {
     return function(object, iteratee, keysFunc) {
-      var index2 = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
+      var index = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
       while (length--) {
-        var key = props[fromRight ? length : ++index2];
+        var key = props[++index];
         if (iteratee(iterable[key], key, iterable) === false) {
           break;
         }
@@ -2515,9 +2471,8 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var baseFor = createBaseFor();
-  const baseFor$1 = baseFor;
   function baseForOwn(object, iteratee) {
-    return object && baseFor$1(object, iteratee, keys);
+    return object && baseFor(object, iteratee, keys);
   }
   function createBaseEach(eachFunc, fromRight) {
     return function(collection, iteratee) {
@@ -2527,9 +2482,9 @@ var __async = (__this, __arguments, generator) => {
       if (!isArrayLike(collection)) {
         return eachFunc(collection, iteratee);
       }
-      var length = collection.length, index2 = fromRight ? length : -1, iterable = Object(collection);
-      while (fromRight ? index2-- : ++index2 < length) {
-        if (iteratee(iterable[index2], index2, iterable) === false) {
+      var length = collection.length, index = -1, iterable = Object(collection);
+      while (++index < length) {
+        if (iteratee(iterable[index], index, iterable) === false) {
           break;
         }
       }
@@ -2537,11 +2492,9 @@ var __async = (__this, __arguments, generator) => {
     };
   }
   var baseEach = createBaseEach(baseForOwn);
-  const baseEach$1 = baseEach;
   var now = function() {
-    return root$1.Date.now();
+    return root.Date.now();
   };
-  const now$1 = now;
   var FUNC_ERROR_TEXT = "Expected a function";
   var nativeMax$1 = Math.max, nativeMin = Math.min;
   function debounce(func, wait, options) {
@@ -2577,7 +2530,7 @@ var __async = (__this, __arguments, generator) => {
       return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
     }
     function timerExpired() {
-      var time = now$1();
+      var time = now();
       if (shouldInvoke(time)) {
         return trailingEdge(time);
       }
@@ -2599,10 +2552,10 @@ var __async = (__this, __arguments, generator) => {
       lastArgs = lastCallTime = lastThis = timerId = void 0;
     }
     function flush() {
-      return timerId === void 0 ? result : trailingEdge(now$1());
+      return timerId === void 0 ? result : trailingEdge(now());
     }
     function debounced() {
-      var time = now$1(), isInvoking = shouldInvoke(time);
+      var time = now(), isInvoking = shouldInvoke(time);
       lastArgs = arguments;
       lastThis = this;
       lastCallTime = time;
@@ -2654,10 +2607,10 @@ var __async = (__this, __arguments, generator) => {
     var newValue = customizer ? customizer(objValue, srcValue, key + "", object, source, stack) : void 0;
     var isCommon = newValue === void 0;
     if (isCommon) {
-      var isArr = isArray$1(srcValue), isBuff = !isArr && isBuffer$1(srcValue), isTyped = !isArr && !isBuff && isTypedArray$1(srcValue);
+      var isArr = isArray(srcValue), isBuff = !isArr && isBuffer(srcValue), isTyped = !isArr && !isBuff && isTypedArray(srcValue);
       newValue = srcValue;
       if (isArr || isBuff || isTyped) {
-        if (isArray$1(objValue)) {
+        if (isArray(objValue)) {
           newValue = objValue;
         } else if (isArrayLikeObject(objValue)) {
           newValue = copyArray(objValue);
@@ -2670,9 +2623,9 @@ var __async = (__this, __arguments, generator) => {
         } else {
           newValue = [];
         }
-      } else if (isPlainObject(srcValue) || isArguments$1(srcValue)) {
+      } else if (isPlainObject(srcValue) || isArguments(srcValue)) {
         newValue = objValue;
-        if (isArguments$1(objValue)) {
+        if (isArguments(objValue)) {
           newValue = toPlainObject(objValue);
         } else if (!isObject(objValue) || isFunction(objValue)) {
           newValue = initCloneObject(srcValue);
@@ -2692,7 +2645,7 @@ var __async = (__this, __arguments, generator) => {
     if (object === source) {
       return;
     }
-    baseFor$1(source, function(srcValue, key) {
+    baseFor(source, function(srcValue, key) {
       stack || (stack = new Stack());
       if (isObject(srcValue)) {
         baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
@@ -2708,16 +2661,6 @@ var __async = (__this, __arguments, generator) => {
   var mergeWith = createAssigner(function(object, source, srcIndex, customizer) {
     baseMerge(object, source, srcIndex, customizer);
   });
-  const mergeWith$1 = mergeWith;
-  function arrayIncludesWith(array, value, comparator) {
-    var index2 = -1, length = array == null ? 0 : array.length;
-    while (++index2 < length) {
-      if (comparator(value, array[index2])) {
-        return true;
-      }
-    }
-    return false;
-  }
   function last(array) {
     var length = array == null ? 0 : array.length;
     return length ? array[length - 1] : void 0;
@@ -2726,7 +2669,7 @@ var __async = (__this, __arguments, generator) => {
     return typeof value == "function" ? value : identity;
   }
   function forEach(collection, iteratee) {
-    var func = isArray$1(collection) ? arrayEach : baseEach$1;
+    var func = isArray(collection) ? arrayEach : baseEach;
     return func(collection, castFunction(iteratee));
   }
   var htmlEscapes = {
@@ -2737,23 +2680,22 @@ var __async = (__this, __arguments, generator) => {
     "'": "&#39;"
   };
   var escapeHtmlChar = basePropertyOf(htmlEscapes);
-  const escapeHtmlChar$1 = escapeHtmlChar;
   var reUnescapedHtml = /[&<>"']/g, reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
   function escape$1(string) {
     string = toString(string);
-    return string && reHasUnescapedHtml.test(string) ? string.replace(reUnescapedHtml, escapeHtmlChar$1) : string;
+    return string && reHasUnescapedHtml.test(string) ? string.replace(reUnescapedHtml, escapeHtmlChar) : string;
   }
   function baseFilter(collection, predicate) {
     var result = [];
-    baseEach$1(collection, function(value, index2, collection2) {
-      if (predicate(value, index2, collection2)) {
+    baseEach(collection, function(value, index, collection2) {
+      if (predicate(value, index, collection2)) {
         result.push(value);
       }
     });
     return result;
   }
   function filter(collection, predicate) {
-    var func = isArray$1(collection) ? arrayFilter : baseFilter;
+    var func = isArray(collection) ? arrayFilter : baseFilter;
     return func(collection, baseIteratee(predicate));
   }
   function createFind(findIndexFunc) {
@@ -2766,8 +2708,8 @@ var __async = (__this, __arguments, generator) => {
           return iteratee(iterable[key], key, iterable);
         };
       }
-      var index2 = findIndexFunc(collection, predicate, fromIndex);
-      return index2 > -1 ? iterable[iteratee ? collection[index2] : index2] : void 0;
+      var index = findIndexFunc(collection, predicate, fromIndex);
+      return index > -1 ? iterable[iteratee ? collection[index] : index] : void 0;
     };
   }
   var nativeMax = Math.max;
@@ -2776,14 +2718,13 @@ var __async = (__this, __arguments, generator) => {
     if (!length) {
       return -1;
     }
-    var index2 = fromIndex == null ? 0 : toInteger(fromIndex);
-    if (index2 < 0) {
-      index2 = nativeMax(length + index2, 0);
+    var index = fromIndex == null ? 0 : toInteger(fromIndex);
+    if (index < 0) {
+      index = nativeMax(length + index, 0);
     }
-    return baseFindIndex(array, baseIteratee(predicate), index2);
+    return baseFindIndex(array, baseIteratee(predicate), index);
   }
   var find = createFind(findIndex);
-  const find$1 = find;
   function parent(object, path) {
     return path.length < 2 ? object : baseGet(object, baseSlice(path, 0, -1));
   }
@@ -2793,7 +2734,6 @@ var __async = (__this, __arguments, generator) => {
   var merge = createAssigner(function(object, source, srcIndex) {
     baseMerge(object, source, srcIndex);
   });
-  const merge$1 = merge;
   function baseUnset(object, path) {
     path = castPath(path, object);
     object = parent(object, path);
@@ -2804,17 +2744,17 @@ var __async = (__this, __arguments, generator) => {
       return object;
     }
     path = castPath(path, object);
-    var index2 = -1, length = path.length, lastIndex = length - 1, nested = object;
-    while (nested != null && ++index2 < length) {
-      var key = toKey(path[index2]), newValue = value;
+    var index = -1, length = path.length, lastIndex = length - 1, nested = object;
+    while (nested != null && ++index < length) {
+      var key = toKey(path[index]), newValue = value;
       if (key === "__proto__" || key === "constructor" || key === "prototype") {
         return object;
       }
-      if (index2 != lastIndex) {
+      if (index != lastIndex) {
         var objValue = nested[key];
-        newValue = customizer ? customizer(objValue, key, nested) : void 0;
+        newValue = void 0;
         if (newValue === void 0) {
-          newValue = isObject(objValue) ? objValue : isIndex(path[index2 + 1]) ? [] : {};
+          newValue = isObject(objValue) ? objValue : isIndex(path[index + 1]) ? [] : {};
         }
       }
       assignValue(nested, key, newValue);
@@ -2822,28 +2762,16 @@ var __async = (__this, __arguments, generator) => {
     }
     return object;
   }
-  function baseIndexOfWith(array, value, fromIndex, comparator) {
-    var index2 = fromIndex - 1, length = array.length;
-    while (++index2 < length) {
-      if (comparator(array[index2], value)) {
-        return index2;
-      }
-    }
-    return -1;
-  }
   var arrayProto = Array.prototype;
   var splice = arrayProto.splice;
   function basePullAll(array, values, iteratee, comparator) {
-    var indexOf = comparator ? baseIndexOfWith : baseIndexOf, index2 = -1, length = values.length, seen2 = array;
+    var indexOf = baseIndexOf, index = -1, length = values.length, seen2 = array;
     if (array === values) {
       values = copyArray(values);
     }
-    if (iteratee) {
-      seen2 = arrayMap(array, baseUnary(iteratee));
-    }
-    while (++index2 < length) {
-      var fromIndex = 0, value = values[index2], computed = iteratee ? iteratee(value) : value;
-      while ((fromIndex = indexOf(seen2, computed, fromIndex, comparator)) > -1) {
+    while (++index < length) {
+      var fromIndex = 0, value = values[index], computed = value;
+      while ((fromIndex = indexOf(seen2, computed, fromIndex)) > -1) {
         if (seen2 !== array) {
           splice.call(seen2, fromIndex, 1);
         }
@@ -2856,7 +2784,6 @@ var __async = (__this, __arguments, generator) => {
     return array && array.length && values && values.length ? basePullAll(array, values) : array;
   }
   var pull = baseRest(pullAll);
-  const pull$1 = pull;
   function set(object, path, value) {
     return object == null ? object : baseSet(object, path, value);
   }
@@ -2864,15 +2791,11 @@ var __async = (__this, __arguments, generator) => {
   var createSet = !(Set$1 && 1 / setToArray(new Set$1([, -0]))[1] == INFINITY) ? noop : function(values) {
     return new Set$1(values);
   };
-  const createSet$1 = createSet;
   var LARGE_ARRAY_SIZE = 200;
   function baseUniq(array, iteratee, comparator) {
-    var index2 = -1, includes = arrayIncludes, length = array.length, isCommon = true, result = [], seen2 = result;
-    if (comparator) {
-      isCommon = false;
-      includes = arrayIncludesWith;
-    } else if (length >= LARGE_ARRAY_SIZE) {
-      var set2 = iteratee ? null : createSet$1(array);
+    var index = -1, includes = arrayIncludes, length = array.length, isCommon = true, result = [], seen2 = result;
+    if (length >= LARGE_ARRAY_SIZE) {
+      var set2 = createSet(array);
       if (set2) {
         return setToArray(set2);
       }
@@ -2880,21 +2803,18 @@ var __async = (__this, __arguments, generator) => {
       includes = cacheHas;
       seen2 = new SetCache();
     } else {
-      seen2 = iteratee ? [] : result;
+      seen2 = result;
     }
     outer:
-      while (++index2 < length) {
-        var value = array[index2], computed = iteratee ? iteratee(value) : value;
-        value = comparator || value !== 0 ? value : 0;
+      while (++index < length) {
+        var value = array[index], computed = value;
+        value = value !== 0 ? value : 0;
         if (isCommon && computed === computed) {
           var seenIndex = seen2.length;
           while (seenIndex--) {
             if (seen2[seenIndex] === computed) {
               continue outer;
             }
-          }
-          if (iteratee) {
-            seen2.push(computed);
           }
           result.push(value);
         } else if (!includes(seen2, computed, comparator)) {
@@ -2913,20 +2833,19 @@ var __async = (__this, __arguments, generator) => {
     return object == null ? true : baseUnset(object, path);
   }
   function baseUpdate(object, path, updater, customizer) {
-    return baseSet(object, path, updater(baseGet(object, path)), customizer);
+    return baseSet(object, path, updater(baseGet(object, path)));
   }
   function update(object, path, updater) {
     return object == null ? object : baseUpdate(object, path, castFunction(updater));
   }
-  const _sfc_main$1v = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1y = /* @__PURE__ */ Vue.defineComponent({
     __name: "ResponsiveGroup",
     props: {
       modelValue: {},
       child_options: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { useResponsiveDevices: useResponsiveDevices2, usePseudoSelectors: usePseudoSelectors2 } = window.zb.composables;
       const {
         activeResponsiveDeviceInfo: activeResponsiveDeviceInfo2,
@@ -2935,6 +2854,8 @@ var __async = (__this, __arguments, generator) => {
         orderedResponsiveDevices
       } = useResponsiveDevices2();
       const { activePseudoSelector } = usePseudoSelectors2();
+      const props = __props;
+      const emit = __emit;
       const computedChildOptionsSchema = Vue.computed(() => {
         if (activeResponsiveDeviceInfo2.value.id !== "default") {
           return applyPlaceholders(JSON.parse(JSON.stringify(props.child_options)));
@@ -2969,8 +2890,8 @@ var __async = (__this, __arguments, generator) => {
       function getHigherResponsiveDeviceValue(schemaPath, isLayout = false) {
         let newValue = null;
         let oldValue = {};
-        Object.keys(orderedResponsiveDevices.value).forEach((index2) => {
-          const deviceInfo = orderedResponsiveDevices.value[index2];
+        Object.keys(orderedResponsiveDevices.value).forEach((index) => {
+          const deviceInfo = orderedResponsiveDevices.value[index];
           let fullPath;
           if (schemaPath.length > 0) {
             fullPath = `${deviceInfo.id}.${activePseudoSelector.value.id}.${schemaPath}`;
@@ -3029,27 +2950,27 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const ResponsiveGroup_vue_vue_type_style_index_0_lang = "";
   const ResponsiveGroup = {
     id: "responsive_group",
-    component: _sfc_main$1v,
+    component: _sfc_main$1y,
     config: {
       // Can be one of the following
       barebone: true
     }
   };
-  const _hoisted_1$19 = { class: "znpb-column-size" };
-  const _hoisted_2$N = { class: "znpb-column-size-options" };
-  const _hoisted_3$z = ["onClick"];
-  const _sfc_main$1u = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$1a = { class: "znpb-column-size" };
+  const _hoisted_2$K = { class: "znpb-column-size-options" };
+  const _hoisted_3$y = ["onClick"];
+  const _sfc_main$1x = /* @__PURE__ */ Vue.defineComponent({
     __name: "ColumnSize",
     props: {
       options: {},
       modelValue: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const valueModel = Vue.computed({
         get() {
           return props.modelValue;
@@ -3059,52 +2980,54 @@ var __async = (__this, __arguments, generator) => {
         }
       });
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$19, [
-          Vue.createElementVNode("div", _hoisted_2$N, [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(_ctx.options, (option, index2) => {
-              return Vue.openBlock(), Vue.createElementBlock("div", {
-                key: index2,
-                class: Vue.normalizeClass(["znpb-column-size__option", {
-                  "znpb-column-size__option--active": option.id === valueModel.value
-                }]),
-                style: Vue.normalizeStyle({ flex: option.name === "auto" ? `0 0 ${100}%` : 1 }),
-                onClick: ($event) => valueModel.value = option.id
-              }, Vue.toDisplayString(option.name), 15, _hoisted_3$z);
-            }), 128))
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$1a, [
+          Vue.createElementVNode("div", _hoisted_2$K, [
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(__props.options, (option, index) => {
+                return Vue.openBlock(), Vue.createElementBlock("div", {
+                  key: index,
+                  class: Vue.normalizeClass(["znpb-column-size__option", {
+                    "znpb-column-size__option--active": option.id === valueModel.value
+                  }]),
+                  style: Vue.normalizeStyle({ flex: option.name === "auto" ? `0 0 ${100}%` : 1 }),
+                  onClick: ($event) => valueModel.value = option.id
+                }, Vue.toDisplayString(option.name), 15, _hoisted_3$y);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ])
         ]);
       };
     }
   });
-  const ColumnSize_vue_vue_type_style_index_0_lang = "";
   const ColumnSize = {
     id: "column_size",
-    component: _sfc_main$1u
+    component: _sfc_main$1x
   };
   var classCallCheck = function(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
     }
   };
-  var createClass = function() {
+  var createClass = /* @__PURE__ */ (function() {
     function defineProperties(target, props) {
       for (var i = 0; i < props.length; i++) {
         var descriptor = props[i];
         descriptor.enumerable = descriptor.enumerable || false;
         descriptor.configurable = true;
-        if ("value" in descriptor)
-          descriptor.writable = true;
+        if ("value" in descriptor) descriptor.writable = true;
         Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
     return function(Constructor, protoProps, staticProps) {
-      if (protoProps)
-        defineProperties(Constructor.prototype, protoProps);
-      if (staticProps)
-        defineProperties(Constructor, staticProps);
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
       return Constructor;
     };
-  }();
+  })();
   var inherits = function(subClass, superClass) {
     if (typeof superClass !== "function" && superClass !== null) {
       throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
@@ -3117,8 +3040,7 @@ var __async = (__this, __arguments, generator) => {
         configurable: true
       }
     });
-    if (superClass)
-      Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
   };
   var possibleConstructorReturn = function(self2, call) {
     if (!self2) {
@@ -3126,7 +3048,7 @@ var __async = (__this, __arguments, generator) => {
     }
     return call && (typeof call === "object" || typeof call === "function") ? call : self2;
   };
-  var TypeRegistry = function() {
+  var TypeRegistry = (function() {
     function TypeRegistry2() {
       var initial = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
       classCallCheck(this, TypeRegistry2);
@@ -3155,8 +3077,8 @@ var __async = (__this, __arguments, generator) => {
       }
     }]);
     return TypeRegistry2;
-  }();
-  var KeyExtractors = function(_TypeRegistry) {
+  })();
+  var KeyExtractors = (function(_TypeRegistry) {
     inherits(KeyExtractors2, _TypeRegistry);
     function KeyExtractors2(options) {
       classCallCheck(this, KeyExtractors2);
@@ -3167,8 +3089,8 @@ var __async = (__this, __arguments, generator) => {
       return _this;
     }
     return KeyExtractors2;
-  }(TypeRegistry);
-  var InputReaders = function(_TypeRegistry) {
+  })(TypeRegistry);
+  var InputReaders = (function(_TypeRegistry) {
     inherits(InputReaders2, _TypeRegistry);
     function InputReaders2(options) {
       classCallCheck(this, InputReaders2);
@@ -3185,22 +3107,22 @@ var __async = (__this, __arguments, generator) => {
       return _this;
     }
     return InputReaders2;
-  }(TypeRegistry);
+  })(TypeRegistry);
   function getSelectValue(elem) {
     var value, option, i;
     var options = elem.options;
-    var index2 = elem.selectedIndex;
+    var index = elem.selectedIndex;
     var one = elem.type === "select-one";
     var values = one ? null : [];
-    var max = one ? index2 + 1 : options.length;
-    if (index2 < 0) {
+    var max = one ? index + 1 : options.length;
+    if (index < 0) {
       i = max;
     } else {
-      i = one ? index2 : 0;
+      i = one ? index : 0;
     }
     for (; i < max; i++) {
       option = options[i];
-      if ((option.selected || i === index2) && // Don't return options that are disabled or in a disabled optgroup
+      if ((option.selected || i === index) && // Don't return options that are disabled or in a disabled optgroup
       !option.disabled && !(option.parentNode.disabled && option.parentNode.tagName.toLowerCase() === "optgroup")) {
         value = option.value;
         if (one) {
@@ -3211,7 +3133,7 @@ var __async = (__this, __arguments, generator) => {
     }
     return values;
   }
-  var KeyAssignmentValidators = function(_TypeRegistry) {
+  var KeyAssignmentValidators = (function(_TypeRegistry) {
     inherits(KeyAssignmentValidators2, _TypeRegistry);
     function KeyAssignmentValidators2(options) {
       classCallCheck(this, KeyAssignmentValidators2);
@@ -3225,7 +3147,7 @@ var __async = (__this, __arguments, generator) => {
       return _this;
     }
     return KeyAssignmentValidators2;
-  }(TypeRegistry);
+  })(TypeRegistry);
   function keySplitter(key) {
     var matches = key.match(/[^[\]]+/g);
     var lastKey = void 0;
@@ -3469,7 +3391,7 @@ var __async = (__this, __arguments, generator) => {
     },
     getters: {
       getVisibleElements: (state) => state.elementsDefinition.filter((element) => element.show_in_ui),
-      getElementDefinition: (state) => (elementType) => find$1(state.elementsDefinition, { element_type: elementType }) || new ElementType({
+      getElementDefinition: (state) => (elementType) => find(state.elementsDefinition, { element_type: elementType }) || new ElementType({
         element_type: "invalid",
         name: i18n__namespace.__("Invalid Element", "zionbuilder")
       }),
@@ -3485,7 +3407,7 @@ var __async = (__this, __arguments, generator) => {
           return element.thumb ? element.thumb : null;
         };
       },
-      getElementTypeCategory: (state) => (id) => find$1(state.categories, { id })
+      getElementTypeCategory: (state) => (id) => find(state.categories, { id })
     },
     actions: {
       setCategories(categories) {
@@ -3509,9 +3431,9 @@ var __async = (__this, __arguments, generator) => {
       }
     }
   });
-  const { generateUID: generateUID$2 } = window.zb.utils;
+  const { generateUID: generateUID$3 } = window.zb.utils;
   const regenerateUIDs = (element) => {
-    const uid = generateUID$2();
+    const uid = generateUID$3();
     element.uid = uid;
     if (Array.isArray(element.content)) {
       element.content = element.content.map((element2) => {
@@ -3754,8 +3676,7 @@ var __async = (__this, __arguments, generator) => {
             filtersGroup += `${property2}(${value}deg) `;
           } else if (property2 === "blur") {
             filtersGroup += `${property2}(${value}px) `;
-          } else
-            filtersGroup += `${property2}(${value}%) `;
+          } else filtersGroup += `${property2}(${value}%) `;
         } else if (typeof specialValues[property2] === "function") {
           combineStyles += specialValues[property2](value);
         } else {
@@ -4059,7 +3980,7 @@ var __async = (__this, __arguments, generator) => {
     serverRequest
   }, Symbol.toStringTag, { value: "Module" }));
   const { applyFilters: applyFilters$4 } = window.zb.hooks;
-  const { generateUID: generateUID$1 } = window.zb.utils;
+  const { generateUID: generateUID$2 } = window.zb.utils;
   class ZionElement {
     constructor(elementData, parent2) {
       // Element data for DB
@@ -4089,7 +4010,7 @@ var __async = (__this, __arguments, generator) => {
       const parsedElement = Object.assign(
         {},
         {
-          uid: generateUID$1(),
+          uid: generateUID$2(),
           content: [],
           options: {}
         },
@@ -4230,14 +4151,14 @@ var __async = (__this, __arguments, generator) => {
     }
     replaceChild(oldElement, newElement) {
       var _a;
-      const index2 = this.content.indexOf(oldElement.uid);
+      const index = this.content.indexOf(oldElement.uid);
       if (newElement.parent) {
-        pull$1((_a = newElement.parent) == null ? void 0 : _a.content, newElement.uid);
+        pull((_a = newElement.parent) == null ? void 0 : _a.content, newElement.uid);
       }
       newElement.parentUID = this.uid;
-      this.content.splice(index2, 1, newElement.uid);
+      this.content.splice(index, 1, newElement.uid);
     }
-    addChild(element, index2 = -1) {
+    addChild(element, index = -1) {
       let elementInstance = null;
       if (element instanceof ZionElement) {
         elementInstance = element;
@@ -4245,29 +4166,29 @@ var __async = (__this, __arguments, generator) => {
         const contentStore = useContentStore();
         elementInstance = contentStore.registerElement(element, this.uid);
       }
-      index2 = index2 === -1 ? this.content.length : index2;
+      index = index === -1 ? this.content.length : index;
       elementInstance.parentUID = this.uid;
-      this.content.splice(index2, 0, elementInstance.uid);
+      this.content.splice(index, 0, elementInstance.uid);
       return elementInstance;
     }
-    move(newParent, index2 = -1) {
+    move(newParent, index = -1) {
       if (!this.parent) {
         return;
       }
       this.parent.removeChild(this);
-      newParent.addChild(this, index2);
+      newParent.addChild(this, index);
     }
-    addChildren(elements, index2 = -1) {
+    addChildren(elements, index = -1) {
       const addedElements = [];
       forEach(elements, (element) => {
-        addedElements.push(this.addChild(element, index2));
-        index2 = index2 !== -1 ? index2 + 1 : index2;
+        addedElements.push(this.addChild(element, index));
+        index = index !== -1 ? index + 1 : index;
       });
       return addedElements;
     }
     removeChild(element) {
-      const index2 = this.content.indexOf(element.uid);
-      this.content.splice(index2, 1);
+      const index = this.content.indexOf(element.uid);
+      this.content.splice(index, 1);
     }
     getClone() {
       const elementAsJson = this.toJSON();
@@ -4375,7 +4296,7 @@ var __async = (__this, __arguments, generator) => {
         const element = this.getElement(elementUID);
         if (element) {
           if (element.parent) {
-            pull$1(element.parent.content, element.uid);
+            pull(element.parent.content, element.uid);
           }
           if (element.content) {
             [...element.content].forEach((childUID) => this.deleteElement(childUID));
@@ -4385,7 +4306,7 @@ var __async = (__this, __arguments, generator) => {
             UIStore.unEditElement();
             UIStore.unHighlightElement(element);
           }
-          pull$1(this.elements, element);
+          pull(this.elements, element);
         } else {
           console.log("element with uid not found");
         }
@@ -4411,20 +4332,20 @@ var __async = (__this, __arguments, generator) => {
         const newElement = this.addElement(elementClone, element.parentUID, element.indexInParent + 1);
         return newElement;
       },
-      addElement(elementConfig, parentUID, index2) {
+      addElement(elementConfig, parentUID, index) {
         const parent2 = this.getElement(parentUID);
         if (!parent2) {
           return null;
         }
         const newElement = this.registerElement(elementConfig, parentUID);
-        parent2.content.splice(index2, 0, newElement.uid);
+        parent2.content.splice(index, 0, newElement.uid);
         return newElement;
       },
-      addElements(elements, parent2, index2 = -1) {
+      addElements(elements, parent2, index = -1) {
         const addedElementsUIDs = [];
         elements.forEach((element) => {
-          addedElementsUIDs.push(this.addElement(element, parent2, index2));
-          index2 = index2 !== -1 ? index2 + 1 : index2;
+          addedElementsUIDs.push(this.addElement(element, parent2, index));
+          index = index !== -1 ? index + 1 : index;
         });
         return addedElementsUIDs;
       }
@@ -4724,10 +4645,10 @@ var __async = (__this, __arguments, generator) => {
             topOffset = top;
           }
         }
-        let index2 = -1;
+        let index = -1;
         if (placement === "next" && element.parent) {
           const elementUID = element.uid;
-          index2 = element.parent.content.indexOf(elementUID) + 1;
+          index = element.parent.content.indexOf(elementUID) + 1;
           element = element.parent;
         }
         this.activeAddElementPopup = {
@@ -4743,7 +4664,7 @@ var __async = (__this, __arguments, generator) => {
               };
             }
           },
-          index: index2,
+          index,
           key: Math.random()
         };
       },
@@ -4767,7 +4688,7 @@ var __async = (__this, __arguments, generator) => {
       }
     }
   });
-  const { generateUID } = window.zb.utils;
+  const { generateUID: generateUID$1 } = window.zb.utils;
   const useCSSClassesStore = pinia.defineStore("CSSClasses", {
     state: () => {
       return {
@@ -4818,7 +4739,7 @@ var __async = (__this, __arguments, generator) => {
     actions: {
       addCSSClass(config) {
         const classToAdd = __spreadValues({}, config);
-        classToAdd.uid = config.uid || generateUID();
+        classToAdd.uid = config.uid || generateUID$1();
         this.CSSClasses.push(classToAdd);
         return classToAdd;
       },
@@ -4849,7 +4770,7 @@ var __async = (__this, __arguments, generator) => {
       },
       pasteClassStyles(classId) {
         const oldStyles = this.getStylesConfig(classId);
-        const mergedStyles = merge$1(oldStyles || {}, cloneDeep(this.copiedStyles));
+        const mergedStyles = merge(oldStyles || {}, cloneDeep(this.copiedStyles));
         const editedClass = this.getClassConfig(classId);
         if (!editedClass) {
           console.warn("could not find class with config ", { classId, newValues });
@@ -4957,6 +4878,899 @@ var __async = (__this, __arguments, generator) => {
       }
     }
   });
+  var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
+  function getAugmentedNamespace(n) {
+    if (Object.prototype.hasOwnProperty.call(n, "__esModule")) return n;
+    var f = n.default;
+    if (typeof f == "function") {
+      var a = function a2() {
+        var isInstance = false;
+        try {
+          isInstance = this instanceof a2;
+        } catch (e) {
+        }
+        if (isInstance) {
+          return Reflect.construct(f, arguments, this.constructor);
+        }
+        return f.apply(this, arguments);
+      };
+      a.prototype = f.prototype;
+    } else a = {};
+    Object.defineProperty(a, "__esModule", { value: true });
+    Object.keys(n).forEach(function(k) {
+      var d = Object.getOwnPropertyDescriptor(n, k);
+      Object.defineProperty(a, k, d.get ? d : {
+        enumerable: true,
+        get: function() {
+          return n[k];
+        }
+      });
+    });
+    return a;
+  }
+  var md5$1 = { exports: {} };
+  function commonjsRequire(path) {
+    throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
+  }
+  var core$1 = { exports: {} };
+  const __viteBrowserExternal = {};
+  const __viteBrowserExternal$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    default: __viteBrowserExternal
+  }, Symbol.toStringTag, { value: "Module" }));
+  const require$$0 = /* @__PURE__ */ getAugmentedNamespace(__viteBrowserExternal$1);
+  var core = core$1.exports;
+  var hasRequiredCore;
+  function requireCore() {
+    if (hasRequiredCore) return core$1.exports;
+    hasRequiredCore = 1;
+    (function(module2, exports2) {
+      (function(root2, factory) {
+        {
+          module2.exports = factory();
+        }
+      })(core, function() {
+        var CryptoJS = CryptoJS || (function(Math2, undefined$1) {
+          var crypto;
+          if (typeof window !== "undefined" && window.crypto) {
+            crypto = window.crypto;
+          }
+          if (typeof self !== "undefined" && self.crypto) {
+            crypto = self.crypto;
+          }
+          if (typeof globalThis !== "undefined" && globalThis.crypto) {
+            crypto = globalThis.crypto;
+          }
+          if (!crypto && typeof window !== "undefined" && window.msCrypto) {
+            crypto = window.msCrypto;
+          }
+          if (!crypto && typeof commonjsGlobal !== "undefined" && commonjsGlobal.crypto) {
+            crypto = commonjsGlobal.crypto;
+          }
+          if (!crypto && typeof commonjsRequire === "function") {
+            try {
+              crypto = require$$0;
+            } catch (err) {
+            }
+          }
+          var cryptoSecureRandomInt = function() {
+            if (crypto) {
+              if (typeof crypto.getRandomValues === "function") {
+                try {
+                  return crypto.getRandomValues(new Uint32Array(1))[0];
+                } catch (err) {
+                }
+              }
+              if (typeof crypto.randomBytes === "function") {
+                try {
+                  return crypto.randomBytes(4).readInt32LE();
+                } catch (err) {
+                }
+              }
+            }
+            throw new Error("Native crypto module could not be used to get secure random number.");
+          };
+          var create = Object.create || /* @__PURE__ */ (function() {
+            function F() {
+            }
+            return function(obj) {
+              var subtype;
+              F.prototype = obj;
+              subtype = new F();
+              F.prototype = null;
+              return subtype;
+            };
+          })();
+          var C = {};
+          var C_lib = C.lib = {};
+          var Base = C_lib.Base = /* @__PURE__ */ (function() {
+            return {
+              /**
+               * Creates a new object that inherits from this object.
+               *
+               * @param {Object} overrides Properties to copy into the new object.
+               *
+               * @return {Object} The new object.
+               *
+               * @static
+               *
+               * @example
+               *
+               *     var MyType = CryptoJS.lib.Base.extend({
+               *         field: 'value',
+               *
+               *         method: function () {
+               *         }
+               *     });
+               */
+              extend: function(overrides) {
+                var subtype = create(this);
+                if (overrides) {
+                  subtype.mixIn(overrides);
+                }
+                if (!subtype.hasOwnProperty("init") || this.init === subtype.init) {
+                  subtype.init = function() {
+                    subtype.$super.init.apply(this, arguments);
+                  };
+                }
+                subtype.init.prototype = subtype;
+                subtype.$super = this;
+                return subtype;
+              },
+              /**
+               * Extends this object and runs the init method.
+               * Arguments to create() will be passed to init().
+               *
+               * @return {Object} The new object.
+               *
+               * @static
+               *
+               * @example
+               *
+               *     var instance = MyType.create();
+               */
+              create: function() {
+                var instance = this.extend();
+                instance.init.apply(instance, arguments);
+                return instance;
+              },
+              /**
+               * Initializes a newly created object.
+               * Override this method to add some logic when your objects are created.
+               *
+               * @example
+               *
+               *     var MyType = CryptoJS.lib.Base.extend({
+               *         init: function () {
+               *             // ...
+               *         }
+               *     });
+               */
+              init: function() {
+              },
+              /**
+               * Copies properties into this object.
+               *
+               * @param {Object} properties The properties to mix in.
+               *
+               * @example
+               *
+               *     MyType.mixIn({
+               *         field: 'value'
+               *     });
+               */
+              mixIn: function(properties) {
+                for (var propertyName in properties) {
+                  if (properties.hasOwnProperty(propertyName)) {
+                    this[propertyName] = properties[propertyName];
+                  }
+                }
+                if (properties.hasOwnProperty("toString")) {
+                  this.toString = properties.toString;
+                }
+              },
+              /**
+               * Creates a copy of this object.
+               *
+               * @return {Object} The clone.
+               *
+               * @example
+               *
+               *     var clone = instance.clone();
+               */
+              clone: function() {
+                return this.init.prototype.extend(this);
+              }
+            };
+          })();
+          var WordArray = C_lib.WordArray = Base.extend({
+            /**
+             * Initializes a newly created word array.
+             *
+             * @param {Array} words (Optional) An array of 32-bit words.
+             * @param {number} sigBytes (Optional) The number of significant bytes in the words.
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.lib.WordArray.create();
+             *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607]);
+             *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607], 6);
+             */
+            init: function(words2, sigBytes) {
+              words2 = this.words = words2 || [];
+              if (sigBytes != undefined$1) {
+                this.sigBytes = sigBytes;
+              } else {
+                this.sigBytes = words2.length * 4;
+              }
+            },
+            /**
+             * Converts this word array to a string.
+             *
+             * @param {Encoder} encoder (Optional) The encoding strategy to use. Default: CryptoJS.enc.Hex
+             *
+             * @return {string} The stringified word array.
+             *
+             * @example
+             *
+             *     var string = wordArray + '';
+             *     var string = wordArray.toString();
+             *     var string = wordArray.toString(CryptoJS.enc.Utf8);
+             */
+            toString: function(encoder) {
+              return (encoder || Hex).stringify(this);
+            },
+            /**
+             * Concatenates a word array to this word array.
+             *
+             * @param {WordArray} wordArray The word array to append.
+             *
+             * @return {WordArray} This word array.
+             *
+             * @example
+             *
+             *     wordArray1.concat(wordArray2);
+             */
+            concat: function(wordArray) {
+              var thisWords = this.words;
+              var thatWords = wordArray.words;
+              var thisSigBytes = this.sigBytes;
+              var thatSigBytes = wordArray.sigBytes;
+              this.clamp();
+              if (thisSigBytes % 4) {
+                for (var i = 0; i < thatSigBytes; i++) {
+                  var thatByte = thatWords[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                  thisWords[thisSigBytes + i >>> 2] |= thatByte << 24 - (thisSigBytes + i) % 4 * 8;
+                }
+              } else {
+                for (var j = 0; j < thatSigBytes; j += 4) {
+                  thisWords[thisSigBytes + j >>> 2] = thatWords[j >>> 2];
+                }
+              }
+              this.sigBytes += thatSigBytes;
+              return this;
+            },
+            /**
+             * Removes insignificant bits.
+             *
+             * @example
+             *
+             *     wordArray.clamp();
+             */
+            clamp: function() {
+              var words2 = this.words;
+              var sigBytes = this.sigBytes;
+              words2[sigBytes >>> 2] &= 4294967295 << 32 - sigBytes % 4 * 8;
+              words2.length = Math2.ceil(sigBytes / 4);
+            },
+            /**
+             * Creates a copy of this word array.
+             *
+             * @return {WordArray} The clone.
+             *
+             * @example
+             *
+             *     var clone = wordArray.clone();
+             */
+            clone: function() {
+              var clone = Base.clone.call(this);
+              clone.words = this.words.slice(0);
+              return clone;
+            },
+            /**
+             * Creates a word array filled with random bytes.
+             *
+             * @param {number} nBytes The number of random bytes to generate.
+             *
+             * @return {WordArray} The random word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.lib.WordArray.random(16);
+             */
+            random: function(nBytes) {
+              var words2 = [];
+              for (var i = 0; i < nBytes; i += 4) {
+                words2.push(cryptoSecureRandomInt());
+              }
+              return new WordArray.init(words2, nBytes);
+            }
+          });
+          var C_enc = C.enc = {};
+          var Hex = C_enc.Hex = {
+            /**
+             * Converts a word array to a hex string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The hex string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var hexString = CryptoJS.enc.Hex.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              var words2 = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var hexChars = [];
+              for (var i = 0; i < sigBytes; i++) {
+                var bite = words2[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                hexChars.push((bite >>> 4).toString(16));
+                hexChars.push((bite & 15).toString(16));
+              }
+              return hexChars.join("");
+            },
+            /**
+             * Converts a hex string to a word array.
+             *
+             * @param {string} hexStr The hex string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Hex.parse(hexString);
+             */
+            parse: function(hexStr) {
+              var hexStrLength = hexStr.length;
+              var words2 = [];
+              for (var i = 0; i < hexStrLength; i += 2) {
+                words2[i >>> 3] |= parseInt(hexStr.substr(i, 2), 16) << 24 - i % 8 * 4;
+              }
+              return new WordArray.init(words2, hexStrLength / 2);
+            }
+          };
+          var Latin1 = C_enc.Latin1 = {
+            /**
+             * Converts a word array to a Latin1 string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The Latin1 string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var latin1String = CryptoJS.enc.Latin1.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              var words2 = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var latin1Chars = [];
+              for (var i = 0; i < sigBytes; i++) {
+                var bite = words2[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                latin1Chars.push(String.fromCharCode(bite));
+              }
+              return latin1Chars.join("");
+            },
+            /**
+             * Converts a Latin1 string to a word array.
+             *
+             * @param {string} latin1Str The Latin1 string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Latin1.parse(latin1String);
+             */
+            parse: function(latin1Str) {
+              var latin1StrLength = latin1Str.length;
+              var words2 = [];
+              for (var i = 0; i < latin1StrLength; i++) {
+                words2[i >>> 2] |= (latin1Str.charCodeAt(i) & 255) << 24 - i % 4 * 8;
+              }
+              return new WordArray.init(words2, latin1StrLength);
+            }
+          };
+          var Utf8 = C_enc.Utf8 = {
+            /**
+             * Converts a word array to a UTF-8 string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The UTF-8 string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var utf8String = CryptoJS.enc.Utf8.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              try {
+                return decodeURIComponent(escape(Latin1.stringify(wordArray)));
+              } catch (e) {
+                throw new Error("Malformed UTF-8 data");
+              }
+            },
+            /**
+             * Converts a UTF-8 string to a word array.
+             *
+             * @param {string} utf8Str The UTF-8 string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Utf8.parse(utf8String);
+             */
+            parse: function(utf8Str) {
+              return Latin1.parse(unescape(encodeURIComponent(utf8Str)));
+            }
+          };
+          var BufferedBlockAlgorithm = C_lib.BufferedBlockAlgorithm = Base.extend({
+            /**
+             * Resets this block algorithm's data buffer to its initial state.
+             *
+             * @example
+             *
+             *     bufferedBlockAlgorithm.reset();
+             */
+            reset: function() {
+              this._data = new WordArray.init();
+              this._nDataBytes = 0;
+            },
+            /**
+             * Adds new data to this block algorithm's buffer.
+             *
+             * @param {WordArray|string} data The data to append. Strings are converted to a WordArray using UTF-8.
+             *
+             * @example
+             *
+             *     bufferedBlockAlgorithm._append('data');
+             *     bufferedBlockAlgorithm._append(wordArray);
+             */
+            _append: function(data) {
+              if (typeof data == "string") {
+                data = Utf8.parse(data);
+              }
+              this._data.concat(data);
+              this._nDataBytes += data.sigBytes;
+            },
+            /**
+             * Processes available data blocks.
+             *
+             * This method invokes _doProcessBlock(offset), which must be implemented by a concrete subtype.
+             *
+             * @param {boolean} doFlush Whether all blocks and partial blocks should be processed.
+             *
+             * @return {WordArray} The processed data.
+             *
+             * @example
+             *
+             *     var processedData = bufferedBlockAlgorithm._process();
+             *     var processedData = bufferedBlockAlgorithm._process(!!'flush');
+             */
+            _process: function(doFlush) {
+              var processedWords;
+              var data = this._data;
+              var dataWords = data.words;
+              var dataSigBytes = data.sigBytes;
+              var blockSize = this.blockSize;
+              var blockSizeBytes = blockSize * 4;
+              var nBlocksReady = dataSigBytes / blockSizeBytes;
+              if (doFlush) {
+                nBlocksReady = Math2.ceil(nBlocksReady);
+              } else {
+                nBlocksReady = Math2.max((nBlocksReady | 0) - this._minBufferSize, 0);
+              }
+              var nWordsReady = nBlocksReady * blockSize;
+              var nBytesReady = Math2.min(nWordsReady * 4, dataSigBytes);
+              if (nWordsReady) {
+                for (var offset = 0; offset < nWordsReady; offset += blockSize) {
+                  this._doProcessBlock(dataWords, offset);
+                }
+                processedWords = dataWords.splice(0, nWordsReady);
+                data.sigBytes -= nBytesReady;
+              }
+              return new WordArray.init(processedWords, nBytesReady);
+            },
+            /**
+             * Creates a copy of this object.
+             *
+             * @return {Object} The clone.
+             *
+             * @example
+             *
+             *     var clone = bufferedBlockAlgorithm.clone();
+             */
+            clone: function() {
+              var clone = Base.clone.call(this);
+              clone._data = this._data.clone();
+              return clone;
+            },
+            _minBufferSize: 0
+          });
+          C_lib.Hasher = BufferedBlockAlgorithm.extend({
+            /**
+             * Configuration options.
+             */
+            cfg: Base.extend(),
+            /**
+             * Initializes a newly created hasher.
+             *
+             * @param {Object} cfg (Optional) The configuration options to use for this hash computation.
+             *
+             * @example
+             *
+             *     var hasher = CryptoJS.algo.SHA256.create();
+             */
+            init: function(cfg) {
+              this.cfg = this.cfg.extend(cfg);
+              this.reset();
+            },
+            /**
+             * Resets this hasher to its initial state.
+             *
+             * @example
+             *
+             *     hasher.reset();
+             */
+            reset: function() {
+              BufferedBlockAlgorithm.reset.call(this);
+              this._doReset();
+            },
+            /**
+             * Updates this hasher with a message.
+             *
+             * @param {WordArray|string} messageUpdate The message to append.
+             *
+             * @return {Hasher} This hasher.
+             *
+             * @example
+             *
+             *     hasher.update('message');
+             *     hasher.update(wordArray);
+             */
+            update: function(messageUpdate) {
+              this._append(messageUpdate);
+              this._process();
+              return this;
+            },
+            /**
+             * Finalizes the hash computation.
+             * Note that the finalize operation is effectively a destructive, read-once operation.
+             *
+             * @param {WordArray|string} messageUpdate (Optional) A final message update.
+             *
+             * @return {WordArray} The hash.
+             *
+             * @example
+             *
+             *     var hash = hasher.finalize();
+             *     var hash = hasher.finalize('message');
+             *     var hash = hasher.finalize(wordArray);
+             */
+            finalize: function(messageUpdate) {
+              if (messageUpdate) {
+                this._append(messageUpdate);
+              }
+              var hash = this._doFinalize();
+              return hash;
+            },
+            blockSize: 512 / 32,
+            /**
+             * Creates a shortcut function to a hasher's object interface.
+             *
+             * @param {Hasher} hasher The hasher to create a helper for.
+             *
+             * @return {Function} The shortcut function.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var SHA256 = CryptoJS.lib.Hasher._createHelper(CryptoJS.algo.SHA256);
+             */
+            _createHelper: function(hasher) {
+              return function(message, cfg) {
+                return new hasher.init(cfg).finalize(message);
+              };
+            },
+            /**
+             * Creates a shortcut function to the HMAC's object interface.
+             *
+             * @param {Hasher} hasher The hasher to use in this HMAC helper.
+             *
+             * @return {Function} The shortcut function.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var HmacSHA256 = CryptoJS.lib.Hasher._createHmacHelper(CryptoJS.algo.SHA256);
+             */
+            _createHmacHelper: function(hasher) {
+              return function(message, key) {
+                return new C_algo.HMAC.init(hasher, key).finalize(message);
+              };
+            }
+          });
+          var C_algo = C.algo = {};
+          return C;
+        })(Math);
+        return CryptoJS;
+      });
+    })(core$1);
+    return core$1.exports;
+  }
+  var md5 = md5$1.exports;
+  var hasRequiredMd5;
+  function requireMd5() {
+    if (hasRequiredMd5) return md5$1.exports;
+    hasRequiredMd5 = 1;
+    (function(module2, exports2) {
+      (function(root2, factory) {
+        {
+          module2.exports = factory(requireCore());
+        }
+      })(md5, function(CryptoJS) {
+        (function(Math2) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var Hasher = C_lib.Hasher;
+          var C_algo = C.algo;
+          var T = [];
+          (function() {
+            for (var i = 0; i < 64; i++) {
+              T[i] = Math2.abs(Math2.sin(i + 1)) * 4294967296 | 0;
+            }
+          })();
+          var MD5 = C_algo.MD5 = Hasher.extend({
+            _doReset: function() {
+              this._hash = new WordArray.init([
+                1732584193,
+                4023233417,
+                2562383102,
+                271733878
+              ]);
+            },
+            _doProcessBlock: function(M, offset) {
+              for (var i = 0; i < 16; i++) {
+                var offset_i = offset + i;
+                var M_offset_i = M[offset_i];
+                M[offset_i] = (M_offset_i << 8 | M_offset_i >>> 24) & 16711935 | (M_offset_i << 24 | M_offset_i >>> 8) & 4278255360;
+              }
+              var H = this._hash.words;
+              var M_offset_0 = M[offset + 0];
+              var M_offset_1 = M[offset + 1];
+              var M_offset_2 = M[offset + 2];
+              var M_offset_3 = M[offset + 3];
+              var M_offset_4 = M[offset + 4];
+              var M_offset_5 = M[offset + 5];
+              var M_offset_6 = M[offset + 6];
+              var M_offset_7 = M[offset + 7];
+              var M_offset_8 = M[offset + 8];
+              var M_offset_9 = M[offset + 9];
+              var M_offset_10 = M[offset + 10];
+              var M_offset_11 = M[offset + 11];
+              var M_offset_12 = M[offset + 12];
+              var M_offset_13 = M[offset + 13];
+              var M_offset_14 = M[offset + 14];
+              var M_offset_15 = M[offset + 15];
+              var a = H[0];
+              var b = H[1];
+              var c = H[2];
+              var d = H[3];
+              a = FF(a, b, c, d, M_offset_0, 7, T[0]);
+              d = FF(d, a, b, c, M_offset_1, 12, T[1]);
+              c = FF(c, d, a, b, M_offset_2, 17, T[2]);
+              b = FF(b, c, d, a, M_offset_3, 22, T[3]);
+              a = FF(a, b, c, d, M_offset_4, 7, T[4]);
+              d = FF(d, a, b, c, M_offset_5, 12, T[5]);
+              c = FF(c, d, a, b, M_offset_6, 17, T[6]);
+              b = FF(b, c, d, a, M_offset_7, 22, T[7]);
+              a = FF(a, b, c, d, M_offset_8, 7, T[8]);
+              d = FF(d, a, b, c, M_offset_9, 12, T[9]);
+              c = FF(c, d, a, b, M_offset_10, 17, T[10]);
+              b = FF(b, c, d, a, M_offset_11, 22, T[11]);
+              a = FF(a, b, c, d, M_offset_12, 7, T[12]);
+              d = FF(d, a, b, c, M_offset_13, 12, T[13]);
+              c = FF(c, d, a, b, M_offset_14, 17, T[14]);
+              b = FF(b, c, d, a, M_offset_15, 22, T[15]);
+              a = GG(a, b, c, d, M_offset_1, 5, T[16]);
+              d = GG(d, a, b, c, M_offset_6, 9, T[17]);
+              c = GG(c, d, a, b, M_offset_11, 14, T[18]);
+              b = GG(b, c, d, a, M_offset_0, 20, T[19]);
+              a = GG(a, b, c, d, M_offset_5, 5, T[20]);
+              d = GG(d, a, b, c, M_offset_10, 9, T[21]);
+              c = GG(c, d, a, b, M_offset_15, 14, T[22]);
+              b = GG(b, c, d, a, M_offset_4, 20, T[23]);
+              a = GG(a, b, c, d, M_offset_9, 5, T[24]);
+              d = GG(d, a, b, c, M_offset_14, 9, T[25]);
+              c = GG(c, d, a, b, M_offset_3, 14, T[26]);
+              b = GG(b, c, d, a, M_offset_8, 20, T[27]);
+              a = GG(a, b, c, d, M_offset_13, 5, T[28]);
+              d = GG(d, a, b, c, M_offset_2, 9, T[29]);
+              c = GG(c, d, a, b, M_offset_7, 14, T[30]);
+              b = GG(b, c, d, a, M_offset_12, 20, T[31]);
+              a = HH(a, b, c, d, M_offset_5, 4, T[32]);
+              d = HH(d, a, b, c, M_offset_8, 11, T[33]);
+              c = HH(c, d, a, b, M_offset_11, 16, T[34]);
+              b = HH(b, c, d, a, M_offset_14, 23, T[35]);
+              a = HH(a, b, c, d, M_offset_1, 4, T[36]);
+              d = HH(d, a, b, c, M_offset_4, 11, T[37]);
+              c = HH(c, d, a, b, M_offset_7, 16, T[38]);
+              b = HH(b, c, d, a, M_offset_10, 23, T[39]);
+              a = HH(a, b, c, d, M_offset_13, 4, T[40]);
+              d = HH(d, a, b, c, M_offset_0, 11, T[41]);
+              c = HH(c, d, a, b, M_offset_3, 16, T[42]);
+              b = HH(b, c, d, a, M_offset_6, 23, T[43]);
+              a = HH(a, b, c, d, M_offset_9, 4, T[44]);
+              d = HH(d, a, b, c, M_offset_12, 11, T[45]);
+              c = HH(c, d, a, b, M_offset_15, 16, T[46]);
+              b = HH(b, c, d, a, M_offset_2, 23, T[47]);
+              a = II(a, b, c, d, M_offset_0, 6, T[48]);
+              d = II(d, a, b, c, M_offset_7, 10, T[49]);
+              c = II(c, d, a, b, M_offset_14, 15, T[50]);
+              b = II(b, c, d, a, M_offset_5, 21, T[51]);
+              a = II(a, b, c, d, M_offset_12, 6, T[52]);
+              d = II(d, a, b, c, M_offset_3, 10, T[53]);
+              c = II(c, d, a, b, M_offset_10, 15, T[54]);
+              b = II(b, c, d, a, M_offset_1, 21, T[55]);
+              a = II(a, b, c, d, M_offset_8, 6, T[56]);
+              d = II(d, a, b, c, M_offset_15, 10, T[57]);
+              c = II(c, d, a, b, M_offset_6, 15, T[58]);
+              b = II(b, c, d, a, M_offset_13, 21, T[59]);
+              a = II(a, b, c, d, M_offset_4, 6, T[60]);
+              d = II(d, a, b, c, M_offset_11, 10, T[61]);
+              c = II(c, d, a, b, M_offset_2, 15, T[62]);
+              b = II(b, c, d, a, M_offset_9, 21, T[63]);
+              H[0] = H[0] + a | 0;
+              H[1] = H[1] + b | 0;
+              H[2] = H[2] + c | 0;
+              H[3] = H[3] + d | 0;
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              var nBitsTotal = this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
+              var nBitsTotalH = Math2.floor(nBitsTotal / 4294967296);
+              var nBitsTotalL = nBitsTotal;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 15] = (nBitsTotalH << 8 | nBitsTotalH >>> 24) & 16711935 | (nBitsTotalH << 24 | nBitsTotalH >>> 8) & 4278255360;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = (nBitsTotalL << 8 | nBitsTotalL >>> 24) & 16711935 | (nBitsTotalL << 24 | nBitsTotalL >>> 8) & 4278255360;
+              data.sigBytes = (dataWords.length + 1) * 4;
+              this._process();
+              var hash = this._hash;
+              var H = hash.words;
+              for (var i = 0; i < 4; i++) {
+                var H_i = H[i];
+                H[i] = (H_i << 8 | H_i >>> 24) & 16711935 | (H_i << 24 | H_i >>> 8) & 4278255360;
+              }
+              return hash;
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              clone._hash = this._hash.clone();
+              return clone;
+            }
+          });
+          function FF(a, b, c, d, x, s, t) {
+            var n = a + (b & c | ~b & d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function GG(a, b, c, d, x, s, t) {
+            var n = a + (b & d | c & ~d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function HH(a, b, c, d, x, s, t) {
+            var n = a + (b ^ c ^ d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function II(a, b, c, d, x, s, t) {
+            var n = a + (c ^ (b | ~d)) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          C.MD5 = Hasher._createHelper(MD5);
+          C.HmacMD5 = Hasher._createHmacHelper(MD5);
+        })(Math);
+        return CryptoJS.MD5;
+      });
+    })(md5$1);
+    return md5$1.exports;
+  }
+  requireMd5();
+  const generateUID = /* @__PURE__ */ (function(index, lastDateInSeconds) {
+    const startDate = /* @__PURE__ */ new Date("2019");
+    return function() {
+      const d = /* @__PURE__ */ new Date();
+      const n = d - startDate;
+      if (lastDateInSeconds === false) {
+        lastDateInSeconds = n;
+      }
+      if (lastDateInSeconds !== n) {
+        index = 0;
+      }
+      lastDateInSeconds = n;
+      index += 1;
+      return "uid" + n + index;
+    };
+  })(0, false);
+  ({
+    isMac: window.navigator.userAgent.indexOf("Macintosh") >= 0
+  });
+  const useThemeStylesStore = pinia.defineStore("themeStyles", {
+    state: () => {
+      return {
+        styles: [
+          {
+            id: "uid123123123",
+            label: "Theme Style 1",
+            conditions: [],
+            config: {
+              typography: {
+                h1: {
+                  "font-family": "Arial"
+                }
+              }
+            }
+          }
+        ]
+      };
+    },
+    getters: {},
+    actions: {
+      addStyle(themeStyle = {}) {
+        if (themeStyle.id === void 0) {
+          themeStyle.id = generateUID();
+        }
+        const styleConfig = Object.assign(
+          {
+            id: generateUID(),
+            conditions: [],
+            config: {}
+          },
+          themeStyle
+        );
+        this.styles.push(styleConfig);
+      },
+      setStyles(styles) {
+        this.styles = styles;
+      },
+      deleteStyle(id) {
+        this.styles = this.styles.filter((style) => style.id !== id);
+      },
+      editStyle(id, style) {
+        const index = this.styles.findIndex((style2) => style2.id === id);
+        this.styles[index] = style;
+      }
+    }
+  });
   const STORE = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
     useCSSClassesStore,
@@ -4964,16 +5778,17 @@ var __async = (__this, __arguments, generator) => {
     useElementDefinitionsStore,
     useHistoryStore,
     usePageSettingsStore,
+    useThemeStylesStore,
     useUIStore,
     useUserStore
   }, Symbol.toStringTag, { value: "Module" }));
-  const _hoisted_1$18 = { class: "znpb-element-form__wp_widget" };
-  const _hoisted_2$M = {
+  const _hoisted_1$19 = { class: "znpb-element-form__wp_widget" };
+  const _hoisted_2$J = {
     key: 0,
     class: "znpb-element-form__wp_widget-loading"
   };
-  const _hoisted_3$y = ["innerHTML"];
-  const _sfc_main$1t = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_3$x = ["innerHTML"];
+  const _sfc_main$1w = /* @__PURE__ */ Vue.defineComponent({
     __name: "WPWidget",
     props: {
       value: { default: () => {
@@ -4982,13 +5797,14 @@ var __async = (__this, __arguments, generator) => {
       element_type: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { getOptionsForm } = window.zb.api;
+      const props = __props;
       const UIStore = useUIStore();
       const form = Vue.ref(null);
       const loading = Vue.ref(true);
       const optionsFormContent = Vue.ref("");
+      const emit = __emit;
       Vue.watch(
         () => UIStore.editedElement,
         () => {
@@ -5024,23 +5840,28 @@ var __async = (__this, __arguments, generator) => {
         emit("update:modelValue", formData[widgetId]["ZION_BUILDER_PLACEHOLDER_ID"]);
       }
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$18, [
-          loading.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$M, Vue.toDisplayString(i18n__namespace.__("Loading", "zionbuilder")), 1)) : (Vue.openBlock(), Vue.createElementBlock("form", {
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$19, [
+          loading.value ? (Vue.openBlock(), Vue.createElementBlock(
+            "div",
+            _hoisted_2$J,
+            Vue.toDisplayString(i18n__namespace.__("Loading", "zionbuilder")),
+            1
+            /* TEXT */
+          )) : (Vue.openBlock(), Vue.createElementBlock("form", {
             key: 1,
             ref_key: "form",
             ref: form,
             innerHTML: optionsFormContent.value
-          }, null, 8, _hoisted_3$y))
+          }, null, 8, _hoisted_3$x))
         ]);
       };
     }
   });
-  const WPWidget_vue_vue_type_style_index_0_lang = "";
   const WPWidget = {
     id: "wp_widget",
-    component: _sfc_main$1t
+    component: _sfc_main$1w
   };
-  const _sfc_main$1s = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1v = /* @__PURE__ */ Vue.defineComponent({
     __name: "TabGroup",
     props: {
       modelValue: { default: () => {
@@ -5049,8 +5870,9 @@ var __async = (__this, __arguments, generator) => {
       child_options: {}
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const activeTab = Vue.ref("");
       const keys2 = Object.keys(props.child_options);
       activeTab.value = keys2[0];
@@ -5079,40 +5901,46 @@ var __async = (__this, __arguments, generator) => {
           class: "znpb-options__tab"
         }, {
           default: Vue.withCtx(() => [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(_ctx.child_options, (tabConfig, tabId2) => {
-              return Vue.openBlock(), Vue.createBlock(_component_Tab, {
-                id: tabId2,
-                key: tabId2,
-                name: tabConfig.title
-              }, {
-                default: Vue.withCtx(() => [
-                  Vue.createVNode(_component_OptionsForm, {
-                    modelValue: valueModel.value,
-                    "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event),
-                    schema: _ctx.child_options[tabId2].child_options
-                  }, null, 8, ["modelValue", "schema"])
-                ]),
-                _: 2
-              }, 1032, ["id", "name"]);
-            }), 128))
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(__props.child_options, (tabConfig, tabId) => {
+                return Vue.openBlock(), Vue.createBlock(_component_Tab, {
+                  id: tabId,
+                  key: tabId,
+                  name: tabConfig.title
+                }, {
+                  default: Vue.withCtx(() => [
+                    Vue.createVNode(_component_OptionsForm, {
+                      modelValue: valueModel.value,
+                      "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event),
+                      schema: __props.child_options[tabId].child_options
+                    }, null, 8, ["modelValue", "schema"])
+                  ]),
+                  _: 2
+                  /* DYNAMIC */
+                }, 1032, ["id", "name"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["activeTab"]);
       };
     }
   });
-  const TabGroup_vue_vue_type_style_index_0_lang = "";
   const TabGroup = {
     id: "tabs",
-    component: _sfc_main$1s,
+    component: _sfc_main$1v,
     config: {
       // Can be one of the following
       barebone: true
     }
   };
-  const _hoisted_1$17 = ["onClick"];
-  const _hoisted_2$L = { class: "znpb-element-options__pseudo-actions" };
-  const _sfc_main$1r = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$18 = { class: "znpb-element-options__pseudo-actions" };
+  const _sfc_main$1u = /* @__PURE__ */ Vue.defineComponent({
     __name: "PseudoDropdownItem",
     props: {
       selector: {},
@@ -5120,8 +5948,9 @@ var __async = (__this, __arguments, generator) => {
       clearable: { type: Boolean, default: false }
     },
     emits: ["delete-selector", "selector-selected", "remove-styles"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const selectorsModelComputed = Vue.computed(() => props.selectorsModel || {});
       const hasChanges = Vue.computed(() => Object.keys(selectorsModelComputed.value[props.selector.id] || {}).length > 0);
       function onDeleteSelector() {
@@ -5139,9 +5968,13 @@ var __async = (__this, __arguments, generator) => {
           class: "znpb-element-options__media-class-pseudo-selector",
           onClick: Vue.withModifiers(onSelectorSelected, ["stop"])
         }, [
-          Vue.createTextVNode(Vue.toDisplayString(_ctx.selector.name) + " ", 1),
-          Vue.createElementVNode("div", _hoisted_2$L, [
-            _ctx.clearable ? (Vue.openBlock(), Vue.createBlock(_component_Tooltip, {
+          Vue.createTextVNode(
+            Vue.toDisplayString(__props.selector.name) + " ",
+            1
+            /* TEXT */
+          ),
+          Vue.createElementVNode("div", _hoisted_1$18, [
+            __props.clearable ? (Vue.openBlock(), Vue.createBlock(_component_Tooltip, {
               key: 0,
               content: "Delete Pseudo Selector",
               tag: "span"
@@ -5150,29 +5983,29 @@ var __async = (__this, __arguments, generator) => {
                 Vue.createVNode(_component_Icon, {
                   icon: "delete",
                   onClick: Vue.withModifiers(onDeleteSelector, ["stop"])
-                }, null, 8, ["onClick"])
+                })
               ]),
               _: 1
-            })) : Vue.createCommentVNode("", true),
+              /* STABLE */
+            })) : Vue.createCommentVNode("v-if", true),
             hasChanges.value ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
               key: 1,
-              onRemoveStyles: _cache[0] || (_cache[0] = ($event) => emit("remove-styles", _ctx.selector.id))
-            })) : Vue.createCommentVNode("", true)
+              onRemoveStyles: _cache[0] || (_cache[0] = ($event) => emit("remove-styles", __props.selector.id))
+            })) : Vue.createCommentVNode("v-if", true)
           ]),
-          _ctx.selector.label ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1E, {
+          __props.selector.label ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1H, {
             key: 0,
-            text: _ctx.selector.label.text,
-            type: _ctx.selector.label.type,
+            text: __props.selector.label.text,
+            type: __props.selector.label.type,
             class: "znpb-label--pro"
-          }, null, 8, ["text", "type"])) : Vue.createCommentVNode("", true)
-        ], 8, _hoisted_1$17);
+          }, null, 8, ["text", "type"])) : Vue.createCommentVNode("v-if", true)
+        ]);
       };
     }
   });
-  const PseudoDropdownItem_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$16 = { class: "znpb-element-options__media-class-pseudo-name" };
-  const _hoisted_2$K = { class: "znpb-element-options__media-class-pseudo-selector-list hg-popper-list" };
-  const _sfc_main$1q = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$17 = { class: "znpb-element-options__media-class-pseudo-name" };
+  const _hoisted_2$I = { class: "znpb-element-options__media-class-pseudo-selector-list hg-popper-list" };
+  const _sfc_main$1t = /* @__PURE__ */ Vue.defineComponent({
     __name: "PseudoSelectors",
     props: {
       modelValue: {
@@ -5182,9 +6015,10 @@ var __async = (__this, __arguments, generator) => {
       }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { useResponsiveDevices: useResponsiveDevices2, usePseudoSelectors: usePseudoSelectors2 } = window.zb.composables;
+      const props = __props;
+      const emit = __emit;
       const { activeResponsiveDeviceInfo: activeResponsiveDeviceInfo2 } = useResponsiveDevices2();
       const { pseudoSelectors, activePseudoSelector, setActivePseudoSelector, deleteCustomSelector, addCustomSelector } = usePseudoSelectors2();
       const root2 = Vue.ref(null);
@@ -5217,7 +6051,7 @@ var __async = (__this, __arguments, generator) => {
       const computedPseudoSelectors = Vue.computed(() => {
         const savedSelectors = Object.keys(activePseudoSelectors.value);
         const customSelectors = savedSelectors.filter((selector) => {
-          return !find$1(pseudoSelectors.value, ["id", selector]);
+          return !find(pseudoSelectors.value, ["id", selector]);
         });
         return [
           ...pseudoSelectors.value,
@@ -5330,104 +6164,134 @@ var __async = (__this, __arguments, generator) => {
         const _component_Tooltip = Vue.resolveComponent("Tooltip");
         const _component_BaseInput = Vue.resolveComponent("BaseInput");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-element-options__media-class-pseudo-holder",
-          onClick: _cache[6] || (_cache[6] = ($event) => (selectorIsOpen.value = !selectorIsOpen.value, contentOpen.value = false, newPseudoName.value = false))
-        }, [
-          Vue.createElementVNode("span", _hoisted_1$16, Vue.toDisplayString(Vue.unref(activePseudoSelector).name), 1),
-          hasContent.value ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-            key: 0,
-            icon: "edit",
-            size: 12,
-            class: "znpb-pseudo-selector__edit",
-            onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => (contentOpen.value = !contentOpen.value, selectorIsOpen.value = false), ["stop"]))
-          }, null, 512)), [
-            [_directive_znpb_tooltip, i18n__namespace.__("Click to add content for pseudo selector.", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true),
-          Vue.createVNode(_component_Tooltip, {
-            "show-arrows": false,
-            show: selectorIsOpen.value,
-            trigger: null,
-            "append-to": "element",
-            placement: "bottom-end",
-            "tooltip-class": "hg-popper--no-padding znpb-element-options__media-class-pseudo-selector-dropdown"
-          }, {
-            content: Vue.withCtx(() => [
-              Vue.createElementVNode("div", _hoisted_2$K, [
-                (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(computedPseudoSelectors.value, (selectorConfig, index2) => {
-                  return Vue.openBlock(), Vue.createBlock(_sfc_main$1r, {
-                    key: index2,
-                    selector: selectorConfig,
-                    "selectors-model": activePseudoSelectors.value,
-                    clearable: selectorConfig.canBeDeleted,
-                    class: "hg-popper-list__item",
-                    onRemoveStyles: deleteConfigForPseudoSelector,
-                    onSelectorSelected: onPseudoSelectorSelected,
-                    onDeleteSelector: deletePseudoSelectorAndStyles
-                  }, null, 8, ["selector", "selectors-model", "clearable"]);
-                }), 128))
-              ])
-            ]),
-            default: Vue.withCtx(() => [
-              Vue.createElementVNode("div", {
-                class: Vue.normalizeClass(["znpb-element-options__media-class-pseudo-title", {
-                  "znpb-element-options__media-class-pseudo-title--has-edit": Vue.unref(activePseudoSelector).id === ":before" || Vue.unref(activePseudoSelector).id === ":after"
-                }])
-              }, [
-                Vue.createVNode(_component_Icon, {
-                  icon: "select",
-                  rotate: selectorIsOpen.value ? 180 : null
-                }, null, 8, ["rotate"])
-              ], 2)
-            ]),
-            _: 1
-          }, 8, ["show"]),
-          contentOpen.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
-            key: 1,
-            class: "znpb-element-options__media-class-pseudo-title__before-after-content",
-            onClick: _cache[3] || (_cache[3] = Vue.withModifiers(() => {
-            }, ["stop"]))
-          }, [
-            Vue.createVNode(_component_BaseInput, {
-              ref_key: "pseudoContentInput",
-              ref: pseudoContentInput,
-              modelValue: pseudoContentModel.value,
-              "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => pseudoContentModel.value = $event),
-              clearable: true,
-              placeholder: `Insert text ${Vue.unref(activePseudoSelector).id} content`,
-              onKeypress: _cache[2] || (_cache[2] = Vue.withKeys(($event) => contentOpen.value = false, ["enter"]))
-            }, null, 8, ["modelValue", "placeholder"])
-          ])) : Vue.createCommentVNode("", true),
-          newPseudoName.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
-            key: 2,
-            class: "znpb-element-options__media-class-pseudo-title__before-after-content",
-            onClick: _cache[5] || (_cache[5] = Vue.withModifiers(() => {
-            }, ["stop"]))
-          }, [
-            Vue.createVNode(_component_BaseInput, {
-              ref_key: "pseudoNameInputRef",
-              ref: pseudoNameInputRef,
-              modelValue: newPseudoModel.value,
-              "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => newPseudoModel.value = $event),
-              clearable: true,
-              placeholder: i18n__namespace.__("Add new pseudo-selector ex: :hover::before ", "zionbuilder"),
-              onKeypress: Vue.withKeys(createNewPseudoSelector, ["enter"])
-            }, null, 8, ["modelValue", "placeholder", "onKeypress"])
-          ])) : Vue.createCommentVNode("", true)
-        ], 512);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-element-options__media-class-pseudo-holder",
+            onClick: _cache[6] || (_cache[6] = ($event) => (selectorIsOpen.value = !selectorIsOpen.value, contentOpen.value = false, newPseudoName.value = false))
+          },
+          [
+            Vue.createElementVNode(
+              "span",
+              _hoisted_1$17,
+              Vue.toDisplayString(Vue.unref(activePseudoSelector).name),
+              1
+              /* TEXT */
+            ),
+            hasContent.value ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(
+              _component_Icon,
+              {
+                key: 0,
+                icon: "edit",
+                size: 12,
+                class: "znpb-pseudo-selector__edit",
+                onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => (contentOpen.value = !contentOpen.value, selectorIsOpen.value = false), ["stop"]))
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            )), [
+              [_directive_znpb_tooltip, i18n__namespace.__("Click to add content for pseudo selector.", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true),
+            Vue.createVNode(_component_Tooltip, {
+              "show-arrows": false,
+              show: selectorIsOpen.value,
+              trigger: null,
+              "append-to": "element",
+              placement: "bottom-end",
+              "tooltip-class": "hg-popper--no-padding znpb-element-options__media-class-pseudo-selector-dropdown"
+            }, {
+              content: Vue.withCtx(() => [
+                Vue.createElementVNode("div", _hoisted_2$I, [
+                  (Vue.openBlock(true), Vue.createElementBlock(
+                    Vue.Fragment,
+                    null,
+                    Vue.renderList(computedPseudoSelectors.value, (selectorConfig, index) => {
+                      return Vue.openBlock(), Vue.createBlock(_sfc_main$1u, {
+                        key: index,
+                        selector: selectorConfig,
+                        "selectors-model": activePseudoSelectors.value,
+                        clearable: selectorConfig.canBeDeleted,
+                        class: "hg-popper-list__item",
+                        onRemoveStyles: deleteConfigForPseudoSelector,
+                        onSelectorSelected: onPseudoSelectorSelected,
+                        onDeleteSelector: deletePseudoSelectorAndStyles
+                      }, null, 8, ["selector", "selectors-model", "clearable"]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
+                ])
+              ]),
+              default: Vue.withCtx(() => [
+                Vue.createElementVNode(
+                  "div",
+                  {
+                    class: Vue.normalizeClass(["znpb-element-options__media-class-pseudo-title", {
+                      "znpb-element-options__media-class-pseudo-title--has-edit": Vue.unref(activePseudoSelector).id === ":before" || Vue.unref(activePseudoSelector).id === ":after"
+                    }])
+                  },
+                  [
+                    Vue.createVNode(_component_Icon, {
+                      icon: "select",
+                      rotate: selectorIsOpen.value ? 180 : null
+                    }, null, 8, ["rotate"])
+                  ],
+                  2
+                  /* CLASS */
+                )
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["show"]),
+            contentOpen.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
+              key: 1,
+              class: "znpb-element-options__media-class-pseudo-title__before-after-content",
+              onClick: _cache[3] || (_cache[3] = Vue.withModifiers(() => {
+              }, ["stop"]))
+            }, [
+              Vue.createVNode(_component_BaseInput, {
+                ref_key: "pseudoContentInput",
+                ref: pseudoContentInput,
+                modelValue: pseudoContentModel.value,
+                "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => pseudoContentModel.value = $event),
+                clearable: true,
+                placeholder: `Insert text ${Vue.unref(activePseudoSelector).id} content`,
+                onKeypress: _cache[2] || (_cache[2] = Vue.withKeys(($event) => contentOpen.value = false, ["enter"]))
+              }, null, 8, ["modelValue", "placeholder"])
+            ])) : Vue.createCommentVNode("v-if", true),
+            newPseudoName.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
+              key: 2,
+              class: "znpb-element-options__media-class-pseudo-title__before-after-content",
+              onClick: _cache[5] || (_cache[5] = Vue.withModifiers(() => {
+              }, ["stop"]))
+            }, [
+              Vue.createVNode(_component_BaseInput, {
+                ref_key: "pseudoNameInputRef",
+                ref: pseudoNameInputRef,
+                modelValue: newPseudoModel.value,
+                "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => newPseudoModel.value = $event),
+                clearable: true,
+                placeholder: i18n__namespace.__("Add new pseudo-selector ex: :hover::before ", "zionbuilder"),
+                onKeypress: Vue.withKeys(createNewPseudoSelector, ["enter"])
+              }, null, 8, ["modelValue", "placeholder"])
+            ])) : Vue.createCommentVNode("v-if", true)
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });
-  const PseudoSelectors_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$15 = { class: "znpb-element-styles__wrapper" };
-  const _hoisted_2$J = {
+  const _hoisted_1$16 = { class: "znpb-element-styles__wrapper" };
+  const _hoisted_2$H = {
     key: 0,
     class: "znpb-elementStylesStateWrapper"
   };
-  const _hoisted_3$x = { class: "znpb-elementStylesStateTitle" };
-  const _sfc_main$1p = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_3$w = { class: "znpb-elementStylesStateTitle" };
+  const _sfc_main$1s = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementStyles",
     props: {
       modelValue: { default: () => ({}) },
@@ -5438,9 +6302,10 @@ var __async = (__this, __arguments, generator) => {
       selector: { default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { useOptionsSchemas: useOptionsSchemas2 } = window.zb.composables;
+      const props = __props;
+      const emit = __emit;
       const computedStyles = Vue.computed({
         get() {
           return props.modelValue.styles;
@@ -5472,14 +6337,20 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_OptionsForm = Vue.resolveComponent("OptionsForm");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$15, [
-          _ctx.showPseudoSelector ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$J, [
-            Vue.createElementVNode("span", _hoisted_3$x, Vue.toDisplayString(i18n__namespace.__("State:", "zionbuilder")), 1),
-            Vue.createVNode(_sfc_main$1q, {
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$16, [
+          __props.showPseudoSelector ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$H, [
+            Vue.createElementVNode(
+              "span",
+              _hoisted_3$w,
+              Vue.toDisplayString(i18n__namespace.__("State:", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
+            Vue.createVNode(_sfc_main$1t, {
               modelValue: computedStyles.value,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedStyles.value = $event)
             }, null, 8, ["modelValue"])
-          ])) : Vue.createCommentVNode("", true),
+          ])) : Vue.createCommentVNode("v-if", true),
           Vue.createVNode(_component_OptionsForm, {
             modelValue: computedStyles.value,
             "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => computedStyles.value = $event),
@@ -5490,10 +6361,9 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const ElementStyles_vue_vue_type_style_index_0_lang = "";
   const ElementStyles = {
     id: "element_styles",
-    component: _sfc_main$1p,
+    component: _sfc_main$1s,
     config: {
       barebone: true
     }
@@ -5504,60 +6374,64 @@ var __async = (__this, __arguments, generator) => {
   };
   const seen = {};
   const __vitePreload = function preload(baseModule, deps, importerUrl) {
-    if (true) {
-      return baseModule();
-    }
-    const links = document.getElementsByTagName("link");
-    return Promise.all(deps.map((dep) => {
-      dep = assetsURL(dep);
-      if (dep in seen)
-        return;
-      seen[dep] = true;
-      const isCss = dep.endsWith(".css");
-      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
-      const isBaseRelative = !!importerUrl;
-      if (isBaseRelative) {
-        for (let i = links.length - 1; i >= 0; i--) {
-          const link2 = links[i];
-          if (link2.href === dep && (!isCss || link2.rel === "stylesheet")) {
-            return;
-          }
-        }
-      } else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) {
-        return;
-      }
-      const link = document.createElement("link");
-      link.rel = isCss ? "stylesheet" : scriptRel;
-      if (!isCss) {
-        link.as = "script";
+    let promise = Promise.resolve();
+    if (false) {
+      let allSettled = function(promises$2) {
+        return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
+          status: "fulfilled",
+          value: value$1
+        }), (reason) => ({
+          status: "rejected",
+          reason
+        }))));
+      };
+      document.getElementsByTagName("link");
+      const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
+      const cspNonce = (cspNonceMeta == null ? void 0 : cspNonceMeta.nonce) || (cspNonceMeta == null ? void 0 : cspNonceMeta.getAttribute("nonce"));
+      promise = allSettled(deps.map((dep) => {
+        dep = assetsURL(dep);
+        if (dep in seen) return;
+        seen[dep] = true;
+        const isCss = dep.endsWith(".css");
+        const cssSelector = isCss ? '[rel="stylesheet"]' : "";
+        if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
+        const link = document.createElement("link");
+        link.rel = isCss ? "stylesheet" : scriptRel;
+        if (!isCss) link.as = "script";
         link.crossOrigin = "";
-      }
-      link.href = dep;
-      document.head.appendChild(link);
-      if (isCss) {
-        return new Promise((res, rej) => {
+        link.href = dep;
+        if (cspNonce) link.setAttribute("nonce", cspNonce);
+        document.head.appendChild(link);
+        if (isCss) return new Promise((res, rej) => {
           link.addEventListener("load", res);
-          link.addEventListener("error", () => rej(new Error(`Unable to preload CSS for ${dep}`)));
+          link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
         });
+      }));
+    }
+    function handlePreloadError(err$2) {
+      const e$1 = new Event("vite:preloadError", { cancelable: true });
+      e$1.payload = err$2;
+      window.dispatchEvent(e$1);
+      if (!e$1.defaultPrevented) throw err$2;
+    }
+    return promise.then((res) => {
+      for (const item of res || []) {
+        if (item.status !== "rejected") continue;
+        handlePreloadError(item.reason);
       }
-    })).then(() => baseModule()).catch((err) => {
-      const e = new Event("vite:preloadError", { cancelable: true });
-      e.payload = err;
-      window.dispatchEvent(e);
-      if (!e.defaultPrevented) {
-        throw err;
-      }
+      return baseModule().catch(handlePreloadError);
     });
   };
-  const _hoisted_1$14 = { class: "znpb-option-cssSelectorChildActions" };
-  const _sfc_main$1o = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$15 = { class: "znpb-option-cssSelectorChildActions" };
+  const _sfc_main$1r = /* @__PURE__ */ Vue.defineComponent({
     __name: "AddSelector",
     props: {
       type: { default: "selector" }
     },
     emits: ["add-selector"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const showAddModal = Vue.ref(false);
       const hasError = Vue.ref(false);
       const schema = Vue.computed(() => {
@@ -5640,7 +6514,7 @@ var __async = (__this, __arguments, generator) => {
           "onUpdate:show": _cache[2] || (_cache[2] = ($event) => showAddModal.value = $event),
           trigger: null,
           placement: "bottom",
-          "append-to": "element",
+          "append-to": "body",
           strategy: "fixed",
           "tooltip-class": "znpb-option-cssSelectorChildActionAddTooltip",
           "close-on-outside-click": true,
@@ -5663,14 +6537,19 @@ var __async = (__this, __arguments, generator) => {
                 onClick: add
               }, {
                 default: Vue.withCtx(() => [
-                  Vue.createTextVNode(Vue.toDisplayString(buttonTitle.value), 1)
+                  Vue.createTextVNode(
+                    Vue.toDisplayString(buttonTitle.value),
+                    1
+                    /* TEXT */
+                  )
                 ]),
                 _: 1
+                /* STABLE */
               }, 8, ["type"])
             ])
           ]),
           default: Vue.withCtx(() => [
-            Vue.createElementVNode("div", _hoisted_1$14, [
+            Vue.createElementVNode("div", _hoisted_1$15, [
               Vue.renderSlot(_ctx.$slots, "default", {
                 actions: {
                   openModal,
@@ -5681,69 +6560,89 @@ var __async = (__this, __arguments, generator) => {
             ])
           ]),
           _: 3
+          /* FORWARDED */
         }, 8, ["show"]);
       };
     }
   });
-  const AddSelector_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$13 = { class: "znpb-option-cssSelectorChildActions" };
-  const _sfc_main$1n = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$14 = { class: "znpb-option-cssSelectorChildActions" };
+  const _sfc_main$1q = /* @__PURE__ */ Vue.defineComponent({
     __name: "AddChildActions",
     props: {
       childSelectors: { default: () => [] }
     },
     emits: ["toggle-view-children"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return Vue.openBlock(), Vue.createBlock(_sfc_main$1o, null, {
+        return Vue.openBlock(), Vue.createBlock(_sfc_main$1r, null, {
           default: Vue.withCtx(({ actions }) => [
-            Vue.createElementVNode("div", _hoisted_1$13, [
-              _ctx.childSelectors.length === 0 ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-                key: 0,
-                icon: "child-add",
-                onClick: Vue.withModifiers(actions.toggleModal, ["stop"])
-              }, null, 8, ["onClick"])), [
-                [_directive_znpb_tooltip, "Add new inner selector"]
-              ]) : (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-                Vue.createElementVNode("span", {
-                  class: "znpb-option-cssSelectorChildActionsChildNumber",
-                  onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => (_ctx.showChilds = !_ctx.showChilds, emit("toggle-view-children")), ["stop"]))
-                }, [
-                  Vue.createVNode(_component_Icon, { icon: "child" }),
-                  Vue.createTextVNode(" " + Vue.toDisplayString(_ctx.childSelectors.length), 1)
-                ]),
-                Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                  icon: "plus",
-                  onClick: Vue.withModifiers(actions.toggleModal, ["stop"])
-                }, null, 8, ["onClick"]), [
-                  [_directive_znpb_tooltip, "Add new inner selector"]
-                ])
-              ], 64))
+            Vue.createElementVNode("div", _hoisted_1$14, [
+              __props.childSelectors.length === 0 ? (Vue.openBlock(), Vue.createElementBlock(
+                Vue.Fragment,
+                { key: 0 },
+                [
+                  Vue.createCommentVNode(" No children yet "),
+                  Vue.withDirectives(Vue.createVNode(_component_Icon, {
+                    icon: "child-add",
+                    onClick: Vue.withModifiers(actions.toggleModal, ["stop"])
+                  }, null, 8, ["onClick"]), [
+                    [_directive_znpb_tooltip, "Add new inner selector"]
+                  ])
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              )) : (Vue.openBlock(), Vue.createElementBlock(
+                Vue.Fragment,
+                { key: 1 },
+                [
+                  Vue.createCommentVNode(" ICON "),
+                  Vue.createElementVNode("span", {
+                    class: "znpb-option-cssSelectorChildActionsChildNumber",
+                    onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => (_ctx.showChilds = !_ctx.showChilds, emit("toggle-view-children")), ["stop"]))
+                  }, [
+                    Vue.createVNode(_component_Icon, { icon: "child" }),
+                    Vue.createTextVNode(
+                      " " + Vue.toDisplayString(__props.childSelectors.length),
+                      1
+                      /* TEXT */
+                    )
+                  ]),
+                  Vue.withDirectives(Vue.createVNode(_component_Icon, {
+                    icon: "plus",
+                    onClick: Vue.withModifiers(actions.toggleModal, ["stop"])
+                  }, null, 8, ["onClick"]), [
+                    [_directive_znpb_tooltip, "Add new inner selector"]
+                  ])
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              ))
             ])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const _hoisted_1$12 = { class: "znpb-option-cssChildSelectorPseudoSelectorListWrapper" };
-  const _hoisted_2$I = { class: "znpb-option-cssChildSelectorPseudoSelectorList" };
-  const _hoisted_3$w = /* @__PURE__ */ Vue.createElementVNode("li", { class: "znpb-option-cssChildSelectorPseudoSelectorListTitle" }, "Active states:", -1);
-  const _hoisted_4$g = ["onClick"];
-  const _hoisted_5$e = { class: "znpb-option-cssChildSelectorPseudoSelectorList" };
-  const _hoisted_6$c = /* @__PURE__ */ Vue.createElementVNode("li", { class: "znpb-option-cssChildSelectorPseudoSelectorListTitle" }, "Available states:", -1);
-  const _hoisted_7$b = ["onClick"];
-  const _sfc_main$1m = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$13 = { class: "znpb-option-cssChildSelectorPseudoSelectorListWrapper" };
+  const _hoisted_2$G = { class: "znpb-option-cssChildSelectorPseudoSelectorList" };
+  const _hoisted_3$v = ["onClick"];
+  const _hoisted_4$h = { class: "znpb-option-cssChildSelectorPseudoSelectorList" };
+  const _hoisted_5$d = ["onClick"];
+  const _sfc_main$1p = /* @__PURE__ */ Vue.defineComponent({
     __name: "PseudoSelector",
     props: {
       states: { default: () => [] }
     },
     emits: ["update:states"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { usePseudoSelectors: usePseudoSelectors2 } = window.zb.composables;
+      const props = __props;
+      const emit = __emit;
       const { pseudoSelectors } = usePseudoSelectors2();
       const allPseudoSelectors = Vue.computed(() => {
         const disabledStates = ["custom", ":before", ":after"];
@@ -5769,8 +6668,8 @@ var __async = (__this, __arguments, generator) => {
           return;
         }
         if (value.includes(state.id)) {
-          const index2 = value.indexOf(state.id);
-          value.splice(index2, 1);
+          const index = value.indexOf(state.id);
+          value.splice(index, 1);
           computedStates.value = value;
         }
       }
@@ -5792,45 +6691,89 @@ var __async = (__this, __arguments, generator) => {
           onHide: _cache[0] || (_cache[0] = ($event) => _ctx.showAddModal = false)
         }, {
           content: Vue.withCtx(() => [
-            Vue.createElementVNode("div", _hoisted_1$12, [
-              Vue.createElementVNode("ul", _hoisted_2$I, [
-                _hoisted_3$w,
-                (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(activePseudo.value, (state) => {
-                  return Vue.openBlock(), Vue.createElementBlock("li", {
-                    key: state.id,
-                    onClick: ($event) => removeState(state)
-                  }, Vue.toDisplayString(state.name), 9, _hoisted_4$g);
-                }), 128))
+            Vue.createElementVNode("div", _hoisted_1$13, [
+              Vue.createElementVNode("ul", _hoisted_2$G, [
+                _cache[1] || (_cache[1] = Vue.createElementVNode(
+                  "li",
+                  { class: "znpb-option-cssChildSelectorPseudoSelectorListTitle" },
+                  "Active states:",
+                  -1
+                  /* CACHED */
+                )),
+                (Vue.openBlock(true), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(activePseudo.value, (state) => {
+                    return Vue.openBlock(), Vue.createElementBlock("li", {
+                      key: state.id,
+                      onClick: ($event) => removeState(state)
+                    }, Vue.toDisplayString(state.name), 9, _hoisted_3$v);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
               ]),
-              Vue.createElementVNode("ul", _hoisted_5$e, [
-                _hoisted_6$c,
-                (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(remainingPseudo.value, (state) => {
-                  return Vue.openBlock(), Vue.createElementBlock("li", {
-                    key: state.id,
-                    onClick: ($event) => addState(state)
-                  }, Vue.toDisplayString(state.name), 9, _hoisted_7$b);
-                }), 128))
+              Vue.createElementVNode("ul", _hoisted_4$h, [
+                _cache[2] || (_cache[2] = Vue.createElementVNode(
+                  "li",
+                  { class: "znpb-option-cssChildSelectorPseudoSelectorListTitle" },
+                  "Available states:",
+                  -1
+                  /* CACHED */
+                )),
+                (Vue.openBlock(true), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(remainingPseudo.value, (state) => {
+                    return Vue.openBlock(), Vue.createElementBlock("li", {
+                      key: state.id,
+                      onClick: ($event) => addState(state)
+                    }, Vue.toDisplayString(state.name), 9, _hoisted_5$d);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
               ])
             ])
           ]),
           default: Vue.withCtx(() => [
-            _ctx.states.length === 1 ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-              Vue.createTextVNode(Vue.toDisplayString(_ctx.states[0]), 1)
-            ], 64)) : Vue.createCommentVNode("", true),
-            _ctx.states.length > 1 ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-              Vue.createTextVNode(Vue.toDisplayString(_ctx.states.length) + " states ", 1)
-            ], 64)) : Vue.createCommentVNode("", true)
+            __props.states.length === 1 ? (Vue.openBlock(), Vue.createElementBlock(
+              Vue.Fragment,
+              { key: 0 },
+              [
+                Vue.createTextVNode(
+                  Vue.toDisplayString(__props.states[0]),
+                  1
+                  /* TEXT */
+                )
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : Vue.createCommentVNode("v-if", true),
+            __props.states.length > 1 ? (Vue.openBlock(), Vue.createElementBlock(
+              Vue.Fragment,
+              { key: 1 },
+              [
+                Vue.createTextVNode(
+                  Vue.toDisplayString(__props.states.length) + " states ",
+                  1
+                  /* TEXT */
+                )
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : Vue.createCommentVNode("v-if", true)
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const PseudoSelector_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$11 = { class: "znpb-option-cssSelectorWrapper" };
-  const _hoisted_2$H = ["title"];
-  const _hoisted_3$v = { key: 0 };
-  const _sfc_main$1l = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$12 = { class: "znpb-option-cssSelectorWrapper" };
+  const _hoisted_2$F = ["title"];
+  const _hoisted_3$u = { key: 0 };
+  const _sfc_main$1o = /* @__PURE__ */ Vue.defineComponent({
     __name: "CSSSelector",
     props: {
       modelValue: { default: () => ({}) },
@@ -5855,11 +6798,12 @@ var __async = (__this, __arguments, generator) => {
       "update-selector",
       "toggle-view-children"
     ],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { generateUID: generateUID2 } = window.zb.utils;
       const { applyFilters: applyFilters2 } = window.zb.hooks;
-      const AccordionMenu2 = Vue.defineAsyncComponent(() => __vitePreload(() => Promise.resolve().then(() => AccordionMenu$1), false ? "__VITE_PRELOAD__" : void 0));
+      const props = __props;
+      const emit = __emit;
+      const AccordionMenu2 = Vue.defineAsyncComponent(() => __vitePreload(() => Promise.resolve().then(() => AccordionMenu$1), false ? __VITE_PRELOAD__ : void 0));
       const cssClassesStore = useCSSClassesStore();
       const showChildren = Vue.ref(false);
       const uid = generateUID2();
@@ -5879,7 +6823,7 @@ var __async = (__this, __arguments, generator) => {
               if (!value.value.styles) {
                 value.value.styles = clonedCopiedStyles;
               } else {
-                value.value.styles = merge$1(value.value.styles, clonedCopiedStyles);
+                value.value.styles = merge(value.value.styles, clonedCopiedStyles);
               }
             },
             show: !!cssClassesStore.copiedStyles,
@@ -6049,111 +6993,131 @@ var __async = (__this, __arguments, generator) => {
         const _component_OptionsForm = Vue.resolveComponent("OptionsForm");
         const _component_CSSSelector = Vue.resolveComponent("CSSSelector", true);
         const _component_Sortable = Vue.resolveComponent("Sortable");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: Vue.normalizeClass(["znpb-option-cssSelectoritem", { "znpb-option-cssSelectoritem--child": _ctx.isChild }])
-        }, [
-          Vue.createElementVNode("div", _hoisted_1$11, [
-            _ctx.isChild ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1m, {
-              key: 0,
-              states: pseudoState.value,
-              "onUpdate:states": _cache[0] || (_cache[0] = ($event) => pseudoState.value = $event)
-            }, null, 8, ["states"])) : Vue.createCommentVNode("", true),
-            Vue.createVNode(Vue.unref(AccordionMenu2), {
-              modelValue: value.value,
-              "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => value.value = $event),
-              "show-trigger-arrow": true,
-              "has-breadcrumbs": _ctx.show_breadcrumbs,
-              title: title.value,
-              child_options: schema.value,
-              class: "znpb-option-cssSelectorAccordion"
-            }, {
-              title: Vue.withCtx(() => [
-                Vue.createElementVNode("div", {
-                  onMouseenter: onMouseOver,
-                  onMouseleave: onMouseOut
-                }, [
-                  Vue.createVNode(_component_InlineEdit, {
-                    modelValue: title.value,
-                    "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => title.value = $event),
-                    class: Vue.normalizeClass(["znpb-option-cssSelectorTitle", {
-                      "znpb-option-cssSelectorTitle--allowRename": _ctx.allowRename
-                    }]),
-                    enabled: _ctx.allowRename,
-                    onClick: onRenameItemClick
-                  }, null, 8, ["modelValue", "class", "enabled"]),
-                  Vue.createElementVNode("div", {
-                    class: "znpb-option-cssSelector",
-                    title: selector.value
-                  }, Vue.toDisplayString(selector.value), 9, _hoisted_2$H)
-                ], 32)
-              ]),
-              actions: Vue.withCtx(() => [
-                _ctx.allow_childs ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1n, {
-                  key: 0,
-                  "child-selectors": childSelectors.value,
-                  onAddSelector: onChildAdded,
-                  onToggleViewChildren: _cache[2] || (_cache[2] = ($event) => showChildren.value = !showChildren.value)
-                }, null, 8, ["child-selectors"])) : Vue.createCommentVNode("", true),
-                _ctx.show_changes && hasChanges.value ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
-                  key: 1,
-                  content: i18n__namespace.__("Discard changes", "zionbuilder"),
-                  onRemoveStyles: resetChanges
-                }, null, 8, ["content"])) : Vue.createCommentVNode("", true),
-                Vue.createVNode(_component_HiddenMenu, { actions: classActions.value }, null, 8, ["actions"])
-              ]),
-              default: Vue.withCtx(() => [
-                Vue.createVNode(_component_OptionsForm, {
-                  modelValue: value.value,
-                  "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => value.value = $event),
-                  schema: schema.value,
-                  class: "znpb-option-cssSelectorForm"
-                }, null, 8, ["modelValue", "schema"])
-              ]),
-              _: 1
-            }, 8, ["modelValue", "has-breadcrumbs", "title", "child_options"])
-          ]),
-          showChildren.value && childSelectors.value.length > 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$v, [
-            Vue.createVNode(_component_Sortable, {
-              modelValue: childSelectors.value,
-              "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => childSelectors.value = $event),
-              class: "znpb-admin-colors__container",
-              handle: ".znpb-option-cssSelectorAccordion > .znpb-horizontal-accordion__header",
-              "drag-delay": 0,
-              "drag-treshold": 10,
-              disabled: false,
-              revert: true,
-              axis: "vertical",
-              group: Vue.unref(uid)
-            }, {
-              default: Vue.withCtx(() => [
-                (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(childSelectors.value, (childSelector, index2) => {
-                  return Vue.openBlock(), Vue.createBlock(_component_CSSSelector, {
-                    key: childSelector.title + childSelector.selector + index2,
-                    class: "znpb-option-cssChildSelectorStyles",
-                    "model-value": childSelector,
-                    "is-child": true,
-                    allow_class_assignments: false,
-                    allow_custom_attributes: false,
-                    show_breadcrumbs: _ctx.show_breadcrumbs,
-                    "onUpdate:modelValue": ($event) => onChildUpdate(childSelector, $event)
-                  }, null, 8, ["model-value", "show_breadcrumbs", "onUpdate:modelValue"]);
-                }), 128))
-              ]),
-              _: 1
-            }, 8, ["modelValue", "group"])
-          ])) : Vue.createCommentVNode("", true)
-        ], 2);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: Vue.normalizeClass(["znpb-option-cssSelectoritem", { "znpb-option-cssSelectoritem--child": __props.isChild }])
+          },
+          [
+            Vue.createElementVNode("div", _hoisted_1$12, [
+              __props.isChild ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1p, {
+                key: 0,
+                states: pseudoState.value,
+                "onUpdate:states": _cache[0] || (_cache[0] = ($event) => pseudoState.value = $event)
+              }, null, 8, ["states"])) : Vue.createCommentVNode("v-if", true),
+              Vue.createVNode(Vue.unref(AccordionMenu2), {
+                modelValue: value.value,
+                "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => value.value = $event),
+                "show-trigger-arrow": true,
+                "has-breadcrumbs": __props.show_breadcrumbs,
+                title: title.value,
+                child_options: schema.value,
+                class: "znpb-option-cssSelectorAccordion"
+              }, {
+                title: Vue.withCtx(() => [
+                  Vue.createCommentVNode(' <Icon icon="brush" /> '),
+                  Vue.createElementVNode(
+                    "div",
+                    {
+                      onMouseenter: onMouseOver,
+                      onMouseleave: onMouseOut
+                    },
+                    [
+                      Vue.createVNode(_component_InlineEdit, {
+                        modelValue: title.value,
+                        "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => title.value = $event),
+                        class: Vue.normalizeClass(["znpb-option-cssSelectorTitle", {
+                          "znpb-option-cssSelectorTitle--allowRename": __props.allowRename
+                        }]),
+                        enabled: __props.allowRename,
+                        onClick: onRenameItemClick
+                      }, null, 8, ["modelValue", "class", "enabled"]),
+                      Vue.createElementVNode("div", {
+                        class: "znpb-option-cssSelector",
+                        title: selector.value
+                      }, Vue.toDisplayString(selector.value), 9, _hoisted_2$F)
+                    ],
+                    32
+                    /* NEED_HYDRATION */
+                  )
+                ]),
+                actions: Vue.withCtx(() => [
+                  __props.allow_childs ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1q, {
+                    key: 0,
+                    "child-selectors": childSelectors.value,
+                    onAddSelector: onChildAdded,
+                    onToggleViewChildren: _cache[2] || (_cache[2] = ($event) => showChildren.value = !showChildren.value)
+                  }, null, 8, ["child-selectors"])) : Vue.createCommentVNode("v-if", true),
+                  __props.show_changes && hasChanges.value ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
+                    key: 1,
+                    content: i18n__namespace.__("Discard changes", "zionbuilder"),
+                    onRemoveStyles: resetChanges
+                  }, null, 8, ["content"])) : Vue.createCommentVNode("v-if", true),
+                  Vue.createVNode(_component_HiddenMenu, { actions: classActions.value }, null, 8, ["actions"])
+                ]),
+                default: Vue.withCtx(() => [
+                  Vue.createVNode(_component_OptionsForm, {
+                    modelValue: value.value,
+                    "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => value.value = $event),
+                    schema: schema.value,
+                    class: "znpb-option-cssSelectorForm"
+                  }, null, 8, ["modelValue", "schema"])
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["modelValue", "has-breadcrumbs", "title", "child_options"])
+            ]),
+            showChildren.value && childSelectors.value.length > 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$u, [
+              Vue.createVNode(_component_Sortable, {
+                modelValue: childSelectors.value,
+                "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => childSelectors.value = $event),
+                class: "znpb-admin-colors__container",
+                handle: ".znpb-option-cssSelectorAccordion > .znpb-horizontal-accordion__header",
+                "drag-delay": 0,
+                "drag-treshold": 10,
+                disabled: false,
+                revert: true,
+                axis: "vertical",
+                group: Vue.unref(uid)
+              }, {
+                default: Vue.withCtx(() => [
+                  (Vue.openBlock(true), Vue.createElementBlock(
+                    Vue.Fragment,
+                    null,
+                    Vue.renderList(childSelectors.value, (childSelector, index) => {
+                      return Vue.openBlock(), Vue.createBlock(_component_CSSSelector, {
+                        key: childSelector.title + childSelector.selector + index,
+                        class: "znpb-option-cssChildSelectorStyles",
+                        "model-value": childSelector,
+                        "is-child": true,
+                        allow_class_assignments: false,
+                        allow_custom_attributes: false,
+                        show_breadcrumbs: __props.show_breadcrumbs,
+                        "onUpdate:modelValue": ($event) => onChildUpdate(childSelector, $event)
+                      }, null, 8, ["model-value", "show_breadcrumbs", "onUpdate:modelValue"]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["modelValue", "group"])
+            ])) : Vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const CSSSelector_vue_vue_type_style_index_0_lang = "";
   const CSSSelector = {
     id: "css_selector",
-    component: _sfc_main$1l
+    component: _sfc_main$1o
   };
-  const _hoisted_1$10 = { class: "znpb-option__image-gallery" };
-  const _hoisted_2$G = ["onClick"];
-  const _sfc_main$1k = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$11 = { class: "znpb-option__image-gallery" };
+  const _hoisted_2$E = ["onClick"];
+  const _sfc_main$1n = /* @__PURE__ */ Vue.defineComponent({
     __name: "Gallery",
     props: {
       modelValue: { default() {
@@ -6163,10 +7127,11 @@ var __async = (__this, __arguments, generator) => {
       type: { default: "image" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { wp: wp2 } = window;
       const { getImageIds } = window.zb.api;
+      const props = __props;
+      const emit = __emit;
       const sortableModel = Vue.computed({
         get() {
           return props.modelValue || [];
@@ -6194,8 +7159,7 @@ var __async = (__this, __arguments, generator) => {
         mediaModal.open();
       }
       function setMediaModalSelection() {
-        if (typeof props.modelValue === "undefined")
-          return;
+        if (typeof props.modelValue === "undefined") return;
         let imagesUrls = props.modelValue.map((image) => image.image);
         getImageIds({
           images: imagesUrls
@@ -6220,24 +7184,29 @@ var __async = (__this, __arguments, generator) => {
         });
         emit("update:modelValue", values);
       }
-      function deleteImage(index2) {
+      function deleteImage(index) {
         const values = [...props.modelValue];
-        values.splice(index2, 1);
+        values.splice(index, 1);
         emit("update:modelValue", values);
       }
       return (_ctx, _cache) => {
         const _component_EmptyList = Vue.resolveComponent("EmptyList");
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_Sortable = Vue.resolveComponent("Sortable");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$10, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$11, [
           !sortableModel.value.length ? (Vue.openBlock(), Vue.createBlock(_component_EmptyList, {
             key: 0,
             onClick: openMediaModal
           }, {
             default: Vue.withCtx(() => [
-              Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("No images selected", "zionbuilder")), 1)
+              Vue.createTextVNode(
+                Vue.toDisplayString(i18n__namespace.__("No images selected", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ]),
             _: 1
+            /* STABLE */
           })) : (Vue.openBlock(), Vue.createBlock(_component_Sortable, {
             key: 1,
             modelValue: sortableModel.value,
@@ -6251,48 +7220,62 @@ var __async = (__this, __arguments, generator) => {
               }, "+")
             ]),
             default: Vue.withCtx(() => [
-              (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(_ctx.modelValue, (image, index2) => {
-                return Vue.openBlock(), Vue.createElementBlock("div", {
-                  key: index2,
-                  class: "znpb-option__image-gallery__images-item",
-                  style: Vue.normalizeStyle({
-                    "background-image": `url(${image.image})`,
-                    "background-size": "cover",
-                    "border-radius": "3px"
-                  })
-                }, [
-                  Vue.createElementVNode("span", {
-                    class: "znpb-option__image-gallery__images-item--delete",
-                    onClick: ($event) => deleteImage(index2)
-                  }, [
-                    Vue.createVNode(_component_Icon, {
-                      rounded: true,
-                      icon: "delete",
-                      "bg-size": 30,
-                      "bg-color": "#fff"
-                    })
-                  ], 8, _hoisted_2$G)
-                ], 4);
-              }), 128))
+              (Vue.openBlock(true), Vue.createElementBlock(
+                Vue.Fragment,
+                null,
+                Vue.renderList(__props.modelValue, (image, index) => {
+                  return Vue.openBlock(), Vue.createElementBlock(
+                    "div",
+                    {
+                      key: index,
+                      class: "znpb-option__image-gallery__images-item",
+                      style: Vue.normalizeStyle({
+                        "background-image": `url(${image.image})`,
+                        "background-size": "cover",
+                        "border-radius": "3px"
+                      })
+                    },
+                    [
+                      Vue.createCommentVNode(' <img :src="image.image"/> '),
+                      Vue.createElementVNode("span", {
+                        class: "znpb-option__image-gallery__images-item--delete",
+                        onClick: ($event) => deleteImage(index)
+                      }, [
+                        Vue.createVNode(_component_Icon, {
+                          rounded: true,
+                          icon: "delete",
+                          "bg-size": 30,
+                          "bg-color": "#fff"
+                        })
+                      ], 8, _hoisted_2$E)
+                    ],
+                    4
+                    /* STYLE */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["modelValue"]))
         ]);
       };
     }
   });
-  const Gallery_vue_vue_type_style_index_0_lang = "";
   const Gallery = {
     id: "image_gallery",
-    component: _sfc_main$1k
+    component: _sfc_main$1n
   };
-  const _hoisted_1$$ = { class: "znpb-global-css-classes__wrapper" };
-  const _hoisted_2$F = { class: "znpb-global-css-classes__search" };
-  const _hoisted_3$u = {
+  const _hoisted_1$10 = { class: "znpb-global-css-classes__wrapper" };
+  const _hoisted_2$D = { class: "znpb-global-css-classes__searchWrapper" };
+  const _hoisted_3$t = { class: "znpb-global-css-classes__search" };
+  const _hoisted_4$g = {
     key: 1,
     class: "znpb-class-selector-noclass"
   };
-  const _sfc_main$1j = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1m = /* @__PURE__ */ Vue.defineComponent({
     __name: "GlobalClasses",
     setup(__props) {
       const cssClasses = useCSSClassesStore();
@@ -6370,38 +7353,39 @@ var __async = (__this, __arguments, generator) => {
         }
       });
       return (_ctx, _cache) => {
-        const _component_Button = Vue.resolveComponent("Button");
         const _component_BaseInput = Vue.resolveComponent("BaseInput");
+        const _component_Icon = Vue.resolveComponent("Icon");
         const _component_OptionsForm = Vue.resolveComponent("OptionsForm");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$$, [
-          Vue.createVNode(_sfc_main$1o, {
-            type: "class",
-            onAddSelector: onSelectorAdd
-          }, {
-            default: Vue.withCtx(({ actions }) => [
-              Vue.createVNode(_component_Button, {
-                type: "line",
-                class: "znpb-class-selectorAddButton",
-                onClick: ($event) => actions.toggleModal()
-              }, {
-                default: Vue.withCtx(() => [
-                  Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Add CSS class", "zionbuilder")), 1)
-                ]),
-                _: 2
-              }, 1032, ["onClick"])
+        const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$10, [
+          Vue.createElementVNode("div", _hoisted_2$D, [
+            Vue.createElementVNode("div", _hoisted_3$t, [
+              Vue.createVNode(_component_BaseInput, {
+                ref: "input",
+                modelValue: keyword.value,
+                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => keyword.value = $event),
+                filterable: true,
+                icon: "search",
+                clearable: true,
+                placeholder: "Search for a class"
+              }, null, 8, ["modelValue"])
             ]),
-            _: 1
-          }),
-          Vue.createElementVNode("div", _hoisted_2$F, [
-            Vue.createVNode(_component_BaseInput, {
-              ref: "input",
-              modelValue: keyword.value,
-              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => keyword.value = $event),
-              filterable: true,
-              icon: "search",
-              clearable: true,
-              placeholder: "Search for a class"
-            }, null, 8, ["modelValue"])
+            Vue.createVNode(_sfc_main$1r, {
+              type: "class",
+              class: "znpb-global-css-classes__addButton",
+              onAddSelector: onSelectorAdd
+            }, {
+              default: Vue.withCtx(({ actions }) => [
+                Vue.withDirectives(Vue.createVNode(_component_Icon, {
+                  icon: "plus",
+                  onClick: ($event) => actions.toggleModal()
+                }, null, 8, ["onClick"]), [
+                  [_directive_znpb_tooltip, i18n__namespace.__("Add CSS class", "zionbuilder")]
+                ])
+              ]),
+              _: 1
+              /* STABLE */
+            })
           ]),
           filteredClasses.value.length ? (Vue.openBlock(), Vue.createBlock(_component_OptionsForm, {
             key: 0,
@@ -6409,20 +7393,25 @@ var __async = (__this, __arguments, generator) => {
             "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => value.value = $event),
             schema: schema.value,
             class: "znpb-globalCSSClassesOptionsForm"
-          }, null, 8, ["modelValue", "schema"])) : (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$u, Vue.toDisplayString(i18n__namespace.__("No class found", "zionbuilder")), 1))
+          }, null, 8, ["modelValue", "schema"])) : (Vue.openBlock(), Vue.createElementBlock(
+            "div",
+            _hoisted_4$g,
+            Vue.toDisplayString(i18n__namespace.__("No class found", "zionbuilder")),
+            1
+            /* TEXT */
+          ))
         ]);
       };
     }
   });
-  const GlobalClasses_vue_vue_type_style_index_0_lang = "";
   const GlobalClasses = {
     id: "global_css_classes",
-    component: _sfc_main$1j
+    component: _sfc_main$1m
   };
-  const _hoisted_1$_ = { class: "znpb-options-children__element-inner" };
-  const _hoisted_2$E = { class: "znpb-options-children__element-title" };
-  const _hoisted_3$t = { class: "znpb-options-children__element-action" };
-  const _sfc_main$1i = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$$ = { class: "znpb-options-children__element-inner" };
+  const _hoisted_2$C = { class: "znpb-options-children__element-title" };
+  const _hoisted_3$s = { class: "znpb-options-children__element-action" };
+  const _sfc_main$1l = /* @__PURE__ */ Vue.defineComponent({
     __name: "SingleChild",
     props: {
       element: {},
@@ -6442,28 +7431,46 @@ var __async = (__this, __arguments, generator) => {
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
         return Vue.openBlock(), Vue.createElementBlock("div", {
           class: "znpb-options-children__element",
-          onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(_ctx.element), ["stop"]))
+          onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(__props.element), ["stop"]))
         }, [
-          Vue.createElementVNode("div", _hoisted_1$_, [
-            Vue.createElementVNode("div", _hoisted_2$E, Vue.toDisplayString(_ctx.element.options[_ctx.itemOptionName] || "ITEM"), 1),
-            Vue.createElementVNode("div", _hoisted_3$t, [
-              Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                icon: "copy",
-                onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => _ctx.element.duplicate(), ["stop"]))
-              }, null, 512), [
+          Vue.createElementVNode("div", _hoisted_1$$, [
+            Vue.createElementVNode(
+              "div",
+              _hoisted_2$C,
+              Vue.toDisplayString(__props.element.options[__props.itemOptionName] || "ITEM"),
+              1
+              /* TEXT */
+            ),
+            Vue.createElementVNode("div", _hoisted_3$s, [
+              Vue.withDirectives(Vue.createVNode(
+                _component_Icon,
+                {
+                  icon: "copy",
+                  onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => __props.element.duplicate(), ["stop"]))
+                },
+                null,
+                512
+                /* NEED_PATCH */
+              ), [
                 [_directive_znpb_tooltip, i18n__namespace.__("duplicate", "zionbuilder ")]
               ]),
               Vue.withDirectives(Vue.createVNode(_component_Icon, {
                 icon: "delete",
-                class: Vue.normalizeClass({ "znpb-options-children__element-actionDeleteInactive": !_ctx.showDelete }),
+                class: Vue.normalizeClass({ "znpb-options-children__element-actionDeleteInactive": !__props.showDelete }),
                 onClick: Vue.withModifiers(onDelete, ["stop"])
-              }, null, 8, ["class", "onClick"]), [
+              }, null, 8, ["class"]), [
                 [_directive_znpb_tooltip, i18n__namespace.__("delete", "zionbuilder ")]
               ]),
-              Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                icon: "edit",
-                onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(_ctx.element), ["stop"]))
-              }, null, 512), [
+              Vue.withDirectives(Vue.createVNode(
+                _component_Icon,
+                {
+                  icon: "edit",
+                  onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(__props.element), ["stop"]))
+                },
+                null,
+                512
+                /* NEED_PATCH */
+              ), [
                 [_directive_znpb_tooltip, i18n__namespace.__("edit", "zionbuilder ")]
               ])
             ])
@@ -6472,12 +7479,11 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const SingleChild_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$Z = { class: "znpb-options-children__wrapper" };
+  const _hoisted_1$_ = { class: "znpb-options-children__wrapper" };
   const __default__ = {
     name: "ChildAdder"
   };
-  const _sfc_main$1h = /* @__PURE__ */ Vue.defineComponent(__spreadProps(__spreadValues({}, __default__), {
+  const _sfc_main$1k = /* @__PURE__ */ Vue.defineComponent(__spreadProps(__spreadValues({}, __default__), {
     props: {
       modelValue: {},
       child_type: {},
@@ -6516,35 +7522,47 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Sortable = Vue.resolveComponent("Sortable");
         const _component_Button = Vue.resolveComponent("Button");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$Z, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$_, [
           Vue.createVNode(_component_Sortable, {
             modelValue: Vue.unref(element).content,
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => Vue.unref(element).content = $event),
             class: "znpb-options-children__items-wrapper"
           }, {
             default: Vue.withCtx(() => [
-              (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(elementChildren.value, (childElement) => {
-                return Vue.openBlock(), Vue.createBlock(_sfc_main$1i, {
-                  key: childElement.uid,
-                  element: childElement,
-                  "item-option-name": _ctx.item_name,
-                  "show-delete": canShowDeleteButton.value,
-                  onDelete: childElement.delete,
-                  onClone: childElement.duplicate
-                }, null, 8, ["element", "item-option-name", "show-delete", "onDelete", "onClone"]);
-              }), 128))
+              (Vue.openBlock(true), Vue.createElementBlock(
+                Vue.Fragment,
+                null,
+                Vue.renderList(elementChildren.value, (childElement) => {
+                  return Vue.openBlock(), Vue.createBlock(_sfc_main$1l, {
+                    key: childElement.uid,
+                    element: childElement,
+                    "item-option-name": __props.item_name,
+                    "show-delete": canShowDeleteButton.value,
+                    onDelete: childElement.delete,
+                    onClone: childElement.duplicate
+                  }, null, 8, ["element", "item-option-name", "show-delete", "onDelete", "onClone"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["modelValue"]),
           Vue.createVNode(_component_Button, {
             class: "znpb-option-repeater__add-button",
             type: "line",
             onClick: addChild
           }, {
-            default: Vue.withCtx(() => [
-              Vue.createTextVNode(" ADD ")
-            ]),
+            default: Vue.withCtx(() => [..._cache[1] || (_cache[1] = [
+              Vue.createTextVNode(
+                " ADD ",
+                -1
+                /* CACHED */
+              )
+            ])]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
@@ -6552,7 +7570,7 @@ var __async = (__this, __arguments, generator) => {
   }));
   const ChildAdder = {
     id: "child_adder",
-    component: _sfc_main$1h
+    component: _sfc_main$1k
   };
   const { useNotificationsStore } = window.zb.store;
   const { useResponsiveDevices: useResponsiveDevices$2 } = window.zb.composables;
@@ -6567,13 +7585,15 @@ var __async = (__this, __arguments, generator) => {
       const cssClasses = useCSSClassesStore();
       const { editorData: editorData2 } = useEditorData();
       const historyStore = useHistoryStore();
+      const themeStylesStore = useThemeStylesStore();
       const { responsiveDevices } = useResponsiveDevices$2();
       const pageData = {
         page_id: editorData2.value.page_id,
         template_data: contentStore.getAreaContentAsJSON(editorData2.value.page_id),
         page_settings: pageSettings.settings,
         css_classes: cssClasses.CSSClasses,
-        breakpoints: responsiveDevices.value
+        breakpoints: responsiveDevices.value,
+        theme_styles: themeStylesStore.styles
       };
       if (status) {
         pageData.status = status;
@@ -6838,14 +7858,14 @@ var __async = (__this, __arguments, generator) => {
     };
     const pasteElement = (element) => {
       let insertElement = element;
-      let index2 = -1;
+      let index = -1;
       const elementForPaste = copiedElement.value.element ? copiedElement.value.element.getClone() : getData("copiedElement");
       if (!elementForPaste) {
         return;
       }
       if (element.parent && (!element.isWrapper || elementForPaste.uid === element.uid)) {
         insertElement = element.parent;
-        index2 = element.indexInParent + 1;
+        index = element.indexInParent + 1;
       }
       if (copiedElement.value.action === "cut" && copiedElement.value.element) {
         if (copiedElement.value.element === element) {
@@ -6856,7 +7876,7 @@ var __async = (__this, __arguments, generator) => {
           window.zb.run("editor/elements/move", {
             newParent: insertElement,
             element: copiedElement.value.element,
-            index: index2
+            index
           });
         }
         copiedElement.value = {};
@@ -6864,7 +7884,7 @@ var __async = (__this, __arguments, generator) => {
         window.zb.run("editor/elements/copy", {
           parent: insertElement,
           copiedElement: elementForPaste,
-          index: index2
+          index
         });
       }
     };
@@ -6930,7 +7950,7 @@ var __async = (__this, __arguments, generator) => {
     useUserData,
     useWindows
   }, Symbol.toStringTag, { value: "Module" }));
-  const _sfc_main$1g = /* @__PURE__ */ Vue.defineComponent({
+  const _sfc_main$1j = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementEventButton",
     props: {
       event: {},
@@ -6944,28 +7964,34 @@ var __async = (__this, __arguments, generator) => {
         element.trigger(props.event);
       }
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: "znpb-option__elementEvent",
-          onClick
-        }, Vue.toDisplayString(_ctx.button_text), 1);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: "znpb-option__elementEvent",
+            onClick
+          },
+          Vue.toDisplayString(__props.button_text),
+          1
+          /* TEXT */
+        );
       };
     }
   });
-  const ElementEventButton_vue_vue_type_style_index_0_lang = "";
   const ElementEventButton = {
     id: "element_event_button",
-    component: _sfc_main$1g
+    component: _sfc_main$1j
   };
-  const _hoisted_1$Y = { class: "znpb-option-element-selector" };
-  const _sfc_main$1f = /* @__PURE__ */ Vue.defineComponent({
+  const _hoisted_1$Z = { class: "znpb-option-element-selector" };
+  const _sfc_main$1i = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementSelector",
     props: {
       modelValue: { default: "" },
       use_preview: { type: Boolean, default: true }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       let activeDoc = document;
       let lastElement = null;
       const valueModel = Vue.computed({
@@ -7000,7 +8026,7 @@ var __async = (__this, __arguments, generator) => {
       }
       return (_ctx, _cache) => {
         const _component_BaseInput = Vue.resolveComponent("BaseInput");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$Y, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$Z, [
           Vue.createVNode(_component_BaseInput, {
             modelValue: valueModel.value,
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => valueModel.value = $event)
@@ -7009,14 +8035,325 @@ var __async = (__this, __arguments, generator) => {
               Vue.createElementVNode("span", { onClick: activateSelectorMode }, "Select")
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["modelValue"])
         ]);
       };
     }
   });
-  const ElementSelector_vue_vue_type_style_index_0_lang = "";
   const ElementSelector = {
     id: "element_selector",
+    component: _sfc_main$1i
+  };
+  const _hoisted_1$Y = { class: "znpb-option-cssSelectorChildActions" };
+  const _sfc_main$1h = /* @__PURE__ */ Vue.defineComponent({
+    __name: "AddStyle",
+    emits: ["add-style"],
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
+      const showAddModal = Vue.ref(false);
+      const schema = Vue.computed(() => {
+        return {
+          label: {
+            type: "text",
+            placeholder: i18n__namespace.__("style title", "zionbuilder")
+          }
+        };
+      });
+      const formModel = Vue.ref({});
+      const computedFormModel = Vue.computed({
+        get() {
+          return formModel.value;
+        },
+        set(newValue) {
+          if (null === newValue) {
+            formModel.value = {};
+          } else {
+            formModel.value = newValue;
+          }
+        }
+      });
+      const canSave = Vue.computed(() => {
+        return formModel.value.label && formModel.value.label.length > 0;
+      });
+      const buttonType = Vue.computed(() => {
+        if (!canSave.value) {
+          return "disabled";
+        }
+        return "";
+      });
+      function openModal() {
+        showAddModal.value = true;
+      }
+      function closeModal() {
+        showAddModal.value = false;
+      }
+      function toggleModal() {
+        showAddModal.value = !showAddModal.value;
+      }
+      function onFormClose() {
+        showAddModal.value = false;
+        formModel.value = {};
+      }
+      function add() {
+        if (!canSave.value) {
+          return;
+        }
+        emit("add-style", formModel.value);
+        showAddModal.value = false;
+        formModel.value = {};
+      }
+      return (_ctx, _cache) => {
+        const _component_OptionsForm = Vue.resolveComponent("OptionsForm");
+        const _component_Button = Vue.resolveComponent("Button");
+        const _component_Tooltip = Vue.resolveComponent("Tooltip");
+        return Vue.openBlock(), Vue.createBlock(_component_Tooltip, {
+          show: showAddModal.value,
+          "onUpdate:show": _cache[2] || (_cache[2] = ($event) => showAddModal.value = $event),
+          trigger: null,
+          placement: "bottom",
+          "append-to": "body",
+          strategy: "fixed",
+          "tooltip-class": "znpb-option-cssSelectorChildActionAddTooltip",
+          "close-on-outside-click": true,
+          onHide: onFormClose
+        }, {
+          content: Vue.withCtx(() => [
+            Vue.createElementVNode("div", {
+              class: "znpb-addStyleFormModal",
+              onClick: _cache[1] || (_cache[1] = Vue.withModifiers(() => {
+              }, ["stop"]))
+            }, [
+              Vue.createElementVNode(
+                "h4",
+                null,
+                Vue.toDisplayString(i18n__namespace.__("Add theme style", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              Vue.createVNode(_component_OptionsForm, {
+                modelValue: computedFormModel.value,
+                "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedFormModel.value = $event),
+                class: "znpb-option-cssSelectorChildActionAddForm",
+                schema: schema.value
+              }, null, 8, ["modelValue", "schema"]),
+              Vue.createVNode(_component_Button, {
+                class: "znpb-button--line znpb-option-cssSelectorChildActionAddButton",
+                type: buttonType.value,
+                onClick: add
+              }, {
+                default: Vue.withCtx(() => [
+                  Vue.createTextVNode(
+                    Vue.toDisplayString(i18n__namespace.__("Add theme style", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["type"])
+            ])
+          ]),
+          default: Vue.withCtx(() => [
+            Vue.createElementVNode("div", _hoisted_1$Y, [
+              Vue.renderSlot(_ctx.$slots, "default", {
+                actions: {
+                  openModal,
+                  closeModal,
+                  toggleModal
+                }
+              })
+            ])
+          ]),
+          _: 3
+          /* FORWARDED */
+        }, 8, ["show"]);
+      };
+    }
+  });
+  const _hoisted_1$X = { class: "znpb-singleThemeStyleActions" };
+  const _sfc_main$1g = /* @__PURE__ */ Vue.defineComponent({
+    __name: "SingleStyle",
+    props: {
+      themeStyle: {
+        type: Object,
+        required: true
+      }
+    },
+    setup(__props) {
+      const props = __props;
+      const themeStylesStore = useThemeStylesStore();
+      const classActions = [
+        {
+          title: i18n__namespace.__("Rename", "zionbuilder"),
+          action: () => {
+            return;
+          },
+          icon: "pencil"
+        },
+        {
+          title: i18n__namespace.__("Export", "zionbuilder"),
+          action: () => {
+            return;
+          },
+          icon: "paste"
+        },
+        {
+          title: i18n__namespace.__("Delete", "zionbuilder"),
+          action: () => {
+            themeStylesStore.deleteStyle(props.themeStyle.id);
+          },
+          icon: "delete"
+        }
+      ];
+      const computedStyles = Vue.ref({});
+      const schema = {
+        typography: {
+          type: "accordion_menu",
+          title: "Typography",
+          child_options: {
+            body: {
+              type: "accordion_menu",
+              title: "Body",
+              child_options: {
+                body: {
+                  type: "element_styles",
+                  name: "body",
+                  allow_class_assignments: false,
+                  allow_custom_attributes: false,
+                  show_changes: false,
+                  showPseudoSelector: true
+                }
+              }
+            },
+            h1: {
+              type: "accordion_menu",
+              title: "H1",
+              is_group: true,
+              child_options: {
+                h1: {
+                  type: "element_styles",
+                  name: "h1",
+                  allow_class_assignments: false,
+                  allow_custom_attributes: false,
+                  showPseudoSelector: true
+                }
+              }
+            }
+          }
+        }
+      };
+      return (_ctx, _cache) => {
+        const _component_OptionsForm = Vue.resolveComponent("OptionsForm");
+        const _component_HiddenMenu = Vue.resolveComponent("HiddenMenu");
+        const _component_HorizontalAccordion = Vue.resolveComponent("HorizontalAccordion");
+        return Vue.openBlock(), Vue.createBlock(_component_HorizontalAccordion, {
+          class: "znpb-singleThemeStyle",
+          title: __props.themeStyle.label
+        }, {
+          actions: Vue.withCtx(() => [
+            Vue.createElementVNode("div", _hoisted_1$X, [
+              Vue.createVNode(_component_HiddenMenu, { actions: classActions })
+            ])
+          ]),
+          default: Vue.withCtx(() => [
+            Vue.createVNode(_component_OptionsForm, {
+              modelValue: computedStyles.value,
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedStyles.value = $event),
+              schema,
+              class: "znpb-singleThemeStyleOptionsForm"
+            }, null, 8, ["modelValue"])
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["title"]);
+      };
+    }
+  });
+  const _hoisted_1$W = { class: "znpb-themeStylesWrapper" };
+  const _hoisted_2$B = { class: "znpb-themeStylesHeader" };
+  const _hoisted_3$r = { class: "znpb-themeStylesContainer" };
+  const _hoisted_4$f = {
+    key: 0,
+    class: "znpb-themeStylesNoResults"
+  };
+  const _sfc_main$1f = /* @__PURE__ */ Vue.defineComponent({
+    __name: "ThemeStyles",
+    setup(__props) {
+      const searchKeyword = Vue.ref("");
+      const themeStylesStore = useThemeStylesStore();
+      const themeStyles = Vue.computed({
+        get() {
+          const styles = themeStylesStore.styles;
+          return styles.filter((style) => {
+            if (searchKeyword.value === "") {
+              return true;
+            }
+            return style.label.toLowerCase().includes(searchKeyword.value.toLowerCase());
+          });
+        },
+        set(newStyles) {
+        }
+      });
+      return (_ctx, _cache) => {
+        const _component_BaseInput = Vue.resolveComponent("BaseInput");
+        const _component_Icon = Vue.resolveComponent("Icon");
+        const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$W, [
+          Vue.createElementVNode("div", _hoisted_2$B, [
+            Vue.createVNode(_component_BaseInput, {
+              ref: "input",
+              modelValue: searchKeyword.value,
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchKeyword.value = $event),
+              filterable: true,
+              icon: "search",
+              clearable: true,
+              placeholder: i18n__namespace.__("Search for a theme style", "zionbuilder")
+            }, null, 8, ["modelValue", "placeholder"]),
+            Vue.createVNode(_sfc_main$1h, {
+              type: "class",
+              class: "znpb-global-css-classes__addButton",
+              onAddStyle: Vue.unref(themeStylesStore).addStyle
+            }, {
+              default: Vue.withCtx(({ actions }) => [
+                Vue.withDirectives(Vue.createVNode(_component_Icon, {
+                  icon: "plus",
+                  onClick: ($event) => actions.toggleModal()
+                }, null, 8, ["onClick"]), [
+                  [_directive_znpb_tooltip, i18n__namespace.__("Add theme style", "zionbuilder")]
+                ])
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["onAddStyle"])
+          ]),
+          Vue.createElementVNode("div", _hoisted_3$r, [
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(themeStyles.value, (themeStyle) => {
+                return Vue.openBlock(), Vue.createBlock(_sfc_main$1g, {
+                  key: themeStyle.id,
+                  "theme-style": themeStyle
+                }, null, 8, ["theme-style"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            )),
+            themeStyles.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock(
+              "div",
+              _hoisted_4$f,
+              Vue.toDisplayString(i18n__namespace.__("No results found", "zionbuilder")),
+              1
+              /* TEXT */
+            )) : Vue.createCommentVNode("v-if", true)
+          ])
+        ]);
+      };
+    }
+  });
+  const ThemeStyles = {
+    id: "theme_styles",
     component: _sfc_main$1f
   };
   const { useOptions } = window.zb.composables;
@@ -7041,6 +8378,7 @@ var __async = (__this, __arguments, generator) => {
     registerOption(ChildAdder);
     registerOption(ElementEventButton);
     registerOption(ElementSelector);
+    registerOption(ThemeStyles);
   };
   const cache$1 = {};
   const _sfc_main$1e = {
@@ -7062,8 +8400,7 @@ var __async = (__this, __arguments, generator) => {
       });
     }
   };
-  const ElementListItemSVG_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$X = ["src"];
+  const _hoisted_1$V = ["src"];
   const _sfc_main$1d = /* @__PURE__ */ Vue.defineComponent({
     __name: "UIElementIcon",
     props: {
@@ -7084,10 +8421,10 @@ var __async = (__this, __arguments, generator) => {
           key: 1,
           src: Vue.unref(get_element_image),
           class: "znpb-element-box__image"
-        }, null, 8, _hoisted_1$X)) : (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+        }, null, 8, _hoisted_1$V)) : (Vue.openBlock(), Vue.createBlock(_component_Icon, {
           key: 2,
           icon: Vue.unref(get_element_icon),
-          size: _ctx.size
+          size: __props.size
         }, null, 8, ["icon", "size"]));
       };
     }
@@ -7114,29 +8451,34 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return !Vue.unref(userStore).permissions.only_content ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", {
-          key: 0,
-          ref_key: "root",
-          ref: root2,
-          style: Vue.normalizeStyle(stylePosition.value),
-          class: Vue.normalizeClass(["znpb-element-toolbox__add-element-button", {
-            [`znpb-element-toolbox__add-element-button--${_ctx.position}`]: _ctx.position,
-            [`znpb-element-toolbox__add-element-button--${_ctx.placement}`]: _ctx.placement
-          }]),
-          onClick: onIconClick
-        }, [
-          Vue.createVNode(_component_Icon, {
-            icon: "plus",
-            rounded: true
-          })
-        ], 6)), [
-          [_directive_znpb_tooltip, Vue.unref(positionString) + " " + _ctx.element.name]
-        ]) : Vue.createCommentVNode("", true);
+        return !Vue.unref(userStore).permissions.only_content ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            key: 0,
+            ref_key: "root",
+            ref: root2,
+            style: Vue.normalizeStyle(stylePosition.value),
+            class: Vue.normalizeClass(["znpb-element-toolbox__add-element-button", {
+              [`znpb-element-toolbox__add-element-button--${__props.position}`]: __props.position,
+              [`znpb-element-toolbox__add-element-button--${__props.placement}`]: __props.placement
+            }]),
+            onClick: onIconClick
+          },
+          [
+            Vue.createVNode(_component_Icon, {
+              icon: "plus",
+              rounded: true
+            })
+          ],
+          6
+          /* CLASS, STYLE */
+        )), [
+          [_directive_znpb_tooltip, Vue.unref(positionString) + " " + __props.element.name]
+        ]) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const AddElementIcon_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$W = { class: "znpb-empty-placeholder" };
+  const _hoisted_1$U = { class: "znpb-empty-placeholder" };
   const _sfc_main$1b = /* @__PURE__ */ Vue.defineComponent({
     __name: "EmptySortablePlaceholder",
     props: {
@@ -7144,9 +8486,9 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$W, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$U, [
           Vue.createVNode(_sfc_main$1c, {
-            element: _ctx.element,
+            element: __props.element,
             placement: "inside",
             position: "middle"
           }, null, 8, ["element"])
@@ -7154,8 +8496,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const EmptySortablePlaceholder_vue_vue_type_style_index_0_lang = "";
-  const SortableHelper_vue_vue_type_style_index_0_lang = "";
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -7174,15 +8514,14 @@ var __async = (__this, __arguments, generator) => {
     });
   }
   const SortableHelper = /* @__PURE__ */ _export_sfc(_sfc_main$1a, [["render", _sfc_render$4]]);
-  const SortablePlaceholder_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$19 = {};
-  const _hoisted_1$V = { class: "znpb-sortable__placeholder-element" };
+  const _hoisted_1$T = { class: "znpb-sortable__placeholder-element" };
   function _sfc_render$3(_ctx, _cache) {
-    return Vue.openBlock(), Vue.createElementBlock("span", _hoisted_1$V);
+    return Vue.openBlock(), Vue.createElementBlock("span", _hoisted_1$T);
   }
   const SortablePlaceholder = /* @__PURE__ */ _export_sfc(_sfc_main$19, [["render", _sfc_render$3]]);
-  const _hoisted_1$U = ["innerHTML"];
-  const _hoisted_2$D = ["src"];
+  const _hoisted_1$S = ["innerHTML"];
+  const _hoisted_2$A = ["src"];
   const _sfc_main$18 = /* @__PURE__ */ Vue.defineComponent({
     __name: "RenderValue",
     props: {
@@ -7271,22 +8610,42 @@ var __async = (__this, __arguments, generator) => {
           key: 0,
           modelValue: optionValue2.value,
           "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => optionValue2.value = $event)
-        }, _ctx.$attrs), null, 16, ["modelValue"])) : renderType.value === "dynamic_html" ? (Vue.openBlock(), Vue.createElementBlock("span", Vue.mergeProps({ key: 1 }, _ctx.$attrs, { innerHTML: optionValue2.value }), null, 16, _hoisted_1$U)) : renderType.value === "icon" ? (Vue.openBlock(), Vue.createBlock(_component_ElementIcon, Vue.mergeProps({
+        }, _ctx.$attrs), null, 16, ["modelValue"])) : renderType.value === "dynamic_html" ? (Vue.openBlock(), Vue.createElementBlock(
+          Vue.Fragment,
+          { key: 1 },
+          [
+            Vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
+            Vue.createElementVNode("span", Vue.mergeProps(_ctx.$attrs, { innerHTML: optionValue2.value }), null, 16, _hoisted_1$S)
+          ],
+          2112
+          /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
+        )) : renderType.value === "icon" ? (Vue.openBlock(), Vue.createBlock(_component_ElementIcon, Vue.mergeProps({
           key: 2,
           "icon-config": optionValue2.value
         }, _ctx.$attrs), null, 16, ["icon-config"])) : renderType.value === "image" ? (Vue.openBlock(), Vue.createElementBlock("img", Vue.mergeProps({
           key: 3,
           src: optionValue2.value
-        }, _ctx.$attrs), null, 16, _hoisted_2$D)) : (Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent(_ctx.htmlTag), Vue.normalizeProps(Vue.mergeProps({ key: 4 }, _ctx.$attrs)), {
-          default: Vue.withCtx(() => [
-            Vue.createTextVNode(Vue.toDisplayString(optionValue2.value), 1)
-          ]),
-          _: 1
-        }, 16));
+        }, _ctx.$attrs), null, 16, _hoisted_2$A)) : (Vue.openBlock(), Vue.createBlock(
+          Vue.resolveDynamicComponent(__props.htmlTag),
+          Vue.normalizeProps(Vue.mergeProps({ key: 4 }, _ctx.$attrs)),
+          {
+            default: Vue.withCtx(() => [
+              Vue.createTextVNode(
+                Vue.toDisplayString(optionValue2.value),
+                1
+                /* TEXT */
+              )
+            ]),
+            _: 1
+            /* STABLE */
+          },
+          16
+          /* FULL_PROPS */
+        ));
       };
     }
   });
-  const _hoisted_1$T = ["data-znpbiconfam", "data-znpbicon"];
+  const _hoisted_1$R = ["data-znpbiconfam", "data-znpbicon"];
   const _sfc_main$17 = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementIcon",
     props: {
@@ -7304,11 +8663,11 @@ var __async = (__this, __arguments, generator) => {
         return JSON.parse(`"\\${props.iconConfig.unicode}"`).trim();
       });
       return (_ctx, _cache) => {
-        return _ctx.iconConfig ? (Vue.openBlock(), Vue.createElementBlock("span", {
+        return __props.iconConfig ? (Vue.openBlock(), Vue.createElementBlock("span", {
           key: 0,
-          "data-znpbiconfam": _ctx.iconConfig.family,
+          "data-znpbiconfam": __props.iconConfig.family,
           "data-znpbicon": iconUnicode.value
-        }, null, 8, _hoisted_1$T)) : Vue.createCommentVNode("", true);
+        }, null, 8, _hoisted_1$R)) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
@@ -7361,25 +8720,32 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
-        return _ctx.icon ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+        return __props.icon ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
           key: 0,
-          icon: _ctx.icon,
+          icon: __props.icon,
           class: Vue.normalizeClass(classes.value),
           onMousedown: toggleFormatter
-        }, null, 8, ["icon", "class"])) : (Vue.openBlock(), Vue.createElementBlock("span", {
-          key: 1,
-          class: Vue.normalizeClass(["zion-inline-editor-button", classes.value]),
-          onMousedownCapture: toggleFormatter
-        }, Vue.toDisplayString(_ctx.buttontext), 35));
+        }, null, 8, ["icon", "class"])) : (Vue.openBlock(), Vue.createElementBlock(
+          "span",
+          {
+            key: 1,
+            class: Vue.normalizeClass(["zion-inline-editor-button", classes.value]),
+            onMousedownCapture: toggleFormatter
+          },
+          Vue.toDisplayString(__props.buttontext),
+          35
+          /* TEXT, CLASS, NEED_HYDRATION */
+        ));
       };
     }
   });
-  const _hoisted_1$S = { class: "zion-inline-editor-panel-color" };
-  const _hoisted_2$C = { class: "zion-inline-editor-button" };
+  const _hoisted_1$Q = { class: "zion-inline-editor-panel-color" };
+  const _hoisted_2$z = { class: "zion-inline-editor-button" };
   const _sfc_main$15 = /* @__PURE__ */ Vue.defineComponent({
     __name: "ColorPicker",
     emits: ["open-color-picker", "close-color-picker"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const editor = Vue.inject("ZionInlineEditor");
       const color = Vue.ref(null);
       let justChangeColor = false;
@@ -7410,8 +8776,8 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_InputColorPicker = Vue.resolveComponent("InputColorPicker");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$S, [
-          Vue.createElementVNode("div", _hoisted_2$C, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$Q, [
+          Vue.createElementVNode("div", _hoisted_2$z, [
             Vue.createVNode(_component_InputColorPicker, {
               modelValue: color.value,
               "show-library": false,
@@ -7425,7 +8791,6 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const ColorPicker_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$14 = /* @__PURE__ */ Vue.defineComponent({
     __name: "PopOver",
     props: {
@@ -7469,8 +8834,7 @@ var __async = (__this, __arguments, generator) => {
           fn({ state, instance }) {
             const popperSize = state.rects.popper.width;
             const referenceSize = state.rects.reference.width;
-            if (popperSize >= referenceSize)
-              return;
+            if (popperSize >= referenceSize) return;
             state.styles.popper.width = `${referenceSize}px`;
             instance.update();
           }
@@ -7501,16 +8865,16 @@ var __async = (__this, __arguments, generator) => {
             Vue.createVNode(_component_Icon, {
               ref_key: "iconElementRef",
               ref: iconElementRef,
-              icon: _ctx.icon,
+              icon: __props.icon,
               class: Vue.normalizeClass(buttonClasses.value)
             }, null, 8, ["icon", "class"])
           ]),
           _: 3
+          /* FORWARDED */
         }, 8, ["popper-ref"]);
       };
     }
   });
-  const PopOver_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$13 = /* @__PURE__ */ Vue.defineComponent({
     __name: "FontWeight",
     setup(__props) {
@@ -7536,23 +8900,29 @@ var __async = (__this, __arguments, generator) => {
           "full-size": true
         }, {
           default: Vue.withCtx(() => [
-            (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(fontWeights, (fontWeight) => {
-              return Vue.createVNode(_sfc_main$16, {
-                key: fontWeight,
-                formatter: "fontWeight",
-                "formatter-value": fontWeight,
-                buttontext: fontWeight
-              }, null, 8, ["formatter-value", "buttontext"]);
-            }), 64))
+            (Vue.openBlock(), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(fontWeights, (fontWeight) => {
+                return Vue.createVNode(_sfc_main$16, {
+                  key: fontWeight,
+                  formatter: "fontWeight",
+                  "formatter-value": fontWeight,
+                  buttontext: fontWeight
+                }, null, 8, ["formatter-value", "buttontext"]);
+              }),
+              64
+              /* STABLE_FRAGMENT */
+            ))
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["is-active"]);
       };
     }
   });
-  const FontWeight_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$R = { class: "zion-inline-editor-link-wrapper" };
-  const _hoisted_2$B = { class: "zion-inline-editor-popover__link-title" };
+  const _hoisted_1$P = { class: "zion-inline-editor-link-wrapper" };
+  const _hoisted_2$y = { class: "zion-inline-editor-popover__link-title" };
   const _sfc_main$12 = /* @__PURE__ */ Vue.defineComponent({
     __name: "PanelLink",
     props: {
@@ -7634,7 +9004,7 @@ var __async = (__this, __arguments, generator) => {
           "full-size": true
         }, {
           default: Vue.withCtx(() => [
-            Vue.createElementVNode("div", _hoisted_1$R, [
+            Vue.createElementVNode("div", _hoisted_1$P, [
               Vue.createVNode(_component_InputWrapper, {
                 title: i18n__namespace.__("Add a link", "zionbuilder")
               }, {
@@ -7650,11 +9020,13 @@ var __async = (__this, __arguments, generator) => {
                       Vue.createVNode(_component_Icon, { icon: "link" })
                     ]),
                     _: 1
-                  }, 8, ["modelValue", "onKeyup"])
+                    /* STABLE */
+                  }, 8, ["modelValue"])
                 ]),
                 _: 1
+                /* STABLE */
               }, 8, ["title"]),
-              Vue.createElementVNode("div", _hoisted_2$B, [
+              Vue.createElementVNode("div", _hoisted_2$y, [
                 Vue.createVNode(_component_InputWrapper, {
                   title: i18n__namespace.__("Target", "zionbuilder")
                 }, {
@@ -7667,6 +9039,7 @@ var __async = (__this, __arguments, generator) => {
                     }, null, 8, ["modelValue", "placeholder"])
                   ]),
                   _: 1
+                  /* STABLE */
                 }, 8, ["title"]),
                 Vue.createVNode(_component_InputWrapper, {
                   title: i18n__namespace.__("Title", "zionbuilder")
@@ -7678,19 +9051,20 @@ var __async = (__this, __arguments, generator) => {
                       placeholder: "link_title",
                       clearable: true,
                       onKeyup: Vue.withKeys(addLink, ["enter"])
-                    }, null, 8, ["modelValue", "onKeyup"])
+                    }, null, 8, ["modelValue"])
                   ]),
                   _: 1
+                  /* STABLE */
                 }, 8, ["title"])
               ])
             ])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const PanelLink_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$11 = /* @__PURE__ */ Vue.defineComponent({
     __name: "TextAlign",
     setup(__props) {
@@ -7730,24 +9104,32 @@ var __async = (__this, __arguments, generator) => {
           "is-active": isActive.value
         }, {
           default: Vue.withCtx(() => [
-            (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(buttons, (button) => {
-              return Vue.createVNode(_sfc_main$16, {
-                key: button.formatter,
-                formatter: button.formatter,
-                icon: button.icon
-              }, null, 8, ["formatter", "icon"]);
-            }), 64))
+            (Vue.openBlock(), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(buttons, (button) => {
+                return Vue.createVNode(_sfc_main$16, {
+                  key: button.formatter,
+                  formatter: button.formatter,
+                  icon: button.icon
+                }, null, 8, ["formatter", "icon"]);
+              }),
+              64
+              /* STABLE_FRAGMENT */
+            ))
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["is-active"]);
       };
     }
   });
-  const _hoisted_1$Q = { class: "zion-inline-editor-slider-area" };
+  const _hoisted_1$O = { class: "zion-inline-editor-slider-area" };
   const _sfc_main$10 = /* @__PURE__ */ Vue.defineComponent({
     __name: "FontSize",
     emits: ["started-dragging"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const editor = Vue.inject("ZionInlineEditor");
       const sliderValue = Vue.ref(null);
       const inputRangeDynamicRef = Vue.ref(null);
@@ -7817,7 +9199,7 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_InputRangeDynamic = Vue.resolveComponent("InputRangeDynamic");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$Q, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$O, [
           Vue.createVNode(_component_InputRangeDynamic, {
             ref_key: "inputRangeDynamicRef",
             ref: inputRangeDynamicRef,
@@ -7830,8 +9212,7 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const FontSize_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$P = { class: "zion-inline-editor-slider-area" };
+  const _hoisted_1$N = { class: "zion-inline-editor-slider-area" };
   const _sfc_main$$ = /* @__PURE__ */ Vue.defineComponent({
     __name: "LineHeight",
     setup(__props) {
@@ -7896,7 +9277,7 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_InputRangeDynamic = Vue.resolveComponent("InputRangeDynamic");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$P, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$N, [
           Vue.createVNode(_component_InputRangeDynamic, {
             ref_key: "inputRangeDynamicRef",
             ref: inputRangeDynamicRef,
@@ -7909,12 +9290,12 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const LineHeight_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$O = { class: "zion-inline-editor-slider-area" };
+  const _hoisted_1$M = { class: "zion-inline-editor-slider-area" };
   const _sfc_main$_ = /* @__PURE__ */ Vue.defineComponent({
     __name: "LetterSpacing",
     emits: ["started-dragging"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const editor = Vue.inject("ZionInlineEditor");
       const sliderValue = Vue.ref(null);
       const inputRangeDynamicRef = Vue.ref(null);
@@ -7975,7 +9356,7 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_InputRangeDynamic = Vue.resolveComponent("InputRangeDynamic");
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$O, [
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$M, [
           Vue.createVNode(_component_InputRangeDynamic, {
             ref_key: "inputRangeDynamicRef",
             ref: inputRangeDynamicRef,
@@ -7988,10 +9369,9 @@ var __async = (__this, __arguments, generator) => {
       };
     }
   });
-  const LetterSpacing_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$N = { class: "" };
-  const _hoisted_2$A = { class: "zion-inline-editor__font-panel znpb-fancy-scrollbar" };
-  const _hoisted_3$s = ["onClick"];
+  const _hoisted_1$L = { class: "" };
+  const _hoisted_2$x = { class: "zion-inline-editor__font-panel znpb-fancy-scrollbar" };
+  const _hoisted_3$q = ["onClick"];
   const _sfc_main$Z = /* @__PURE__ */ Vue.defineComponent({
     __name: "FontsList",
     setup(__props) {
@@ -8022,22 +9402,27 @@ var __async = (__this, __arguments, generator) => {
         editor.editor.off("SelectionChange", onNodeChange);
       });
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$N, [
-          Vue.createElementVNode("ul", _hoisted_2$A, [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(Vue.unref(fontsListForOption), (font, i) => {
-              return Vue.openBlock(), Vue.createElementBlock("li", {
-                key: i,
-                class: Vue.normalizeClass(["zion-inline-editor__font-list-item", { "zion-inline-editor__font-list-item--active": isActive(font.id) }]),
-                onClick: ($event) => changeFont(font.id)
-              }, Vue.toDisplayString(font.name), 11, _hoisted_3$s);
-            }), 128))
+        return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$L, [
+          Vue.createElementVNode("ul", _hoisted_2$x, [
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(Vue.unref(fontsListForOption), (font, i) => {
+                return Vue.openBlock(), Vue.createElementBlock("li", {
+                  key: i,
+                  class: Vue.normalizeClass(["zion-inline-editor__font-list-item", { "zion-inline-editor__font-list-item--active": isActive(font.id) }]),
+                  onClick: ($event) => changeFont(font.id)
+                }, Vue.toDisplayString(font.name), 11, _hoisted_3$q);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ])
         ]);
       };
     }
   });
-  const FontsList_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$M = { class: "zion-inline-editor-group" };
+  const _hoisted_1$K = { class: "zion-inline-editor-group" };
   const _sfc_main$Y = /* @__PURE__ */ Vue.defineComponent({
     __name: "FontStyles",
     setup(__props) {
@@ -8049,7 +9434,7 @@ var __async = (__this, __arguments, generator) => {
           "full-size": true
         }, {
           default: Vue.withCtx(() => [
-            Vue.createElementVNode("div", _hoisted_1$M, [
+            Vue.createElementVNode("div", _hoisted_1$K, [
               Vue.createVNode(_component_Tabs, { "tab-style": "minimal" }, {
                 default: Vue.withCtx(() => [
                   Vue.createVNode(_component_Tab, {
@@ -8059,6 +9444,7 @@ var __async = (__this, __arguments, generator) => {
                       Vue.createVNode(_sfc_main$Z)
                     ]),
                     _: 1
+                    /* STABLE */
                   }, 8, ["name"]),
                   Vue.createVNode(_component_Tab, {
                     name: i18n__namespace.__("Heading", "zionbuilder"),
@@ -8093,6 +9479,7 @@ var __async = (__this, __arguments, generator) => {
                       ])
                     ]),
                     _: 1
+                    /* STABLE */
                   }, 8, ["name"]),
                   Vue.createVNode(_component_Tab, {
                     name: i18n__namespace.__("Size", "zionbuilder")
@@ -8101,6 +9488,7 @@ var __async = (__this, __arguments, generator) => {
                       Vue.createVNode(_sfc_main$10)
                     ]),
                     _: 1
+                    /* STABLE */
                   }, 8, ["name"]),
                   Vue.createVNode(_component_Tab, {
                     name: i18n__namespace.__("Height", "zionbuilder")
@@ -8109,6 +9497,7 @@ var __async = (__this, __arguments, generator) => {
                       Vue.createVNode(_sfc_main$$)
                     ]),
                     _: 1
+                    /* STABLE */
                   }, 8, ["name"]),
                   Vue.createVNode(_component_Tab, {
                     name: i18n__namespace.__("Spacing", "zionbuilder")
@@ -8117,21 +9506,21 @@ var __async = (__this, __arguments, generator) => {
                       Vue.createVNode(_sfc_main$_)
                     ]),
                     _: 1
+                    /* STABLE */
                   }, 8, ["name"])
                 ]),
                 _: 1
+                /* STABLE */
               })
             ])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const FontStyles_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$L = ["onMousedown"];
-  const _hoisted_2$z = ["onMousedown"];
-  const _hoisted_3$r = ["contenteditable"];
+  const _hoisted_1$J = ["contenteditable"];
   const _sfc_main$X = /* @__PURE__ */ Vue.defineComponent({
     __name: "InlineEditor",
     props: {
@@ -8139,7 +9528,8 @@ var __async = (__this, __arguments, generator) => {
       forcedRootNode: { type: [Boolean, String], default: "" }
     },
     emits: ["update:modelValue"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const props = __props;
       const TinyMCEEditor = {
         editor: null
@@ -8333,57 +9723,86 @@ var __async = (__this, __arguments, generator) => {
           onHide: _cache[1] || (_cache[1] = ($event) => showEditor.value = false)
         }, {
           content: Vue.withCtx(() => [
-            !Vue.unref(UIStore).isPreviewMode && tinyMceReady.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
-              key: 0,
-              ref_key: "tooltipContentRef",
-              ref: tooltipContentRef,
-              class: Vue.normalizeClass(["zion-inline-editor zion-inline-editor-container", { "zion-inline-editor--dragging": isDragging.value }]),
-              style: Vue.normalizeStyle(barStyles.value),
-              onMousedown: _cache[0] || (_cache[0] = (e) => e.preventDefault())
-            }, [
-              dragButtonOnScreen.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
+            !Vue.unref(UIStore).isPreviewMode && tinyMceReady.value ? (Vue.openBlock(), Vue.createElementBlock(
+              "div",
+              {
                 key: 0,
-                ref: "dragButton",
-                class: "zion-inline-editor-dragButton",
-                onMousedown: Vue.withModifiers(startDrag, ["stop"])
-              }, [
-                Vue.createVNode(_component_Icon, { icon: "ite-move" })
-              ], 40, _hoisted_1$L)) : Vue.createCommentVNode("", true),
-              Vue.createVNode(_sfc_main$Y),
-              Vue.createVNode(_sfc_main$13),
-              Vue.createVNode(_sfc_main$16, {
-                formatter: "italic",
-                icon: "ite-italic"
-              }),
-              Vue.createVNode(_sfc_main$16, {
-                formatter: "underline",
-                icon: "ite-underline"
-              }),
-              Vue.createVNode(_sfc_main$16, {
-                formatter: "uppercase",
-                icon: "ite-uppercase"
-              }),
-              Vue.createVNode(_sfc_main$12),
-              Vue.createVNode(_sfc_main$16, {
-                formatter: "blockquote",
-                icon: "ite-quote"
-              }),
-              Vue.createVNode(_sfc_main$15, {
-                onCloseColorPicker: onColorPickerClose,
-                onOpenColorPicker: onColorPickerOpen
-              }),
-              Vue.createVNode(_sfc_main$11),
-              !dragButtonOnScreen.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
-                key: 1,
-                class: "zion-inline-editor-dragButton",
-                onMousedown: Vue.withModifiers(startDrag, ["stop"])
-              }, [
-                Vue.createVNode(_component_Icon, {
-                  icon: "more",
-                  rotate: 90
-                })
-              ], 40, _hoisted_2$z)) : Vue.createCommentVNode("", true)
-            ], 38)) : Vue.createCommentVNode("", true)
+                ref_key: "tooltipContentRef",
+                ref: tooltipContentRef,
+                class: Vue.normalizeClass(["zion-inline-editor zion-inline-editor-container", { "zion-inline-editor--dragging": isDragging.value }]),
+                style: Vue.normalizeStyle(barStyles.value),
+                onMousedown: _cache[0] || (_cache[0] = (e) => e.preventDefault())
+              },
+              [
+                Vue.createCommentVNode(" Normally positioned drag button "),
+                dragButtonOnScreen.value ? (Vue.openBlock(), Vue.createElementBlock(
+                  "div",
+                  {
+                    key: 0,
+                    ref: "dragButton",
+                    class: "zion-inline-editor-dragButton",
+                    onMousedown: Vue.withModifiers(startDrag, ["stop"])
+                  },
+                  [
+                    Vue.createVNode(_component_Icon, { icon: "ite-move" })
+                  ],
+                  544
+                  /* NEED_HYDRATION, NEED_PATCH */
+                )) : Vue.createCommentVNode("v-if", true),
+                Vue.createCommentVNode(" Fonts & text style panel "),
+                Vue.createVNode(_sfc_main$Y),
+                Vue.createCommentVNode(" Bold popover "),
+                Vue.createVNode(_sfc_main$13),
+                Vue.createCommentVNode(" Italic button "),
+                Vue.createVNode(_sfc_main$16, {
+                  formatter: "italic",
+                  icon: "ite-italic"
+                }),
+                Vue.createCommentVNode(" Underline button "),
+                Vue.createVNode(_sfc_main$16, {
+                  formatter: "underline",
+                  icon: "ite-underline"
+                }),
+                Vue.createCommentVNode(" Uppercase button "),
+                Vue.createVNode(_sfc_main$16, {
+                  formatter: "uppercase",
+                  icon: "ite-uppercase"
+                }),
+                Vue.createCommentVNode(" Link button "),
+                Vue.createVNode(_sfc_main$12),
+                Vue.createCommentVNode(" Quote button "),
+                Vue.createVNode(_sfc_main$16, {
+                  formatter: "blockquote",
+                  icon: "ite-quote"
+                }),
+                Vue.createCommentVNode(" Color Picker "),
+                Vue.createVNode(_sfc_main$15, {
+                  onCloseColorPicker: onColorPickerClose,
+                  onOpenColorPicker: onColorPickerOpen
+                }),
+                Vue.createCommentVNode(" Text align button "),
+                Vue.createVNode(_sfc_main$11),
+                Vue.createCommentVNode("Alternatively positioned drag button (if the normal one is out of bounds)"),
+                !dragButtonOnScreen.value ? (Vue.openBlock(), Vue.createElementBlock(
+                  "div",
+                  {
+                    key: 1,
+                    class: "zion-inline-editor-dragButton",
+                    onMousedown: Vue.withModifiers(startDrag, ["stop"])
+                  },
+                  [
+                    Vue.createVNode(_component_Icon, {
+                      icon: "more",
+                      rotate: 90
+                    })
+                  ],
+                  32
+                  /* NEED_HYDRATION */
+                )) : Vue.createCommentVNode("v-if", true)
+              ],
+              38
+              /* CLASS, STYLE, NEED_HYDRATION */
+            )) : Vue.createCommentVNode("v-if", true)
           ]),
           default: Vue.withCtx(() => [
             Vue.createElementVNode("div", {
@@ -8392,19 +9811,19 @@ var __async = (__this, __arguments, generator) => {
               class: Vue.normalizeClass(["znpb-inline-text-editor", { "znpb-inline-text-editor--preview": Vue.unref(UIStore).isPreviewMode }]),
               contenteditable: !Vue.unref(UIStore).isPreviewMode,
               onMouseup: checkTextSelection
-            }, null, 42, _hoisted_3$r)
+            }, null, 42, _hoisted_1$J)
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["show"]);
       };
     }
   });
-  const InlineEditor_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$K = { class: "znpb-element-toolbox__titleWrapper" };
-  const _hoisted_2$y = ["onClick", "onContextmenu"];
-  const _hoisted_3$q = { class: "znpb-element-toolbox__title" };
-  const _hoisted_4$f = { key: 0 };
-  const _hoisted_5$d = { key: 1 };
+  const _hoisted_1$I = { class: "znpb-element-toolbox__titleWrapper" };
+  const _hoisted_2$w = ["onClick", "onContextmenu"];
+  const _hoisted_3$p = { class: "znpb-element-toolbox__title" };
+  const _hoisted_4$e = { key: 0 };
+  const _hoisted_5$c = { key: 1 };
   const _sfc_main$W = /* @__PURE__ */ Vue.defineComponent({
     __name: "ToolboxTitle",
     props: {
@@ -8450,40 +9869,55 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: Vue.normalizeClass(["znpb-element-toolbox__titleFakeWrapper", {
-            "znpb-element-toolbox__titleFakeWrapper--bottom": exitsTop.value,
-            "znpb-element-toolbox__titleFakeWrapper--left": exitsRight.value
-          }])
-        }, [
-          Vue.createElementVNode("div", _hoisted_1$K, [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(parents.value, (parent2) => {
-              return Vue.openBlock(), Vue.createElementBlock("span", {
-                key: parent2.uid,
-                class: Vue.normalizeClass(["znpb-element-toolbox__titleContainer", { "znpb-element-toolbox__titleContainer--active": parent2 === Vue.unref(UIStore).editedElement }]),
-                onClick: Vue.withModifiers(($event) => editElement(parent2), ["stop"]),
-                onContextmenu: Vue.withModifiers(($event) => Vue.unref(UIStore).showElementMenuFromEvent(parent2, $event), ["stop", "prevent"])
-              }, [
-                Vue.createVNode(_component_Icon, {
-                  icon: "select",
-                  class: "znpb-element-toolbox__icon",
-                  size: 9
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: Vue.normalizeClass(["znpb-element-toolbox__titleFakeWrapper", {
+              "znpb-element-toolbox__titleFakeWrapper--bottom": exitsTop.value,
+              "znpb-element-toolbox__titleFakeWrapper--left": exitsRight.value
+            }])
+          },
+          [
+            Vue.createElementVNode("div", _hoisted_1$I, [
+              (Vue.openBlock(true), Vue.createElementBlock(
+                Vue.Fragment,
+                null,
+                Vue.renderList(parents.value, (parent2) => {
+                  return Vue.openBlock(), Vue.createElementBlock("span", {
+                    key: parent2.uid,
+                    class: Vue.normalizeClass(["znpb-element-toolbox__titleContainer", { "znpb-element-toolbox__titleContainer--active": parent2 === Vue.unref(UIStore).editedElement }]),
+                    onClick: Vue.withModifiers(($event) => editElement(parent2), ["stop"]),
+                    onContextmenu: Vue.withModifiers(($event) => Vue.unref(UIStore).showElementMenuFromEvent(parent2, $event), ["stop", "prevent"])
+                  }, [
+                    Vue.createVNode(_component_Icon, {
+                      icon: "select",
+                      class: "znpb-element-toolbox__icon",
+                      size: 9
+                    }),
+                    Vue.createElementVNode("span", _hoisted_3$p, [
+                      parent2.isRepeaterProvider ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_4$e, "P")) : Vue.createCommentVNode("v-if", true),
+                      parent2.isRepeaterConsumer ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_5$c, "C")) : Vue.createCommentVNode("v-if", true),
+                      Vue.createTextVNode(
+                        " " + Vue.toDisplayString(parent2.name),
+                        1
+                        /* TEXT */
+                      )
+                    ])
+                  ], 42, _hoisted_2$w);
                 }),
-                Vue.createElementVNode("span", _hoisted_3$q, [
-                  parent2.isRepeaterProvider ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_4$f, "P")) : Vue.createCommentVNode("", true),
-                  parent2.isRepeaterConsumer ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_5$d, "C")) : Vue.createCommentVNode("", true),
-                  Vue.createTextVNode(" " + Vue.toDisplayString(parent2.name), 1)
-                ])
-              ], 42, _hoisted_2$y);
-            }), 128))
-          ])
-        ], 2);
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const ToolboxTitle_vue_vue_type_style_index_0_lang = "";
   var rafSchd = function rafSchd2(fn) {
     var lastArgs = [];
     var frameId = null;
@@ -8509,8 +9943,6 @@ var __async = (__this, __arguments, generator) => {
     };
     return wrapperFn;
   };
-  const rafSchd$1 = rafSchd;
-  const _hoisted_1$J = ["onMousedown"];
   const _sfc_main$V = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementToolboxResizer",
     props: {
@@ -8521,12 +9953,13 @@ var __async = (__this, __arguments, generator) => {
       dragInfo: {}
     },
     emits: ["update:modelValue", "update:dragInfo", "start-dragging", "stop-dragging"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { Environment: Environment2 } = window.zb.utils;
       const { addEventListener, removeEventListener } = window.zb.editor.useWindows();
+      const props = __props;
+      const emit = __emit;
       const isDragging = Vue.ref(false);
-      const onMouseMoveDebounced = rafSchd$1(onMouseMove);
+      const onMouseMoveDebounced = rafSchd(onMouseMove);
       const helperStyles = Vue.computed(() => {
         const styleProperty = props.position === "top" || props.position === "bottom" ? "height" : "width";
         return {
@@ -8603,30 +10036,42 @@ var __async = (__this, __arguments, generator) => {
         removeEventListener("mouseup", onMouseUp);
       });
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: Vue.normalizeClass({
-            [`znpb-element-toolbox__resize`]: true,
-            [`znpb-element-toolbox__resize-${_ctx.type}`]: true,
-            [`znpb-element-toolbox__resize--${_ctx.type}-${_ctx.position}`]: true
-          }),
-          onMousedown: Vue.withModifiers(startSpacingDrag, ["left", "stop"])
-        }, [
-          Vue.createElementVNode("div", {
-            class: "znpb-element-toolbox__resize-value",
-            style: Vue.normalizeStyle(helperStyles.value)
-          }, [
-            Vue.createElementVNode("span", null, Vue.toDisplayString(_ctx.modelValue), 1)
-          ], 4)
-        ], 42, _hoisted_1$J);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: Vue.normalizeClass({
+              [`znpb-element-toolbox__resize`]: true,
+              [`znpb-element-toolbox__resize-${__props.type}`]: true,
+              [`znpb-element-toolbox__resize--${__props.type}-${__props.position}`]: true
+            }),
+            onMousedown: Vue.withModifiers(startSpacingDrag, ["left", "stop"])
+          },
+          [
+            Vue.createElementVNode(
+              "div",
+              {
+                class: "znpb-element-toolbox__resize-value",
+                style: Vue.normalizeStyle(helperStyles.value)
+              },
+              [
+                Vue.createElementVNode(
+                  "span",
+                  null,
+                  Vue.toDisplayString(__props.modelValue),
+                  1
+                  /* TEXT */
+                )
+              ],
+              4
+              /* STYLE */
+            )
+          ],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   });
-  const ElementToolboxResizer_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$I = ["onMousedown"];
-  const _hoisted_2$x = /* @__PURE__ */ Vue.createElementVNode("span", { class: "znpb-element-toolbox__resize-width-bg" }, null, -1);
-  const _hoisted_3$p = [
-    _hoisted_2$x
-  ];
   const _sfc_main$U = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementWidthHeightResizer",
     props: {
@@ -8635,12 +10080,13 @@ var __async = (__this, __arguments, generator) => {
       position: {}
     },
     emits: ["update:modelValue", "update:dragInfo", "start-dragging", "stop-dragging"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { Environment: Environment2 } = window.zb.utils;
       const { addEventListener, removeEventListener } = window.zb.editor.useWindows();
+      const props = __props;
+      const emit = __emit;
       const isDragging = Vue.ref(false);
-      const onMouseMoveDebounced = rafSchd$1(onMouseMove);
+      const onMouseMoveDebounced = rafSchd(onMouseMove);
       let initialUnit = "";
       let initialValue = 0;
       let startClientX = 0;
@@ -8702,17 +10148,30 @@ var __async = (__this, __arguments, generator) => {
         removeEventListener("mouseup", onMouseUp);
       });
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: Vue.normalizeClass(["znpb-element-toolbox__resize-width znpb-element-toolbox__resize-dimensions", {
-            [`znpb-element-toolbox__resize-width--${_ctx.position}`]: true,
-            [`znpb-element-toolbox__resize-dimensions--${_ctx.position === "top" || _ctx.position === "bottom" ? "height" : "width"}`]: true
-          }]),
-          onMousedown: Vue.withModifiers(startSpacingDrag, ["left", "stop"])
-        }, _hoisted_3$p, 42, _hoisted_1$I);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: Vue.normalizeClass(["znpb-element-toolbox__resize-width znpb-element-toolbox__resize-dimensions", {
+              [`znpb-element-toolbox__resize-width--${__props.position}`]: true,
+              [`znpb-element-toolbox__resize-dimensions--${__props.position === "top" || __props.position === "bottom" ? "height" : "width"}`]: true
+            }]),
+            onMousedown: Vue.withModifiers(startSpacingDrag, ["left", "stop"])
+          },
+          [..._cache[0] || (_cache[0] = [
+            Vue.createElementVNode(
+              "span",
+              { class: "znpb-element-toolbox__resize-width-bg" },
+              null,
+              -1
+              /* CACHED */
+            )
+          ])],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   });
-  const ElementWidthHeightResizer_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$T = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementToolbox",
     props: {
@@ -8764,15 +10223,17 @@ var __async = (__this, __arguments, generator) => {
       const toolboxStyles = Vue.ref(null);
       function repositionToolbox() {
         const domElement = canvas.document.getElementById(props.element.uid);
-        if (!domElement) {
+        const canvasElement = canvas.document.getElementById(`znpb-preview-canvas`);
+        if (!domElement || !canvasElement) {
           return;
         }
         const { top, left, width, height } = domElement.getBoundingClientRect();
+        const { top: canvasTop, left: canvasLeft } = canvasElement.getBoundingClientRect();
         toolboxStyles.value = {
           width: `${width}px`,
           height: `${height}px`,
-          top: `${top + canvas.scrollY}px`,
-          left: `${left + (canvas == null ? void 0 : canvas.scrollX)}px`
+          top: `${top - canvasTop}px`,
+          left: `${left - canvasLeft}px`
         };
       }
       const isAnyDragging = Vue.computed(() => {
@@ -8942,68 +10403,118 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_AddElementIcon = Vue.resolveComponent("AddElementIcon");
-        return _ctx.element && canShowToolbox.value ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", {
-          key: 0,
-          ref_key: "rectangle",
-          ref: rectangle,
-          class: Vue.normalizeClass(["znpb-element-toolbox", toolboxClasses.value]),
-          style: Vue.normalizeStyle(toolboxStyles.value ? toolboxStyles.value : {}),
-          onContextmenu: _cache[6] || (_cache[6] = Vue.withModifiers(($event) => Vue.unref(UIStore).showElementMenuFromEvent(_ctx.element, $event), ["stop", "prevent"]))
-        }, [
-          toolboxStyles.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$W, {
+        return __props.element && canShowToolbox.value ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
             key: 0,
-            element: _ctx.element
-          }, null, 8, ["element"])) : Vue.createCommentVNode("", true),
-          elementSizeAndSpacing.value ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-            (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(dimensionPositionsMap, (positions, type) => {
-              return Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: type }, [
-                (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(positions, (position) => {
-                  return Vue.openBlock(), Vue.createBlock(_sfc_main$U, {
-                    key: `${type}-${position}`,
-                    dragInfo: dragInfo.value,
-                    "onUpdate:dragInfo": _cache[0] || (_cache[0] = ($event) => dragInfo.value = $event),
-                    type,
-                    position,
-                    "model-value": elementSizeAndSpacing.value[type].value,
-                    "style-value": elementSizeAndSpacing.value[type].styleValue,
-                    "onUpdate:modelValue": updateElementSize,
-                    onStartDragging: _cache[1] || (_cache[1] = ($event) => Vue.unref(UIStore).isToolboxDragging = true),
-                    onStopDragging: _cache[2] || (_cache[2] = ($event) => Vue.unref(UIStore).isToolboxDragging = false)
-                  }, null, 8, ["dragInfo", "type", "position", "model-value", "style-value"]);
-                }), 128))
-              ], 64);
-            }), 64)),
-            (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(spacingTypes, (type, index2) => {
-              return Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, [
-                (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(spacingPositions, (position) => {
-                  return Vue.createVNode(_sfc_main$V, {
-                    key: `${type}-${position}-${index2}`,
-                    dragInfo: dragInfo.value,
-                    "onUpdate:dragInfo": _cache[3] || (_cache[3] = ($event) => dragInfo.value = $event),
-                    type,
-                    position,
-                    "model-value": elementSizeAndSpacing.value[`${type}-${position}`].value,
-                    "style-value": elementSizeAndSpacing.value[`${type}-${position}`].styleValue,
-                    "onUpdate:modelValue": updateElementStyle,
-                    onStartDragging: _cache[4] || (_cache[4] = ($event) => Vue.unref(UIStore).isToolboxDragging = true),
-                    onStopDragging: _cache[5] || (_cache[5] = ($event) => Vue.unref(UIStore).isToolboxDragging = false)
-                  }, null, 8, ["dragInfo", "type", "position", "model-value", "style-value"]);
-                }), 64))
-              ], 64);
-            }), 64))
-          ], 64)) : Vue.createCommentVNode("", true),
-          Vue.createVNode(_component_AddElementIcon, {
-            element: _ctx.element,
-            placement: "next",
-            position: "middle"
-          }, null, 8, ["element"])
-        ], 38)), [
+            ref_key: "rectangle",
+            ref: rectangle,
+            class: Vue.normalizeClass(["znpb-element-toolbox", toolboxClasses.value]),
+            style: Vue.normalizeStyle(toolboxStyles.value ? toolboxStyles.value : {}),
+            onContextmenu: _cache[6] || (_cache[6] = Vue.withModifiers(($event) => Vue.unref(UIStore).showElementMenuFromEvent(__props.element, $event), ["stop", "prevent"]))
+          },
+          [
+            toolboxStyles.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$W, {
+              key: 0,
+              element: __props.element
+            }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true),
+            elementSizeAndSpacing.value ? (Vue.openBlock(), Vue.createElementBlock(
+              Vue.Fragment,
+              { key: 1 },
+              [
+                Vue.createCommentVNode(" Height and width "),
+                (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(dimensionPositionsMap, (positions, type) => {
+                    return Vue.openBlock(), Vue.createElementBlock(
+                      Vue.Fragment,
+                      { key: type },
+                      [
+                        (Vue.openBlock(true), Vue.createElementBlock(
+                          Vue.Fragment,
+                          null,
+                          Vue.renderList(positions, (position) => {
+                            return Vue.openBlock(), Vue.createBlock(_sfc_main$U, {
+                              key: `${type}-${position}`,
+                              dragInfo: dragInfo.value,
+                              "onUpdate:dragInfo": _cache[0] || (_cache[0] = ($event) => dragInfo.value = $event),
+                              type,
+                              position,
+                              "model-value": elementSizeAndSpacing.value[type].value,
+                              "style-value": elementSizeAndSpacing.value[type].styleValue,
+                              "onUpdate:modelValue": updateElementSize,
+                              onStartDragging: _cache[1] || (_cache[1] = ($event) => Vue.unref(UIStore).isToolboxDragging = true),
+                              onStopDragging: _cache[2] || (_cache[2] = ($event) => Vue.unref(UIStore).isToolboxDragging = false)
+                            }, null, 8, ["dragInfo", "type", "position", "model-value", "style-value"]);
+                          }),
+                          128
+                          /* KEYED_FRAGMENT */
+                        ))
+                      ],
+                      64
+                      /* STABLE_FRAGMENT */
+                    );
+                  }),
+                  64
+                  /* STABLE_FRAGMENT */
+                )),
+                Vue.createCommentVNode(" Paddings "),
+                (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(spacingTypes, (type, index) => {
+                    return Vue.openBlock(), Vue.createElementBlock(
+                      Vue.Fragment,
+                      null,
+                      [
+                        (Vue.openBlock(), Vue.createElementBlock(
+                          Vue.Fragment,
+                          null,
+                          Vue.renderList(spacingPositions, (position) => {
+                            return Vue.createVNode(_sfc_main$V, {
+                              key: `${type}-${position}-${index}`,
+                              dragInfo: dragInfo.value,
+                              "onUpdate:dragInfo": _cache[3] || (_cache[3] = ($event) => dragInfo.value = $event),
+                              type,
+                              position,
+                              "model-value": elementSizeAndSpacing.value[`${type}-${position}`].value,
+                              "style-value": elementSizeAndSpacing.value[`${type}-${position}`].styleValue,
+                              "onUpdate:modelValue": updateElementStyle,
+                              onStartDragging: _cache[4] || (_cache[4] = ($event) => Vue.unref(UIStore).isToolboxDragging = true),
+                              onStopDragging: _cache[5] || (_cache[5] = ($event) => Vue.unref(UIStore).isToolboxDragging = false)
+                            }, null, 8, ["dragInfo", "type", "position", "model-value", "style-value"]);
+                          }),
+                          64
+                          /* STABLE_FRAGMENT */
+                        ))
+                      ],
+                      64
+                      /* STABLE_FRAGMENT */
+                    );
+                  }),
+                  64
+                  /* STABLE_FRAGMENT */
+                ))
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : Vue.createCommentVNode("v-if", true),
+            Vue.createCommentVNode(" Add new Button "),
+            Vue.createVNode(_component_AddElementIcon, {
+              element: __props.element,
+              placement: "next",
+              position: "middle"
+            }, null, 8, ["element"])
+          ],
+          38
+          /* CLASS, STYLE, NEED_HYDRATION */
+        )), [
           [Vue.vShow, toolboxStyles.value]
-        ]) : Vue.createCommentVNode("", true);
+        ]) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const ElementToolbox_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$S = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementStyles",
     props: {
@@ -9011,29 +10522,33 @@ var __async = (__this, __arguments, generator) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return _ctx.styles && _ctx.styles.length ? (Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent("style"), { key: 0 }, {
+        return __props.styles && __props.styles.length ? (Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent("style"), { key: 0 }, {
           default: Vue.withCtx(() => [
-            Vue.createTextVNode(Vue.toDisplayString(_ctx.styles), 1)
+            Vue.createTextVNode(
+              Vue.toDisplayString(__props.styles),
+              1
+              /* TEXT */
+            )
           ]),
           _: 1
-        })) : Vue.createCommentVNode("", true);
+          /* STABLE */
+        })) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
   const _hoisted_1$H = { class: "znpb-preview__element-loading" };
-  const _hoisted_2$w = ["src"];
+  const _hoisted_2$v = ["src"];
   const _sfc_main$R = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementLoading",
     setup(__props) {
       const imageSrc = window.ZnPbInitialData.urls.loader;
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$H, [
-          Vue.createElementVNode("img", { src: Vue.unref(imageSrc) }, null, 8, _hoisted_2$w)
+          Vue.createElementVNode("img", { src: Vue.unref(imageSrc) }, null, 8, _hoisted_2$v)
         ]);
       };
     }
   });
-  const ElementLoading_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$G = ["data-zion-video-background"];
   const _sfc_main$Q = /* @__PURE__ */ Vue.defineComponent({
     __name: "VideoBackground",
@@ -9093,7 +10608,7 @@ var __async = (__this, __arguments, generator) => {
           ref: elementRef,
           class: "zb__videoBackground-wrapper zbjs_video_background hg-video-bg__wrapper",
           "data-zion-video-background": getVideoSettings.value
-        }, null, 8, _hoisted_1$G)) : Vue.createCommentVNode("", true);
+        }, null, 8, _hoisted_1$G)) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
@@ -9227,7 +10742,7 @@ var __async = (__this, __arguments, generator) => {
     key: 0,
     class: "znpb__server-element--empty"
   };
-  const _hoisted_2$v = ["src"];
+  const _hoisted_2$u = ["src"];
   const _hoisted_3$o = {
     key: 1,
     class: "znpb__server-element-loader--loading"
@@ -9240,8 +10755,8 @@ var __async = (__this, __arguments, generator) => {
       api: {}
     },
     setup(__props) {
-      const props = __props;
       const { applyFilters: applyFilters2, addAction: addAction2, removeAction: removeAction2, doAction } = window.zb.hooks;
+      const props = __props;
       const logoUrl = window.ZBCommonData.environment.urls.logo;
       const elementContentRef = Vue.ref(null);
       const elementContent = Vue.ref("");
@@ -9291,14 +10806,20 @@ var __async = (__this, __arguments, generator) => {
           window.document.getElementById("znpb-editor-iframe").contentWindow
         );
         return new Promise((resolve) => {
-          Object.keys(scripts2).map((scriptHandle) => {
-            const scriptConfig = scripts2[scriptHandle];
-            scriptConfig.handle = scriptConfig.handle ? scriptConfig.handle : scriptHandle;
-            if (scriptConfig.src) {
-              return loadScript(scriptConfig);
+          const loadAllScripts = () => __async(null, null, function* () {
+            for (const scriptType of Object.keys(scripts2)) {
+              for (const scriptHandle of Object.keys(scripts2[scriptType])) {
+                const scriptData = scripts2[scriptType];
+                const scriptConfig = scriptData[scriptHandle];
+                scriptConfig.handle = scriptConfig.handle ? scriptConfig.handle : scriptHandle;
+                if (scriptConfig.src) {
+                  yield loadScript(scriptConfig);
+                }
+              }
             }
+            resolve(true);
           });
-          resolve(true);
+          loadAllScripts();
         });
       }
       function getElementFromServer() {
@@ -9378,21 +10899,26 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", null, [
           Vue.renderSlot(_ctx.$slots, "start"),
-          Vue.createElementVNode("div", {
-            ref_key: "elementContentRef",
-            ref: elementContentRef,
-            class: Vue.normalizeClass({ "znpb__server-element--loading": loading.value })
-          }, null, 2),
+          Vue.createElementVNode(
+            "div",
+            {
+              ref_key: "elementContentRef",
+              ref: elementContentRef,
+              class: Vue.normalizeClass({ "znpb__server-element--loading": loading.value })
+            },
+            null,
+            2
+            /* CLASS */
+          ),
           !loading.value && elementContent.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$F, [
-            Vue.createElementVNode("img", { src: Vue.unref(logoUrl) }, null, 8, _hoisted_2$v)
-          ])) : Vue.createCommentVNode("", true),
-          loading.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$o)) : Vue.createCommentVNode("", true),
+            Vue.createElementVNode("img", { src: Vue.unref(logoUrl) }, null, 8, _hoisted_2$u)
+          ])) : Vue.createCommentVNode("v-if", true),
+          loading.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$o)) : Vue.createCommentVNode("v-if", true),
           Vue.renderSlot(_ctx.$slots, "end")
         ]);
       };
     }
   });
-  const ServerComponent_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$E = { class: "znpb-element--not-found" };
   const _sfc_main$O = /* @__PURE__ */ Vue.defineComponent({
     __name: "InvalidElement",
@@ -9400,13 +10926,16 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$E, [
           Vue.renderSlot(_ctx.$slots, "start"),
-          Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("element not found", "zionbuilder")) + " ", 1),
+          Vue.createTextVNode(
+            " " + Vue.toDisplayString(i18n__namespace.__("element not found", "zionbuilder")) + " ",
+            1
+            /* TEXT */
+          ),
           Vue.renderSlot(_ctx.$slots, "end")
         ]);
       };
     }
   });
-  const InvalidElement_vue_vue_type_style_index_0_lang = "";
   const { applyFilters: applyFilters$3 } = window.zb.hooks;
   function useElementComponent(element) {
     const elementComponent = Vue.shallowRef(null);
@@ -9489,7 +11018,7 @@ var __async = (__this, __arguments, generator) => {
         customCSS: this.getCustomCSS()
       };
     }
-    parseOptions(schema, model, index2 = null) {
+    parseOptions(schema, model, index = null) {
       model = null === model ? {} : model;
       Object.keys(schema).forEach((optionId) => {
         const singleOptionSchema = schema[optionId];
@@ -9504,16 +11033,16 @@ var __async = (__this, __arguments, generator) => {
         } else {
           if (typeof model[optionId] !== "undefined") {
             this.setProperImage(optionId, singleOptionSchema, model);
-            this.setRenderAttributes(singleOptionSchema, model[optionId], index2);
-            this.setCustomCSS(singleOptionSchema, model[optionId], index2);
+            this.setRenderAttributes(singleOptionSchema, model[optionId], index);
+            this.setCustomCSS(singleOptionSchema, model[optionId], index);
           } else if (typeof singleOptionSchema.default !== "undefined") {
             model[optionId] = cloneDeep(singleOptionSchema.default);
           }
           if (singleOptionSchema.child_options) {
             if (singleOptionSchema.type === "repeater") {
               if (typeof model[optionId] !== "undefined" && Array.isArray(model[optionId])) {
-                model[optionId].forEach((optionValue2, index22) => {
-                  this.parseOptions(singleOptionSchema.child_options, optionValue2, index22);
+                model[optionId].forEach((optionValue2, index2) => {
+                  this.parseOptions(singleOptionSchema.child_options, optionValue2, index2);
                 });
               }
             } else {
@@ -9567,7 +11096,7 @@ var __async = (__this, __arguments, generator) => {
         currentAttributes[attribute].push(value);
       }
     }
-    setRenderAttributes(schema, model, index2 = null) {
+    setRenderAttributes(schema, model, index = null) {
       const CSSDeviceMap = {
         default: "",
         laptop: "--lg",
@@ -9577,7 +11106,7 @@ var __async = (__this, __arguments, generator) => {
       if (schema.render_attribute) {
         schema.render_attribute.forEach((config) => {
           let tagId = config.tag_id || "wrapper";
-          tagId = index2 === null ? tagId : `${tagId}${index2}`;
+          tagId = index === null ? tagId : `${tagId}${index}`;
           const attribute = config.attribute || "class";
           let attributeValue = config.value || "";
           if (schema.responsive_options && model !== null) {
@@ -9606,13 +11135,13 @@ var __async = (__this, __arguments, generator) => {
         });
       }
     }
-    setCustomCSS(schema, model, index2 = null) {
+    setCustomCSS(schema, model, index = null) {
       if (schema.css_style && Array.isArray(schema.css_style)) {
         schema.css_style.forEach((cssStyleConfig) => {
           if (schema.responsive_options && typeof model === "object" && model !== null) {
-            this.extractResponsiveCSSRules(schema.type, cssStyleConfig, model, index2);
+            this.extractResponsiveCSSRules(schema.type, cssStyleConfig, model, index);
           } else {
-            this.extractCSSRule("default", schema.type, cssStyleConfig, model, index2);
+            this.extractCSSRule("default", schema.type, cssStyleConfig, model, index);
           }
         });
       } else {
@@ -9634,7 +11163,7 @@ var __async = (__this, __arguments, generator) => {
                     value: "height: {{VALUE}}"
                   },
                   height,
-                  index2
+                  index
                 );
               }
             });
@@ -9642,24 +11171,24 @@ var __async = (__this, __arguments, generator) => {
         }
       }
     }
-    extractResponsiveCSSRules(optionType, cssStyleConfig, model, index2) {
+    extractResponsiveCSSRules(optionType, cssStyleConfig, model, index) {
       if (typeof model !== "object" || model === null) {
         return "";
       }
       Object.keys(model).forEach((device) => {
         const deviceValue = model[device];
-        this.extractCSSRule(device, optionType, cssStyleConfig, deviceValue, index2);
+        this.extractCSSRule(device, optionType, cssStyleConfig, deviceValue, index);
       });
     }
-    extractCSSRule(device, optionType, cssStyleConfig, model, index2) {
+    extractCSSRule(device, optionType, cssStyleConfig, model, index) {
       let { selector, value } = cssStyleConfig;
       if (!selector || !value) {
         return;
       }
       selector = selector.replace("{{ELEMENT}}", this.selector);
       value = value.replace("{{VALUE}}", model);
-      if (index2 !== null) {
-        selector = selector.replace("{{INDEX}}", index2);
+      if (index !== null) {
+        selector = selector.replace("{{INDEX}}", index);
       }
       if (optionType === "element_styles") {
         const mediaStyles = optionValue.styles || {};
@@ -9742,7 +11271,6 @@ var __async = (__this, __arguments, generator) => {
       return get(this.model, optionPath, defaultValue);
     }
   }
-  const ElementWrapper_vue_vue_type_style_index_0_lang = "";
   const { applyFilters: applyFilters$1 } = window.zb.hooks;
   const { useOptionsSchemas, usePseudoSelectors } = window.zb.composables;
   let clickHandled = false;
@@ -9921,15 +11449,15 @@ var __async = (__this, __arguments, generator) => {
             }
           });
         }
-        return mergeWith$1({}, optionsAttributes, additionalAttributes, (a, b) => {
-          if (isArray$1(a)) {
+        return mergeWith({}, optionsAttributes, additionalAttributes, (a, b) => {
+          if (isArray(a)) {
             return b.concat(a);
           }
         });
       });
       const getExtraAttributes = Vue.computed(() => {
         const wrapperAttributes = renderAttributes.value.wrapper || {};
-        const elementClass = camelCase$1(props.element.element_type);
+        const elementClass = camelCase(props.element.element_type);
         const classes = applyFilters$1(
           "zionbuilder/element/css_classes",
           {
@@ -9965,8 +11493,8 @@ var __async = (__this, __arguments, generator) => {
         });
       });
       fetchElementComponent();
-      function getAttributesForTag(tagID, extraArgs = {}, index2 = null) {
-        tagID = index2 !== null ? `${tagID}${index2}` : tagID;
+      function getAttributesForTag(tagID, extraArgs = {}, index = null) {
+        tagID = index !== null ? `${tagID}${index}` : tagID;
         return Object.assign(renderAttributes.value[tagID] || {}, extraArgs);
       }
       const showElementMenu = function(event) {
@@ -10102,7 +11630,7 @@ var __async = (__this, __arguments, generator) => {
     key: 0,
     class: "znpb-hidden-element-container"
   };
-  const _hoisted_2$u = { class: "znpb-hidden-element-placeholder" };
+  const _hoisted_2$t = { class: "znpb-hidden-element-placeholder" };
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ElementLoading = Vue.resolveComponent("ElementLoading");
     const _component_VideoBackground = Vue.resolveComponent("VideoBackground");
@@ -10125,21 +11653,22 @@ var __async = (__this, __arguments, generator) => {
         $setup.videoConfig ? (Vue.openBlock(), Vue.createBlock(_component_VideoBackground, {
           key: 0,
           "video-config": $setup.videoConfig
-        }, null, 8, ["video-config"])) : Vue.createCommentVNode("", true),
+        }, null, 8, ["video-config"])) : Vue.createCommentVNode("v-if", true),
         Vue.createVNode(_component_ElementStyles, { styles: $setup.customCSS }, null, 8, ["styles"])
       ]),
       end: Vue.withCtx(() => [
         !$setup.isVisible ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$D, [
-          Vue.createElementVNode("div", _hoisted_2$u, [
+          Vue.createElementVNode("div", _hoisted_2$t, [
             Vue.createVNode(_component_Icon, {
               icon: "eye",
               onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => $props.element.setVisibility(!$props.element.isVisible), ["stop"]))
             })
           ])
-        ])) : Vue.createCommentVNode("", true)
+        ])) : Vue.createCommentVNode("v-if", true)
       ]),
       _: 1
-    }, 16, ["id", "element", "options", "onClick", "onContextmenu"])) : Vue.createCommentVNode("", true);
+      /* STABLE */
+    }, 16, ["id", "element", "options", "onClick", "onContextmenu"])) : Vue.createCommentVNode("v-if", true);
   }
   const ElementWrapper = /* @__PURE__ */ _export_sfc(_sfc_main$N, [["render", _sfc_render$2]]);
   const _sfc_main$M = /* @__PURE__ */ Vue.defineComponent({
@@ -10148,14 +11677,14 @@ var __async = (__this, __arguments, generator) => {
       element: {}
     },
     setup(__props) {
-      const props = __props;
       const { doAction, applyFilters: applyFilters2 } = window.zb.hooks;
+      const props = __props;
       doAction("zionbuilder/preview/element/setup", props.element);
       const elementWrapperComponent = Vue.computed(() => {
         return applyFilters2("zionbuilder/preview/element/wrapper_component", "ElementWrapper", props.element);
       });
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent(elementWrapperComponent.value), { element: _ctx.element }, null, 8, ["element"]);
+        return Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent(elementWrapperComponent.value), { element: __props.element }, null, 8, ["element"]);
       };
     }
   });
@@ -10236,7 +11765,7 @@ var __async = (__this, __arguments, generator) => {
             [`znpb__sortable-container--disabled`]: isDisabled.value
           },
           axis: getSortableAxis.value,
-          "data-zion-element-uid": _ctx.element.uid,
+          "data-zion-element-uid": __props.element.uid,
           onStart: onSortableStart,
           onEnd: onSortableEnd,
           onDrop: onSortableDrop
@@ -10251,27 +11780,33 @@ var __async = (__this, __arguments, generator) => {
             Vue.createVNode(SortablePlaceholder)
           ]),
           end: Vue.withCtx(() => [
-            _ctx.element.content.length === 0 && _ctx.allowElementsAdd && !Vue.unref(UIStore).isPreviewMode ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1b, {
+            __props.element.content.length === 0 && __props.allowElementsAdd && !Vue.unref(UIStore).isPreviewMode ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1b, {
               key: 0,
-              element: _ctx.element
-            }, null, 8, ["element"])) : Vue.createCommentVNode("", true),
+              element: __props.element
+            }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true),
             Vue.renderSlot(_ctx.$slots, "end")
           ]),
           default: Vue.withCtx(() => [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(children.value, (childElement) => {
-              return Vue.openBlock(), Vue.createBlock(_sfc_main$M, {
-                key: childElement.uid,
-                element: childElement,
-                "data-zion-element-uid": childElement.uid
-              }, null, 8, ["element", "data-zion-element-uid"]);
-            }), 128))
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(children.value, (childElement) => {
+                return Vue.openBlock(), Vue.createBlock(_sfc_main$M, {
+                  key: childElement.uid,
+                  element: childElement,
+                  "data-zion-element-uid": childElement.uid
+                }, null, 8, ["element", "data-zion-element-uid"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ]),
           _: 3
+          /* FORWARDED */
         }, 16, ["model-value", "group", "disabled", "class", "axis", "data-zion-element-uid"]);
       };
     }
   });
-  const SortableContent_vue_vue_type_style_index_0_lang = "";
   class HeartBeat {
     constructor() {
       const userStore = useUserStore();
@@ -10329,7 +11864,7 @@ var __async = (__this, __arguments, generator) => {
     a.href = url;
     return a.href;
   }
-  const uuid = (() => {
+  const uuid = /* @__PURE__ */ (() => {
     let counter = 0;
     const random = () => (
       // eslint-disable-next-line no-bitwise
@@ -10346,6 +11881,18 @@ var __async = (__this, __arguments, generator) => {
       arr.push(arrayLike[i]);
     }
     return arr;
+  }
+  let styleProps = null;
+  function getStyleProperties(options = {}) {
+    if (styleProps) {
+      return styleProps;
+    }
+    if (options.includeStyleProperties) {
+      styleProps = options.includeStyleProperties;
+      return styleProps;
+    }
+    styleProps = toArray(window.getComputedStyle(document.documentElement));
+    return styleProps;
   }
   function px(node, styleProperty) {
     const win = node.ownerDocument.defaultView || window;
@@ -10406,8 +11953,11 @@ var __async = (__this, __arguments, generator) => {
   function createImage(url) {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.decode = () => resolve(img);
-      img.onload = () => resolve(img);
+      img.onload = () => {
+        img.decode().then(() => {
+          requestAnimationFrame(() => resolve(img));
+        });
+      };
       img.onerror = reject;
       img.crossOrigin = "anonymous";
       img.decoding = "async";
@@ -10449,19 +11999,19 @@ var __async = (__this, __arguments, generator) => {
     const content = style.getPropertyValue("content");
     return `${style.cssText} content: '${content.replace(/'|"/g, "")}';`;
   }
-  function formatCSSProperties(style) {
-    return toArray(style).map((name) => {
+  function formatCSSProperties(style, options) {
+    return getStyleProperties(options).map((name) => {
       const value = style.getPropertyValue(name);
       const priority = style.getPropertyPriority(name);
       return `${name}: ${value}${priority ? " !important" : ""};`;
     }).join(" ");
   }
-  function getPseudoElementStyle(className, pseudo, style) {
+  function getPseudoElementStyle(className, pseudo, style, options) {
     const selector = `.${className}:${pseudo}`;
-    const cssText = style.cssText ? formatCSSText(style) : formatCSSProperties(style);
+    const cssText = style.cssText ? formatCSSText(style) : formatCSSProperties(style, options);
     return document.createTextNode(`${selector}{${cssText}}`);
   }
-  function clonePseudoElement(nativeNode, clonedNode, pseudo) {
+  function clonePseudoElement(nativeNode, clonedNode, pseudo, options) {
     const style = window.getComputedStyle(nativeNode, pseudo);
     const content = style.getPropertyValue("content");
     if (content === "" || content === "none") {
@@ -10474,12 +12024,12 @@ var __async = (__this, __arguments, generator) => {
       return;
     }
     const styleElement = document.createElement("style");
-    styleElement.appendChild(getPseudoElementStyle(className, pseudo, style));
+    styleElement.appendChild(getPseudoElementStyle(className, pseudo, style, options));
     clonedNode.appendChild(styleElement);
   }
-  function clonePseudoElements(nativeNode, clonedNode) {
-    clonePseudoElement(nativeNode, clonedNode, ":before");
-    clonePseudoElement(nativeNode, clonedNode, ":after");
+  function clonePseudoElements(nativeNode, clonedNode, options) {
+    clonePseudoElement(nativeNode, clonedNode, ":before", options);
+    clonePseudoElement(nativeNode, clonedNode, ":after", options);
   }
   const WOFF = "application/font-woff";
   const JPEG = "image/jpeg";
@@ -10603,12 +12153,12 @@ var __async = (__this, __arguments, generator) => {
       return createImage(dataURL);
     });
   }
-  function cloneIFrameElement(iframe) {
+  function cloneIFrameElement(iframe, options) {
     return __async(this, null, function* () {
       var _a;
       try {
         if ((_a = iframe === null || iframe === void 0 ? void 0 : iframe.contentDocument) === null || _a === void 0 ? void 0 : _a.body) {
-          return yield cloneNode(iframe.contentDocument.body, {}, true);
+          return yield cloneNode(iframe.contentDocument.body, options, true);
         }
       } catch (_b) {
       }
@@ -10624,15 +12174,19 @@ var __async = (__this, __arguments, generator) => {
         return cloneVideoElement(node, options);
       }
       if (isInstanceOfElement(node, HTMLIFrameElement)) {
-        return cloneIFrameElement(node);
+        return cloneIFrameElement(node, options);
       }
-      return node.cloneNode(false);
+      return node.cloneNode(isSVGElement(node));
     });
   }
   const isSlotElement = (node) => node.tagName != null && node.tagName.toUpperCase() === "SLOT";
+  const isSVGElement = (node) => node.tagName != null && node.tagName.toUpperCase() === "SVG";
   function cloneChildren(nativeNode, clonedNode, options) {
     return __async(this, null, function* () {
       var _a, _b;
+      if (isSVGElement(clonedNode)) {
+        return clonedNode;
+      }
       let children = [];
       if (isSlotElement(nativeNode) && nativeNode.assignedNodes) {
         children = toArray(nativeNode.assignedNodes());
@@ -10652,7 +12206,7 @@ var __async = (__this, __arguments, generator) => {
       return clonedNode;
     });
   }
-  function cloneCSSStyle(nativeNode, clonedNode) {
+  function cloneCSSStyle(nativeNode, clonedNode, options) {
     const targetStyle = clonedNode.style;
     if (!targetStyle) {
       return;
@@ -10662,7 +12216,7 @@ var __async = (__this, __arguments, generator) => {
       targetStyle.cssText = sourceStyle.cssText;
       targetStyle.transformOrigin = sourceStyle.transformOrigin;
     } else {
-      toArray(sourceStyle).forEach((name) => {
+      getStyleProperties(options).forEach((name) => {
         let value = sourceStyle.getPropertyValue(name);
         if (name === "font-size" && value.endsWith("px")) {
           const reducedFont = Math.floor(parseFloat(value.substring(0, value.length - 2))) - 0.1;
@@ -10695,10 +12249,10 @@ var __async = (__this, __arguments, generator) => {
       }
     }
   }
-  function decorate(nativeNode, clonedNode) {
+  function decorate(nativeNode, clonedNode, options) {
     if (isInstanceOfElement(clonedNode, Element)) {
-      cloneCSSStyle(nativeNode, clonedNode);
-      clonePseudoElements(nativeNode, clonedNode);
+      cloneCSSStyle(nativeNode, clonedNode, options);
+      clonePseudoElements(nativeNode, clonedNode, options);
       cloneInputValue(nativeNode, clonedNode);
       cloneSelectValue(nativeNode, clonedNode);
     }
@@ -10747,7 +12301,7 @@ var __async = (__this, __arguments, generator) => {
       if (!isRoot && options.filter && !options.filter(node)) {
         return null;
       }
-      return Promise.resolve(node).then((clonedNode) => cloneSingleNode(clonedNode, options)).then((clonedNode) => cloneChildren(node, clonedNode, options)).then((clonedNode) => decorate(node, clonedNode)).then((clonedNode) => ensureSVGSymbols(clonedNode, options));
+      return Promise.resolve(node).then((clonedNode) => cloneSingleNode(clonedNode, options)).then((clonedNode) => cloneChildren(node, clonedNode, options)).then((clonedNode) => decorate(node, clonedNode, options)).then((clonedNode) => ensureSVGSymbols(clonedNode, options));
     });
   }
   const URL_REGEX = /url\((['"]?)([^'"]+?)\1\)/g;
@@ -10771,10 +12325,8 @@ var __async = (__this, __arguments, generator) => {
         const resolvedURL = baseURL ? resolveUrl(resourceURL, baseURL) : resourceURL;
         const contentType = getMimeType(resourceURL);
         let dataURL;
-        if (getContentFromUrl) {
-          const content = yield getContentFromUrl(resolvedURL);
-          dataURL = makeDataUrl(content, contentType);
-        } else {
+        if (getContentFromUrl) ;
+        else {
           dataURL = yield resourceToDataURL(resolvedURL, contentType, options);
         }
         return cssText.replace(toRegex(resourceURL), `$1${dataURL}$3`);
@@ -10823,12 +12375,8 @@ var __async = (__this, __arguments, generator) => {
   }
   function embedBackground(clonedNode, options) {
     return __async(this, null, function* () {
-      if (!(yield embedProp("background", clonedNode, options))) {
-        yield embedProp("background-image", clonedNode, options);
-      }
-      if (!(yield embedProp("mask", clonedNode, options))) {
-        yield embedProp("mask-image", clonedNode, options);
-      }
+      (yield embedProp("background", clonedNode, options)) || (yield embedProp("background-image", clonedNode, options));
+      (yield embedProp("mask", clonedNode, options)) || (yield embedProp("-webkit-mask", clonedNode, options)) || (yield embedProp("mask-image", clonedNode, options)) || (yield embedProp("-webkit-mask-image", clonedNode, options));
     });
   }
   function embedImageNode(clonedNode, options) {
@@ -10841,7 +12389,13 @@ var __async = (__this, __arguments, generator) => {
       const dataURL = yield resourceToDataURL(url, getMimeType(url), options);
       yield new Promise((resolve, reject) => {
         clonedNode.onload = resolve;
-        clonedNode.onerror = reject;
+        clonedNode.onerror = options.onImageErrorHandler ? (...attributes) => {
+          try {
+            resolve(options.onImageErrorHandler(...attributes));
+          } catch (error) {
+            reject(error);
+          }
+        } : reject;
         const image = clonedNode;
         if (image.decode) {
           image.decode = resolve;
@@ -10912,7 +12466,7 @@ var __async = (__this, __arguments, generator) => {
       let cssText = data.cssText;
       const regexUrl = /url\(["']?([^"')]+)["']?\)/g;
       const fontLocs = cssText.match(/url\([^)]+\)/g) || [];
-      const loadFonts = fontLocs.map((loc) => __async(this, null, function* () {
+      const loadFonts = fontLocs.map((loc) => __async(null, null, function* () {
         let url = loc.replace(regexUrl, "$1");
         if (!url.startsWith("https://")) {
           url = new URL(url, data.url).href;
@@ -10967,9 +12521,9 @@ var __async = (__this, __arguments, generator) => {
       styleSheets.forEach((sheet) => {
         if ("cssRules" in sheet) {
           try {
-            toArray(sheet.cssRules || []).forEach((item, index2) => {
+            toArray(sheet.cssRules || []).forEach((item, index) => {
               if (item.type === CSSRule.IMPORT_RULE) {
-                let importIndex = index2 + 1;
+                let importIndex = index + 1;
                 const url = item.href;
                 const deferred = fetchCSS(url).then((metadata) => embedFonts(metadata, options)).then((cssText) => parseCSS(cssText).forEach((rule) => {
                   try {
@@ -10990,7 +12544,7 @@ var __async = (__this, __arguments, generator) => {
             const inline = styleSheets.find((a) => a.href == null) || document.styleSheets[0];
             if (sheet.href != null) {
               deferreds.push(fetchCSS(sheet.href).then((metadata) => embedFonts(metadata, options)).then((cssText) => parseCSS(cssText).forEach((rule) => {
-                inline.insertRule(rule, sheet.cssRules.length);
+                inline.insertRule(rule, inline.cssRules.length);
               })).catch((err) => {
                 console.error("Error loading remote stylesheet", err);
               }));
@@ -11028,10 +12582,30 @@ var __async = (__this, __arguments, generator) => {
       return getWebFontRules(cssRules);
     });
   }
+  function normalizeFontFamily(font) {
+    return font.trim().replace(/["']/g, "");
+  }
+  function getUsedFonts(node) {
+    const fonts = /* @__PURE__ */ new Set();
+    function traverse(node2) {
+      const fontFamily = node2.style.fontFamily || getComputedStyle(node2).fontFamily;
+      fontFamily.split(",").forEach((font) => {
+        fonts.add(normalizeFontFamily(font));
+      });
+      Array.from(node2.children).forEach((child) => {
+        if (child instanceof HTMLElement) {
+          traverse(child);
+        }
+      });
+    }
+    traverse(node);
+    return fonts;
+  }
   function getWebFontCSS(node, options) {
     return __async(this, null, function* () {
       const rules = yield parseWebFontRules(node, options);
-      const cssTexts = yield Promise.all(rules.map((rule) => {
+      const usedFonts = getUsedFonts(node);
+      const cssTexts = yield Promise.all(rules.filter((rule) => usedFonts.has(normalizeFontFamily(rule.style.fontFamily))).map((rule) => {
         const baseUrl = rule.parentStyleSheet ? rule.parentStyleSheet.href : null;
         return embedResources(rule.cssText, baseUrl, options);
       }));
@@ -11130,7 +12704,7 @@ var __async = (__this, __arguments, generator) => {
     key: 0,
     class: "znpb-tree-view__itemLooperIcon"
   };
-  const _hoisted_2$t = {
+  const _hoisted_2$s = {
     key: 1,
     class: "znpb-tree-view__itemLooperIcon"
   };
@@ -11159,90 +12733,119 @@ var __async = (__this, __arguments, generator) => {
         const _component_InlineEdit = Vue.resolveComponent("InlineEdit");
         const _component_Icon = Vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: Vue.normalizeClass(["znpb-tree-view__itemHeader", {
-            "znpb-panel-item--active": Vue.unref(isActiveItem),
-            "znpb-tree-view__item--loopProvider": _ctx.element.isRepeaterProvider,
-            "znpb-tree-view__item--loopConsumer": _ctx.element.isRepeaterConsumer
-          }]),
-          onContextmenu: _cache[3] || (_cache[3] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => Vue.unref(showElementMenu) && Vue.unref(showElementMenu)(...args),
-            ["stop", "prevent"]
-          )),
-          onMouseover: _cache[4] || (_cache[4] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => _ctx.element.highlight && _ctx.element.highlight(...args),
-            ["stop"]
-          )),
-          onMouseout: _cache[5] || (_cache[5] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => _ctx.element.unHighlight && _ctx.element.unHighlight(...args),
-            ["stop"]
-          )),
-          onClick: _cache[6] || (_cache[6] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => Vue.unref(editElement) && Vue.unref(editElement)(...args),
-            ["stop", "left"]
-          ))
-        }, [
-          Vue.renderSlot(_ctx.$slots, "start"),
-          Vue.createVNode(_component_UIElementIcon, {
-            element: _ctx.element.elementDefinition,
-            class: "znpb-tree-view__itemIcon znpb-utility__cursor--move",
-            size: 24
-          }, null, 8, ["element"]),
-          _ctx.element.isRepeaterProvider ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", _hoisted_1$C, [
-            Vue.createTextVNode("P")
-          ])), [
-            [_directive_znpb_tooltip, i18n__namespace.__("repeater provider", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true),
-          _ctx.element.isRepeaterConsumer ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", _hoisted_2$t, [
-            Vue.createTextVNode("C")
-          ])), [
-            [_directive_znpb_tooltip, i18n__namespace.__("repeater consumer", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true),
-          Vue.unref(elementHasCustomCSS) ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", _hoisted_3$n, [
-            Vue.createTextVNode("CSS")
-          ])), [
-            [_directive_znpb_tooltip, i18n__namespace.__("custom css", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true),
-          Vue.createVNode(_component_InlineEdit, {
-            modelValue: elementName.value,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => elementName.value = $event),
-            class: "znpb-tree-view__item-header-item znpb-tree-view__item-header-rename"
-          }, null, 8, ["modelValue"]),
-          !_ctx.element.isVisible ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-            key: 3,
-            icon: "visibility-hidden",
-            class: "znpb-editor-icon-wrapper--show-element znpb-tree-view__item-enable-visible",
-            onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => _ctx.element.isVisible = !_ctx.element.isVisible, ["stop"]))
-          }, null, 512)), [
-            [_directive_znpb_tooltip, i18n__namespace.__("The element is hidden. Click to enable it.", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true),
-          Vue.createElementVNode("div", {
-            ref_key: "elementOptionsRef",
-            ref: elementOptionsRef,
-            class: "znpb-element-options__container",
-            onClick: _cache[2] || (_cache[2] = Vue.withModifiers(
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: Vue.normalizeClass(["znpb-tree-view__itemHeader", {
+              "znpb-panel-item--active": Vue.unref(isActiveItem),
+              "znpb-tree-view__item--loopProvider": __props.element.isRepeaterProvider,
+              "znpb-tree-view__item--loopConsumer": __props.element.isRepeaterConsumer
+            }]),
+            onContextmenu: _cache[3] || (_cache[3] = Vue.withModifiers(
               //@ts-ignore
               (...args) => Vue.unref(showElementMenu) && Vue.unref(showElementMenu)(...args),
+              ["stop", "prevent"]
+            )),
+            onMouseover: _cache[4] || (_cache[4] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => __props.element.highlight && __props.element.highlight(...args),
               ["stop"]
+            )),
+            onMouseout: _cache[5] || (_cache[5] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => __props.element.unHighlight && __props.element.unHighlight(...args),
+              ["stop"]
+            )),
+            onClick: _cache[6] || (_cache[6] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => Vue.unref(editElement) && Vue.unref(editElement)(...args),
+              ["stop", "left"]
             ))
-          }, [
-            Vue.createVNode(_component_Icon, {
-              class: "znpb-element-options__dropdown-icon znpb-utility__cursor--pointer",
-              icon: "more"
-            })
-          ], 512),
-          Vue.renderSlot(_ctx.$slots, "end")
-        ], 34);
+          },
+          [
+            Vue.renderSlot(_ctx.$slots, "start"),
+            Vue.createVNode(_component_UIElementIcon, {
+              element: __props.element.elementDefinition,
+              class: "znpb-tree-view__itemIcon znpb-utility__cursor--move",
+              size: 24
+            }, null, 8, ["element"]),
+            __props.element.isRepeaterProvider ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", _hoisted_1$C, [..._cache[7] || (_cache[7] = [
+              Vue.createTextVNode(
+                "P",
+                -1
+                /* CACHED */
+              )
+            ])])), [
+              [_directive_znpb_tooltip, i18n__namespace.__("repeater provider", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true),
+            __props.element.isRepeaterConsumer ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", _hoisted_2$s, [..._cache[8] || (_cache[8] = [
+              Vue.createTextVNode(
+                "C",
+                -1
+                /* CACHED */
+              )
+            ])])), [
+              [_directive_znpb_tooltip, i18n__namespace.__("repeater consumer", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true),
+            Vue.unref(elementHasCustomCSS) ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", _hoisted_3$n, [..._cache[9] || (_cache[9] = [
+              Vue.createTextVNode(
+                "CSS",
+                -1
+                /* CACHED */
+              )
+            ])])), [
+              [_directive_znpb_tooltip, i18n__namespace.__("custom css", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true),
+            Vue.createVNode(_component_InlineEdit, {
+              modelValue: elementName.value,
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => elementName.value = $event),
+              class: "znpb-tree-view__item-header-item znpb-tree-view__item-header-rename"
+            }, null, 8, ["modelValue"]),
+            !__props.element.isVisible ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(
+              _component_Icon,
+              {
+                key: 3,
+                icon: "visibility-hidden",
+                class: "znpb-editor-icon-wrapper--show-element znpb-tree-view__item-enable-visible",
+                onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => __props.element.isVisible = !__props.element.isVisible, ["stop"]))
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            )), [
+              [_directive_znpb_tooltip, i18n__namespace.__("The element is hidden. Click to enable it.", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true),
+            Vue.createElementVNode(
+              "div",
+              {
+                ref_key: "elementOptionsRef",
+                ref: elementOptionsRef,
+                class: "znpb-element-options__container",
+                onClick: _cache[2] || (_cache[2] = Vue.withModifiers(
+                  //@ts-ignore
+                  (...args) => Vue.unref(showElementMenu) && Vue.unref(showElementMenu)(...args),
+                  ["stop"]
+                ))
+              },
+              [
+                Vue.createVNode(_component_Icon, {
+                  class: "znpb-element-options__dropdown-icon znpb-utility__cursor--pointer",
+                  icon: "more"
+                })
+              ],
+              512
+              /* NEED_PATCH */
+            ),
+            Vue.renderSlot(_ctx.$slots, "end")
+          ],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   });
-  const ElementHeader_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$B = { key: 0 };
-  const _hoisted_2$s = { key: 0 };
+  const _hoisted_2$r = { key: 0 };
   const _hoisted_3$m = ["src"];
   const _sfc_main$J = /* @__PURE__ */ Vue.defineComponent({
     __name: "ElementSectionView",
@@ -11292,47 +12895,58 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_Loader = Vue.resolveComponent("Loader");
-        return Vue.openBlock(), Vue.createElementBlock("li", {
-          class: Vue.normalizeClass(["znpb-section-view-item", {
-            "znpb-section-view-item--hidden": !_ctx.element.isVisible,
-            "znpb-section-view-item--loopProvider": _ctx.element.isRepeaterProvider,
-            "znpb-section-view-item--loopConsumer": _ctx.element.isRepeaterConsumer
-          }]),
-          onContextmenu: _cache[0] || (_cache[0] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => Vue.unref(showElementMenu) && Vue.unref(showElementMenu)(...args),
-            ["stop", "prevent"]
-          )),
-          onMouseover: _cache[1] || (_cache[1] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => _ctx.element.highlight && _ctx.element.highlight(...args),
-            ["stop"]
-          )),
-          onMouseout: _cache[2] || (_cache[2] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => _ctx.element.unHighlight && _ctx.element.unHighlight(...args),
-            ["stop"]
-          )),
-          onClick: _cache[3] || (_cache[3] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => Vue.unref(editElement) && Vue.unref(editElement)(...args),
-            ["stop", "left"]
-          ))
-        }, [
-          loading.value || error.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$B, [
-            Vue.createVNode(_component_Loader, { size: 16 }),
-            error.value ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_2$s, Vue.toDisplayString(i18n__namespace.__("Preview not available", "zionbuilder")), 1)) : Vue.createCommentVNode("", true)
-          ])) : Vue.createCommentVNode("", true),
-          Vue.createElementVNode("img", { src: imageSrc.value }, null, 8, _hoisted_3$m),
-          Vue.createVNode(_sfc_main$K, {
-            class: "znpb-section-view__item__header",
-            element: _ctx.element
-          }, null, 8, ["element"])
-        ], 34);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "li",
+          {
+            class: Vue.normalizeClass(["znpb-section-view-item", {
+              "znpb-section-view-item--hidden": !__props.element.isVisible,
+              "znpb-section-view-item--loopProvider": __props.element.isRepeaterProvider,
+              "znpb-section-view-item--loopConsumer": __props.element.isRepeaterConsumer
+            }]),
+            onContextmenu: _cache[0] || (_cache[0] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => Vue.unref(showElementMenu) && Vue.unref(showElementMenu)(...args),
+              ["stop", "prevent"]
+            )),
+            onMouseover: _cache[1] || (_cache[1] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => __props.element.highlight && __props.element.highlight(...args),
+              ["stop"]
+            )),
+            onMouseout: _cache[2] || (_cache[2] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => __props.element.unHighlight && __props.element.unHighlight(...args),
+              ["stop"]
+            )),
+            onClick: _cache[3] || (_cache[3] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => Vue.unref(editElement) && Vue.unref(editElement)(...args),
+              ["stop", "left"]
+            ))
+          },
+          [
+            loading.value || error.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$B, [
+              Vue.createVNode(_component_Loader, { size: 16 }),
+              error.value ? (Vue.openBlock(), Vue.createElementBlock(
+                "span",
+                _hoisted_2$r,
+                Vue.toDisplayString(i18n__namespace.__("Preview not available", "zionbuilder")),
+                1
+                /* TEXT */
+              )) : Vue.createCommentVNode("v-if", true)
+            ])) : Vue.createCommentVNode("v-if", true),
+            Vue.createElementVNode("img", { src: imageSrc.value }, null, 8, _hoisted_3$m),
+            Vue.createVNode(_sfc_main$K, {
+              class: "znpb-section-view__item__header",
+              element: __props.element
+            }, null, 8, ["element"])
+          ],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   });
-  const ElementSectionView_vue_vue_type_style_index_0_lang = "";
   function useTreeViewList() {
     const elementOptionsRef = Vue.ref(null);
     const UIStore = useUIStore();
@@ -11372,7 +12986,7 @@ var __async = (__this, __arguments, generator) => {
     id: "znpb-section-view",
     class: "znpb-tree-view-container znpb-fancy-scrollbar znpb-panel-view-wrapper"
   };
-  const _hoisted_2$r = {
+  const _hoisted_2$q = {
     key: 0,
     class: "znpb-tree-view__view__ListAddButtonInside"
   };
@@ -11397,7 +13011,7 @@ var __async = (__this, __arguments, generator) => {
             class: "znpb-section-view-wrapper",
             tag: "ul",
             group: "pagebuilder-sectionview-elements",
-            "data-zion-element-uid": _ctx.element.uid,
+            "data-zion-element-uid": __props.element.uid,
             onStart: Vue.unref(sortableStart),
             onEnd: Vue.unref(sortableEnd),
             onDrop: Vue.unref(onSortableDrop)
@@ -11409,29 +13023,35 @@ var __async = (__this, __arguments, generator) => {
               Vue.createVNode(SortablePlaceholder)
             ]),
             end: Vue.withCtx(() => [
-              children.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$r, [
+              children.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$q, [
                 Vue.createVNode(_component_AddElementIcon, {
-                  element: _ctx.element,
+                  element: __props.element,
                   placement: "inside"
                 }, null, 8, ["element"])
-              ])) : Vue.createCommentVNode("", true)
+              ])) : Vue.createCommentVNode("v-if", true)
             ]),
             default: Vue.withCtx(() => [
-              (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(children.value, (childElement) => {
-                return Vue.openBlock(), Vue.createBlock(_sfc_main$J, {
-                  key: childElement.uid,
-                  element: childElement,
-                  "data-zion-element-uid": childElement.uid
-                }, null, 8, ["element", "data-zion-element-uid"]);
-              }), 128))
+              (Vue.openBlock(true), Vue.createElementBlock(
+                Vue.Fragment,
+                null,
+                Vue.renderList(children.value, (childElement) => {
+                  return Vue.openBlock(), Vue.createBlock(_sfc_main$J, {
+                    key: childElement.uid,
+                    element: childElement,
+                    "data-zion-element-uid": childElement.uid
+                  }, null, 8, ["element", "data-zion-element-uid"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["modelValue", "data-zion-element-uid", "onStart", "onEnd", "onDrop"])
         ]);
       };
     }
   });
-  const SectionViewPanel_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$z = ["id"];
   const _sfc_main$H = /* @__PURE__ */ Vue.defineComponent({
     __name: "TreeViewListItem",
@@ -11480,21 +13100,21 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_AddElementIcon = Vue.resolveComponent("AddElementIcon");
         return Vue.openBlock(), Vue.createElementBlock("li", {
-          id: _ctx.element.uid,
+          id: __props.element.uid,
           ref_key: "listItem",
           ref: listItem,
           class: Vue.normalizeClass(["znpb-tree-view__item", {
-            "znpb-tree-view__item--hidden": !_ctx.element.isVisible,
+            "znpb-tree-view__item--hidden": !__props.element.isVisible,
             "znpb-tree-view__item--justAdded": justAdded.value
           }]),
           onMouseenter: _cache[1] || (_cache[1] = Vue.withModifiers(
             //@ts-ignore
-            (...args) => _ctx.element.highlight && _ctx.element.highlight(...args),
+            (...args) => __props.element.highlight && __props.element.highlight(...args),
             ["stop"]
           )),
           onMouseleave: _cache[2] || (_cache[2] = Vue.withModifiers(
             //@ts-ignore
-            (...args) => _ctx.element.unHighlight && _ctx.element.unHighlight(...args),
+            (...args) => __props.element.unHighlight && __props.element.unHighlight(...args),
             ["stop"]
           )),
           onClick: _cache[3] || (_cache[3] = Vue.withModifiers(
@@ -11508,35 +13128,35 @@ var __async = (__this, __arguments, generator) => {
             ["stop", "prevent"]
           ))
         }, [
-          Vue.createVNode(_sfc_main$K, { element: _ctx.element }, {
+          Vue.createVNode(_sfc_main$K, { element: __props.element }, {
             start: Vue.withCtx(() => [
-              _ctx.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+              __props.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
                 key: 0,
                 icon: "select",
                 class: Vue.normalizeClass(["znpb-tree-view__item-header-item znpb-tree-view__item-header-expand", {
                   "znpb-tree-view__item-header-expand--expanded": expanded.value
                 }]),
                 onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => expanded.value = !expanded.value, ["stop"]))
-              }, null, 8, ["class"])) : Vue.createCommentVNode("", true)
+              }, null, 8, ["class"])) : Vue.createCommentVNode("v-if", true)
             ]),
             end: Vue.withCtx(() => [
               Vue.createVNode(_component_AddElementIcon, {
-                element: _ctx.element,
+                element: __props.element,
                 class: "znpb-tree-view__itemAddButton",
                 position: "centered-bottom"
               }, null, 8, ["element"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["element"]),
           expanded.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$G, {
             key: 0,
-            element: _ctx.element
-          }, null, 8, ["element"])) : Vue.createCommentVNode("", true)
+            element: __props.element
+          }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true)
         ], 42, _hoisted_1$z);
       };
     }
   });
-  const TreeViewListItem_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$y = {
     key: 0,
     class: "znpb-tree-view__view__ListAddButtonInside"
@@ -11562,19 +13182,19 @@ var __async = (__this, __arguments, generator) => {
           class: "znpb-tree-view-wrapper",
           group: "pagebuilder-treview-elements",
           handle: ".znpb-tree-view__itemHeader",
-          "data-zion-element-uid": _ctx.element.uid,
+          "data-zion-element-uid": __props.element.uid,
           onStart: Vue.unref(sortableStart),
           onEnd: Vue.unref(sortableEnd),
           onDrop: Vue.unref(onSortableDrop)
         }, {
           end: Vue.withCtx(() => [
-            children.value.length === 0 && _ctx.element.isWrapper ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$y, [
+            children.value.length === 0 && __props.element.isWrapper ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$y, [
               Vue.createVNode(_component_AddElementIcon, {
-                element: _ctx.element,
+                element: __props.element,
                 placement: "inside",
                 index: -1
               }, null, 8, ["element"])
-            ])) : Vue.createCommentVNode("", true)
+            ])) : Vue.createCommentVNode("v-if", true)
           ]),
           helper: Vue.withCtx(() => [
             Vue.createVNode(SortableHelper)
@@ -11583,22 +13203,28 @@ var __async = (__this, __arguments, generator) => {
             Vue.createVNode(SortablePlaceholder)
           ]),
           default: Vue.withCtx(() => [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(children.value, (childElement) => {
-              return Vue.openBlock(), Vue.createBlock(_sfc_main$H, {
-                key: childElement.uid,
-                element: childElement,
-                "data-zion-element-uid": childElement.uid
-              }, null, 8, ["element", "data-zion-element-uid"]);
-            }), 128))
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(children.value, (childElement) => {
+                return Vue.openBlock(), Vue.createBlock(_sfc_main$H, {
+                  key: childElement.uid,
+                  element: childElement,
+                  "data-zion-element-uid": childElement.uid
+                }, null, 8, ["element", "data-zion-element-uid"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["modelValue", "data-zion-element-uid", "onStart", "onEnd", "onDrop"]);
       };
     }
   });
-  const TreeViewList_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$x = { class: "znpb-tree-viewWrapper" };
-  const _hoisted_2$q = { class: "znpb-tree-viewExpandContainer" };
+  const _hoisted_2$p = { class: "znpb-tree-viewExpandContainer" };
   const _hoisted_3$l = { class: "znpb-tree-view znpb-fancy-scrollbar znpb-panel-view-wrapper" };
   const _sfc_main$F = /* @__PURE__ */ Vue.defineComponent({
     __name: "TreeViewPanel",
@@ -11606,9 +13232,9 @@ var __async = (__this, __arguments, generator) => {
       element: {}
     },
     setup(__props) {
-      const props = __props;
       const UIStore = useUIStore();
       const userStore = useUserStore();
+      const props = __props;
       const treeViewExpanded = Vue.ref(false);
       const showModalConfirm = Vue.ref(false);
       const expandedItems = Vue.ref([]);
@@ -11640,7 +13266,7 @@ var __async = (__this, __arguments, generator) => {
         const _component_ModalConfirm = Vue.resolveComponent("ModalConfirm");
         const _component_Icon = Vue.resolveComponent("Icon");
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$x, [
-          Vue.createElementVNode("div", _hoisted_2$q, [
+          Vue.createElementVNode("div", _hoisted_2$p, [
             showModalConfirm.value ? (Vue.openBlock(), Vue.createBlock(_component_ModalConfirm, {
               key: 0,
               width: 530,
@@ -11650,51 +13276,85 @@ var __async = (__this, __arguments, generator) => {
               onCancel: _cache[0] || (_cache[0] = ($event) => showModalConfirm.value = false)
             }, {
               default: Vue.withCtx(() => [
-                Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Are you sure you want to remove all elements from page?", "zionbuilder")), 1)
+                Vue.createTextVNode(
+                  Vue.toDisplayString(i18n__namespace.__("Are you sure you want to remove all elements from page?", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
-            }, 8, ["confirm-text", "cancel-text"])) : Vue.createCommentVNode("", true),
-            !Vue.unref(userStore).permissions.only_content ? (Vue.openBlock(), Vue.createElementBlock("a", {
-              key: 1,
-              href: "#",
-              class: Vue.normalizeClass(["znpb-tree-viewRemoveButton", {
-                "znpb-tree-viewRemoveButton--disabled": canRemove.value
-              }]),
-              onClick: _cache[1] || (_cache[1] = ($event) => showModalConfirm.value = true)
-            }, [
-              Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Remove all", "zionbuilder")) + " ", 1),
-              Vue.createVNode(_component_Icon, {
-                icon: "delete",
-                size: 10
-              })
-            ], 2)) : Vue.createCommentVNode("", true),
+              /* STABLE */
+            }, 8, ["confirm-text", "cancel-text"])) : Vue.createCommentVNode("v-if", true),
+            !Vue.unref(userStore).permissions.only_content ? (Vue.openBlock(), Vue.createElementBlock(
+              "a",
+              {
+                key: 1,
+                href: "#",
+                class: Vue.normalizeClass(["znpb-tree-viewRemoveButton", {
+                  "znpb-tree-viewRemoveButton--disabled": canRemove.value
+                }]),
+                onClick: _cache[1] || (_cache[1] = ($event) => showModalConfirm.value = true)
+              },
+              [
+                Vue.createTextVNode(
+                  Vue.toDisplayString(i18n__namespace.__("Remove all", "zionbuilder")) + " ",
+                  1
+                  /* TEXT */
+                ),
+                Vue.createVNode(_component_Icon, {
+                  icon: "delete",
+                  size: 10
+                })
+              ],
+              2
+              /* CLASS */
+            )) : Vue.createCommentVNode("v-if", true),
             Vue.createElementVNode("a", {
               href: "#",
               onClick: _cache[2] || (_cache[2] = ($event) => (treeViewExpanded.value = !treeViewExpanded.value, expandedItems.value = []))
             }, [
-              !treeViewExpanded.value ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-                Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Expand all", "zionbuilder")) + " ", 1),
-                Vue.createVNode(_component_Icon, {
-                  icon: "long-arrow-down",
-                  size: 10
-                })
-              ], 64)) : (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-                Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Collapse all", "zionbuilder")) + " ", 1),
-                Vue.createVNode(_component_Icon, {
-                  icon: "long-arrow-up",
-                  size: 10
-                })
-              ], 64))
+              !treeViewExpanded.value ? (Vue.openBlock(), Vue.createElementBlock(
+                Vue.Fragment,
+                { key: 0 },
+                [
+                  Vue.createTextVNode(
+                    Vue.toDisplayString(i18n__namespace.__("Expand all", "zionbuilder")) + " ",
+                    1
+                    /* TEXT */
+                  ),
+                  Vue.createVNode(_component_Icon, {
+                    icon: "long-arrow-down",
+                    size: 10
+                  })
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              )) : (Vue.openBlock(), Vue.createElementBlock(
+                Vue.Fragment,
+                { key: 1 },
+                [
+                  Vue.createTextVNode(
+                    Vue.toDisplayString(i18n__namespace.__("Collapse all", "zionbuilder")) + " ",
+                    1
+                    /* TEXT */
+                  ),
+                  Vue.createVNode(_component_Icon, {
+                    icon: "long-arrow-up",
+                    size: 10
+                  })
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              ))
             ])
           ]),
           Vue.createElementVNode("div", _hoisted_3$l, [
-            Vue.createVNode(_sfc_main$G, { element: _ctx.element }, null, 8, ["element"])
+            Vue.createVNode(_sfc_main$G, { element: __props.element }, null, 8, ["element"])
           ])
         ]);
       };
     }
   });
-  const TreeViewPanel_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$E = /* @__PURE__ */ Vue.defineComponent({
     __name: "WireframeListItem",
     props: {
@@ -11747,42 +13407,48 @@ var __async = (__this, __arguments, generator) => {
       }
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
-        return Vue.openBlock(), Vue.createElementBlock("li", {
-          class: Vue.normalizeClass(["znpb-wireframe-item", getClasses.value]),
-          onClick: _cache[1] || (_cache[1] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => _ctx.element.focus && _ctx.element.focus(...args),
-            ["stop"]
-          )),
-          onContextmenu: _cache[2] || (_cache[2] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => Vue.unref(showElementMenu) && Vue.unref(showElementMenu)(...args),
-            ["stop", "prevent"]
-          ))
-        }, [
-          Vue.createVNode(_sfc_main$K, { element: _ctx.element }, {
-            start: Vue.withCtx(() => [
-              _ctx.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
-                key: 0,
-                icon: "select",
-                class: Vue.normalizeClass(["znpb-tree-view__item-header-item znpb-tree-view__item-header-expand", {
-                  "znpb-tree-view__item-header-expand--expanded": expanded.value
-                }]),
-                onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => expanded.value = !expanded.value, ["stop"]))
-              }, null, 8, ["class"])) : Vue.createCommentVNode("", true)
-            ]),
-            _: 1
-          }, 8, ["element"]),
-          expanded.value && _ctx.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_sfc_main$D, {
-            key: 0,
-            element: _ctx.element,
-            class: Vue.normalizeClass(["znpb-wireframe-item__content", { [`znpb-flex--${hasFlexDirection.value}`]: hasFlexDirection.value }])
-          }, null, 8, ["element", "class"])) : Vue.createCommentVNode("", true)
-        ], 34);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "li",
+          {
+            class: Vue.normalizeClass(["znpb-wireframe-item", getClasses.value]),
+            onClick: _cache[1] || (_cache[1] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => __props.element.focus && __props.element.focus(...args),
+              ["stop"]
+            )),
+            onContextmenu: _cache[2] || (_cache[2] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => Vue.unref(showElementMenu) && Vue.unref(showElementMenu)(...args),
+              ["stop", "prevent"]
+            ))
+          },
+          [
+            Vue.createVNode(_sfc_main$K, { element: __props.element }, {
+              start: Vue.withCtx(() => [
+                __props.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+                  key: 0,
+                  icon: "select",
+                  class: Vue.normalizeClass(["znpb-tree-view__item-header-item znpb-tree-view__item-header-expand", {
+                    "znpb-tree-view__item-header-expand--expanded": expanded.value
+                  }]),
+                  onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => expanded.value = !expanded.value, ["stop"]))
+                }, null, 8, ["class"])) : Vue.createCommentVNode("v-if", true)
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["element"]),
+            expanded.value && __props.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_sfc_main$D, {
+              key: 0,
+              element: __props.element,
+              class: Vue.normalizeClass(["znpb-wireframe-item__content", { [`znpb-flex--${hasFlexDirection.value}`]: hasFlexDirection.value }])
+            }, null, 8, ["element", "class"])) : Vue.createCommentVNode("v-if", true)
+          ],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   });
-  const WireframeListItem_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$D = /* @__PURE__ */ Vue.defineComponent({
     __name: "WireframeList",
     props: {
@@ -11823,7 +13489,7 @@ var __async = (__this, __arguments, generator) => {
           group: "pagebuilder-wireframe-elements",
           axis: getSortableAxis.value,
           "allow-duplicate": true,
-          "data-zion-element-uid": _ctx.element.uid,
+          "data-zion-element-uid": __props.element.uid,
           onStart: Vue.unref(sortableStart),
           onEnd: Vue.unref(sortableEnd),
           onDrop: Vue.unref(onSortableDrop)
@@ -11835,26 +13501,33 @@ var __async = (__this, __arguments, generator) => {
             Vue.createVNode(SortablePlaceholder)
           ]),
           end: Vue.withCtx(() => [
-            !_ctx.element.content.length && _ctx.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1b, {
+            !__props.element.content.length && __props.element.isWrapper ? (Vue.openBlock(), Vue.createBlock(_sfc_main$1b, {
               key: 0,
-              element: _ctx.element
-            }, null, 8, ["element"])) : Vue.createCommentVNode("", true),
+              element: __props.element
+            }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true),
             Vue.createVNode(_component_AddElementIcon, {
-              element: _ctx.element,
+              element: __props.element,
               class: "znpb-tree-view__ListAddButton",
               placement: "next"
             }, null, 8, ["element"])
           ]),
           default: Vue.withCtx(() => [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(children.value, (childElement) => {
-              return Vue.openBlock(), Vue.createBlock(_sfc_main$E, {
-                key: childElement.uid,
-                element: childElement,
-                "data-zion-element-uid": childElement.uid
-              }, null, 8, ["element", "data-zion-element-uid"]);
-            }), 128))
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(children.value, (childElement) => {
+                return Vue.openBlock(), Vue.createBlock(_sfc_main$E, {
+                  key: childElement.uid,
+                  element: childElement,
+                  "data-zion-element-uid": childElement.uid
+                }, null, 8, ["element", "data-zion-element-uid"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["modelValue", "class", "axis", "data-zion-element-uid", "onStart", "onEnd", "onDrop"]);
       };
     }
@@ -11871,17 +13544,17 @@ var __async = (__this, __arguments, generator) => {
     setup(__props) {
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$w, [
+          Vue.createCommentVNode(" content "),
           Vue.createVNode(_sfc_main$D, {
-            element: _ctx.element,
+            element: __props.element,
             "show-add": false
           }, null, 8, ["element"])
         ]);
       };
     }
   });
-  const WireframePanel_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$v = ["id"];
-  const _hoisted_2$p = {
+  const _hoisted_2$o = {
     key: 0,
     class: "znpb-panel__header-name"
   };
@@ -11901,9 +13574,10 @@ var __async = (__this, __arguments, generator) => {
       panel: {}
     },
     emits: ["close-panel"],
-    setup(__props, { expose: __expose, emit }) {
+    setup(__props, { expose: __expose, emit: __emit }) {
       const props = __props;
       const slots = Vue.useSlots();
+      const emit = __emit;
       const UIStore = useUIStore();
       const { addEventListener, removeEventListener } = useWindows();
       let boundingClientRect = null;
@@ -12052,7 +13726,7 @@ var __async = (__this, __arguments, generator) => {
           });
         }
       }
-      const rafMovePanel = rafSchd$1(movePanel);
+      const rafMovePanel = rafSchd(movePanel);
       function updatePosition(oldIndex2, newIndex2) {
         const list = [...UIStore.panelsOrder];
         if (oldIndex2 >= newIndex2) {
@@ -12093,7 +13767,7 @@ var __async = (__this, __arguments, generator) => {
           panel: null
         });
       }
-      const rafResizeHorizontal = rafSchd$1(resizeHorizontal);
+      const rafResizeHorizontal = rafSchd(resizeHorizontal);
       let initialHMouseX = null;
       let initialWidth = null;
       function activateHorizontalResize(event) {
@@ -12118,7 +13792,7 @@ var __async = (__this, __arguments, generator) => {
         window.removeEventListener("mouseup", deactivateHorizontal);
         UIStore.saveUI();
       }
-      const rafResizeVertical = rafSchd$1(resizeVertical);
+      const rafResizeVertical = rafSchd(resizeVertical);
       let initialVMouseY = null;
       let initialHeight = null;
       function activateVerticalResize(event) {
@@ -12189,51 +13863,78 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         return Vue.openBlock(), Vue.createElementBlock("div", {
-          id: _ctx.panelId,
+          id: __props.panelId,
           ref_key: "root",
           ref: root2,
           class: Vue.normalizeClass([getCssClass.value, "znpb-editor-panel"]),
           style: Vue.normalizeStyle(panelStyles.value)
         }, [
           Vue.renderSlot(_ctx.$slots, "before-header"),
-          _ctx.showHeader ? (Vue.openBlock(), Vue.createElementBlock("div", {
-            key: 0,
-            ref: "panelHeader",
-            class: "znpb-panel__header",
-            onMousedown: onMouseDown
-          }, [
-            !hasHeaderSlot.value ? (Vue.openBlock(), Vue.createElementBlock("h4", _hoisted_2$p, Vue.toDisplayString(_ctx.panelName), 1)) : Vue.createCommentVNode("", true),
-            Vue.renderSlot(_ctx.$slots, "header"),
-            _ctx.showClose ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
-              key: 1,
-              icon: "close",
-              size: 14,
-              class: "znpb-panel__header-icon-close",
-              onClick: Vue.withModifiers(closePanel, ["stop"])
-            }, null, 8, ["onClick"])) : Vue.createCommentVNode("", true),
-            Vue.renderSlot(_ctx.$slots, "header-suffix")
-          ], 544)) : Vue.createCommentVNode("", true),
+          Vue.createCommentVNode(" start panel header "),
+          __props.showHeader ? (Vue.openBlock(), Vue.createElementBlock(
+            "div",
+            {
+              key: 0,
+              ref: "panelHeader",
+              class: "znpb-panel__header",
+              onMousedown: onMouseDown
+            },
+            [
+              !hasHeaderSlot.value ? (Vue.openBlock(), Vue.createElementBlock(
+                "h4",
+                _hoisted_2$o,
+                Vue.toDisplayString(__props.panelName),
+                1
+                /* TEXT */
+              )) : Vue.createCommentVNode("v-if", true),
+              Vue.renderSlot(_ctx.$slots, "header"),
+              __props.showClose ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+                key: 1,
+                icon: "close",
+                size: 14,
+                class: "znpb-panel__header-icon-close",
+                onClick: Vue.withModifiers(closePanel, ["stop"])
+              })) : Vue.createCommentVNode("v-if", true),
+              Vue.renderSlot(_ctx.$slots, "header-suffix")
+            ],
+            544
+            /* NEED_HYDRATION, NEED_PATCH */
+          )) : Vue.createCommentVNode("v-if", true),
+          Vue.createCommentVNode(" end panel header "),
           Vue.renderSlot(_ctx.$slots, "after-header"),
+          Vue.createCommentVNode(" content "),
           Vue.createElementVNode("div", _hoisted_3$k, [
             Vue.renderSlot(_ctx.$slots, "default")
           ]),
-          !Vue.unref(UIStore).isAnyPanelDragging && _ctx.allowHorizontalResize ? (Vue.openBlock(), Vue.createElementBlock("div", {
-            key: 1,
-            class: "znpb-editor-panel__resize znpb-editor-panel__resize--horizontal",
-            onMousedown: activateHorizontalResize
-          }, null, 32)) : Vue.createCommentVNode("", true),
-          _ctx.panel.isDetached && !Vue.unref(UIStore).isAnyPanelDragging && _ctx.allowVerticalResize ? (Vue.openBlock(), Vue.createElementBlock("div", {
-            key: 2,
-            class: "znpb-editor-panel__resize znpb-editor-panel__resize--vertical",
-            onMousedown: activateVerticalResize
-          }, null, 32)) : Vue.createCommentVNode("", true)
+          Vue.createCommentVNode(" resize div "),
+          !Vue.unref(UIStore).isAnyPanelDragging && __props.allowHorizontalResize ? (Vue.openBlock(), Vue.createElementBlock(
+            "div",
+            {
+              key: 1,
+              class: "znpb-editor-panel__resize znpb-editor-panel__resize--horizontal",
+              onMousedown: activateHorizontalResize
+            },
+            null,
+            32
+            /* NEED_HYDRATION */
+          )) : Vue.createCommentVNode("v-if", true),
+          __props.panel.isDetached && !Vue.unref(UIStore).isAnyPanelDragging && __props.allowVerticalResize ? (Vue.openBlock(), Vue.createElementBlock(
+            "div",
+            {
+              key: 2,
+              class: "znpb-editor-panel__resize znpb-editor-panel__resize--vertical",
+              onMousedown: activateVerticalResize
+            },
+            null,
+            32
+            /* NEED_HYDRATION */
+          )) : Vue.createCommentVNode("v-if", true)
         ], 14, _hoisted_1$v);
       };
     }
   });
-  const BasePanel_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$u = { class: "znpb-tree-view__header-icon" };
-  const _hoisted_2$o = {
+  const _hoisted_2$n = {
     key: 0,
     class: "znpb-tree-view__type_wrapper"
   };
@@ -12307,7 +14008,7 @@ var __async = (__this, __arguments, generator) => {
           expanded: activeTreeViewPanel.value.expandMainPanel,
           "show-header": activeTreeViewPanel.value.showBasePanelHeader,
           "show-expand": false,
-          panel: _ctx.panel
+          panel: __props.panel
         }, {
           default: Vue.withCtx(() => [
             Vue.unref(UIStore).isPreviewLoading ? (Vue.openBlock(), Vue.createBlock(_component_Loader, { key: 0 })) : (Vue.openBlock(), Vue.createBlock(_component_Tabs, {
@@ -12318,46 +14019,54 @@ var __async = (__this, __arguments, generator) => {
               class: "znpb-tree-view__tabs"
             }, {
               default: Vue.withCtx(() => [
-                (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(treeViewTypes, (treeType) => {
-                  return Vue.createVNode(_component_Tab, {
-                    id: treeType.id,
-                    key: treeType.id
-                  }, {
-                    title: Vue.withCtx(() => [
-                      Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$u, [
-                        Vue.createVNode(_component_Icon, {
-                          class: "znpb-tree-view__header-menu-item-icon",
-                          icon: treeType.icon,
-                          size: 16
-                        }, null, 8, ["icon"])
-                      ])), [
-                        [_directive_znpb_tooltip, treeType.name]
-                      ])
-                    ]),
-                    default: Vue.withCtx(() => [
-                      activeTreeViewId.value === treeType.id ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$o, [
-                        (Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent(treeType.component), { element: element.value }, null, 8, ["element"]))
-                      ])) : Vue.createCommentVNode("", true)
-                    ]),
-                    _: 2
-                  }, 1032, ["id"]);
-                }), 64))
+                (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(treeViewTypes, (treeType) => {
+                    return Vue.createVNode(_component_Tab, {
+                      id: treeType.id,
+                      key: treeType.id
+                    }, {
+                      title: Vue.withCtx(() => [
+                        Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$u, [
+                          Vue.createVNode(_component_Icon, {
+                            class: "znpb-tree-view__header-menu-item-icon",
+                            icon: treeType.icon,
+                            size: 16
+                          }, null, 8, ["icon"])
+                        ])), [
+                          [_directive_znpb_tooltip, treeType.name]
+                        ])
+                      ]),
+                      default: Vue.withCtx(() => [
+                        activeTreeViewId.value === treeType.id ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$n, [
+                          (Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent(treeType.component), { element: element.value }, null, 8, ["element"]))
+                        ])) : Vue.createCommentVNode("v-if", true)
+                      ]),
+                      _: 2
+                      /* DYNAMIC */
+                    }, 1032, ["id"]);
+                  }),
+                  64
+                  /* STABLE_FRAGMENT */
+                ))
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["activeTab"])),
             activeTreeViewId.value === "WireframeView" ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
               key: 2,
               class: "znpb-tree-view__header-menu-close-icon",
               icon: "close",
               onClick: closeWireframe
-            })) : Vue.createCommentVNode("", true)
+            })) : Vue.createCommentVNode("v-if", true)
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["panel-name", "css-class", "expanded", "show-header", "panel"]);
       };
     }
   });
-  const PanelTree_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$t = { class: "znpb-accordions-wrapper znpb-fancy-scrollbar" };
   const _sfc_main$z = /* @__PURE__ */ Vue.defineComponent({
     __name: "PanelGlobalSettings",
@@ -12402,54 +14111,31 @@ var __async = (__this, __arguments, generator) => {
             ])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["panel-name"]);
       };
     }
   });
-  const PanelGlobalSettings_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$s = { class: "znpb-panel__history_panel_wrapper" };
-  const _hoisted_2$n = {
+  const _hoisted_2$m = {
     key: 0,
     class: "znpb-panel__history_panel_wrapper--noItemsContainer"
   };
-  const _hoisted_3$j = /* @__PURE__ */ Vue.createElementVNode("svg", {
-    viewBox: "0 0 72 72",
-    fill: "black",
-    xmlns: "http://www.w3.org/2000/svg"
-  }, [
-    /* @__PURE__ */ Vue.createElementVNode("path", { d: "M43.7 40.9L36.35 48.25L32.15 44.05L37.7 38.5V25.9H43.7V40.9ZM38 13C31.1 13 24.8 16 20.3 20.8L16.4 16.9L14 31.9L29.15 29.5L24.65 25C27.95 21.25 32.75 19 38 19C47.9 19 56 27.1 56 37C56 46.9 47.9 55 38 55C32.75 55 27.95 52.75 24.65 49L20.15 53.05C24.65 57.85 30.95 61 38 61C51.2 61 62 50.2 62 37C62 23.8 51.2 13 38 13Z" }),
-    /* @__PURE__ */ Vue.createElementVNode("path", {
-      d: "M72 15C72 16.6569 70.6569 18 69 18C67.3431 18 66 16.6569 66 15C66 13.3431 67.3431 12 69 12C70.6569 12 72 13.3431 72 15Z",
-      opacity: "0.6"
-    }),
-    /* @__PURE__ */ Vue.createElementVNode("path", {
-      d: "M4 51.5C4 52.3284 3.32843 53 2.5 53C1.67157 53 1 52.3284 1 51.5C1 50.6716 1.67157 50 2.5 50C3.32843 50 4 50.6716 4 51.5Z",
-      opacity: "0.6"
-    }),
-    /* @__PURE__ */ Vue.createElementVNode("path", {
-      d: "M4.99683 16.1946C4.27812 16.002 3.53938 16.4285 3.3468 17.1472L3.17241 17.798L2.52177 17.6237C1.80306 17.4311 1.06432 17.8576 0.871741 18.5763C0.679164 19.2951 1.10568 20.0338 1.82439 20.2264L2.47503 20.4007L2.30072 21.0512C2.10815 21.7699 2.53466 22.5087 3.25337 22.7012C3.97208 22.8938 4.71082 22.4673 4.9034 21.7486L5.0777 21.0981L5.7284 21.2725C6.44711 21.465 7.18586 21.0385 7.37843 20.3198C7.57101 19.6011 7.1445 18.8624 6.42579 18.6698L5.77509 18.4954L5.94948 17.8446C6.14206 17.1259 5.71554 16.3871 4.99683 16.1946Z",
-      opacity: "0.6"
-    }),
-    /* @__PURE__ */ Vue.createElementVNode("path", {
-      d: "M65.7664 52.8525C66.1566 52.9231 66.5302 52.6641 66.6008 52.2738L66.6648 51.9206L67.018 51.9845C67.4083 52.0552 67.7819 51.7961 67.8525 51.4058C67.9231 51.0156 67.664 50.642 67.2738 50.5714L66.9205 50.5075L66.9844 50.1541C67.055 49.7639 66.7959 49.3903 66.4057 49.3197C66.0155 49.2491 65.6419 49.5082 65.5713 49.8984L65.5073 50.2518L65.1541 50.1878C64.7638 50.1172 64.3903 50.3763 64.3196 50.7665C64.249 51.1568 64.5081 51.5303 64.8983 51.601L65.2516 51.6649L65.1877 52.0181C65.1171 52.4083 65.3762 52.7819 65.7664 52.8525Z",
-      opacity: "0.6"
-    })
-  ], -1);
-  const _hoisted_4$e = { class: "znpb-panel__history_panel-emptyTitle" };
-  const _hoisted_5$c = { class: "znpb-panel__history_panel-emptyDesc" };
-  const _hoisted_6$b = {
+  const _hoisted_3$j = { class: "znpb-panel__history_panel-emptyTitle" };
+  const _hoisted_4$d = { class: "znpb-panel__history_panel-emptyDesc" };
+  const _hoisted_5$b = {
     key: 1,
     class: "znpb-history-actions"
   };
-  const _hoisted_7$a = ["title", "onClick"];
-  const _hoisted_8$8 = { class: "znpb-action-element" };
-  const _hoisted_9$6 = { class: "znpb-action-subtitle" };
-  const _hoisted_10$5 = { class: "znpb-action-name" };
-  const _hoisted_11$4 = {
+  const _hoisted_6$9 = ["title", "onClick"];
+  const _hoisted_7$7 = { class: "znpb-action-element" };
+  const _hoisted_8$5 = { class: "znpb-action-subtitle" };
+  const _hoisted_9$3 = { class: "znpb-action-name" };
+  const _hoisted_10$3 = {
     key: 0,
     class: "znpb-action-active"
   };
-  const _hoisted_12$3 = { class: "znpb-history__action-wrapper" };
+  const _hoisted_11$3 = { class: "znpb-history__action-wrapper" };
   const _sfc_main$y = /* @__PURE__ */ Vue.defineComponent({
     __name: "PanelHistory",
     props: {
@@ -12479,67 +14165,154 @@ var __async = (__this, __arguments, generator) => {
           "panel-name": i18n__namespace.__("History", "zionbuilder"),
           "panel-id": "panel-history",
           "show-expand": false,
-          panel: _ctx.panel
+          panel: __props.panel
         }, {
           default: Vue.withCtx(() => [
             Vue.createElementVNode("div", _hoisted_1$s, [
-              Vue.createElementVNode("div", {
-                ref_key: "historyPanelWrapper",
-                ref: historyPanelWrapper,
-                class: "znpb-history-wrapper znpb-fancy-scrollbar"
-              }, [
-                Vue.unref(historyStore).state.length === 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$n, [
-                  _hoisted_3$j,
-                  Vue.createElementVNode("div", _hoisted_4$e, Vue.toDisplayString(i18n__namespace.__("Your history is empty", "zionbuilder")), 1),
-                  Vue.createElementVNode("div", _hoisted_5$c, Vue.toDisplayString(i18n__namespace.__("Modify your page and your changes will appear here", "zionbuilder")), 1)
-                ])) : (Vue.openBlock(), Vue.createElementBlock("ul", _hoisted_6$b, [
-                  (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(Vue.unref(historyStore).state, (item, index2) => {
-                    return Vue.openBlock(), Vue.createElementBlock("li", {
-                      key: index2,
-                      title: item.title,
-                      class: Vue.normalizeClass({ "znpb-history-action--active": Vue.unref(historyStore).activeHistoryIndex === index2 }),
-                      onClick: ($event) => Vue.unref(historyStore).restoreHistoryToIndex(index2)
-                    }, [
-                      Vue.createElementVNode("span", _hoisted_8$8, Vue.toDisplayString(item.title), 1),
-                      Vue.createElementVNode("span", _hoisted_9$6, Vue.toDisplayString(item.subtitle), 1),
-                      Vue.createElementVNode("span", _hoisted_10$5, Vue.toDisplayString(item.action), 1),
-                      Vue.unref(historyStore).activeHistoryIndex === index2 ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_11$4, Vue.toDisplayString(i18n__namespace.__("Now", "zionbuilder")), 1)) : (Vue.openBlock(), Vue.createBlock(_component_Icon, {
-                        key: 1,
-                        icon: "history"
-                      }))
-                    ], 10, _hoisted_7$a);
-                  }), 128))
-                ]))
-              ], 512),
-              Vue.createElementVNode("div", _hoisted_12$3, [
-                Vue.createElementVNode("div", {
-                  class: Vue.normalizeClass(["znpb-history__action", { "znpb-history__action--inactive": !Vue.unref(historyStore).canUndo }]),
-                  onClick: doUndo
-                }, [
-                  Vue.createVNode(_component_Icon, { icon: "undo" })
-                ], 2),
-                Vue.createElementVNode("div", {
-                  class: Vue.normalizeClass(["znpb-history__action", { "znpb-history__action--inactive": !Vue.unref(historyStore).canRedo }]),
-                  onClick: doRedo
-                }, [
-                  Vue.createVNode(_component_Icon, { icon: "redo" })
-                ], 2)
+              Vue.createElementVNode(
+                "div",
+                {
+                  ref_key: "historyPanelWrapper",
+                  ref: historyPanelWrapper,
+                  class: "znpb-history-wrapper znpb-fancy-scrollbar"
+                },
+                [
+                  Vue.unref(historyStore).state.length === 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$m, [
+                    _cache[0] || (_cache[0] = Vue.createElementVNode(
+                      "svg",
+                      {
+                        viewBox: "0 0 72 72",
+                        fill: "black",
+                        xmlns: "http://www.w3.org/2000/svg"
+                      },
+                      [
+                        Vue.createElementVNode("path", { d: "M43.7 40.9L36.35 48.25L32.15 44.05L37.7 38.5V25.9H43.7V40.9ZM38 13C31.1 13 24.8 16 20.3 20.8L16.4 16.9L14 31.9L29.15 29.5L24.65 25C27.95 21.25 32.75 19 38 19C47.9 19 56 27.1 56 37C56 46.9 47.9 55 38 55C32.75 55 27.95 52.75 24.65 49L20.15 53.05C24.65 57.85 30.95 61 38 61C51.2 61 62 50.2 62 37C62 23.8 51.2 13 38 13Z" }),
+                        Vue.createElementVNode("path", {
+                          d: "M72 15C72 16.6569 70.6569 18 69 18C67.3431 18 66 16.6569 66 15C66 13.3431 67.3431 12 69 12C70.6569 12 72 13.3431 72 15Z",
+                          opacity: "0.6"
+                        }),
+                        Vue.createElementVNode("path", {
+                          d: "M4 51.5C4 52.3284 3.32843 53 2.5 53C1.67157 53 1 52.3284 1 51.5C1 50.6716 1.67157 50 2.5 50C3.32843 50 4 50.6716 4 51.5Z",
+                          opacity: "0.6"
+                        }),
+                        Vue.createElementVNode("path", {
+                          d: "M4.99683 16.1946C4.27812 16.002 3.53938 16.4285 3.3468 17.1472L3.17241 17.798L2.52177 17.6237C1.80306 17.4311 1.06432 17.8576 0.871741 18.5763C0.679164 19.2951 1.10568 20.0338 1.82439 20.2264L2.47503 20.4007L2.30072 21.0512C2.10815 21.7699 2.53466 22.5087 3.25337 22.7012C3.97208 22.8938 4.71082 22.4673 4.9034 21.7486L5.0777 21.0981L5.7284 21.2725C6.44711 21.465 7.18586 21.0385 7.37843 20.3198C7.57101 19.6011 7.1445 18.8624 6.42579 18.6698L5.77509 18.4954L5.94948 17.8446C6.14206 17.1259 5.71554 16.3871 4.99683 16.1946Z",
+                          opacity: "0.6"
+                        }),
+                        Vue.createElementVNode("path", {
+                          d: "M65.7664 52.8525C66.1566 52.9231 66.5302 52.6641 66.6008 52.2738L66.6648 51.9206L67.018 51.9845C67.4083 52.0552 67.7819 51.7961 67.8525 51.4058C67.9231 51.0156 67.664 50.642 67.2738 50.5714L66.9205 50.5075L66.9844 50.1541C67.055 49.7639 66.7959 49.3903 66.4057 49.3197C66.0155 49.2491 65.6419 49.5082 65.5713 49.8984L65.5073 50.2518L65.1541 50.1878C64.7638 50.1172 64.3903 50.3763 64.3196 50.7665C64.249 51.1568 64.5081 51.5303 64.8983 51.601L65.2516 51.6649L65.1877 52.0181C65.1171 52.4083 65.3762 52.7819 65.7664 52.8525Z",
+                          opacity: "0.6"
+                        })
+                      ],
+                      -1
+                      /* CACHED */
+                    )),
+                    Vue.createElementVNode(
+                      "div",
+                      _hoisted_3$j,
+                      Vue.toDisplayString(i18n__namespace.__("Your history is empty", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    ),
+                    Vue.createElementVNode(
+                      "div",
+                      _hoisted_4$d,
+                      Vue.toDisplayString(i18n__namespace.__("Modify your page and your changes will appear here", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
+                  ])) : (Vue.openBlock(), Vue.createElementBlock("ul", _hoisted_5$b, [
+                    (Vue.openBlock(true), Vue.createElementBlock(
+                      Vue.Fragment,
+                      null,
+                      Vue.renderList(Vue.unref(historyStore).state, (item, index) => {
+                        return Vue.openBlock(), Vue.createElementBlock("li", {
+                          key: index,
+                          title: item.title,
+                          class: Vue.normalizeClass({ "znpb-history-action--active": Vue.unref(historyStore).activeHistoryIndex === index }),
+                          onClick: ($event) => Vue.unref(historyStore).restoreHistoryToIndex(index)
+                        }, [
+                          Vue.createCommentVNode(' <span class="znpb-action-time">{{ item.time }}</span> '),
+                          Vue.createElementVNode(
+                            "span",
+                            _hoisted_7$7,
+                            Vue.toDisplayString(item.title),
+                            1
+                            /* TEXT */
+                          ),
+                          Vue.createElementVNode(
+                            "span",
+                            _hoisted_8$5,
+                            Vue.toDisplayString(item.subtitle),
+                            1
+                            /* TEXT */
+                          ),
+                          Vue.createElementVNode(
+                            "span",
+                            _hoisted_9$3,
+                            Vue.toDisplayString(item.action),
+                            1
+                            /* TEXT */
+                          ),
+                          Vue.unref(historyStore).activeHistoryIndex === index ? (Vue.openBlock(), Vue.createElementBlock(
+                            "span",
+                            _hoisted_10$3,
+                            Vue.toDisplayString(i18n__namespace.__("Now", "zionbuilder")),
+                            1
+                            /* TEXT */
+                          )) : (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+                            key: 1,
+                            icon: "history"
+                          }))
+                        ], 10, _hoisted_6$9);
+                      }),
+                      128
+                      /* KEYED_FRAGMENT */
+                    ))
+                  ]))
+                ],
+                512
+                /* NEED_PATCH */
+              ),
+              Vue.createElementVNode("div", _hoisted_11$3, [
+                Vue.createElementVNode(
+                  "div",
+                  {
+                    class: Vue.normalizeClass(["znpb-history__action", { "znpb-history__action--inactive": !Vue.unref(historyStore).canUndo }]),
+                    onClick: doUndo
+                  },
+                  [
+                    Vue.createVNode(_component_Icon, { icon: "undo" })
+                  ],
+                  2
+                  /* CLASS */
+                ),
+                Vue.createElementVNode(
+                  "div",
+                  {
+                    class: Vue.normalizeClass(["znpb-history__action", { "znpb-history__action--inactive": !Vue.unref(historyStore).canRedo }]),
+                    onClick: doRedo
+                  },
+                  [
+                    Vue.createVNode(_component_Icon, { icon: "redo" })
+                  ],
+                  2
+                  /* CLASS */
+                )
               ])
             ])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["panel-name", "panel"]);
       };
     }
   });
-  const PanelHistory_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$r = { class: "znpb-key-shortcuts-wrapper" };
-  const _hoisted_2$m = { class: "znpb-key-shortcuts" };
+  const _hoisted_2$l = { class: "znpb-key-shortcuts" };
   const _hoisted_3$i = { class: "znpb-key-shortcuts__keys-wrapper" };
-  const _hoisted_4$d = { class: "znpb-key-shortcuts__key-item" };
-  const _hoisted_5$b = /* @__PURE__ */ Vue.createElementVNode("span", { class: "znpb-key-shortcuts__plus" }, "+", -1);
-  const _hoisted_6$a = /* @__PURE__ */ Vue.createElementVNode("span", { class: "znpb-key-shortcuts__separator" }, null, -1);
-  const _hoisted_7$9 = { class: "znpb-key-shortcuts__description" };
+  const _hoisted_4$c = { class: "znpb-key-shortcuts__key-item" };
+  const _hoisted_5$a = { class: "znpb-key-shortcuts__description" };
   const _sfc_main$x = /* @__PURE__ */ Vue.defineComponent({
     __name: "keyShortcutsItem",
     props: {
@@ -12550,28 +14323,57 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$r, [
           Vue.renderSlot(_ctx.$slots, "default"),
-          Vue.createElementVNode("div", _hoisted_2$m, [
+          Vue.createElementVNode("div", _hoisted_2$l, [
             Vue.createElementVNode("div", _hoisted_3$i, [
-              (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(_ctx.shortcutKey, (key, index2) => {
-                return Vue.openBlock(), Vue.createElementBlock("div", {
-                  key: index2,
-                  class: "znpb-key-shortcuts__key"
-                }, [
-                  Vue.createElementVNode("div", _hoisted_4$d, Vue.toDisplayString(key), 1),
-                  _hoisted_5$b
-                ]);
-              }), 128))
+              (Vue.openBlock(true), Vue.createElementBlock(
+                Vue.Fragment,
+                null,
+                Vue.renderList(__props.shortcutKey, (key, index) => {
+                  return Vue.openBlock(), Vue.createElementBlock("div", {
+                    key: index,
+                    class: "znpb-key-shortcuts__key"
+                  }, [
+                    Vue.createElementVNode(
+                      "div",
+                      _hoisted_4$c,
+                      Vue.toDisplayString(key),
+                      1
+                      /* TEXT */
+                    ),
+                    _cache[0] || (_cache[0] = Vue.createElementVNode(
+                      "span",
+                      { class: "znpb-key-shortcuts__plus" },
+                      "+",
+                      -1
+                      /* CACHED */
+                    ))
+                  ]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ]),
-            _hoisted_6$a,
-            Vue.createElementVNode("div", _hoisted_7$9, Vue.toDisplayString(_ctx.description), 1)
+            _cache[1] || (_cache[1] = Vue.createElementVNode(
+              "span",
+              { class: "znpb-key-shortcuts__separator" },
+              null,
+              -1
+              /* CACHED */
+            )),
+            Vue.createElementVNode(
+              "div",
+              _hoisted_5$a,
+              Vue.toDisplayString(__props.description),
+              1
+              /* TEXT */
+            )
           ])
         ]);
       };
     }
   });
-  const keyShortcutsItem_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$q = { class: "znpb-key-shortcuts-modal znpb-fancy-scrollbar" };
-  const _hoisted_2$l = { class: "znpb-key-shortcuts-modal__content" };
+  const _hoisted_2$k = { class: "znpb-key-shortcuts-modal__content" };
   const _hoisted_3$h = {
     key: 0,
     class: "znpb-key-shortcuts-modal__item-details"
@@ -12677,35 +14479,46 @@ var __async = (__this, __arguments, generator) => {
       ];
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$q, [
-          Vue.createElementVNode("div", _hoisted_2$l, [
-            (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(schemaDescriptionFirst, (schema, i) => {
-              return Vue.createVNode(_sfc_main$x, {
-                key: i + schema.description,
-                "shortcut-key": schema.shortcutKey,
-                description: schema.description
-              }, {
-                default: Vue.withCtx(() => [
-                  schema.details ? (Vue.openBlock(), Vue.createElementBlock("pre", _hoisted_3$h, Vue.toDisplayString(schema.details), 1)) : Vue.createCommentVNode("", true)
-                ]),
-                _: 2
-              }, 1032, ["shortcut-key", "description"]);
-            }), 64))
+          Vue.createElementVNode("div", _hoisted_2$k, [
+            (Vue.openBlock(), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(schemaDescriptionFirst, (schema, i) => {
+                return Vue.createVNode(_sfc_main$x, {
+                  key: i + schema.description,
+                  "shortcut-key": schema.shortcutKey,
+                  description: schema.description
+                }, {
+                  default: Vue.withCtx(() => [
+                    schema.details ? (Vue.openBlock(), Vue.createElementBlock(
+                      "pre",
+                      _hoisted_3$h,
+                      Vue.toDisplayString(schema.details),
+                      1
+                      /* TEXT */
+                    )) : Vue.createCommentVNode("v-if", true)
+                  ]),
+                  _: 2
+                  /* DYNAMIC */
+                }, 1032, ["shortcut-key", "description"]);
+              }),
+              64
+              /* STABLE_FRAGMENT */
+            ))
           ])
         ]);
       };
     }
   });
-  const keyShortcuts_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$p = ["onClick"];
-  const _hoisted_2$k = { class: "znpb-device__item-content" };
-  const _hoisted_3$g = { class: "znpb-device__item-name" };
-  const _hoisted_4$c = { class: "znpb-device__itemValue" };
-  const _hoisted_5$a = {
+  const _hoisted_1$p = { class: "znpb-device__item-content" };
+  const _hoisted_2$j = { class: "znpb-device__item-name" };
+  const _hoisted_3$g = { class: "znpb-device__itemValue" };
+  const _hoisted_4$b = {
     key: 0,
     class: "znpb-device__itemValue-inner"
   };
-  const _hoisted_6$9 = ["value", "onKeydown"];
-  const _hoisted_7$8 = {
+  const _hoisted_5$9 = ["value"];
+  const _hoisted_6$8 = {
     key: 1,
     class: "znpb-device__item-actions"
   };
@@ -12719,10 +14532,11 @@ var __async = (__this, __arguments, generator) => {
       } }
     },
     emits: ["edit-breakpoint"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const { useResponsiveDevices: useResponsiveDevices2 } = window.zb.composables;
       const { doAction } = window.zb.hooks;
+      const props = __props;
+      const emit = __emit;
       const {
         activeResponsiveDeviceInfo: activeResponsiveDeviceInfo2,
         setActiveResponsiveDeviceId,
@@ -12783,92 +14597,175 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_ChangesBullet = Vue.resolveComponent("ChangesBullet");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return Vue.openBlock(), Vue.createElementBlock("a", {
-          class: Vue.normalizeClass(["znpb-device__item", { "znpb-device__item--active": isActiveDevice.value }]),
-          onClick: Vue.withModifiers(changeDevice, ["stop"]),
-          onMousedown: _cache[3] || (_cache[3] = Vue.withModifiers(() => {
-          }, ["stop"]))
-        }, [
-          Vue.createElementVNode("div", _hoisted_2$k, [
-            Vue.createVNode(_component_Icon, {
-              icon: _ctx.deviceConfig.icon,
-              class: "znpb-device__item-icon"
-            }, null, 8, ["icon"]),
-            Vue.createElementVNode("span", _hoisted_3$g, [
-              _ctx.deviceConfig.name ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-                Vue.createTextVNode(Vue.toDisplayString(_ctx.deviceConfig.name) + " - ", 1)
-              ], 64)) : Vue.createCommentVNode("", true),
-              _ctx.deviceConfig.id === "default" ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-                Vue.createTextVNode(" (" + Vue.toDisplayString(i18n__namespace.__("all devices", "zionbuilder")) + ") ", 1)
-              ], 64)) : (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 2 }, [
-                Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("max", "zionbuilder")) + " ", 1),
-                Vue.createElementVNode("span", _hoisted_4$c, [
-                  isEdited.value ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_5$a, [
-                    Vue.createElementVNode("input", {
-                      ref_key: "widthInput",
-                      ref: widthInput,
-                      type: "number",
-                      class: "znpb-device__itemValueInput",
-                      value: _ctx.deviceConfig.width,
-                      onKeydown: Vue.withKeys(updateWidth, ["enter"]),
-                      onBlur: updateWidth
-                    }, null, 40, _hoisted_6$9),
-                    Vue.createTextVNode(" px ")
-                  ])) : (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-                    Vue.createTextVNode(Vue.toDisplayString(_ctx.deviceConfig.width) + "px ", 1)
-                  ], 64))
-                ])
-              ], 64))
-            ]),
-            hasChanges.value && !_ctx.allowEdit ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
-              key: 0,
-              "discard-changes-title": discardChangesTitle.value,
-              onRemoveStyles: removeStylesGroup
-            }, null, 8, ["discard-changes-title"])) : Vue.createCommentVNode("", true),
-            _ctx.allowEdit ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_7$8, [
-              isEdited.value ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-                Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                  icon: "check",
-                  class: "znpb-device__item-action",
-                  onClick: Vue.withModifiers(updateWidth, ["stop"])
-                }, null, 8, ["onClick"]), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Save", "zionbuilder")]
-                ]),
-                Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                  icon: "close",
-                  class: "znpb-device__item-action",
-                  onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => emit("edit-breakpoint", null), ["stop"]))
-                }, null, 512), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Cancel", "zionbuilder")]
-                ])
-              ], 64)) : (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-                !_ctx.deviceConfig.isDefault ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-                  key: 0,
-                  icon: "edit",
-                  class: "znpb-device__item-action",
-                  onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => emit("edit-breakpoint", _ctx.deviceConfig), ["stop"]))
-                }, null, 512)), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Edit breakpoint", "zionbuilder")]
-                ]) : Vue.createCommentVNode("", true),
-                !_ctx.deviceConfig.builtIn ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-                  key: 1,
-                  icon: "delete",
-                  class: "znpb-device__item-action",
-                  onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(deleteBreakpoint)(_ctx.deviceConfig.id), ["stop"]))
-                }, null, 512)), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Delete breakpoint", "zionbuilder")]
-                ]) : Vue.createCommentVNode("", true)
-              ], 64))
-            ])) : Vue.createCommentVNode("", true)
-          ])
-        ], 42, _hoisted_1$p);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "a",
+          {
+            class: Vue.normalizeClass(["znpb-device__item", { "znpb-device__item--active": isActiveDevice.value }]),
+            onClick: Vue.withModifiers(changeDevice, ["stop"]),
+            onMousedown: _cache[3] || (_cache[3] = Vue.withModifiers(() => {
+            }, ["stop"]))
+          },
+          [
+            Vue.createElementVNode("div", _hoisted_1$p, [
+              Vue.createVNode(_component_Icon, {
+                icon: __props.deviceConfig.icon,
+                class: "znpb-device__item-icon"
+              }, null, 8, ["icon"]),
+              Vue.createElementVNode("span", _hoisted_2$j, [
+                __props.deviceConfig.name ? (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 0 },
+                  [
+                    Vue.createTextVNode(
+                      Vue.toDisplayString(__props.deviceConfig.name) + " - ",
+                      1
+                      /* TEXT */
+                    )
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : Vue.createCommentVNode("v-if", true),
+                __props.deviceConfig.id === "default" ? (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 1 },
+                  [
+                    Vue.createTextVNode(
+                      " (" + Vue.toDisplayString(i18n__namespace.__("all devices", "zionbuilder")) + ") ",
+                      1
+                      /* TEXT */
+                    )
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 2 },
+                  [
+                    Vue.createTextVNode(
+                      Vue.toDisplayString(i18n__namespace.__("max", "zionbuilder")) + " ",
+                      1
+                      /* TEXT */
+                    ),
+                    Vue.createElementVNode("span", _hoisted_3$g, [
+                      isEdited.value ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_4$b, [
+                        Vue.createElementVNode("input", {
+                          ref_key: "widthInput",
+                          ref: widthInput,
+                          type: "number",
+                          class: "znpb-device__itemValueInput",
+                          value: __props.deviceConfig.width,
+                          onKeydown: Vue.withKeys(updateWidth, ["enter"]),
+                          onBlur: updateWidth
+                        }, null, 40, _hoisted_5$9),
+                        _cache[4] || (_cache[4] = Vue.createTextVNode(
+                          " px ",
+                          -1
+                          /* CACHED */
+                        ))
+                      ])) : (Vue.openBlock(), Vue.createElementBlock(
+                        Vue.Fragment,
+                        { key: 1 },
+                        [
+                          Vue.createTextVNode(
+                            Vue.toDisplayString(__props.deviceConfig.width) + "px ",
+                            1
+                            /* TEXT */
+                          )
+                        ],
+                        64
+                        /* STABLE_FRAGMENT */
+                      ))
+                    ])
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                ))
+              ]),
+              hasChanges.value && !__props.allowEdit ? (Vue.openBlock(), Vue.createBlock(_component_ChangesBullet, {
+                key: 0,
+                "discard-changes-title": discardChangesTitle.value,
+                onRemoveStyles: removeStylesGroup
+              }, null, 8, ["discard-changes-title"])) : Vue.createCommentVNode("v-if", true),
+              __props.allowEdit ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_6$8, [
+                isEdited.value ? (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 0 },
+                  [
+                    Vue.withDirectives(Vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "check",
+                        class: "znpb-device__item-action",
+                        onClick: Vue.withModifiers(updateWidth, ["stop"])
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Save", "zionbuilder")]
+                    ]),
+                    Vue.withDirectives(Vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "close",
+                        class: "znpb-device__item-action",
+                        onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => emit("edit-breakpoint", null), ["stop"]))
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Cancel", "zionbuilder")]
+                    ])
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 1 },
+                  [
+                    !__props.deviceConfig.isDefault ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(
+                      _component_Icon,
+                      {
+                        key: 0,
+                        icon: "edit",
+                        class: "znpb-device__item-action",
+                        onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => emit("edit-breakpoint", __props.deviceConfig), ["stop"]))
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    )), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Edit breakpoint", "zionbuilder")]
+                    ]) : Vue.createCommentVNode("v-if", true),
+                    !__props.deviceConfig.builtIn ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(
+                      _component_Icon,
+                      {
+                        key: 1,
+                        icon: "delete",
+                        class: "znpb-device__item-action",
+                        onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(deleteBreakpoint)(__props.deviceConfig.id), ["stop"]))
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    )), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Delete breakpoint", "zionbuilder")]
+                    ]) : Vue.createCommentVNode("v-if", true)
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                ))
+              ])) : Vue.createCommentVNode("v-if", true)
+            ])
+          ],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   });
-  const DeviceElement_vue_vue_type_style_index_0_lang = "";
-  const FlyoutWrapper_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$o = ["onMouseover", "onMouseleave"];
-  const _hoisted_2$j = { class: "znpb-editor-header__menu_button" };
+  const _hoisted_1$o = { class: "znpb-editor-header__menu_button" };
   const _sfc_main$u = {
     __name: "FlyoutWrapper",
     props: {
@@ -12886,7 +14783,7 @@ var __async = (__this, __arguments, generator) => {
       }
     },
     emits: ["show", "hide"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
       const showflyout = Vue.ref(false);
       const listContainer = Vue.ref(null);
@@ -12902,6 +14799,7 @@ var __async = (__this, __arguments, generator) => {
       function onMouseOver() {
         showflyout.value = true;
       }
+      const emit = __emit;
       function onMouseOut() {
         if (!props.preventClose) {
           showflyout.value = false;
@@ -12953,26 +14851,38 @@ var __async = (__this, __arguments, generator) => {
         }
       });
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-editor-header-flyout",
-          onMouseover: Vue.withModifiers(onMouseOver, ["stop"]),
-          onMouseleave: Vue.withModifiers(onMouseOut, ["stop"])
-        }, [
-          Vue.createElementVNode("div", _hoisted_2$j, [
-            Vue.renderSlot(_ctx.$slots, "panel-icon")
-          ]),
-          showflyout.value ? (Vue.openBlock(), Vue.createElementBlock("ul", {
-            key: 0,
-            ref_key: "listContainer",
-            ref: listContainer,
-            class: "znpb-editor-header-flyout-hidden-items znpb-editor-header__menu-list",
-            style: Vue.normalizeStyle(computedStyles.value)
-          }, [
-            Vue.renderSlot(_ctx.$slots, "default")
-          ], 4)) : Vue.createCommentVNode("", true)
-        ], 40, _hoisted_1$o);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-editor-header-flyout",
+            onMouseover: Vue.withModifiers(onMouseOver, ["stop"]),
+            onMouseleave: Vue.withModifiers(onMouseOut, ["stop"])
+          },
+          [
+            Vue.createElementVNode("div", _hoisted_1$o, [
+              Vue.renderSlot(_ctx.$slots, "panel-icon")
+            ]),
+            showflyout.value ? (Vue.openBlock(), Vue.createElementBlock(
+              "ul",
+              {
+                key: 0,
+                ref_key: "listContainer",
+                ref: listContainer,
+                class: "znpb-editor-header-flyout-hidden-items znpb-editor-header__menu-list",
+                style: Vue.normalizeStyle(computedStyles.value)
+              },
+              [
+                Vue.renderSlot(_ctx.$slots, "default")
+              ],
+              4
+              /* STYLE */
+            )) : Vue.createCommentVNode("v-if", true)
+          ],
+          544
+          /* NEED_HYDRATION, NEED_PATCH */
+        );
       };
     }
   };
@@ -12990,29 +14900,28 @@ var __async = (__this, __arguments, generator) => {
     for: "znpb-responsive__iframeWidth",
     class: "znpb-responsiveDeviceHeader__iconIndicator"
   };
-  const _hoisted_4$b = ["value", "onKeydown"];
-  const _hoisted_5$9 = { class: "znpb-responsiveDeviceHeader__item" };
-  const _hoisted_6$8 = {
+  const _hoisted_4$a = ["value"];
+  const _hoisted_5$8 = { class: "znpb-responsiveDeviceHeader__item" };
+  const _hoisted_6$7 = {
     for: "znpb-responsive__iframeScale",
     class: "znpb-responsiveDeviceHeader__iconIndicator"
   };
-  const _hoisted_7$7 = ["value", "disabled", "onKeydown"];
-  const _hoisted_8$7 = {
+  const _hoisted_7$6 = ["value", "disabled"];
+  const _hoisted_8$4 = {
     key: 0,
     class: "menu-items znpb-device__addBreakpointForm"
   };
-  const _hoisted_9$5 = { class: "znpb-device__item" };
-  const _hoisted_10$4 = { class: "znpb-device__item-content" };
-  const _hoisted_11$3 = { class: "znpb-device__item-name" };
-  const _hoisted_12$2 = { class: "znpb-device__itemValue" };
-  const _hoisted_13$2 = { class: "znpb-device__itemValue-inner" };
-  const _hoisted_14$1 = ["onKeydown"];
-  const _hoisted_15 = { class: "znpb-device__item-actions" };
-  const _hoisted_16 = {
+  const _hoisted_9$2 = { class: "znpb-device__item" };
+  const _hoisted_10$2 = { class: "znpb-device__item-content" };
+  const _hoisted_11$2 = { class: "znpb-device__item-name" };
+  const _hoisted_12$1 = { class: "znpb-device__itemValue" };
+  const _hoisted_13$1 = { class: "znpb-device__itemValue-inner" };
+  const _hoisted_14$1 = { class: "znpb-device__item-actions" };
+  const _hoisted_15 = {
     key: 1,
     class: "znpb-device__addBreakpointWrapper"
   };
-  const _hoisted_17 = {
+  const _hoisted_16 = {
     key: 2,
     class: "znpb-responsiveDeviceFooter"
   };
@@ -13135,12 +15044,12 @@ var __async = (__this, __arguments, generator) => {
                   onKeydown: Vue.withKeys(onWidthKeyDown, ["enter"]),
                   onBlur: onWidthKeyDown,
                   onFocus: _cache[0] || (_cache[0] = ($event) => preventClose.value = true)
-                }, null, 40, _hoisted_4$b), [
+                }, null, 40, _hoisted_4$a), [
                   [_directive_znpb_tooltip, i18n__namespace.__("Preview width", "zionbuilder")]
                 ])
               ]),
-              Vue.createElementVNode("div", _hoisted_5$9, [
-                Vue.createElementVNode("label", _hoisted_6$8, [
+              Vue.createElementVNode("div", _hoisted_5$8, [
+                Vue.createElementVNode("label", _hoisted_6$7, [
                   Vue.createVNode(_component_Icon, { icon: "zoom" })
                 ]),
                 Vue.withDirectives(Vue.createElementVNode("input", {
@@ -13151,7 +15060,7 @@ var __async = (__this, __arguments, generator) => {
                   onKeydown: Vue.withKeys(onScaleKeyDown, ["enter"]),
                   onBlur: onScaleKeyDown,
                   onFocus: _cache[1] || (_cache[1] = ($event) => preventClose.value = true)
-                }, null, 40, _hoisted_7$7), [
+                }, null, 40, _hoisted_7$6), [
                   [_directive_znpb_tooltip, i18n__namespace.__("Preview scale", "zionbuilder")]
                 ]),
                 Vue.withDirectives(Vue.createVNode(_component_Icon, {
@@ -13168,111 +15077,173 @@ var __async = (__this, __arguments, generator) => {
                 ])
               ])
             ]),
-            Vue.createElementVNode("div", {
-              ref_key: "devicesList",
-              ref: devicesList,
-              class: "znpb-fancy-scrollbar znpb-responsiveDevicesWrapper"
-            }, [
-              (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(Vue.unref(orderedResponsiveDevices), (deviceConfig, i) => {
-                return Vue.openBlock(), Vue.createBlock(FlyoutMenuItem, {
-                  key: i,
-                  class: Vue.normalizeClass({
-                    [`znpb-deviceItem--${deviceConfig.id}`]: deviceConfig.id
-                  })
-                }, {
-                  default: Vue.withCtx(() => [
-                    Vue.createVNode(_sfc_main$v, {
-                      "device-config": deviceConfig,
-                      "allow-edit": editBreakpoints.value,
-                      "edited-breakpoint": editedBreakpoint.value,
-                      onEditBreakpoint: _cache[3] || (_cache[3] = (breakpoint) => editedBreakpoint.value = breakpoint)
-                    }, null, 8, ["device-config", "allow-edit", "edited-breakpoint"])
-                  ]),
-                  _: 2
-                }, 1032, ["class"]);
-              }), 128))
-            ], 512),
-            enabledAddBreakpoint.value && editBreakpoints.value ? (Vue.openBlock(), Vue.createElementBlock("li", _hoisted_8$7, [
-              Vue.createElementVNode("a", _hoisted_9$5, [
-                Vue.createElementVNode("div", _hoisted_10$4, [
+            Vue.createElementVNode(
+              "div",
+              {
+                ref_key: "devicesList",
+                ref: devicesList,
+                class: "znpb-fancy-scrollbar znpb-responsiveDevicesWrapper"
+              },
+              [
+                (Vue.openBlock(true), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(Vue.unref(orderedResponsiveDevices), (deviceConfig, i) => {
+                    return Vue.openBlock(), Vue.createBlock(FlyoutMenuItem, {
+                      key: i,
+                      class: Vue.normalizeClass({
+                        [`znpb-deviceItem--${deviceConfig.id}`]: deviceConfig.id
+                      })
+                    }, {
+                      default: Vue.withCtx(() => [
+                        Vue.createVNode(_sfc_main$v, {
+                          "device-config": deviceConfig,
+                          "allow-edit": editBreakpoints.value,
+                          "edited-breakpoint": editedBreakpoint.value,
+                          onEditBreakpoint: _cache[3] || (_cache[3] = (breakpoint) => editedBreakpoint.value = breakpoint)
+                        }, null, 8, ["device-config", "allow-edit", "edited-breakpoint"])
+                      ]),
+                      _: 2
+                      /* DYNAMIC */
+                    }, 1032, ["class"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
+              ],
+              512
+              /* NEED_PATCH */
+            ),
+            enabledAddBreakpoint.value && editBreakpoints.value ? (Vue.openBlock(), Vue.createElementBlock("li", _hoisted_8$4, [
+              Vue.createElementVNode("a", _hoisted_9$2, [
+                Vue.createElementVNode("div", _hoisted_10$2, [
                   Vue.createVNode(_component_Icon, {
                     icon: addBreakpointDeviceIcon.value,
                     class: "znpb-device__item-icon"
                   }, null, 8, ["icon"]),
-                  Vue.createElementVNode("span", _hoisted_11$3, [
-                    Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("max", "zionbuilder")) + " ", 1),
-                    Vue.createElementVNode("span", _hoisted_12$2, [
-                      Vue.createElementVNode("span", _hoisted_13$2, [
-                        Vue.withDirectives(Vue.createElementVNode("input", {
-                          ref_key: "widthInput",
-                          ref: widthInput,
-                          "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => newBreakpointValue.value = $event),
-                          type: "number",
-                          class: "znpb-device__itemValueInput",
-                          min: "240",
-                          onKeydown: Vue.withKeys(addNewBreakpoint, ["enter"])
-                        }, null, 40, _hoisted_14$1), [
+                  Vue.createElementVNode("span", _hoisted_11$2, [
+                    Vue.createTextVNode(
+                      Vue.toDisplayString(i18n__namespace.__("max", "zionbuilder")) + " ",
+                      1
+                      /* TEXT */
+                    ),
+                    Vue.createElementVNode("span", _hoisted_12$1, [
+                      Vue.createElementVNode("span", _hoisted_13$1, [
+                        Vue.withDirectives(Vue.createElementVNode(
+                          "input",
+                          {
+                            ref_key: "widthInput",
+                            ref: widthInput,
+                            "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => newBreakpointValue.value = $event),
+                            type: "number",
+                            class: "znpb-device__itemValueInput",
+                            min: "240",
+                            onKeydown: Vue.withKeys(addNewBreakpoint, ["enter"])
+                          },
+                          null,
+                          544
+                          /* NEED_HYDRATION, NEED_PATCH */
+                        ), [
                           [Vue.vModelText, newBreakpointValue.value]
                         ]),
-                        Vue.createTextVNode(" px ")
+                        _cache[6] || (_cache[6] = Vue.createTextVNode(
+                          " px ",
+                          -1
+                          /* CACHED */
+                        ))
                       ])
                     ])
                   ]),
-                  Vue.createElementVNode("div", _hoisted_15, [
-                    Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                      icon: "check",
-                      class: "znpb-device__item-action",
-                      onClick: Vue.withModifiers(addNewBreakpoint, ["stop"])
-                    }, null, 8, ["onClick"]), [
+                  Vue.createElementVNode("div", _hoisted_14$1, [
+                    Vue.withDirectives(Vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "check",
+                        class: "znpb-device__item-action",
+                        onClick: Vue.withModifiers(addNewBreakpoint, ["stop"])
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
                       [_directive_znpb_tooltip, i18n__namespace.__("Save", "zionbuilder")]
                     ]),
-                    Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                      icon: "close",
-                      class: "znpb-device__item-action",
-                      onClick: cancelNewBreakpointAdd
-                    }, null, 512), [
+                    Vue.withDirectives(Vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "close",
+                        class: "znpb-device__item-action",
+                        onClick: cancelNewBreakpointAdd
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
                       [_directive_znpb_tooltip, i18n__namespace.__("Cancel", "zionbuilder")]
                     ])
                   ])
                 ])
               ])
-            ])) : Vue.createCommentVNode("", true),
-            editBreakpoints.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_16, [
+            ])) : Vue.createCommentVNode("v-if", true),
+            editBreakpoints.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_15, [
               Vue.createElementVNode("div", {
                 class: "znpb-device__addBreakpoint",
                 onClick: enableAddNewDevice
               }, [
                 Vue.createVNode(_component_Icon, { icon: "plus" }),
-                Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("Add breakpoint", "zionbuilder")), 1)
+                Vue.createTextVNode(
+                  " " + Vue.toDisplayString(i18n__namespace.__("Add breakpoint", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )
               ])
-            ])) : Vue.createCommentVNode("", true),
-            !Vue.unref(userStore).permissions.only_content ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_17, [
+            ])) : Vue.createCommentVNode("v-if", true),
+            !Vue.unref(userStore).permissions.only_content ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_16, [
               Vue.createElementVNode("div", {
                 class: "znpb-responsiveDeviceEditButton",
                 onClick: disableEditBreakpoints
               }, [
-                !editBreakpoints.value ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-                  Vue.createVNode(_component_Icon, { icon: "edit" }),
-                  Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("Edit breakpoints", "zionbuilder")), 1)
-                ], 64)) : (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-                  Vue.createVNode(_component_Icon, { icon: "close" }),
-                  Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("Disable edit breakpoints", "zionbuilder")), 1)
-                ], 64))
+                !editBreakpoints.value ? (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 0 },
+                  [
+                    Vue.createVNode(_component_Icon, { icon: "edit" }),
+                    Vue.createTextVNode(
+                      " " + Vue.toDisplayString(i18n__namespace.__("Edit breakpoints", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 1 },
+                  [
+                    Vue.createVNode(_component_Icon, { icon: "close" }),
+                    Vue.createTextVNode(
+                      " " + Vue.toDisplayString(i18n__namespace.__("Disable edit breakpoints", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                ))
               ])
-            ])) : Vue.createCommentVNode("", true)
+            ])) : Vue.createCommentVNode("v-if", true)
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["prevent-close"]);
       };
     }
   });
-  const ResponsiveDevices_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$l = ["onMousedown"];
-  const _hoisted_2$h = { class: "znpb-editor-header__first" };
-  const _hoisted_3$e = { class: "znpb-editor-header__last" };
-  const _hoisted_4$a = ["href", "target", "onMousedown"];
-  const _hoisted_5$8 = ["src"];
-  const _hoisted_6$7 = ["onMousedown"];
+  const _hoisted_1$l = { class: "znpb-editor-header__first" };
+  const _hoisted_2$h = { class: "znpb-editor-header__last" };
+  const _hoisted_3$e = ["href", "target", "onMousedown"];
+  const _hoisted_4$9 = ["src"];
+  const _hoisted_5$7 = ["onMousedown"];
   const _sfc_main$r = /* @__PURE__ */ Vue.defineComponent({
     __name: "main-panel",
     setup(__props) {
@@ -13419,160 +15390,245 @@ var __async = (__this, __arguments, generator) => {
         const _component_Modal = Vue.resolveComponent("Modal");
         const _component_Loader = Vue.resolveComponent("Loader");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          ref_key: "editorHeaderRef",
-          ref: editorHeaderRef,
-          class: Vue.normalizeClass(["znpb-editor-header", {
-            "znpb-editor-panel__container--dragging": Vue.unref(UIStore).mainBar.isDragging,
-            [`znpb-editor-header--${Vue.unref(UIStore).mainBar.position}`]: Vue.unref(UIStore).mainBar.position,
-            [`znpb-editor-header--hide-${Vue.unref(UIStore).mainBar.position}`]: Vue.unref(UIStore).isPreviewMode
-          }]),
-          style: Vue.normalizeStyle(panelStyles.value),
-          onMousedown: Vue.withModifiers(startBarDrag, ["stop"])
-        }, [
-          Vue.createElementVNode("div", _hoisted_2$h, [
-            Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", {
-              class: Vue.normalizeClass(["znpb-editor-header__menu_button znpb-editor-header__menu_button--treeview", {
-                active: Vue.unref(UIStore).openPanelsIDs.includes("panel-tree")
-              }]),
-              onMousedown: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => Vue.unref(UIStore).togglePanel("panel-tree"), ["stop", "prevent"]))
-            }, [
-              Vue.createVNode(_component_Icon, { icon: "layout" })
-            ], 34)), [
-              [_directive_znpb_tooltip, i18n__namespace.__("Tree view", "zionbuilder"), tooltipsPosition.value]
-            ]),
-            !Vue.unref(userStore).permissions.only_content ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", {
-              key: 0,
-              class: Vue.normalizeClass([{
-                active: Vue.unref(UIStore).isLibraryOpen
-              }, "znpb-editor-header__menu_button"]),
-              onMousedown: _cache[1] || (_cache[1] = Vue.withModifiers(
-                //@ts-ignore
-                (...args) => Vue.unref(UIStore).toggleLibrary && Vue.unref(UIStore).toggleLibrary(...args),
-                ["stop"]
-              ))
-            }, [
-              Vue.createVNode(_component_Icon, { icon: "lib" })
-            ], 34)), [
-              [_directive_znpb_tooltip, i18n__namespace.__("Library", "zionbuilder"), tooltipsPosition.value]
-            ]) : Vue.createCommentVNode("", true),
-            Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", {
-              class: Vue.normalizeClass(["znpb-editor-header__menu_button znpb-editor-header__menu_button--history", {
-                active: Vue.unref(UIStore).openPanelsIDs.includes("panel-history")
-              }]),
-              onMousedown: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).togglePanel("panel-history"), ["stop", "prevent"]))
-            }, [
-              Vue.createVNode(_component_Icon, { icon: "history" })
-            ], 34)), [
-              [_directive_znpb_tooltip, i18n__namespace.__("History", "zionbuilder"), tooltipsPosition.value]
-            ])
-          ]),
-          Vue.createElementVNode("div", _hoisted_3$e, [
-            Vue.createVNode(Vue.unref(_sfc_main$s)),
-            !Vue.unref(userStore).permissions.only_content ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", {
-              key: 0,
-              class: Vue.normalizeClass(["znpb-editor-header__menu_button", {
-                active: Vue.unref(UIStore).openPanelsIDs.includes("panel-global-settings")
-              }]),
-              onMousedown: _cache[3] || (_cache[3] = Vue.withModifiers(($event) => Vue.unref(UIStore).togglePanel("panel-global-settings"), ["stop"]))
-            }, [
-              Vue.createVNode(_component_Icon, { icon: "sliders" })
-            ], 34)), [
-              [_directive_znpb_tooltip, i18n__namespace.__("Page options", "zionbuilder"), tooltipsPosition.value]
-            ]) : Vue.createCommentVNode("", true),
-            Vue.createVNode(Vue.unref(_sfc_main$u), { class: "znpb-editor-header__page-save-wrapper" }, {
-              "panel-icon": Vue.withCtx(() => [
-                Vue.createVNode(_component_Icon, { icon: "info" })
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            ref_key: "editorHeaderRef",
+            ref: editorHeaderRef,
+            class: Vue.normalizeClass(["znpb-editor-header", {
+              "znpb-editor-panel__container--dragging": Vue.unref(UIStore).mainBar.isDragging,
+              [`znpb-editor-header--${Vue.unref(UIStore).mainBar.position}`]: Vue.unref(UIStore).mainBar.position,
+              [`znpb-editor-header--hide-${Vue.unref(UIStore).mainBar.position}`]: Vue.unref(UIStore).isPreviewMode
+            }]),
+            style: Vue.normalizeStyle(panelStyles.value),
+            onMousedown: Vue.withModifiers(startBarDrag, ["stop"])
+          },
+          [
+            Vue.createCommentVNode(" first part "),
+            Vue.createElementVNode("div", _hoisted_1$l, [
+              Vue.createCommentVNode(" treeview "),
+              Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock(
+                "div",
+                {
+                  class: Vue.normalizeClass(["znpb-editor-header__menu_button znpb-editor-header__menu_button--treeview", {
+                    active: Vue.unref(UIStore).openPanelsIDs.includes("panel-tree")
+                  }]),
+                  onMousedown: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => Vue.unref(UIStore).togglePanel("panel-tree"), ["stop", "prevent"]))
+                },
+                [
+                  Vue.createVNode(_component_Icon, { icon: "layout" })
+                ],
+                34
+                /* CLASS, NEED_HYDRATION */
+              )), [
+                [_directive_znpb_tooltip, i18n__namespace.__("Tree view", "zionbuilder"), tooltipsPosition.value]
               ]),
-              default: Vue.withCtx(() => [
-                (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(helpMenuItems.value, (menuItem, i) => {
-                  return Vue.openBlock(), Vue.createBlock(Vue.unref(FlyoutMenuItem), { key: i }, {
-                    default: Vue.withCtx(() => [
-                      Vue.createElementVNode("a", {
-                        href: menuItem.url,
-                        target: menuItem.target,
-                        onMousedown: Vue.withModifiers(($event) => menuItem.action ? menuItem.action($event) : null, ["prevent", "stop"])
-                      }, [
-                        Vue.createElementVNode("span", null, Vue.toDisplayString(menuItem.title), 1)
-                      ], 40, _hoisted_4$a)
-                    ]),
-                    _: 2
-                  }, 1024);
-                }), 128))
-              ]),
-              _: 1
-            }),
-            showGettingStartedVideo.value && Vue.unref(gettingStartedVideoURL) ? (Vue.openBlock(), Vue.createBlock(_component_Modal, {
-              key: 1,
-              show: showGettingStartedVideo.value,
-              "onUpdate:show": _cache[4] || (_cache[4] = ($event) => showGettingStartedVideo.value = $event),
-              width: 840,
-              title: i18n__namespace.__("Getting started", "zionbuilder"),
-              "append-to": "#znpb-main-wrapper",
-              class: "znpb-helpmodal-wrapper"
-            }, {
-              default: Vue.withCtx(() => [
-                Vue.createElementVNode("iframe", {
-                  width: "840",
-                  height: "100%",
-                  src: Vue.unref(gettingStartedVideoURL),
-                  frameborder: "0",
-                  allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-                  allowfullscreen: ""
-                }, null, 8, _hoisted_5$8)
-              ]),
-              _: 1
-            }, 8, ["show", "title"])) : Vue.createCommentVNode("", true),
-            shortcutsModalVisibility.value ? (Vue.openBlock(), Vue.createBlock(_component_Modal, {
-              key: 2,
-              show: shortcutsModalVisibility.value,
-              "onUpdate:show": _cache[5] || (_cache[5] = ($event) => shortcutsModalVisibility.value = $event),
-              width: 560,
-              title: i18n__namespace.__("Key shortcuts", "zionbuilder"),
-              "append-to": "#znpb-main-wrapper"
-            }, {
-              default: Vue.withCtx(() => [
-                Vue.createVNode(_sfc_main$w)
-              ]),
-              _: 1
-            }, 8, ["show", "title"])) : Vue.createCommentVNode("", true),
-            Vue.createVNode(Vue.unref(_sfc_main$u), {
-              class: "znpb-editor-header__page-save-wrapper znpb-editor-header__page-save-wrapper--save",
-              onMousedown: Vue.unref(savePage)
-            }, {
-              "panel-icon": Vue.withCtx(() => [
-                !Vue.unref(isSavePageLoading2) ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+              Vue.createCommentVNode(" library "),
+              !Vue.unref(userStore).permissions.only_content ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock(
+                "div",
+                {
                   key: 0,
-                  icon: "check",
-                  onMousedown: Vue.withModifiers(Vue.unref(savePage), ["stop"])
-                }, null, 8, ["onMousedown"])) : (Vue.openBlock(), Vue.createBlock(_component_Loader, {
-                  key: 1,
-                  size: 12
-                }))
-              ]),
-              default: Vue.withCtx(() => [
-                (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(saveActions, (menuItem, i) => {
-                  return Vue.createVNode(Vue.unref(FlyoutMenuItem), { key: i }, {
-                    default: Vue.withCtx(() => [
-                      Vue.createElementVNode("a", {
-                        href: "#",
-                        onMousedown: Vue.withModifiers(menuItem.action, ["stop"])
-                      }, [
-                        Vue.createElementVNode("span", null, Vue.toDisplayString(menuItem.title), 1)
-                      ], 40, _hoisted_6$7)
-                    ]),
-                    _: 2
-                  }, 1024);
-                }), 64))
-              ]),
-              _: 1
-            }, 8, ["onMousedown"])
-          ])
-        ], 46, _hoisted_1$l);
+                  class: Vue.normalizeClass([{
+                    active: Vue.unref(UIStore).isLibraryOpen
+                  }, "znpb-editor-header__menu_button"]),
+                  onMousedown: _cache[1] || (_cache[1] = Vue.withModifiers(
+                    //@ts-ignore
+                    (...args) => Vue.unref(UIStore).toggleLibrary && Vue.unref(UIStore).toggleLibrary(...args),
+                    ["stop"]
+                  ))
+                },
+                [
+                  Vue.createVNode(_component_Icon, { icon: "lib" })
+                ],
+                34
+                /* CLASS, NEED_HYDRATION */
+              )), [
+                [_directive_znpb_tooltip, i18n__namespace.__("Library", "zionbuilder"), tooltipsPosition.value]
+              ]) : Vue.createCommentVNode("v-if", true),
+              Vue.createCommentVNode(" history "),
+              Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock(
+                "div",
+                {
+                  class: Vue.normalizeClass(["znpb-editor-header__menu_button znpb-editor-header__menu_button--history", {
+                    active: Vue.unref(UIStore).openPanelsIDs.includes("panel-history")
+                  }]),
+                  onMousedown: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).togglePanel("panel-history"), ["stop", "prevent"]))
+                },
+                [
+                  Vue.createVNode(_component_Icon, { icon: "history" })
+                ],
+                34
+                /* CLASS, NEED_HYDRATION */
+              )), [
+                [_directive_znpb_tooltip, i18n__namespace.__("History", "zionbuilder"), tooltipsPosition.value]
+              ])
+            ]),
+            Vue.createCommentVNode(" center part "),
+            Vue.createCommentVNode(" last part "),
+            Vue.createElementVNode("div", _hoisted_2$h, [
+              Vue.createCommentVNode(" devices "),
+              Vue.createVNode(Vue.unref(_sfc_main$s)),
+              Vue.createCommentVNode(" options "),
+              !Vue.unref(userStore).permissions.only_content ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock(
+                "div",
+                {
+                  key: 0,
+                  class: Vue.normalizeClass(["znpb-editor-header__menu_button", {
+                    active: Vue.unref(UIStore).openPanelsIDs.includes("panel-global-settings")
+                  }]),
+                  onMousedown: _cache[3] || (_cache[3] = Vue.withModifiers(($event) => Vue.unref(UIStore).togglePanel("panel-global-settings"), ["stop"]))
+                },
+                [
+                  Vue.createVNode(_component_Icon, { icon: "sliders" })
+                ],
+                34
+                /* CLASS, NEED_HYDRATION */
+              )), [
+                [_directive_znpb_tooltip, i18n__namespace.__("Page options", "zionbuilder"), tooltipsPosition.value]
+              ]) : Vue.createCommentVNode("v-if", true),
+              Vue.createCommentVNode(" help section "),
+              Vue.createVNode(Vue.unref(_sfc_main$u), { class: "znpb-editor-header__page-save-wrapper" }, {
+                "panel-icon": Vue.withCtx(() => [
+                  Vue.createVNode(_component_Icon, { icon: "info" })
+                ]),
+                default: Vue.withCtx(() => [
+                  (Vue.openBlock(true), Vue.createElementBlock(
+                    Vue.Fragment,
+                    null,
+                    Vue.renderList(helpMenuItems.value, (menuItem, i) => {
+                      return Vue.openBlock(), Vue.createBlock(
+                        Vue.unref(FlyoutMenuItem),
+                        { key: i },
+                        {
+                          default: Vue.withCtx(() => [
+                            Vue.createElementVNode("a", {
+                              href: menuItem.url,
+                              target: menuItem.target,
+                              onMousedown: Vue.withModifiers(($event) => menuItem.action ? menuItem.action($event) : null, ["prevent", "stop"])
+                            }, [
+                              Vue.createElementVNode(
+                                "span",
+                                null,
+                                Vue.toDisplayString(menuItem.title),
+                                1
+                                /* TEXT */
+                              )
+                            ], 40, _hoisted_3$e)
+                          ]),
+                          _: 2
+                          /* DYNAMIC */
+                        },
+                        1024
+                        /* DYNAMIC_SLOTS */
+                      );
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
+                ]),
+                _: 1
+                /* STABLE */
+              }),
+              Vue.createCommentVNode(" Getting started video "),
+              showGettingStartedVideo.value && Vue.unref(gettingStartedVideoURL) ? (Vue.openBlock(), Vue.createBlock(_component_Modal, {
+                key: 1,
+                show: showGettingStartedVideo.value,
+                "onUpdate:show": _cache[4] || (_cache[4] = ($event) => showGettingStartedVideo.value = $event),
+                width: 840,
+                title: i18n__namespace.__("Getting started", "zionbuilder"),
+                "append-to": "#znpb-main-wrapper",
+                class: "znpb-helpmodal-wrapper"
+              }, {
+                default: Vue.withCtx(() => [
+                  Vue.createElementVNode("iframe", {
+                    width: "840",
+                    height: "100%",
+                    src: Vue.unref(gettingStartedVideoURL),
+                    frameborder: "0",
+                    allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+                    allowfullscreen: ""
+                  }, null, 8, _hoisted_4$9)
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["show", "title"])) : Vue.createCommentVNode("v-if", true),
+              Vue.createCommentVNode(" key shortcuts modal "),
+              shortcutsModalVisibility.value ? (Vue.openBlock(), Vue.createBlock(_component_Modal, {
+                key: 2,
+                show: shortcutsModalVisibility.value,
+                "onUpdate:show": _cache[5] || (_cache[5] = ($event) => shortcutsModalVisibility.value = $event),
+                width: 560,
+                title: i18n__namespace.__("Key shortcuts", "zionbuilder"),
+                "append-to": "#znpb-main-wrapper"
+              }, {
+                default: Vue.withCtx(() => [
+                  Vue.createVNode(_sfc_main$w)
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["show", "title"])) : Vue.createCommentVNode("v-if", true),
+              Vue.createCommentVNode(" save "),
+              Vue.createVNode(Vue.unref(_sfc_main$u), {
+                class: "znpb-editor-header__page-save-wrapper znpb-editor-header__page-save-wrapper--save",
+                onMousedown: Vue.unref(savePage)
+              }, {
+                "panel-icon": Vue.withCtx(() => [
+                  !Vue.unref(isSavePageLoading2) ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+                    key: 0,
+                    icon: "check",
+                    onMousedown: Vue.withModifiers(Vue.unref(savePage), ["stop"])
+                  }, null, 8, ["onMousedown"])) : (Vue.openBlock(), Vue.createBlock(_component_Loader, {
+                    key: 1,
+                    size: 12
+                  }))
+                ]),
+                default: Vue.withCtx(() => [
+                  (Vue.openBlock(), Vue.createElementBlock(
+                    Vue.Fragment,
+                    null,
+                    Vue.renderList(saveActions, (menuItem, i) => {
+                      return Vue.createVNode(
+                        Vue.unref(FlyoutMenuItem),
+                        { key: i },
+                        {
+                          default: Vue.withCtx(() => [
+                            Vue.createElementVNode("a", {
+                              href: "#",
+                              onMousedown: Vue.withModifiers(menuItem.action, ["stop"])
+                            }, [
+                              Vue.createElementVNode(
+                                "span",
+                                null,
+                                Vue.toDisplayString(menuItem.title),
+                                1
+                                /* TEXT */
+                              )
+                            ], 40, _hoisted_5$7)
+                          ]),
+                          _: 2
+                          /* DYNAMIC */
+                        },
+                        1024
+                        /* DYNAMIC_SLOTS */
+                      );
+                    }),
+                    64
+                    /* STABLE_FRAGMENT */
+                  ))
+                ]),
+                _: 1
+                /* STABLE */
+              }, 8, ["onMousedown"])
+            ]),
+            Vue.createCommentVNode(" end last part "),
+            Vue.createCommentVNode(" helper ")
+          ],
+          38
+          /* CLASS, STYLE, NEED_HYDRATION */
+        );
       };
     }
   });
-  const mainPanel_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$q = /* @__PURE__ */ Vue.defineComponent({
     __name: "PageStyles",
     props: {
@@ -13581,8 +15637,8 @@ var __async = (__this, __arguments, generator) => {
       pageSettingsSchema: {}
     },
     setup(__props) {
-      const props = __props;
       const { usePseudoSelectors: usePseudoSelectors2, useOptionsSchemas: useOptionsSchemas2 } = window.zb.composables;
+      const props = __props;
       const { getSchema } = useOptionsSchemas2();
       const optionsSchema = getSchema("styles");
       const templateRender = () => {
@@ -13654,15 +15710,17 @@ var __async = (__this, __arguments, generator) => {
       function repositionToolbox() {
         const domElement = canvas.document.getElementById(props.element.uid);
         const elementWindow = domElement == null ? void 0 : domElement.ownerDocument.defaultView;
-        if (!domElement || !elementWindow) {
+        const canvasElement = canvas.document.getElementById(`znpb-preview-canvas`);
+        if (!domElement || !elementWindow || !canvasElement) {
           return;
         }
         const { top, left, width, height } = domElement.getBoundingClientRect();
+        const { top: canvasTop, left: canvasLeft } = canvasElement.getBoundingClientRect();
         toolboxStyles.value = {
           width: `${width}px`,
           height: `${height}px`,
-          top: `${top + canvas.scrollY}px`,
-          left: `${left + (canvas == null ? void 0 : canvas.scrollX)}px`
+          top: `${top - canvasTop}px`,
+          left: `${left - canvasLeft}px`
         };
       }
       Vue.computed(() => {
@@ -13673,26 +15731,33 @@ var __async = (__this, __arguments, generator) => {
       });
       return (_ctx, _cache) => {
         const _component_AddElementIcon = Vue.resolveComponent("AddElementIcon");
-        return _ctx.element && canShowToolbox.value ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("div", {
-          key: 0,
-          ref: "rectangle",
-          class: Vue.normalizeClass(["znpb-element-toolbox", toolboxClasses.value]),
-          style: Vue.normalizeStyle(toolboxStyles.value ? toolboxStyles.value : {}),
-          onContextmenu: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => Vue.unref(UIStore).showElementMenuFromEvent(_ctx.element, $event), ["stop", "prevent"])),
-          onMouseenter: _cache[1] || (_cache[1] = ($event) => Vue.unref(UIStore).highlightElement(_ctx.element))
-        }, [
-          toolboxStyles.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$W, {
+        return __props.element && canShowToolbox.value ? Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
             key: 0,
-            element: _ctx.element
-          }, null, 8, ["element"])) : Vue.createCommentVNode("", true),
-          Vue.createVNode(_component_AddElementIcon, {
-            element: _ctx.element,
-            placement: "next",
-            position: "middle"
-          }, null, 8, ["element"])
-        ], 38)), [
+            ref: "rectangle",
+            class: Vue.normalizeClass(["znpb-element-toolbox", toolboxClasses.value]),
+            style: Vue.normalizeStyle(toolboxStyles.value ? toolboxStyles.value : {}),
+            onContextmenu: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => Vue.unref(UIStore).showElementMenuFromEvent(__props.element, $event), ["stop", "prevent"])),
+            onMouseenter: _cache[1] || (_cache[1] = ($event) => Vue.unref(UIStore).highlightElement(__props.element))
+          },
+          [
+            toolboxStyles.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$W, {
+              key: 0,
+              element: __props.element
+            }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true),
+            Vue.createCommentVNode(" Add new Button "),
+            Vue.createVNode(_component_AddElementIcon, {
+              element: __props.element,
+              placement: "next",
+              position: "middle"
+            }, null, 8, ["element"])
+          ],
+          38
+          /* CLASS, STYLE, NEED_HYDRATION */
+        )), [
           [Vue.vShow, toolboxStyles.value]
-        ]) : Vue.createCommentVNode("", true);
+        ]) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
@@ -13725,36 +15790,42 @@ var __async = (__this, __arguments, generator) => {
         return applyFilters2("zionbuilder/preview/app/css_classes", (_a = window.ZnPbInitialData) == null ? void 0 : _a.preview_app_css_classes);
       });
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: Vue.normalizeClass(["zb", previewAppClasses.value])
-        }, [
-          element.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$L, {
-            key: 0,
-            class: "znpb-preview-page-wrapper",
-            element: element.value
-          }, null, 8, ["element"])) : Vue.createCommentVNode("", true),
-          Vue.createVNode(_sfc_main$q, {
-            "css-classes": Vue.unref(cssClasses).CSSClasses,
-            "page-settings-model": Vue.unref(pageSettings).settings,
-            "page-settings-schema": Vue.unref(getSchema)("pageSettingsSchema")
-          }, null, 8, ["css-classes", "page-settings-model", "page-settings-schema"]),
-          Vue.unref(UIStore).editedElement ? (Vue.openBlock(), Vue.createBlock(_sfc_main$T, {
-            key: Vue.unref(UIStore).editedElement.uid,
-            element: Vue.unref(UIStore).editedElement
-          }, null, 8, ["element"])) : Vue.createCommentVNode("", true),
-          Vue.unref(UIStore).highlightedElement && !Vue.unref(UIStore).isToolboxDragging ? (Vue.openBlock(), Vue.createBlock(_sfc_main$p, {
-            key: Vue.unref(UIStore).highlightedElement.uid,
-            element: Vue.unref(UIStore).highlightedElement
-          }, null, 8, ["element"])) : Vue.createCommentVNode("", true),
-          Vue.createVNode(_sfc_main$S, {
-            styles: Vue.unref(pageSettings).settings._custom_css || ""
-          }, null, 8, ["styles"])
-        ], 2);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: Vue.normalizeClass(["zb", previewAppClasses.value])
+          },
+          [
+            element.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$L, {
+              key: 0,
+              class: "znpb-preview-page-wrapper",
+              element: element.value
+            }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true),
+            Vue.createVNode(_sfc_main$q, {
+              "css-classes": Vue.unref(cssClasses).CSSClasses,
+              "page-settings-model": Vue.unref(pageSettings).settings,
+              "page-settings-schema": Vue.unref(getSchema)("pageSettingsSchema")
+            }, null, 8, ["css-classes", "page-settings-model", "page-settings-schema"]),
+            Vue.createCommentVNode(" Element toolbox "),
+            Vue.unref(UIStore).editedElement ? (Vue.openBlock(), Vue.createBlock(_sfc_main$T, {
+              key: Vue.unref(UIStore).editedElement.uid,
+              element: Vue.unref(UIStore).editedElement
+            }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true),
+            Vue.unref(UIStore).highlightedElement && !Vue.unref(UIStore).isToolboxDragging ? (Vue.openBlock(), Vue.createBlock(_sfc_main$p, {
+              key: Vue.unref(UIStore).highlightedElement.uid,
+              element: Vue.unref(UIStore).highlightedElement
+            }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true),
+            Vue.createCommentVNode(" Element styles "),
+            Vue.createVNode(_sfc_main$S, {
+              styles: Vue.unref(pageSettings).settings._custom_css || ""
+            }, null, 8, ["styles"])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const PreviewApp_vue_vue_type_style_index_0_lang = "";
-  const PreviewIframe_vue_vue_type_style_index_0_lang = "";
   const { useResponsiveDevices } = window.zb.composables;
   const { addAction, removeAction } = window.zb.hooks;
   const _sfc_main$n = {
@@ -13997,9 +16068,9 @@ var __async = (__this, __arguments, generator) => {
         this.addWindow("preview", iframeWindow);
         this.attachIframeEvents();
         iframeWindow.zb = window.zb;
-        const renderElement = iframeWindow.document.getElementById(`znpb-preview-${window.ZnPbInitialData.page_id}-area`);
+        const renderElement = iframeWindow.document.getElementById(`znpb-preview-canvas`);
         if (renderElement) {
-          this.iframeAPP = iframeWindow.document.getElementById(`znpb-preview-${window.ZnPbInitialData.page_id}-area`);
+          this.iframeAPP = iframeWindow.document.getElementById(`znpb-preview-canvas`);
         } else {
           console.log("preview element not found");
         }
@@ -14052,27 +16123,33 @@ var __async = (__this, __arguments, generator) => {
   const _hoisted_1$k = ["src"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PreviewApp = Vue.resolveComponent("PreviewApp");
-    return Vue.openBlock(), Vue.createElementBlock("div", {
-      id: "preview-iframe",
-      ref: "root",
-      class: Vue.normalizeClass(["znpb-editor-iframe-wrapper", $setup.getWrapperClasses]),
-      style: Vue.normalizeStyle($setup.pointerEvents)
-    }, [
-      $setup.urls.preview_frame_url ? (Vue.openBlock(), Vue.createElementBlock("iframe", {
-        key: 0,
-        id: "znpb-editor-iframe",
-        ref: "iframe",
-        src: $setup.urls.preview_frame_url,
-        style: Vue.normalizeStyle($setup.iframeStyles),
-        onLoad: _cache[0] || (_cache[0] = (...args) => $options.checkIframeLoading && $options.checkIframeLoading(...args))
-      }, null, 44, _hoisted_1$k)) : Vue.createCommentVNode("", true),
-      $setup.iframeAPP ? (Vue.openBlock(), Vue.createBlock(Vue.Teleport, {
-        key: 1,
-        to: $setup.iframeAPP
-      }, [
-        Vue.createVNode(_component_PreviewApp)
-      ], 8, ["to"])) : Vue.createCommentVNode("", true)
-    ], 6);
+    return Vue.openBlock(), Vue.createElementBlock(
+      "div",
+      {
+        id: "preview-iframe",
+        ref: "root",
+        class: Vue.normalizeClass(["znpb-editor-iframe-wrapper", $setup.getWrapperClasses]),
+        style: Vue.normalizeStyle($setup.pointerEvents)
+      },
+      [
+        $setup.urls.preview_frame_url ? (Vue.openBlock(), Vue.createElementBlock("iframe", {
+          key: 0,
+          id: "znpb-editor-iframe",
+          ref: "iframe",
+          src: $setup.urls.preview_frame_url,
+          style: Vue.normalizeStyle($setup.iframeStyles),
+          onLoad: _cache[0] || (_cache[0] = (...args) => $options.checkIframeLoading && $options.checkIframeLoading(...args))
+        }, null, 44, _hoisted_1$k)) : Vue.createCommentVNode("v-if", true),
+        $setup.iframeAPP ? (Vue.openBlock(), Vue.createBlock(Vue.Teleport, {
+          key: 1,
+          to: $setup.iframeAPP
+        }, [
+          Vue.createVNode(_component_PreviewApp)
+        ], 8, ["to"])) : Vue.createCommentVNode("v-if", true)
+      ],
+      6
+      /* CLASS, STYLE */
+    );
   }
   const PreviewIframe = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render]]);
   const _sfc_main$m = /* @__PURE__ */ Vue.defineComponent({
@@ -14084,29 +16161,47 @@ var __async = (__this, __arguments, generator) => {
       const UIStore = useUIStore();
       const contentStore = useContentStore();
       return (_ctx, _cache) => {
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: Vue.normalizeClass(["znpb-element-options__vertical-breadcrumbs-item", { "znpb-element-options__vertical-breadcrumbs-item--active": _ctx.item.active }]),
-          onMouseenter: _cache[0] || (_cache[0] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => _ctx.item.element.highlight && _ctx.item.element.highlight(...args),
-            ["stop"]
-          )),
-          onMouseleave: _cache[1] || (_cache[1] = Vue.withModifiers(
-            //@ts-ignore
-            (...args) => _ctx.item.element.unHighlight && _ctx.item.element.unHighlight(...args),
-            ["stop"]
-          )),
-          onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(_ctx.item.element), ["stop"]))
-        }, [
-          Vue.createElementVNode("span", null, Vue.toDisplayString(Vue.unref(contentStore).getElementName(_ctx.item.element)), 1),
-          _ctx.item.children.length > 0 ? (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, { key: 0 }, Vue.renderList(_ctx.item.children, (child) => {
-            return Vue.openBlock(), Vue.createBlock(_sfc_main$l, {
-              key: child.element.uid,
-              class: "znpb-element-options__vertical-breadcrumbs-wrapper--inner",
-              item: child
-            }, null, 8, ["item"]);
-          }), 128)) : Vue.createCommentVNode("", true)
-        ], 34);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: Vue.normalizeClass(["znpb-element-options__vertical-breadcrumbs-item", { "znpb-element-options__vertical-breadcrumbs-item--active": __props.item.active }]),
+            onMouseenter: _cache[0] || (_cache[0] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => __props.item.element.highlight && __props.item.element.highlight(...args),
+              ["stop"]
+            )),
+            onMouseleave: _cache[1] || (_cache[1] = Vue.withModifiers(
+              //@ts-ignore
+              (...args) => __props.item.element.unHighlight && __props.item.element.unHighlight(...args),
+              ["stop"]
+            )),
+            onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(__props.item.element), ["stop"]))
+          },
+          [
+            Vue.createElementVNode(
+              "span",
+              null,
+              Vue.toDisplayString(Vue.unref(contentStore).getElementName(__props.item.element)),
+              1
+              /* TEXT */
+            ),
+            __props.item.children.length > 0 ? (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              { key: 0 },
+              Vue.renderList(__props.item.children, (child) => {
+                return Vue.openBlock(), Vue.createBlock(_sfc_main$l, {
+                  key: child.element.uid,
+                  class: "znpb-element-options__vertical-breadcrumbs-wrapper--inner",
+                  item: child
+                }, null, 8, ["item"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            )) : Vue.createCommentVNode("v-if", true)
+          ],
+          34
+          /* CLASS, NEED_HYDRATION */
+        );
       };
     }
   });
@@ -14121,33 +16216,50 @@ var __async = (__this, __arguments, generator) => {
       const contentStore = useContentStore();
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$j, [
-          Vue.createElementVNode("div", {
-            class: Vue.normalizeClass(["znpb-element-options__vertical-breadcrumbs-item znpb-element-options__vertical-breadcrumbs-item--first", { "znpb-element-options__vertical-breadcrumbs-item--active": _ctx.item.active }]),
-            onMouseenter: _cache[0] || (_cache[0] = Vue.withModifiers(
-              //@ts-ignore
-              (...args) => _ctx.item.element.highlight && _ctx.item.element.highlight(...args),
-              ["stop"]
-            )),
-            onMouseleave: _cache[1] || (_cache[1] = Vue.withModifiers(
-              //@ts-ignore
-              (...args) => _ctx.item.element.unHighlight && _ctx.item.element.unHighlight(...args),
-              ["stop"]
-            )),
-            onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(_ctx.item.element), ["stop"]))
-          }, [
-            Vue.createElementVNode("span", null, Vue.toDisplayString(Vue.unref(contentStore).getElementName(_ctx.item.element)), 1)
-          ], 34),
-          _ctx.item.children.length > 0 ? (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, { key: 0 }, Vue.renderList(_ctx.item.children, (child) => {
-            return Vue.openBlock(), Vue.createBlock(_sfc_main$m, {
-              key: child.element.uid,
-              item: child
-            }, null, 8, ["item"]);
-          }), 128)) : Vue.createCommentVNode("", true)
+          Vue.createElementVNode(
+            "div",
+            {
+              class: Vue.normalizeClass(["znpb-element-options__vertical-breadcrumbs-item znpb-element-options__vertical-breadcrumbs-item--first", { "znpb-element-options__vertical-breadcrumbs-item--active": __props.item.active }]),
+              onMouseenter: _cache[0] || (_cache[0] = Vue.withModifiers(
+                //@ts-ignore
+                (...args) => __props.item.element.highlight && __props.item.element.highlight(...args),
+                ["stop"]
+              )),
+              onMouseleave: _cache[1] || (_cache[1] = Vue.withModifiers(
+                //@ts-ignore
+                (...args) => __props.item.element.unHighlight && __props.item.element.unHighlight(...args),
+                ["stop"]
+              )),
+              onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => Vue.unref(UIStore).editElement(__props.item.element), ["stop"]))
+            },
+            [
+              Vue.createElementVNode(
+                "span",
+                null,
+                Vue.toDisplayString(Vue.unref(contentStore).getElementName(__props.item.element)),
+                1
+                /* TEXT */
+              )
+            ],
+            34
+            /* CLASS, NEED_HYDRATION */
+          ),
+          __props.item.children.length > 0 ? (Vue.openBlock(true), Vue.createElementBlock(
+            Vue.Fragment,
+            { key: 0 },
+            Vue.renderList(__props.item.children, (child) => {
+              return Vue.openBlock(), Vue.createBlock(_sfc_main$m, {
+                key: child.element.uid,
+                item: child
+              }, null, 8, ["item"]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          )) : Vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   });
-  const Breadcrumbs_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$i = { class: "znpb-element-options__breadcrumbs znpb-fancy-scrollbar" };
   const _hoisted_2$g = { key: 1 };
   const _sfc_main$k = /* @__PURE__ */ Vue.defineComponent({
@@ -14209,7 +16321,8 @@ var __async = (__this, __arguments, generator) => {
       showActions: { type: Boolean, default: true }
     },
     emits: ["remove-class", "copy-styles", "paste-styles", "remove-extra-classes"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const cssClasses = useCSSClassesStore();
       const namedTypes = {
         id: i18n__namespace.__("ID", "zionbuilder"),
@@ -14222,58 +16335,74 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          class: Vue.normalizeClass(["znpb-css-class-selector__item", { "znpb-css-class-selector__item--selected": _ctx.isSelected }])
-        }, [
-          Vue.createElementVNode("div", _hoisted_1$h, [
-            Vue.createElementVNode("span", {
-              class: Vue.normalizeClass(["znpb-css-class-selector__item-type", { [`znpb-css-class-selector__item-type--${_ctx.type}`]: _ctx.type }])
-            }, Vue.toDisplayString(getNameFromType(_ctx.type)), 3),
-            Vue.createElementVNode("span", _hoisted_2$f, [
-              Vue.createElementVNode("span", { title: _ctx.name }, Vue.toDisplayString(_ctx.name), 9, _hoisted_3$d)
-            ])
-          ]),
-          _ctx.showActions && _ctx.showCopyPaste ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-            key: 0,
-            icon: "copy",
-            class: "znpb-css-class-selector__item-copy",
-            onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => emit("copy-styles"), ["stop"]))
-          }, null, 512)), [
-            [_directive_znpb_tooltip, i18n__namespace.__("Copy styles", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true),
-          _ctx.showActions && _ctx.showCopyPaste ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-            key: 1,
-            icon: "paste",
-            class: Vue.normalizeClass(["znpb-css-class-selector__item-paste", {
-              "znpb-css-class-selector__item-paste--disabled": !Vue.unref(cssClasses).copiedStyles
-            }]),
-            onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => emit("paste-styles"), ["stop"]))
-          }, null, 8, ["class"])), [
-            [_directive_znpb_tooltip, i18n__namespace.__("Paste styles", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true),
-          _ctx.showActions ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
-            key: 2,
-            icon: "close",
-            class: Vue.normalizeClass(["znpb-css-class-selector__item-close", {
-              "znpb-css-class-selector__item-close--disabled": !_ctx.showDelete
-            }]),
-            onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => emit("remove-class"), ["stop"]))
-          }, null, 8, ["class"])), [
-            [_directive_znpb_tooltip, i18n__namespace.__("Remove class from element.", "zionbuilder")]
-          ]) : Vue.createCommentVNode("", true)
-        ], 2);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            class: Vue.normalizeClass(["znpb-css-class-selector__item", { "znpb-css-class-selector__item--selected": __props.isSelected }])
+          },
+          [
+            Vue.createElementVNode("div", _hoisted_1$h, [
+              Vue.createElementVNode(
+                "span",
+                {
+                  class: Vue.normalizeClass(["znpb-css-class-selector__item-type", { [`znpb-css-class-selector__item-type--${__props.type}`]: __props.type }])
+                },
+                Vue.toDisplayString(getNameFromType(__props.type)),
+                3
+                /* TEXT, CLASS */
+              ),
+              Vue.createElementVNode("span", _hoisted_2$f, [
+                Vue.createElementVNode("span", { title: __props.name }, Vue.toDisplayString(__props.name), 9, _hoisted_3$d)
+              ])
+            ]),
+            __props.showActions && __props.showCopyPaste ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(
+              _component_Icon,
+              {
+                key: 0,
+                icon: "copy",
+                class: "znpb-css-class-selector__item-copy",
+                onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => emit("copy-styles"), ["stop"]))
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            )), [
+              [_directive_znpb_tooltip, i18n__namespace.__("Copy styles", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true),
+            __props.showActions && __props.showCopyPaste ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
+              key: 1,
+              icon: "paste",
+              class: Vue.normalizeClass(["znpb-css-class-selector__item-paste", {
+                "znpb-css-class-selector__item-paste--disabled": !Vue.unref(cssClasses).copiedStyles
+              }]),
+              onClick: _cache[1] || (_cache[1] = Vue.withModifiers(($event) => emit("paste-styles"), ["stop"]))
+            }, null, 8, ["class"])), [
+              [_directive_znpb_tooltip, i18n__namespace.__("Paste styles", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true),
+            __props.showActions ? Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Icon, {
+              key: 2,
+              icon: "close",
+              class: Vue.normalizeClass(["znpb-css-class-selector__item-close", {
+                "znpb-css-class-selector__item-close--disabled": !__props.showDelete
+              }]),
+              onClick: _cache[2] || (_cache[2] = Vue.withModifiers(($event) => emit("remove-class"), ["stop"]))
+            }, null, 8, ["class"])), [
+              [_directive_znpb_tooltip, i18n__namespace.__("Remove class from element.", "zionbuilder")]
+            ]) : Vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const CssSelector_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$g = { key: 0 };
-  const _hoisted_2$e = ["onKeydown"];
-  const _hoisted_3$c = { class: "znpb-search-wrapper" };
-  const _hoisted_4$9 = {
+  const _hoisted_2$e = { class: "znpb-search-wrapper" };
+  const _hoisted_3$c = {
     key: 1,
     class: "znpb-class-selector-noClass"
   };
-  const _hoisted_5$7 = {
+  const _hoisted_4$8 = {
     key: 2,
     class: "znpb-class-selector-validator"
   };
@@ -14297,8 +16426,9 @@ var __async = (__this, __arguments, generator) => {
       "add-static-class",
       "remove-static-class"
     ],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const cssClasses = useCSSClassesStore();
       const errorMessage = Vue.ref("");
       const invalidClass = Vue.ref(false);
@@ -14496,96 +16626,142 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_BaseInput = Vue.resolveComponent("BaseInput");
         const _component_Button = Vue.resolveComponent("Button");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root2,
-          class: "znpb-class-selector"
-        }, [
-          Vue.createElementVNode("div", null, [
-            Vue.createVNode(_sfc_main$j, {
-              class: "znpb-class-selector-trigger",
-              "show-delete": false,
-              "show-actions": false,
-              name: _ctx.name,
-              type: _ctx.activeGlobalClass ? "class" : "id",
-              onClick: _cache[0] || (_cache[0] = ($event) => dropdownState.value = !dropdownState.value),
-              onCopyStyles,
-              onPasteStyles
-            }, null, 8, ["name", "type"])
-          ]),
-          dropdownState.value ? (Vue.openBlock(), Vue.createElementBlock("div", {
-            key: 0,
-            ref_key: "dropDownWrapperRef",
-            ref: dropDownWrapperRef,
-            class: "hg-popper znpb-class-selector__popper"
-          }, [
-            !_ctx.allowClassAssignment ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$g, Vue.toDisplayString(i18n__namespace.__("Class assignments not allowed", "zionbuilder")), 1)) : (Vue.openBlock(), Vue.createElementBlock("div", {
-              key: 1,
-              ref: "dropDownWrapper",
-              class: "znpb-class-selector-body",
-              tabindex: "0",
-              onKeydown: [
-                Vue.withKeys(onKeyDown, ["down"]),
-                Vue.withKeys(onKeyUp, ["up"]),
-                Vue.withKeys(onKeyEnter, ["enter"]),
-                _cache[2] || (_cache[2] = Vue.withKeys(Vue.withModifiers(($event) => dropdownState.value = false, ["stop"]), ["esc"]))
-              ]
-            }, [
-              Vue.createElementVNode("div", _hoisted_3$c, [
-                Vue.createVNode(_component_BaseInput, {
-                  ref_key: "inputRef",
-                  ref: inputRef,
-                  modelValue: keyword.value,
-                  filterable: true,
-                  clearable: true,
-                  placeholder: i18n__namespace.__("Enter class name", "zionbuilder"),
-                  "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => handleClassInput($event)),
-                  onKeydown: Vue.withKeys(Vue.withModifiers(addNewCssClass, ["stop"]), ["enter"])
-                }, null, 8, ["modelValue", "placeholder", "onKeydown"]),
-                Vue.createVNode(_component_Button, {
-                  type: "line",
-                  class: "znpb-class-selector__add-class-button",
-                  onClick: addNewCssClass
-                }, {
-                  default: Vue.withCtx(() => [
-                    Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Add Class", "zionbuilder")), 1)
-                  ]),
-                  _: 1
-                })
-              ]),
-              filteredClasses.value.length > 0 ? (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, { key: 0 }, Vue.renderList(filteredClasses.value, (cssClassItem) => {
-                return Vue.openBlock(), Vue.createBlock(_sfc_main$j, {
-                  key: cssClassItem.name,
-                  name: cssClassItem.name,
-                  type: cssClassItem.type,
-                  "show-delete": cssClassItem.deletable,
-                  "show-copy-paste": cssClassItem.type !== "static_class",
-                  "is-selected": cssClassItem.selected,
-                  onRemoveClass: ($event) => removeClass(cssClassItem),
-                  onClick: ($event) => (selectClass(cssClassItem), dropdownState.value = false),
-                  onCopyStyles: ($event) => onCopyStyles(cssClassItem),
-                  onPasteStyles: ($event) => onPasteStyles(cssClassItem)
-                }, null, 8, ["name", "type", "show-delete", "show-copy-paste", "is-selected", "onRemoveClass", "onClick", "onCopyStyles", "onPasteStyles"]);
-              }), 128)) : Vue.createCommentVNode("", true),
-              errorMessage.value.length === 0 && filteredClasses.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_4$9, Vue.toDisplayString(i18n__namespace.__(
-                'No class found. Press "Add class" to create a new class and assign it to the element.',
-                "zionbuilder"
-              )), 1)) : Vue.createCommentVNode("", true),
-              invalidClass.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_5$7, Vue.toDisplayString(errorMessage.value), 1)) : Vue.createCommentVNode("", true)
-            ], 40, _hoisted_2$e))
-          ], 512)) : Vue.createCommentVNode("", true)
-        ], 512);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: "znpb-class-selector"
+          },
+          [
+            Vue.createElementVNode("div", null, [
+              Vue.createVNode(_sfc_main$j, {
+                class: "znpb-class-selector-trigger",
+                "show-delete": false,
+                "show-actions": false,
+                name: __props.name,
+                type: __props.activeGlobalClass ? "class" : "id",
+                onClick: _cache[0] || (_cache[0] = ($event) => dropdownState.value = !dropdownState.value),
+                onCopyStyles,
+                onPasteStyles
+              }, null, 8, ["name", "type"])
+            ]),
+            dropdownState.value ? (Vue.openBlock(), Vue.createElementBlock(
+              "div",
+              {
+                key: 0,
+                ref_key: "dropDownWrapperRef",
+                ref: dropDownWrapperRef,
+                class: "hg-popper znpb-class-selector__popper"
+              },
+              [
+                !__props.allowClassAssignment ? (Vue.openBlock(), Vue.createElementBlock(
+                  "div",
+                  _hoisted_1$g,
+                  Vue.toDisplayString(i18n__namespace.__("Class assignments not allowed", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )) : (Vue.openBlock(), Vue.createElementBlock(
+                  "div",
+                  {
+                    key: 1,
+                    ref: "dropDownWrapper",
+                    class: "znpb-class-selector-body",
+                    tabindex: "0",
+                    onKeydown: [
+                      Vue.withKeys(onKeyDown, ["down"]),
+                      Vue.withKeys(onKeyUp, ["up"]),
+                      Vue.withKeys(onKeyEnter, ["enter"]),
+                      _cache[2] || (_cache[2] = Vue.withKeys(Vue.withModifiers(($event) => dropdownState.value = false, ["stop"]), ["esc"]))
+                    ]
+                  },
+                  [
+                    Vue.createElementVNode("div", _hoisted_2$e, [
+                      Vue.createVNode(_component_BaseInput, {
+                        ref_key: "inputRef",
+                        ref: inputRef,
+                        modelValue: keyword.value,
+                        filterable: true,
+                        clearable: true,
+                        placeholder: i18n__namespace.__("Enter class name", "zionbuilder"),
+                        "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => handleClassInput($event)),
+                        onKeydown: Vue.withKeys(Vue.withModifiers(addNewCssClass, ["stop"]), ["enter"])
+                      }, null, 8, ["modelValue", "placeholder", "onKeydown"]),
+                      Vue.createVNode(_component_Button, {
+                        type: "line",
+                        class: "znpb-class-selector__add-class-button",
+                        onClick: addNewCssClass
+                      }, {
+                        default: Vue.withCtx(() => [
+                          Vue.createTextVNode(
+                            Vue.toDisplayString(i18n__namespace.__("Add Class", "zionbuilder")),
+                            1
+                            /* TEXT */
+                          )
+                        ]),
+                        _: 1
+                        /* STABLE */
+                      })
+                    ]),
+                    filteredClasses.value.length > 0 ? (Vue.openBlock(true), Vue.createElementBlock(
+                      Vue.Fragment,
+                      { key: 0 },
+                      Vue.renderList(filteredClasses.value, (cssClassItem) => {
+                        return Vue.openBlock(), Vue.createBlock(_sfc_main$j, {
+                          key: cssClassItem.name,
+                          name: cssClassItem.name,
+                          type: cssClassItem.type,
+                          "show-delete": cssClassItem.deletable,
+                          "show-copy-paste": cssClassItem.type !== "static_class",
+                          "is-selected": cssClassItem.selected,
+                          onRemoveClass: ($event) => removeClass(cssClassItem),
+                          onClick: ($event) => (selectClass(cssClassItem), dropdownState.value = false),
+                          onCopyStyles: ($event) => onCopyStyles(cssClassItem),
+                          onPasteStyles: ($event) => onPasteStyles(cssClassItem)
+                        }, null, 8, ["name", "type", "show-delete", "show-copy-paste", "is-selected", "onRemoveClass", "onClick", "onCopyStyles", "onPasteStyles"]);
+                      }),
+                      128
+                      /* KEYED_FRAGMENT */
+                    )) : Vue.createCommentVNode("v-if", true),
+                    errorMessage.value.length === 0 && filteredClasses.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock(
+                      "div",
+                      _hoisted_3$c,
+                      Vue.toDisplayString(i18n__namespace.__(
+                        'No class found. Press "Add class" to create a new class and assign it to the element.',
+                        "zionbuilder"
+                      )),
+                      1
+                      /* TEXT */
+                    )) : Vue.createCommentVNode("v-if", true),
+                    invalidClass.value ? (Vue.openBlock(), Vue.createElementBlock(
+                      "div",
+                      _hoisted_4$8,
+                      Vue.toDisplayString(errorMessage.value),
+                      1
+                      /* TEXT */
+                    )) : Vue.createCommentVNode("v-if", true)
+                  ],
+                  544
+                  /* NEED_HYDRATION, NEED_PATCH */
+                ))
+              ],
+              512
+              /* NEED_PATCH */
+            )) : Vue.createCommentVNode("v-if", true)
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });
-  const ClassSelectorDropdown_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$f = { class: "znpb-element-styles__media-wrapper" };
   const _hoisted_2$d = { class: "znpb-element-styles__mediaInner" };
   const _hoisted_3$b = {
     key: 0,
     class: "znpb-element-styles__mediaActiveClasses"
   };
-  const _hoisted_4$8 = ["onClick"];
+  const _hoisted_4$7 = ["onClick"];
   const _sfc_main$h = /* @__PURE__ */ Vue.defineComponent({
     __name: "SelectorAndPseudo",
     props: {
@@ -14594,9 +16770,10 @@ var __async = (__this, __arguments, generator) => {
       activeGlobalClass: {}
     },
     emits: ["update:active-global-class"],
-    setup(__props, { emit }) {
-      const props = __props;
+    setup(__props, { emit: __emit }) {
       const cssClasses = useCSSClassesStore();
+      const props = __props;
+      const emit = __emit;
       const computedActiveGlobalClass = Vue.computed({
         get() {
           return props.activeGlobalClass;
@@ -14744,7 +16921,7 @@ var __async = (__this, __arguments, generator) => {
       function onPasteStyles() {
         const copiedStyles = cssClasses.copiedStyles;
         if (copiedStyles) {
-          computedStyles.value = merge$1(computedStyles.value || {}, copiedStyles);
+          computedStyles.value = merge(computedStyles.value || {}, copiedStyles);
         }
       }
       return (_ctx, _cache) => {
@@ -14756,65 +16933,73 @@ var __async = (__this, __arguments, generator) => {
               "active-global-class": computedActiveGlobalClass.value,
               "onUpdate:activeGlobalClass": _cache[0] || (_cache[0] = ($event) => computedActiveGlobalClass.value = $event),
               name: computedTitle.value,
-              element: _ctx.element,
+              element: __props.element,
               "allow-class-assignment": allowClassAssignment.value,
               "assigned-classes": computedClasses.value,
               "assigned-static-classes": computedStaticClasses.value,
-              "active-style-element-id": _ctx.activeStyleElementId,
+              "active-style-element-id": __props.activeStyleElementId,
               onAddClass,
               onRemoveClass,
               onRemoveStaticClass: removeStaticClass,
               onPasteStyles,
               onAddStaticClass
             }, null, 8, ["active-global-class", "name", "element", "allow-class-assignment", "assigned-classes", "assigned-static-classes", "active-style-element-id"]),
-            Vue.createVNode(_sfc_main$1q, {
+            Vue.createVNode(_sfc_main$1t, {
               modelValue: computedStyles.value,
               "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => computedStyles.value = $event)
             }, null, 8, ["modelValue"])
           ]),
           computedClasses.value.length || computedStaticClasses.value.length ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$b, [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(computedAssignedClasses.value, (cssClass) => {
-              return Vue.openBlock(), Vue.createElementBlock("span", {
-                key: cssClass.selector,
-                class: Vue.normalizeClass(["znpb-element-styles__mediaActiveClass", {
-                  "znpb-element-styles__mediaActiveClass--active": cssClass.uid === computedActiveGlobalClass.value,
-                  "znpb-element-styles__mediaActiveClass--static": cssClass.type === "static_class"
-                }]),
-                onClick: Vue.withModifiers(($event) => cssClass.type !== "static_class" && toggleClass(cssClass.uid), ["prevent"])
-              }, [
-                Vue.createTextVNode(" ." + Vue.toDisplayString(cssClass.selector) + " ", 1),
-                Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                  class: "znpb-element-styles__mediaActiveClassRemove",
-                  icon: "close",
-                  onClick: Vue.withModifiers(($event) => cssClass.onRemove(cssClass.uid), ["stop", "prevent"])
-                }, null, 8, ["onClick"]), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Remove class", "zionbuilder")]
-                ])
-              ], 10, _hoisted_4$8);
-            }), 128))
-          ])) : Vue.createCommentVNode("", true)
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(computedAssignedClasses.value, (cssClass) => {
+                return Vue.openBlock(), Vue.createElementBlock("span", {
+                  key: cssClass.selector,
+                  class: Vue.normalizeClass(["znpb-element-styles__mediaActiveClass", {
+                    "znpb-element-styles__mediaActiveClass--active": cssClass.uid === computedActiveGlobalClass.value,
+                    "znpb-element-styles__mediaActiveClass--static": cssClass.type === "static_class"
+                  }]),
+                  onClick: Vue.withModifiers(($event) => cssClass.type !== "static_class" && toggleClass(cssClass.uid), ["prevent"])
+                }, [
+                  Vue.createTextVNode(
+                    " ." + Vue.toDisplayString(cssClass.selector) + " ",
+                    1
+                    /* TEXT */
+                  ),
+                  Vue.withDirectives(Vue.createVNode(_component_Icon, {
+                    class: "znpb-element-styles__mediaActiveClassRemove",
+                    icon: "close",
+                    onClick: Vue.withModifiers(($event) => cssClass.onRemove(cssClass.uid), ["stop", "prevent"])
+                  }, null, 8, ["onClick"]), [
+                    [_directive_znpb_tooltip, i18n__namespace.__("Remove class", "zionbuilder")]
+                  ])
+                ], 10, _hoisted_4$7);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ])) : Vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   });
-  const SelectorAndPseudo_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$e = { class: "znpb-element-options__header" };
   const _hoisted_2$c = {
     key: 1,
     class: "znpb-panelElementOptionsGlobalClassForm"
   };
   const _hoisted_3$a = { class: "znpb-classEditBackName" };
-  const _hoisted_4$7 = { class: "znpb-element-options-content-wrapper" };
+  const _hoisted_4$6 = { class: "znpb-element-options-content-wrapper" };
   const _hoisted_5$6 = {
     key: 1,
     class: "znpb-element-options-no-option-message"
   };
-  const _hoisted_6$6 = ["onClick"];
-  const _hoisted_7$6 = {
+  const _hoisted_6$6 = {
     key: 0,
     class: "znpb-element-options-default-message"
   };
-  const _hoisted_8$6 = {
+  const _hoisted_7$5 = {
     key: 1,
     class: "znpb-element-options-no-option-message"
   };
@@ -14824,9 +17009,9 @@ var __async = (__this, __arguments, generator) => {
       panel: {}
     },
     setup(__props) {
-      const props = __props;
       const { useOptionsSchemas: useOptionsSchemas2 } = window.zb.composables;
       const { addAction: addAction2, removeAction: removeAction2 } = window.zb.hooks;
+      const props = __props;
       const UIStore = useUIStore();
       const contentStore = useContentStore();
       const UserStore = useUserStore();
@@ -14975,13 +17160,6 @@ var __async = (__this, __arguments, generator) => {
         }
       }
       function changeTabByEvent(event) {
-        if (event !== void 0) {
-          if (tabId !== "search") {
-            lastTab.value = activeKeyTab.value;
-            optionsFilterKeyword.value = "";
-          }
-          activeKeyTab.value.value = event.detail;
-        }
       }
       function filterOptions(keyword, optionsSchema, currentId, currentName) {
         const lowercaseKeyword = keyword.toLowerCase();
@@ -15131,11 +17309,11 @@ var __async = (__this, __arguments, generator) => {
           class: Vue.normalizeClass(["znpb-element-options__panel-wrapper", {
             "znpb-element-options__panel-wrapper--hidden": isPanelHidden.value
           }]),
-          "panel-id": _ctx.panel.id,
+          "panel-id": __props.panel.id,
           "show-expand": false,
           "allow-horizontal-resize": !isPanelHidden.value,
           "allow-vertical-resize": !isPanelHidden.value,
-          panel: _ctx.panel,
+          panel: __props.panel,
           style: Vue.normalizeStyle(panelStyles.value),
           onClosePanel: closeOptionsPanel
         }, {
@@ -15156,6 +17334,7 @@ var __async = (__this, __arguments, generator) => {
             var _a;
             return [
               Vue.createElementVNode("div", _hoisted_1$e, [
+                Vue.createCommentVNode(" Show back button for child elements "),
                 ((_a = Vue.unref(UIStore).editedElement) == null ? void 0 : _a.elementDefinition.is_child) ? (Vue.openBlock(), Vue.createElementBlock("div", {
                   key: 0,
                   class: "znpb-element-options__header-back",
@@ -15165,20 +17344,30 @@ var __async = (__this, __arguments, generator) => {
                     class: "znpb-element-options__header-back-icon",
                     icon: "select"
                   })
-                ])) : Vue.createCommentVNode("", true),
-                Vue.createElementVNode("h4", {
-                  class: "znpb-panel__header-name",
-                  onClick: onBackButtonClick,
-                  onMouseenter: _cache[1] || (_cache[1] = ($event) => showBreadcrumbs.value = true),
-                  onMouseleave: _cache[2] || (_cache[2] = ($event) => showBreadcrumbs.value = false)
-                }, [
-                  Vue.createTextVNode(Vue.toDisplayString(`${Vue.unref(contentStore).getElementName(Vue.unref(UIStore).editedElement)} ${i18n__namespace.__("Options", "zionbuilder")}`) + " ", 1),
-                  Vue.createVNode(_component_Icon, { icon: "select" }),
-                  showBreadcrumbs.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$k, {
-                    key: 0,
-                    element: Vue.unref(UIStore).editedElement
-                  }, null, 8, ["element"])) : Vue.createCommentVNode("", true)
-                ], 32)
+                ])) : Vue.createCommentVNode("v-if", true),
+                Vue.createElementVNode(
+                  "h4",
+                  {
+                    class: "znpb-panel__header-name",
+                    onClick: onBackButtonClick,
+                    onMouseenter: _cache[1] || (_cache[1] = ($event) => showBreadcrumbs.value = true),
+                    onMouseleave: _cache[2] || (_cache[2] = ($event) => showBreadcrumbs.value = false)
+                  },
+                  [
+                    Vue.createTextVNode(
+                      Vue.toDisplayString(`${Vue.unref(contentStore).getElementName(Vue.unref(UIStore).editedElement)} ${i18n__namespace.__("Options", "zionbuilder")}`) + " ",
+                      1
+                      /* TEXT */
+                    ),
+                    Vue.createVNode(_component_Icon, { icon: "select" }),
+                    showBreadcrumbs.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$k, {
+                      key: 0,
+                      element: Vue.unref(UIStore).editedElement
+                    }, null, 8, ["element"])) : Vue.createCommentVNode("v-if", true)
+                  ],
+                  32
+                  /* NEED_HYDRATION */
+                )
               ])
             ];
           }),
@@ -15189,7 +17378,7 @@ var __async = (__this, __arguments, generator) => {
               "onUpdate:activeGlobalClass": _cache[3] || (_cache[3] = ($event) => activeGlobalClass.value = $event),
               element: Vue.unref(UIStore).editedElement,
               "active-style-element-id": activeStyleElementId.value
-            }, null, 8, ["activeGlobalClass", "element", "active-style-element-id"])) : Vue.createCommentVNode("", true),
+            }, null, 8, ["activeGlobalClass", "element", "active-style-element-id"])) : Vue.createCommentVNode("v-if", true),
             activeGlobalClass.value && Vue.unref(UserStore).userCanEditContent ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$c, [
               Vue.createElementVNode("div", {
                 class: "znpb-options-breadcrumbs",
@@ -15199,7 +17388,13 @@ var __async = (__this, __arguments, generator) => {
                   class: "znpb-back-icon-breadcrumbs",
                   icon: "select"
                 }),
-                Vue.createElementVNode("span", _hoisted_3$a, Vue.toDisplayString(i18n__namespace.__("Back to", "zionbuilder")) + " " + Vue.toDisplayString(Vue.unref(UIStore).editedElement.name), 1)
+                Vue.createElementVNode(
+                  "span",
+                  _hoisted_3$a,
+                  Vue.toDisplayString(i18n__namespace.__("Back to", "zionbuilder")) + " " + Vue.toDisplayString(Vue.unref(UIStore).editedElement.name),
+                  1
+                  /* TEXT */
+                )
               ]),
               Vue.createVNode(_component_OptionsForm, {
                 modelValue: activeClassStyles.value,
@@ -15207,109 +17402,138 @@ var __async = (__this, __arguments, generator) => {
                 class: "znpb-fancy-scrollbar",
                 schema: activeClassSchema.value
               }, null, 8, ["modelValue", "schema"])
-            ])) : Vue.createCommentVNode("", true),
-            Vue.withDirectives(Vue.createElementVNode("div", _hoisted_4$7, [
-              Vue.createVNode(_component_Tabs, {
-                activeTab: activeKeyTab.value,
-                "onUpdate:activeTab": _cache[11] || (_cache[11] = ($event) => activeKeyTab.value = $event),
-                "has-scroll": ["general", "advanced"],
-                class: "znpb-element-options__tabs-wrapper"
-              }, {
-                default: Vue.withCtx(() => [
-                  Vue.createVNode(_component_Tab, {
-                    name: i18n__namespace.__("General", "zionbuilder")
-                  }, {
-                    default: Vue.withCtx(() => [
-                      Vue.unref(UIStore).editedElement.elementDefinition.options && Object.keys(Vue.unref(UIStore).editedElement.elementDefinition.options).length > 0 ? (Vue.openBlock(), Vue.createBlock(_component_OptionsForm, {
-                        key: 0,
-                        modelValue: elementOptions.value,
-                        "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => elementOptions.value = $event),
-                        class: "znpb-element-options-content-form znpb-fancy-scrollbar",
-                        schema: Vue.unref(UIStore).editedElement.elementDefinition.options,
-                        replacements: optionsReplacements,
-                        "enable-dynamic-data": true
-                      }, null, 8, ["modelValue", "schema"])) : (Vue.openBlock(), Vue.createElementBlock("p", _hoisted_5$6, Vue.toDisplayString(i18n__namespace.__("Element has no specific options", "zionbuilder")), 1))
-                    ]),
-                    _: 1
-                  }, 8, ["name"]),
-                  Vue.unref(UserStore).userCanEditContent ? (Vue.openBlock(), Vue.createBlock(_component_Tab, {
-                    key: 0,
-                    name: i18n__namespace.__("Styling", "zionbuilder")
-                  }, {
-                    default: Vue.withCtx(() => [
-                      Vue.createVNode(_component_OptionsForm, {
-                        modelValue: computedStyleOptions.value,
-                        "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => computedStyleOptions.value = $event),
-                        class: "znpb-fancy-scrollbar",
-                        schema: computedStyleOptionsSchema.value,
-                        replacements: optionsReplacements
-                      }, null, 8, ["modelValue", "schema"])
-                    ]),
-                    _: 1
-                  }, 8, ["name"])) : Vue.createCommentVNode("", true),
-                  Vue.unref(UserStore).userCanEditContent ? (Vue.openBlock(), Vue.createBlock(_component_Tab, {
-                    key: 1,
-                    name: i18n__namespace.__("Advanced", "zionbuilder")
-                  }, {
-                    default: Vue.withCtx(() => [
-                      Vue.createVNode(_component_OptionsForm, {
-                        modelValue: advancedOptionsModel.value,
-                        "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => advancedOptionsModel.value = $event),
-                        class: "znpb-element-options-content-form znpb-fancy-scrollbar",
-                        schema: Vue.unref(getSchema)("element_advanced"),
-                        replacements: optionsReplacements,
-                        "enable-dynamic-data": true
-                      }, null, 8, ["modelValue", "schema"])
-                    ]),
-                    _: 1
-                  }, 8, ["name"])) : Vue.createCommentVNode("", true),
-                  Vue.unref(UserStore).userCanEditContent ? (Vue.openBlock(), Vue.createBlock(_component_Tab, {
-                    key: 2,
-                    name: i18n__namespace.__("Search", "zionbuilder")
-                  }, {
-                    title: Vue.withCtx(() => [
-                      Vue.createElementVNode("div", {
-                        class: "znpb-element-options__search-tab-title",
-                        onClick: Vue.withModifiers(toggleSearchIcon, ["stop"])
-                      }, [
-                        Vue.createVNode(_component_Icon, { icon: searchIcon.value }, null, 8, ["icon"])
-                      ], 8, _hoisted_6$6),
-                      searchActive.value ? (Vue.openBlock(), Vue.createBlock(_component_BaseInput, {
-                        key: 0,
-                        ref_key: "searchInput",
-                        ref: searchInput,
-                        modelValue: optionsFilterKeyword.value,
-                        "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => optionsFilterKeyword.value = $event),
-                        filterable: true,
-                        placeholder: i18n__namespace.__("Search option", "zionbuilder"),
-                        class: "znpb-tabs__header-item-search-options"
-                      }, null, 8, ["modelValue", "placeholder"])) : Vue.createCommentVNode("", true)
-                    ]),
-                    default: Vue.withCtx(() => [
-                      optionsFilterKeyword.value.length > 2 && Object.keys(filteredOptions.value).length === 0 ? (Vue.openBlock(), Vue.createElementBlock("p", _hoisted_7$6, Vue.toDisplayString(i18n__namespace.__("No options found", "zionbuilder")), 1)) : Vue.createCommentVNode("", true),
-                      optionsFilterKeyword.value.length < 3 ? (Vue.openBlock(), Vue.createElementBlock("p", _hoisted_8$6, Vue.toDisplayString(defaultMessage.value), 1)) : Vue.createCommentVNode("", true),
-                      Vue.createVNode(_component_OptionsForm, {
-                        modelValue: elementOptions.value,
-                        "onUpdate:modelValue": _cache[10] || (_cache[10] = ($event) => elementOptions.value = $event),
-                        class: "znpb-element-options-content-form znpb-fancy-scrollbar",
-                        schema: filteredOptions.value
-                      }, null, 8, ["modelValue", "schema"])
-                    ]),
-                    _: 1
-                  }, 8, ["name"])) : Vue.createCommentVNode("", true)
-                ]),
-                _: 1
-              }, 8, ["activeTab"])
-            ], 512), [
+            ])) : Vue.createCommentVNode("v-if", true),
+            Vue.withDirectives(Vue.createElementVNode(
+              "div",
+              _hoisted_4$6,
+              [
+                Vue.createVNode(_component_Tabs, {
+                  activeTab: activeKeyTab.value,
+                  "onUpdate:activeTab": _cache[11] || (_cache[11] = ($event) => activeKeyTab.value = $event),
+                  "has-scroll": ["general", "advanced"],
+                  class: "znpb-element-options__tabs-wrapper"
+                }, {
+                  default: Vue.withCtx(() => [
+                    Vue.createVNode(_component_Tab, {
+                      name: i18n__namespace.__("General", "zionbuilder")
+                    }, {
+                      default: Vue.withCtx(() => [
+                        Vue.unref(UIStore).editedElement.elementDefinition.options && Object.keys(Vue.unref(UIStore).editedElement.elementDefinition.options).length > 0 ? (Vue.openBlock(), Vue.createBlock(_component_OptionsForm, {
+                          key: 0,
+                          modelValue: elementOptions.value,
+                          "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => elementOptions.value = $event),
+                          class: "znpb-element-options-content-form znpb-fancy-scrollbar",
+                          schema: Vue.unref(UIStore).editedElement.elementDefinition.options,
+                          replacements: optionsReplacements,
+                          "enable-dynamic-data": true
+                        }, null, 8, ["modelValue", "schema"])) : (Vue.openBlock(), Vue.createElementBlock(
+                          "p",
+                          _hoisted_5$6,
+                          Vue.toDisplayString(i18n__namespace.__("Element has no specific options", "zionbuilder")),
+                          1
+                          /* TEXT */
+                        ))
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    }, 8, ["name"]),
+                    Vue.unref(UserStore).userCanEditContent ? (Vue.openBlock(), Vue.createBlock(_component_Tab, {
+                      key: 0,
+                      name: i18n__namespace.__("Styling", "zionbuilder")
+                    }, {
+                      default: Vue.withCtx(() => [
+                        Vue.createVNode(_component_OptionsForm, {
+                          modelValue: computedStyleOptions.value,
+                          "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => computedStyleOptions.value = $event),
+                          class: "znpb-fancy-scrollbar",
+                          schema: computedStyleOptionsSchema.value,
+                          replacements: optionsReplacements
+                        }, null, 8, ["modelValue", "schema"])
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    }, 8, ["name"])) : Vue.createCommentVNode("v-if", true),
+                    Vue.unref(UserStore).userCanEditContent ? (Vue.openBlock(), Vue.createBlock(_component_Tab, {
+                      key: 1,
+                      name: i18n__namespace.__("Advanced", "zionbuilder")
+                    }, {
+                      default: Vue.withCtx(() => [
+                        Vue.createVNode(_component_OptionsForm, {
+                          modelValue: advancedOptionsModel.value,
+                          "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => advancedOptionsModel.value = $event),
+                          class: "znpb-element-options-content-form znpb-fancy-scrollbar",
+                          schema: Vue.unref(getSchema)("element_advanced"),
+                          replacements: optionsReplacements,
+                          "enable-dynamic-data": true
+                        }, null, 8, ["modelValue", "schema"])
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    }, 8, ["name"])) : Vue.createCommentVNode("v-if", true),
+                    Vue.unref(UserStore).userCanEditContent ? (Vue.openBlock(), Vue.createBlock(_component_Tab, {
+                      key: 2,
+                      name: i18n__namespace.__("Search", "zionbuilder")
+                    }, {
+                      title: Vue.withCtx(() => [
+                        Vue.createElementVNode("div", {
+                          class: "znpb-element-options__search-tab-title",
+                          onClick: Vue.withModifiers(toggleSearchIcon, ["stop"])
+                        }, [
+                          Vue.createVNode(_component_Icon, { icon: searchIcon.value }, null, 8, ["icon"])
+                        ]),
+                        searchActive.value ? (Vue.openBlock(), Vue.createBlock(_component_BaseInput, {
+                          key: 0,
+                          ref_key: "searchInput",
+                          ref: searchInput,
+                          modelValue: optionsFilterKeyword.value,
+                          "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => optionsFilterKeyword.value = $event),
+                          filterable: true,
+                          placeholder: i18n__namespace.__("Search option", "zionbuilder"),
+                          class: "znpb-tabs__header-item-search-options"
+                        }, null, 8, ["modelValue", "placeholder"])) : Vue.createCommentVNode("v-if", true)
+                      ]),
+                      default: Vue.withCtx(() => [
+                        optionsFilterKeyword.value.length > 2 && Object.keys(filteredOptions.value).length === 0 ? (Vue.openBlock(), Vue.createElementBlock(
+                          "p",
+                          _hoisted_6$6,
+                          Vue.toDisplayString(i18n__namespace.__("No options found", "zionbuilder")),
+                          1
+                          /* TEXT */
+                        )) : Vue.createCommentVNode("v-if", true),
+                        optionsFilterKeyword.value.length < 3 ? (Vue.openBlock(), Vue.createElementBlock(
+                          "p",
+                          _hoisted_7$5,
+                          Vue.toDisplayString(defaultMessage.value),
+                          1
+                          /* TEXT */
+                        )) : Vue.createCommentVNode("v-if", true),
+                        Vue.createVNode(_component_OptionsForm, {
+                          modelValue: elementOptions.value,
+                          "onUpdate:modelValue": _cache[10] || (_cache[10] = ($event) => elementOptions.value = $event),
+                          class: "znpb-element-options-content-form znpb-fancy-scrollbar",
+                          schema: filteredOptions.value
+                        }, null, 8, ["modelValue", "schema"])
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    }, 8, ["name"])) : Vue.createCommentVNode("v-if", true)
+                  ]),
+                  _: 1
+                  /* STABLE */
+                }, 8, ["activeTab"])
+              ],
+              512
+              /* NEED_PATCH */
+            ), [
               [Vue.vShow, !activeGlobalClass.value]
             ])
           ]),
           _: 1
-        }, 8, ["class", "panel-id", "allow-horizontal-resize", "allow-vertical-resize", "panel", "style"])) : Vue.createCommentVNode("", true);
+          /* STABLE */
+        }, 8, ["class", "panel-id", "allow-horizontal-resize", "allow-vertical-resize", "panel", "style"])) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const PanelElementOptions_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$d = ["innerHTML"];
   const _hoisted_2$b = {
     key: 0,
@@ -15337,36 +17561,48 @@ var __async = (__this, __arguments, generator) => {
       );
       return (_ctx, _cache) => {
         const _component_Icon = Vue.resolveComponent("Icon");
-        return Vue.openBlock(), Vue.createElementBlock("li", {
-          class: Vue.normalizeClass(["znpb-editor-library-modal-category__item", { "znpb-editor-library-modal-category__item--active": _ctx.category.isActive }])
-        }, [
-          Vue.createElementVNode("div", {
-            class: "znpb-editor-library-modal-category__header",
-            onClick: _cache[1] || (_cache[1] = ($event) => _ctx.onCategoryActivate(_ctx.category))
-          }, [
-            Vue.createElementVNode("h6", {
-              class: "znpb-editor-library-modal-category__title",
-              innerHTML: _ctx.category.name
-            }, null, 8, _hoisted_1$d),
-            _ctx.showCount ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_2$b, Vue.toDisplayString(_ctx.category.count), 1)) : Vue.createCommentVNode("", true),
-            hasSubcategories.value ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
-              key: 1,
-              icon: "select",
-              rotate: activeDropdown.value ? "180" : "0",
-              class: "znpb-editor-library-modal-category__header-icon",
-              onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => activeDropdown.value = !activeDropdown.value, ["stop"]))
-            }, null, 8, ["rotate"])) : Vue.createCommentVNode("", true)
-          ]),
-          hasSubcategories.value && activeDropdown.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$e, {
-            key: 0,
-            categories: _ctx.category.subcategories,
-            "on-category-activate": _ctx.onCategoryActivate
-          }, null, 8, ["categories", "on-category-activate"])) : Vue.createCommentVNode("", true)
-        ], 2);
+        return Vue.openBlock(), Vue.createElementBlock(
+          "li",
+          {
+            class: Vue.normalizeClass(["znpb-editor-library-modal-category__item", { "znpb-editor-library-modal-category__item--active": __props.category.isActive }])
+          },
+          [
+            Vue.createElementVNode("div", {
+              class: "znpb-editor-library-modal-category__header",
+              onClick: _cache[1] || (_cache[1] = ($event) => __props.onCategoryActivate(__props.category))
+            }, [
+              Vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
+              Vue.createElementVNode("h6", {
+                class: "znpb-editor-library-modal-category__title",
+                innerHTML: __props.category.name
+              }, null, 8, _hoisted_1$d),
+              __props.showCount ? (Vue.openBlock(), Vue.createElementBlock(
+                "span",
+                _hoisted_2$b,
+                Vue.toDisplayString(__props.category.count),
+                1
+                /* TEXT */
+              )) : Vue.createCommentVNode("v-if", true),
+              hasSubcategories.value ? (Vue.openBlock(), Vue.createBlock(_component_Icon, {
+                key: 1,
+                icon: "select",
+                rotate: activeDropdown.value ? "180" : "0",
+                class: "znpb-editor-library-modal-category__header-icon",
+                onClick: _cache[0] || (_cache[0] = Vue.withModifiers(($event) => activeDropdown.value = !activeDropdown.value, ["stop"]))
+              }, null, 8, ["rotate"])) : Vue.createCommentVNode("v-if", true)
+            ]),
+            hasSubcategories.value && activeDropdown.value ? (Vue.openBlock(), Vue.createBlock(_sfc_main$e, {
+              key: 0,
+              categories: __props.category.subcategories,
+              "on-category-activate": __props.onCategoryActivate
+            }, null, 8, ["categories", "on-category-activate"])) : Vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const CategoriesLibraryItem_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$c = { class: "znpb-editor-library-modal-category-list znpb-fancy-scrollbar" };
   const _sfc_main$e = /* @__PURE__ */ Vue.defineComponent({
     __name: "CategoriesLibrary",
@@ -15381,20 +17617,25 @@ var __async = (__this, __arguments, generator) => {
       }
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("ul", _hoisted_1$c, [
-          (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(_ctx.categories, (category) => {
-            return Vue.openBlock(), Vue.createBlock(_sfc_main$f, {
-              key: category.term_id,
-              category,
-              "is-active": category.isActive,
-              "on-category-activate": _ctx.onCategoryActivate,
-              onActivateSubcategory: activateCategory
-            }, null, 8, ["category", "is-active", "on-category-activate"]);
-          }), 128))
+          (Vue.openBlock(true), Vue.createElementBlock(
+            Vue.Fragment,
+            null,
+            Vue.renderList(__props.categories, (category) => {
+              return Vue.openBlock(), Vue.createBlock(_sfc_main$f, {
+                key: category.term_id,
+                category,
+                "is-active": category.isActive,
+                "on-category-activate": __props.onCategoryActivate,
+                onActivateSubcategory: activateCategory
+              }, null, 8, ["category", "is-active", "on-category-activate"]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
         ]);
       };
     }
   });
-  const CategoriesLibrary_vue_vue_type_style_index_0_lang = "";
   let queue = [];
   let processing = false;
   const failTime = 1e4;
@@ -15468,15 +17709,14 @@ var __async = (__this, __arguments, generator) => {
     key: 0,
     class: "znpb-editor-library-modal__item-pro"
   };
-  const _hoisted_4$6 = { class: "znpb-editor-library-modal__item-bottom" };
+  const _hoisted_4$5 = { class: "znpb-editor-library-modal__item-bottom" };
   const _hoisted_5$5 = ["title"];
   const _hoisted_6$5 = {
     key: 0,
     class: "znpb-editor-library-modal__item-actions"
   };
-  const _hoisted_7$5 = ["href"];
-  const _hoisted_8$5 = ["onClick"];
-  const _hoisted_9$4 = {
+  const _hoisted_7$4 = ["href"];
+  const _hoisted_8$3 = {
     key: 1,
     class: "znpb-editor-library-modal__item-bottom-multiple"
   };
@@ -15488,8 +17728,9 @@ var __async = (__this, __arguments, generator) => {
       inView: { type: Boolean, default: false }
     },
     emits: ["activate-item"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const Library = Vue.inject("Library");
       const EnvironmentStore = store.useEnvironmentStore();
       const insertItemLoading = Vue.ref(false);
@@ -15598,96 +17839,129 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_HiddenMenu = Vue.resolveComponent("HiddenMenu");
         const _directive_znpb_tooltip = Vue.resolveDirective("znpb-tooltip");
-        return Vue.openBlock(), Vue.createElementBlock("li", {
-          ref_key: "root",
-          ref: root2,
-          class: Vue.normalizeClass(["znpb-editor-library-modal__item", { "znpb-editor-library-modal__item--favorite": _ctx.favorite }])
-        }, [
-          Vue.createElementVNode("div", _hoisted_1$b, [
-            Vue.createElementVNode("div", {
-              class: Vue.normalizeClass(["znpb-editor-library-modal__item-image", { ["--no-image"]: !_ctx.item.thumbnail && !_ctx.item.loadingThumbnail }]),
-              onClick: _cache[0] || (_cache[0] = ($event) => emit("activate-item", _ctx.item))
-            }, [
-              _ctx.item.loadingThumbnail ? (Vue.openBlock(), Vue.createBlock(_component_Loader, { key: 0 })) : _ctx.item.thumbnail ? (Vue.openBlock(), Vue.createElementBlock("img", {
-                key: 1,
-                ref_key: "imageHolderRef",
-                ref: imageHolderRef,
-                class: "znpb-editor-library-modal__item-imageTag",
-                src: "",
-                "data-zbg": image.value,
-                onMouseover: onMouseOver,
-                onMouseout: onMouseOut
-              }, null, 40, _hoisted_2$a)) : Vue.createCommentVNode("", true)
-            ], 2),
-            _ctx.item.pro ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$9, Vue.toDisplayString(i18n__namespace.__("pro", "zionbuilder")), 1)) : Vue.createCommentVNode("", true),
-            Vue.createElementVNode("div", _hoisted_4$6, [
-              Vue.createElementVNode("h4", {
-                class: "znpb-editor-library-modal__item-title",
-                title: _ctx.item.name
-              }, Vue.toDisplayString(_ctx.item.name), 9, _hoisted_5$5),
-              !insertItemLoading.value && !_ctx.item.loading ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_6$5, [
-                Vue.unref(EnvironmentStore).plugin_pro.is_installed && !Vue.unref(EnvironmentStore).plugin_pro.is_active && _ctx.item.pro ? (Vue.openBlock(), Vue.createElementBlock("a", {
-                  key: 0,
-                  class: "znpb-button znpb-button--line",
-                  target: "_blank",
-                  href: dashboardURL
-                }, Vue.toDisplayString(i18n__namespace.__("Activate PRO", "zionbuilder")), 1)) : !Vue.unref(EnvironmentStore).plugin_pro.is_installed && _ctx.item.pro ? (Vue.openBlock(), Vue.createElementBlock("a", {
+        return Vue.openBlock(), Vue.createElementBlock(
+          "li",
+          {
+            ref_key: "root",
+            ref: root2,
+            class: Vue.normalizeClass(["znpb-editor-library-modal__item", { "znpb-editor-library-modal__item--favorite": __props.favorite }])
+          },
+          [
+            Vue.createElementVNode("div", _hoisted_1$b, [
+              Vue.createElementVNode(
+                "div",
+                {
+                  class: Vue.normalizeClass(["znpb-editor-library-modal__item-image", { ["--no-image"]: !__props.item.thumbnail && !__props.item.loadingThumbnail }]),
+                  onClick: _cache[0] || (_cache[0] = ($event) => emit("activate-item", __props.item))
+                },
+                [
+                  __props.item.loadingThumbnail ? (Vue.openBlock(), Vue.createBlock(_component_Loader, { key: 0 })) : __props.item.thumbnail ? (Vue.openBlock(), Vue.createElementBlock("img", {
+                    key: 1,
+                    ref_key: "imageHolderRef",
+                    ref: imageHolderRef,
+                    class: "znpb-editor-library-modal__item-imageTag",
+                    src: "",
+                    "data-zbg": image.value,
+                    onMouseover: onMouseOver,
+                    onMouseout: onMouseOut
+                  }, null, 40, _hoisted_2$a)) : Vue.createCommentVNode("v-if", true)
+                ],
+                2
+                /* CLASS */
+              ),
+              __props.item.pro ? (Vue.openBlock(), Vue.createElementBlock(
+                "div",
+                _hoisted_3$9,
+                Vue.toDisplayString(i18n__namespace.__("pro", "zionbuilder")),
+                1
+                /* TEXT */
+              )) : Vue.createCommentVNode("v-if", true),
+              Vue.createElementVNode("div", _hoisted_4$5, [
+                Vue.createElementVNode("h4", {
+                  class: "znpb-editor-library-modal__item-title",
+                  title: __props.item.name
+                }, Vue.toDisplayString(__props.item.name), 9, _hoisted_5$5),
+                !insertItemLoading.value && !__props.item.loading ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_6$5, [
+                  Vue.unref(EnvironmentStore).plugin_pro.is_installed && !Vue.unref(EnvironmentStore).plugin_pro.is_active && __props.item.pro ? (Vue.openBlock(), Vue.createElementBlock(
+                    "a",
+                    {
+                      key: 0,
+                      class: "znpb-button znpb-button--line",
+                      target: "_blank",
+                      href: dashboardURL
+                    },
+                    Vue.toDisplayString(i18n__namespace.__("Activate PRO", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )) : !Vue.unref(EnvironmentStore).plugin_pro.is_installed && __props.item.pro ? (Vue.openBlock(), Vue.createElementBlock("a", {
+                    key: 1,
+                    class: "znpb-button znpb-button--line",
+                    href: Vue.unref(EnvironmentStore).urls.purchase_url,
+                    target: "_blank"
+                  }, Vue.toDisplayString(i18n__namespace.__("Buy Pro", "zionbuilder")), 9, _hoisted_7$4)) : Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", {
+                    key: 2,
+                    class: "znpb-button znpb-button--line znpb-editor-library-modal__item-action",
+                    onClick: Vue.withModifiers(insertLibraryItem, ["stop"])
+                  }, [
+                    Vue.createTextVNode(
+                      Vue.toDisplayString(i18n__namespace.__("Insert", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
+                  ])), [
+                    [_directive_znpb_tooltip, i18n__namespace.__("Insert this item into page", "zionbuilder")]
+                  ]),
+                  Vue.withDirectives(Vue.createVNode(
+                    _component_Icon,
+                    {
+                      icon: "eye",
+                      class: "znpb-editor-library-modal__item-action",
+                      onClick: _cache[1] || (_cache[1] = ($event) => emit("activate-item", __props.item))
+                    },
+                    null,
+                    512
+                    /* NEED_PATCH */
+                  ), [
+                    [_directive_znpb_tooltip, i18n__namespace.__("Click to preview this item", "zionbuilder")]
+                  ]),
+                  __props.item.librarySource.id === "local_library" ? (Vue.openBlock(), Vue.createBlock(_component_HiddenMenu, {
+                    key: 3,
+                    class: "znpb-editor-library-modal__item-action",
+                    actions: itemMenuActions.value
+                  }, null, 8, ["actions"])) : Vue.createCommentVNode("v-if", true)
+                ])) : (Vue.openBlock(), Vue.createBlock(_component_Loader, {
                   key: 1,
-                  class: "znpb-button znpb-button--line",
-                  href: Vue.unref(EnvironmentStore).urls.purchase_url,
-                  target: "_blank"
-                }, Vue.toDisplayString(i18n__namespace.__("Buy Pro", "zionbuilder")), 9, _hoisted_7$5)) : Vue.withDirectives((Vue.openBlock(), Vue.createElementBlock("span", {
-                  key: 2,
-                  class: "znpb-button znpb-button--line znpb-editor-library-modal__item-action",
-                  onClick: Vue.withModifiers(insertLibraryItem, ["stop"])
-                }, [
-                  Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Insert", "zionbuilder")), 1)
-                ], 8, _hoisted_8$5)), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Insert this item into page", "zionbuilder")]
-                ]),
-                Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                  icon: "eye",
-                  class: "znpb-editor-library-modal__item-action",
-                  onClick: _cache[1] || (_cache[1] = ($event) => emit("activate-item", _ctx.item))
-                }, null, 512), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Click to preview this item", "zionbuilder")]
-                ]),
-                _ctx.item.librarySource.id === "local_library" ? (Vue.openBlock(), Vue.createBlock(_component_HiddenMenu, {
-                  key: 3,
-                  class: "znpb-editor-library-modal__item-action",
-                  actions: itemMenuActions.value
-                }, null, 8, ["actions"])) : Vue.createCommentVNode("", true)
-              ])) : (Vue.openBlock(), Vue.createBlock(_component_Loader, {
-                key: 1,
-                size: 12
-              }))
-            ]),
-            _ctx.item.type === "multiple" ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_9$4)) : Vue.createCommentVNode("", true)
-          ])
-        ], 2);
+                  size: 12
+                }))
+              ]),
+              __props.item.type === "multiple" ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_8$3)) : Vue.createCommentVNode("v-if", true)
+            ])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const LibraryItem_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$a = {
     key: 1,
     class: "znpb-editor-library-modal"
   };
   const _hoisted_2$9 = { class: "znpb-editor-library-modal-sidebar" };
   const _hoisted_3$8 = { class: "znpb-editor-library-modal-sidebar-search" };
-  const _hoisted_4$5 = { class: "znpb-editor-library-modal-body" };
+  const _hoisted_4$4 = { class: "znpb-editor-library-modal-body" };
   const _hoisted_5$4 = { class: "znpb-editor-library-modal-subheader" };
   const _hoisted_6$4 = { class: "znpb-editor-library-modal-subheader__left" };
-  const _hoisted_7$4 = { class: "znpb-editor-library-modal-subheader__left-title" };
-  const _hoisted_8$4 = { class: "znpb-editor-library-modal-subheader__left-number" };
-  const _hoisted_9$3 = { class: "znpb-editor-library-modal-subheader__right" };
-  const _hoisted_10$3 = { class: "znpb-editor-library-modal-column-wrapper znpb-fancy-scrollbar" };
-  const _hoisted_11$2 = { class: "znpb-editor-library-modal-item-list" };
-  const _hoisted_12$1 = {
+  const _hoisted_7$3 = { class: "znpb-editor-library-modal-subheader__left-title" };
+  const _hoisted_8$2 = { class: "znpb-editor-library-modal-subheader__left-number" };
+  const _hoisted_9$1 = { class: "znpb-editor-library-modal-subheader__right" };
+  const _hoisted_10$1 = { class: "znpb-editor-library-modal-column-wrapper znpb-fancy-scrollbar" };
+  const _hoisted_11$1 = { class: "znpb-editor-library-modal-item-list" };
+  const _hoisted_12 = {
     key: 0,
     class: "znpb-editor-library-modal-no-more"
   };
-  const _hoisted_13$1 = {
+  const _hoisted_13 = {
     key: 0,
     class: "znpb-editor-library-modal-preview znpb-fancy-scrollbar"
   };
@@ -15699,8 +17973,9 @@ var __async = (__this, __arguments, generator) => {
       libraryConfig: {}
     },
     emits: ["activate-preview"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const allCategoriesConfig = {
         name: i18n__namespace.__("All", "zionbuilder"),
         slug: "zion-category-all",
@@ -15825,7 +18100,7 @@ var __async = (__this, __arguments, generator) => {
       return (_ctx, _cache) => {
         const _component_Loader = Vue.resolveComponent("Loader");
         const _component_Icon = Vue.resolveComponent("Icon");
-        return _ctx.libraryConfig.loading ? (Vue.openBlock(), Vue.createBlock(_component_Loader, {
+        return __props.libraryConfig.loading ? (Vue.openBlock(), Vue.createBlock(_component_Loader, {
           key: 0,
           class: "znpb-editor-library-modal-loader"
         })) : (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$a, [
@@ -15846,78 +18121,104 @@ var __async = (__this, __arguments, generator) => {
               "on-category-activate": onCategoryActivate
             }, null, 8, ["categories"])
           ]),
-          Vue.createElementVNode("div", _hoisted_4$5, [
+          Vue.createElementVNode("div", _hoisted_4$4, [
             Vue.createElementVNode("div", _hoisted_5$4, [
               Vue.createElementVNode("div", _hoisted_6$4, [
-                Vue.createElementVNode("h3", _hoisted_7$4, Vue.toDisplayString(libraryTitle.value), 1),
-                Vue.createElementVNode("span", _hoisted_8$4, Vue.toDisplayString(numberOfElements.value), 1)
+                Vue.createElementVNode(
+                  "h3",
+                  _hoisted_7$3,
+                  Vue.toDisplayString(libraryTitle.value),
+                  1
+                  /* TEXT */
+                ),
+                Vue.createElementVNode(
+                  "span",
+                  _hoisted_8$2,
+                  Vue.toDisplayString(numberOfElements.value),
+                  1
+                  /* TEXT */
+                )
               ]),
-              Vue.createElementVNode("div", _hoisted_9$3, [
+              Vue.createElementVNode("div", _hoisted_9$1, [
                 Vue.createElementVNode("div", {
                   class: "znpb-editor-library-modal-subheader__action-title",
                   onClick: _cache[1] || (_cache[1] = ($event) => sortAscending.value = !sortAscending.value)
                 }, [
                   Vue.createVNode(_component_Icon, { icon: "reverse-y" }),
-                  Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Sort", "zionbuilder")), 1)
+                  Vue.createTextVNode(
+                    Vue.toDisplayString(i18n__namespace.__("Sort", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
                 ])
               ])
             ]),
-            Vue.createElementVNode("div", _hoisted_10$3, [
-              Vue.createElementVNode("ul", _hoisted_11$2, [
-                (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(filteredItems.value, (item) => {
-                  return Vue.openBlock(), Vue.createBlock(_sfc_main$d, {
-                    key: item.id,
-                    item,
-                    onActivateItem: ($event) => (emit("activate-preview", item), activeItem.value = item)
-                  }, null, 8, ["item", "onActivateItem"]);
-                }), 128))
+            Vue.createElementVNode("div", _hoisted_10$1, [
+              Vue.createElementVNode("ul", _hoisted_11$1, [
+                (Vue.openBlock(true), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(filteredItems.value, (item) => {
+                    return Vue.openBlock(), Vue.createBlock(_sfc_main$d, {
+                      key: item.id,
+                      item,
+                      onActivateItem: ($event) => (emit("activate-preview", item), activeItem.value = item)
+                    }, null, 8, ["item", "onActivateItem"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
               ]),
-              searchKeyword.value.length > 0 && filteredItems.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock("p", _hoisted_12$1, Vue.toDisplayString(i18n__namespace.__("No more to show :(", "zionbuilder")), 1)) : Vue.createCommentVNode("", true)
+              searchKeyword.value.length > 0 && filteredItems.value.length === 0 ? (Vue.openBlock(), Vue.createElementBlock(
+                "p",
+                _hoisted_12,
+                Vue.toDisplayString(i18n__namespace.__("No more to show :(", "zionbuilder")),
+                1
+                /* TEXT */
+              )) : Vue.createCommentVNode("v-if", true)
             ])
           ]),
           Vue.createVNode(Vue.Transition, { name: "slide-preview" }, {
             default: Vue.withCtx(() => [
-              _ctx.previewOpen && activeItem.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_13$1, [
+              __props.previewOpen && activeItem.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_13, [
                 Vue.createElementVNode("iframe", {
                   id: "znpb-editor-library-modal-preview-iframe",
                   frameborder: "0",
                   src: activeItem.value.urls.preview_url
-                }, "\n				", 8, _hoisted_14)
-              ])) : Vue.createCommentVNode("", true)
+                }, null, 8, _hoisted_14)
+              ])) : Vue.createCommentVNode("v-if", true)
             ]),
             _: 1
+            /* STABLE */
           })
         ]));
       };
     }
   });
-  const LibraryPanel_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$9 = {
     id: "znpb-upload-form-library",
     enctype: "multipart/form-data",
     novalidate: ""
   };
-  const _hoisted_2$8 = /* @__PURE__ */ Vue.createElementVNode("div", { class: "znpb-empty-list__border-top-bottom" }, null, -1);
-  const _hoisted_3$7 = /* @__PURE__ */ Vue.createElementVNode("div", { class: "znpb-empty-list__border-left-right" }, null, -1);
-  const _hoisted_4$4 = { class: "znpb-empty-list__content" };
-  const _hoisted_5$3 = { class: "znpb-editor-library-upload__text" };
-  const _hoisted_6$3 = { class: "" };
-  const _hoisted_7$3 = {
+  const _hoisted_2$8 = { class: "znpb-empty-list__content" };
+  const _hoisted_3$7 = { class: "znpb-editor-library-upload__text" };
+  const _hoisted_4$3 = { class: "" };
+  const _hoisted_5$3 = {
     key: 1,
     class: "znpb-library-uploading-wrapper"
   };
-  const _hoisted_8$3 = { class: "znpb-library-uploading-wrapper__text" };
-  const _hoisted_9$2 = /* @__PURE__ */ Vue.createElementVNode("br", null, null, -1);
-  const _hoisted_10$2 = ["disabled"];
-  const _hoisted_11$1 = { key: 3 };
+  const _hoisted_6$3 = { class: "znpb-library-uploading-wrapper__text" };
+  const _hoisted_7$2 = ["disabled"];
+  const _hoisted_8$1 = { key: 3 };
   const _sfc_main$b = /* @__PURE__ */ Vue.defineComponent({
     __name: "LibraryUploader",
     props: {
       noMargin: { type: Boolean, default: false }
     },
     emits: ["file-uploaded"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const { useLibrary } = window.zb.composables;
+      const emit = __emit;
       const isInitial = Vue.ref(true);
       const isSaving = Vue.ref(false);
       const errorMessage = Vue.ref("");
@@ -15956,8 +18257,7 @@ var __async = (__this, __arguments, generator) => {
           name: fieldName
         } = event.target;
         const formData = new FormData();
-        if (!fileList || !fileList.length)
-          return;
+        if (!fileList || !fileList.length) return;
         Array.from(fileList).forEach((file) => {
           formData.append(fieldName, file, file.name);
         });
@@ -15976,8 +18276,7 @@ var __async = (__this, __arguments, generator) => {
           console.error(error);
           if (typeof error.response.data === "string") {
             errorMessage.value = error.response.data;
-          } else
-            errorMessage.value = arrayBufferToString(error.response.data);
+          } else errorMessage.value = arrayBufferToString(error.response.data);
         }).finally(() => {
           isSaving.value = false;
           isInitial.value = true;
@@ -15996,64 +18295,122 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_Loader = Vue.resolveComponent("Loader");
         return Vue.openBlock(), Vue.createElementBlock("form", _hoisted_1$9, [
-          Vue.createElementVNode("div", {
-            class: Vue.normalizeClass(["znpb-empty-list__container znpb-editor-library-upload", { "znpb-editor-library-upload--dragging": !isInitial.value }])
-          }, [
-            _hoisted_2$8,
-            _hoisted_3$7,
-            Vue.createElementVNode("div", _hoisted_4$4, [
-              isInitial.value && !isSaving.value ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-                Vue.createVNode(_component_Icon, { icon: "import-big-icon" }),
-                Vue.createElementVNode("p", _hoisted_5$3, [
-                  Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Drag and drop your exported item here or just click to ", "zionbuilder")) + " ", 1),
-                  Vue.createElementVNode("span", _hoisted_6$3, Vue.toDisplayString(i18n__namespace.__("browse", "zionbuilder")), 1),
-                  Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("for files", "zionbuilder")), 1)
-                ])
-              ], 64)) : Vue.createCommentVNode("", true),
-              !isInitial.value && !isSaving.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_7$3, [
-                Vue.createVNode(_component_Icon, {
-                  icon: "long-arrow-right",
-                  "bg-size": 68,
-                  "bg-color": "#06bee1",
-                  rounded: true,
-                  color: "#fff",
-                  size: 21
-                }),
-                Vue.createElementVNode("p", _hoisted_8$3, [
-                  Vue.createElementVNode("b", null, Vue.toDisplayString(i18n__namespace.__("Drop your files", "zionbuilder")), 1),
-                  _hoisted_9$2,
-                  Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("to upload", "zionbuilder")), 1)
-                ])
-              ])) : Vue.createCommentVNode("", true),
-              Vue.createElementVNode("input", {
-                type: "file",
-                accept: "zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed",
-                multiple: "",
-                name: "file",
-                disabled: isSaving.value,
-                class: "znpb-library-input-file",
-                onChange: uploadFiles
-              }, null, 40, _hoisted_10$2),
-              isSaving.value ? (Vue.openBlock(), Vue.createBlock(_component_Loader, { key: 2 })) : Vue.createCommentVNode("", true),
-              errorMessage.value.length > 0 ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_11$1, Vue.toDisplayString(errorMessage.value), 1)) : Vue.createCommentVNode("", true)
-            ])
-          ], 2)
+          Vue.createElementVNode(
+            "div",
+            {
+              class: Vue.normalizeClass(["znpb-empty-list__container znpb-editor-library-upload", { "znpb-editor-library-upload--dragging": !isInitial.value }])
+            },
+            [
+              _cache[1] || (_cache[1] = Vue.createElementVNode(
+                "div",
+                { class: "znpb-empty-list__border-top-bottom" },
+                null,
+                -1
+                /* CACHED */
+              )),
+              _cache[2] || (_cache[2] = Vue.createElementVNode(
+                "div",
+                { class: "znpb-empty-list__border-left-right" },
+                null,
+                -1
+                /* CACHED */
+              )),
+              Vue.createElementVNode("div", _hoisted_2$8, [
+                isInitial.value && !isSaving.value ? (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 0 },
+                  [
+                    Vue.createVNode(_component_Icon, { icon: "import-big-icon" }),
+                    Vue.createElementVNode("p", _hoisted_3$7, [
+                      Vue.createTextVNode(
+                        Vue.toDisplayString(i18n__namespace.__("Drag and drop your exported item here or just click to ", "zionbuilder")) + " ",
+                        1
+                        /* TEXT */
+                      ),
+                      Vue.createElementVNode(
+                        "span",
+                        _hoisted_4$3,
+                        Vue.toDisplayString(i18n__namespace.__("browse", "zionbuilder")),
+                        1
+                        /* TEXT */
+                      ),
+                      Vue.createTextVNode(
+                        " " + Vue.toDisplayString(i18n__namespace.__("for files", "zionbuilder")),
+                        1
+                        /* TEXT */
+                      )
+                    ])
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : Vue.createCommentVNode("v-if", true),
+                !isInitial.value && !isSaving.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_5$3, [
+                  Vue.createVNode(_component_Icon, {
+                    icon: "long-arrow-right",
+                    "bg-size": 68,
+                    "bg-color": "#06bee1",
+                    rounded: true,
+                    color: "#fff",
+                    size: 21
+                  }),
+                  Vue.createElementVNode("p", _hoisted_6$3, [
+                    Vue.createElementVNode(
+                      "b",
+                      null,
+                      Vue.toDisplayString(i18n__namespace.__("Drop your files", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    ),
+                    _cache[0] || (_cache[0] = Vue.createElementVNode(
+                      "br",
+                      null,
+                      null,
+                      -1
+                      /* CACHED */
+                    )),
+                    Vue.createTextVNode(
+                      " " + Vue.toDisplayString(i18n__namespace.__("to upload", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
+                  ])
+                ])) : Vue.createCommentVNode("v-if", true),
+                Vue.createElementVNode("input", {
+                  type: "file",
+                  accept: "zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed",
+                  multiple: "",
+                  name: "file",
+                  disabled: isSaving.value,
+                  class: "znpb-library-input-file",
+                  onChange: uploadFiles
+                }, null, 40, _hoisted_7$2),
+                isSaving.value ? (Vue.openBlock(), Vue.createBlock(_component_Loader, { key: 2 })) : Vue.createCommentVNode("v-if", true),
+                errorMessage.value.length > 0 ? (Vue.openBlock(), Vue.createElementBlock(
+                  "span",
+                  _hoisted_8$1,
+                  Vue.toDisplayString(errorMessage.value),
+                  1
+                  /* TEXT */
+                )) : Vue.createCommentVNode("v-if", true)
+              ])
+            ],
+            2
+            /* CLASS */
+          )
         ]);
       };
     }
   });
-  const LibraryUploader_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$8 = { class: "znpb-library-modal-header" };
-  const _hoisted_2$7 = ["onClick"];
-  const _hoisted_3$6 = {
+  const _hoisted_2$7 = {
     key: 1,
     class: "znpb-library-modal-header-preview"
   };
-  const _hoisted_4$3 = ["innerHTML"];
-  const _hoisted_5$2 = ["onClick"];
-  const _hoisted_6$2 = { class: "znpb-library-modal-header__actions" };
-  const _hoisted_7$2 = ["href"];
-  const _hoisted_8$2 = { key: 0 };
+  const _hoisted_3$6 = ["innerHTML"];
+  const _hoisted_4$2 = ["onClick"];
+  const _hoisted_5$2 = { class: "znpb-library-modal-header__actions" };
+  const _hoisted_6$2 = ["href"];
+  const _hoisted_7$1 = { key: 0 };
   const _sfc_main$a = /* @__PURE__ */ Vue.defineComponent({
     __name: "PanelLibraryModal",
     setup(__props) {
@@ -16067,8 +18424,7 @@ var __async = (__this, __arguments, generator) => {
       const { librarySources, getSource } = useLibrary();
       const activeLibraryTab = Vue.ref(getData("libraryActiveSource", "local_library"));
       const { editorData: editorData2 } = useEditorData();
-      const isProActive = store.useEnvironmentStore();
-      const isProInstalled = editorData2.value.plugin_info.is_pro_installed;
+      const EnvironmentStore = store.useEnvironmentStore();
       const purchaseURL = Vue.ref(editorData2.value.urls.purchase_url);
       const previewOpen = Vue.ref(false);
       const activeItem = Vue.ref(null);
@@ -16170,68 +18526,108 @@ var __async = (__this, __arguments, generator) => {
                   icon: "long-arrow-right",
                   rotate: "180"
                 }),
-                Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("Go Back", "zionbuilder")), 1)
-              ], 8, _hoisted_2$7)) : Vue.createCommentVNode("", true),
-              previewOpen.value || importActive.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$6, [
+                Vue.createTextVNode(
+                  " " + Vue.toDisplayString(i18n__namespace.__("Go Back", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )
+              ])) : Vue.createCommentVNode("v-if", true),
+              previewOpen.value || importActive.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_2$7, [
                 Vue.createElementVNode("h2", {
                   class: "znpb-library-modal-header-preview__title",
                   innerHTML: computedTitle.value
-                }, null, 8, _hoisted_4$3)
-              ])) : (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, { key: 2 }, Vue.renderList(Vue.unref(librarySources), (librarySource, sourceID) => {
-                return Vue.openBlock(), Vue.createElementBlock("h2", {
-                  key: sourceID,
-                  class: Vue.normalizeClass(["znpb-library-modal-header__title", { "znpb-library-modal-header__title--active": activeLibraryTab.value === sourceID }]),
-                  onClick: ($event) => setActiveSource(sourceID)
-                }, Vue.toDisplayString(librarySource.name), 11, _hoisted_5$2);
-              }), 128)),
-              Vue.createElementVNode("div", _hoisted_6$2, [
-                previewOpen.value && activeItem.value ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-                  Vue.unref(isProInstalled) && !Vue.unref(isProActive) && activeItem.value.pro ? (Vue.openBlock(), Vue.createElementBlock("a", {
-                    key: 0,
-                    class: "znpb-button znpb-button--line",
-                    target: "_blank",
-                    href: dashboardURL
-                  }, Vue.toDisplayString(i18n__namespace.__("Activate PRO", "zionbuilder")), 1)) : !Vue.unref(isProInstalled) && activeItem.value.pro ? (Vue.openBlock(), Vue.createElementBlock("a", {
-                    key: 1,
-                    class: "znpb-button znpb-button--line znpb-button-buy-pro",
-                    href: purchaseURL.value,
-                    target: "_blank"
-                  }, Vue.toDisplayString(i18n__namespace.__("Buy Pro", "zionbuilder")), 9, _hoisted_7$2)) : Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Button, {
-                    key: 2,
-                    type: "secondary",
-                    class: "znpb-library-modal-header__insert-button",
-                    onClick: Vue.withModifiers(insertLibraryItem, ["stop"])
-                  }, {
-                    default: Vue.withCtx(() => [
-                      !insertItemLoading.value ? (Vue.openBlock(), Vue.createElementBlock("span", _hoisted_8$2, Vue.toDisplayString(i18n__namespace.__("Insert", "zionbuilder")), 1)) : (Vue.openBlock(), Vue.createBlock(_component_Loader, {
-                        key: 1,
-                        size: 13
-                      }))
-                    ]),
-                    _: 1
-                  }, 8, ["onClick"])), [
-                    [_directive_znpb_tooltip, i18n__namespace.__("Insert this item into page", "zionbuilder")]
-                  ])
-                ], 64)) : (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 1 }, [
-                  Vue.createVNode(_component_Button, {
-                    type: "secondary",
-                    onClick: _cache[0] || (_cache[0] = ($event) => (importActive.value = !importActive.value, templateUploaded.value = !templateUploaded.value))
-                  }, {
-                    default: Vue.withCtx(() => [
-                      Vue.createVNode(_component_Icon, { icon: "import" }),
-                      Vue.createTextVNode(" " + Vue.toDisplayString(i18n__namespace.__("Import", "zionbuilder")), 1)
-                    ]),
-                    _: 1
-                  }),
-                  Vue.withDirectives(Vue.createVNode(_component_Icon, {
-                    icon: "refresh",
-                    size: 14,
-                    class: Vue.normalizeClass(["znpb-modal__header-button znpb-modal__header-button--library-refresh znpb-button znpb-button--line", { ["loading"]: activeLibraryConfig.value && activeLibraryConfig.value.loading }]),
-                    onClick: onRefresh
-                  }, null, 8, ["class"]), [
-                    [_directive_znpb_tooltip, i18n__namespace.__("Refresh data from the server ", "zionbuilder")]
-                  ])
-                ], 64)),
+                }, null, 8, _hoisted_3$6)
+              ])) : (Vue.openBlock(true), Vue.createElementBlock(
+                Vue.Fragment,
+                { key: 2 },
+                Vue.renderList(Vue.unref(librarySources), (librarySource, sourceID) => {
+                  return Vue.openBlock(), Vue.createElementBlock("h2", {
+                    key: sourceID,
+                    class: Vue.normalizeClass(["znpb-library-modal-header__title", { "znpb-library-modal-header__title--active": activeLibraryTab.value === sourceID }]),
+                    onClick: ($event) => setActiveSource(sourceID)
+                  }, Vue.toDisplayString(librarySource.name), 11, _hoisted_4$2);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              )),
+              Vue.createElementVNode("div", _hoisted_5$2, [
+                previewOpen.value && activeItem.value ? (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 0 },
+                  [
+                    Vue.unref(EnvironmentStore).isProInstalled && !Vue.unref(EnvironmentStore).isProActive && activeItem.value.pro ? (Vue.openBlock(), Vue.createElementBlock(
+                      "a",
+                      {
+                        key: 0,
+                        class: "znpb-button znpb-button--line",
+                        target: "_blank",
+                        href: dashboardURL
+                      },
+                      Vue.toDisplayString(i18n__namespace.__("Activate PRO", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )) : !Vue.unref(EnvironmentStore).isProInstalled && activeItem.value.pro ? (Vue.openBlock(), Vue.createElementBlock("a", {
+                      key: 1,
+                      class: "znpb-button znpb-button--line znpb-button-buy-pro",
+                      href: purchaseURL.value,
+                      target: "_blank"
+                    }, Vue.toDisplayString(i18n__namespace.__("Buy Pro", "zionbuilder")), 9, _hoisted_6$2)) : Vue.withDirectives((Vue.openBlock(), Vue.createBlock(_component_Button, {
+                      key: 2,
+                      type: "secondary",
+                      class: "znpb-library-modal-header__insert-button",
+                      onClick: Vue.withModifiers(insertLibraryItem, ["stop"])
+                    }, {
+                      default: Vue.withCtx(() => [
+                        !insertItemLoading.value ? (Vue.openBlock(), Vue.createElementBlock(
+                          "span",
+                          _hoisted_7$1,
+                          Vue.toDisplayString(i18n__namespace.__("Insert", "zionbuilder")),
+                          1
+                          /* TEXT */
+                        )) : (Vue.openBlock(), Vue.createBlock(_component_Loader, {
+                          key: 1,
+                          size: 13
+                        }))
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    })), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Insert this item into page", "zionbuilder")]
+                    ])
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : (Vue.openBlock(), Vue.createElementBlock(
+                  Vue.Fragment,
+                  { key: 1 },
+                  [
+                    Vue.createVNode(_component_Button, {
+                      type: "secondary",
+                      onClick: _cache[0] || (_cache[0] = ($event) => (importActive.value = !importActive.value, templateUploaded.value = !templateUploaded.value))
+                    }, {
+                      default: Vue.withCtx(() => [
+                        Vue.createVNode(_component_Icon, { icon: "import" }),
+                        Vue.createTextVNode(
+                          " " + Vue.toDisplayString(i18n__namespace.__("Import", "zionbuilder")),
+                          1
+                          /* TEXT */
+                        )
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    }),
+                    Vue.withDirectives(Vue.createVNode(_component_Icon, {
+                      icon: "refresh",
+                      size: 14,
+                      class: Vue.normalizeClass(["znpb-modal__header-button znpb-modal__header-button--library-refresh znpb-button znpb-button--line", { ["loading"]: activeLibraryConfig.value && activeLibraryConfig.value.loading }]),
+                      onClick: onRefresh
+                    }, null, 8, ["class"]), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Refresh data from the server ", "zionbuilder")]
+                    ])
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )),
                 Vue.createVNode(_component_Icon, {
                   icon: fullSize.value ? "shrink" : "maximize",
                   class: "znpb-modal__header-button",
@@ -16260,32 +18656,28 @@ var __async = (__this, __arguments, generator) => {
             }, null, 8, ["preview-open", "library-config"]))
           ]),
           _: 1
-        }, 8, ["fullscreen", "onCloseModal"])) : Vue.createCommentVNode("", true);
+          /* STABLE */
+        }, 8, ["fullscreen", "onCloseModal"])) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const PanelLibraryModal_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$7 = { class: "znpb-post-lock-modal" };
   const _hoisted_2$6 = { class: "znpb-post-lock-modal__avatar" };
   const _hoisted_3$5 = ["src"];
-  const _hoisted_4$2 = { class: "znpb-post-lock-modal__content" };
+  const _hoisted_4$1 = { class: "znpb-post-lock-modal__content" };
   const _hoisted_5$1 = { class: "znpb-post-lock-modal__content-text" };
   const _hoisted_6$1 = {
     key: 0,
     class: "znpb-post-lock-modal__error-message"
   };
-  const _hoisted_7$1 = { class: "znpb-post-lock-modal__content-buttons" };
-  const _hoisted_8$1 = ["href"];
-  const _hoisted_9$1 = ["href"];
-  const _hoisted_10$1 = { href: "" };
+  const _hoisted_7 = { class: "znpb-post-lock-modal__content-buttons" };
+  const _hoisted_8 = ["href"];
+  const _hoisted_9 = ["href"];
+  const _hoisted_10 = { href: "" };
   const _hoisted_11 = {
     key: 0,
     class: "znpb-post-lock-modal__loader-wrapper"
   };
-  const _hoisted_12 = /* @__PURE__ */ Vue.createElementVNode("span", { class: "znpb-post-lock-modal__loader" }, null, -1);
-  const _hoisted_13 = [
-    _hoisted_12
-  ];
   const _sfc_main$9 = /* @__PURE__ */ Vue.defineComponent({
     __name: "PostLock",
     setup(__props) {
@@ -16326,122 +18718,154 @@ var __async = (__this, __arguments, generator) => {
                   src: Vue.unref(UserStore).lockedUserInfo.avatar
                 }, null, 8, _hoisted_3$5)
               ]),
-              Vue.createElementVNode("div", _hoisted_4$2, [
+              Vue.createElementVNode("div", _hoisted_4$1, [
                 Vue.createElementVNode("div", _hoisted_5$1, [
-                  showError.value ? (Vue.openBlock(), Vue.createElementBlock("p", _hoisted_6$1, Vue.toDisplayString(i18n__namespace.__("Could not lock current post", "zionbuilder")), 1)) : Vue.createCommentVNode("", true),
-                  Vue.createElementVNode("p", null, Vue.toDisplayString(Vue.unref(UserStore).lockedUserInfo.message), 1)
+                  showError.value ? (Vue.openBlock(), Vue.createElementBlock(
+                    "p",
+                    _hoisted_6$1,
+                    Vue.toDisplayString(i18n__namespace.__("Could not lock current post", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )) : Vue.createCommentVNode("v-if", true),
+                  Vue.createElementVNode(
+                    "p",
+                    null,
+                    Vue.toDisplayString(Vue.unref(UserStore).lockedUserInfo.message),
+                    1
+                    /* TEXT */
+                  )
                 ]),
-                Vue.createElementVNode("div", _hoisted_7$1, [
+                Vue.createElementVNode("div", _hoisted_7, [
                   Vue.createVNode(_component_Button, { type: "gray" }, {
                     default: Vue.withCtx(() => [
                       Vue.createElementVNode("a", {
                         href: Vue.unref(urls).preview_url
-                      }, Vue.toDisplayString(i18n__namespace.__("Preview", "zionbuilder")), 9, _hoisted_8$1)
+                      }, Vue.toDisplayString(i18n__namespace.__("Preview", "zionbuilder")), 9, _hoisted_8)
                     ]),
                     _: 1
+                    /* STABLE */
                   }),
                   Vue.createVNode(_component_Button, { type: "gray" }, {
                     default: Vue.withCtx(() => [
                       Vue.createElementVNode("a", {
                         href: Vue.unref(urls).all_pages_url
-                      }, Vue.toDisplayString(i18n__namespace.__("Go back", "zionbuilder")), 9, _hoisted_9$1)
+                      }, Vue.toDisplayString(i18n__namespace.__("Go back", "zionbuilder")), 9, _hoisted_9)
                     ]),
                     _: 1
+                    /* STABLE */
                   }),
                   Vue.createVNode(_component_Button, {
                     type: "gray",
                     onClick: Vue.withModifiers(lockPages, ["prevent"])
                   }, {
                     default: Vue.withCtx(() => [
-                      Vue.createElementVNode("a", _hoisted_10$1, Vue.toDisplayString(i18n__namespace.__("Take Over", "zionbuilder")), 1)
+                      Vue.createElementVNode(
+                        "a",
+                        _hoisted_10,
+                        Vue.toDisplayString(i18n__namespace.__("Take Over", "zionbuilder")),
+                        1
+                        /* TEXT */
+                      )
                     ]),
                     _: 1
-                  }, 8, ["onClick"])
+                    /* STABLE */
+                  })
                 ])
               ]),
-              showLoader.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_11, _hoisted_13)) : Vue.createCommentVNode("", true)
+              showLoader.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_11, [..._cache[0] || (_cache[0] = [
+                Vue.createElementVNode(
+                  "span",
+                  { class: "znpb-post-lock-modal__loader" },
+                  null,
+                  -1
+                  /* CACHED */
+                )
+              ])])) : Vue.createCommentVNode("v-if", true)
             ])
           ]),
           _: 1
-        })) : Vue.createCommentVNode("", true);
+          /* STABLE */
+        })) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const PostLock_vue_vue_type_style_index_0_lang = "";
-  var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
-  var FileSaver_min = { exports: {} };
-  (function(module2, exports2) {
-    (function(a, b) {
-      b();
-    })(commonjsGlobal, function() {
-      function b(a2, b2) {
-        return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
-      }
-      function c(a2, b2, c2) {
-        var d2 = new XMLHttpRequest();
-        d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
-          g(d2.response, b2, c2);
-        }, d2.onerror = function() {
-          console.error("could not download file");
-        }, d2.send();
-      }
-      function d(a2) {
-        var b2 = new XMLHttpRequest();
-        b2.open("HEAD", a2, false);
-        try {
-          b2.send();
-        } catch (a3) {
+  var FileSaver_min$1 = { exports: {} };
+  var FileSaver_min = FileSaver_min$1.exports;
+  var hasRequiredFileSaver_min;
+  function requireFileSaver_min() {
+    if (hasRequiredFileSaver_min) return FileSaver_min$1.exports;
+    hasRequiredFileSaver_min = 1;
+    (function(module2, exports2) {
+      (function(a, b) {
+        b();
+      })(FileSaver_min, function() {
+        function b(a2, b2) {
+          return "undefined" == typeof b2 ? b2 = { autoBom: false } : "object" != typeof b2 && (console.warn("Deprecated: Expected third argument to be a object"), b2 = { autoBom: !b2 }), b2.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a2.type) ? new Blob(["\uFEFF", a2], { type: a2.type }) : a2;
         }
-        return 200 <= b2.status && 299 >= b2.status;
-      }
-      function e(a2) {
-        try {
-          a2.dispatchEvent(new MouseEvent("click"));
-        } catch (c2) {
-          var b2 = document.createEvent("MouseEvents");
-          b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
+        function c(a2, b2, c2) {
+          var d2 = new XMLHttpRequest();
+          d2.open("GET", a2), d2.responseType = "blob", d2.onload = function() {
+            g(d2.response, b2, c2);
+          }, d2.onerror = function() {
+            console.error("could not download file");
+          }, d2.send();
         }
-      }
-      var f = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f.saveAs || ("object" != typeof window || window !== f ? function() {
-      } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
-        var i = f.URL || f.webkitURL, j = document.createElement("a");
-        g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
-          i.revokeObjectURL(j.href);
-        }, 4e4), setTimeout(function() {
-          e(j);
-        }, 0));
-      } : "msSaveOrOpenBlob" in navigator ? function(f2, g2, h) {
-        if (g2 = g2 || f2.name || "download", "string" != typeof f2)
-          navigator.msSaveOrOpenBlob(b(f2, h), g2);
-        else if (d(f2))
-          c(f2, g2, h);
-        else {
-          var i = document.createElement("a");
-          i.href = f2, i.target = "_blank", setTimeout(function() {
-            e(i);
-          });
+        function d(a2) {
+          var b2 = new XMLHttpRequest();
+          b2.open("HEAD", a2, false);
+          try {
+            b2.send();
+          } catch (a3) {
+          }
+          return 200 <= b2.status && 299 >= b2.status;
         }
-      } : function(b2, d2, e2, g2) {
-        if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2)
-          return c(b2, d2, e2);
-        var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f.HTMLElement) || f.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
-        if ((j || h && i || a) && "undefined" != typeof FileReader) {
-          var k = new FileReader();
-          k.onloadend = function() {
-            var a2 = k.result;
-            a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
-          }, k.readAsDataURL(b2);
-        } else {
-          var l = f.URL || f.webkitURL, m = l.createObjectURL(b2);
-          g2 ? g2.location = m : location.href = m, g2 = null, setTimeout(function() {
-            l.revokeObjectURL(m);
-          }, 4e4);
+        function e(a2) {
+          try {
+            a2.dispatchEvent(new MouseEvent("click"));
+          } catch (c2) {
+            var b2 = document.createEvent("MouseEvents");
+            b2.initMouseEvent("click", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null), a2.dispatchEvent(b2);
+          }
         }
+        var f = "object" == typeof window && window.window === window ? window : "object" == typeof self && self.self === self ? self : "object" == typeof commonjsGlobal && commonjsGlobal.global === commonjsGlobal ? commonjsGlobal : void 0, a = f.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent), g = f.saveAs || ("object" != typeof window || window !== f ? function() {
+        } : "download" in HTMLAnchorElement.prototype && !a ? function(b2, g2, h) {
+          var i = f.URL || f.webkitURL, j = document.createElement("a");
+          g2 = g2 || b2.name || "download", j.download = g2, j.rel = "noopener", "string" == typeof b2 ? (j.href = b2, j.origin === location.origin ? e(j) : d(j.href) ? c(b2, g2, h) : e(j, j.target = "_blank")) : (j.href = i.createObjectURL(b2), setTimeout(function() {
+            i.revokeObjectURL(j.href);
+          }, 4e4), setTimeout(function() {
+            e(j);
+          }, 0));
+        } : "msSaveOrOpenBlob" in navigator ? function(f2, g2, h) {
+          if (g2 = g2 || f2.name || "download", "string" != typeof f2) navigator.msSaveOrOpenBlob(b(f2, h), g2);
+          else if (d(f2)) c(f2, g2, h);
+          else {
+            var i = document.createElement("a");
+            i.href = f2, i.target = "_blank", setTimeout(function() {
+              e(i);
+            });
+          }
+        } : function(b2, d2, e2, g2) {
+          if (g2 = g2 || open("", "_blank"), g2 && (g2.document.title = g2.document.body.innerText = "downloading..."), "string" == typeof b2) return c(b2, d2, e2);
+          var h = "application/octet-stream" === b2.type, i = /constructor/i.test(f.HTMLElement) || f.safari, j = /CriOS\/[\d]+/.test(navigator.userAgent);
+          if ((j || h && i || a) && "undefined" != typeof FileReader) {
+            var k = new FileReader();
+            k.onloadend = function() {
+              var a2 = k.result;
+              a2 = j ? a2 : a2.replace(/^data:[^;]*;/, "data:attachment/file;"), g2 ? g2.location.href = a2 : location = a2, g2 = null;
+            }, k.readAsDataURL(b2);
+          } else {
+            var l = f.URL || f.webkitURL, m = l.createObjectURL(b2);
+            g2 ? g2.location = m : location.href = m, g2 = null, setTimeout(function() {
+              l.revokeObjectURL(m);
+            }, 4e4);
+          }
+        });
+        f.saveAs = g.saveAs = g, module2.exports = g;
       });
-      f.saveAs = g.saveAs = g, module2.exports = g;
-    });
-  })(FileSaver_min);
-  var FileSaver_minExports = FileSaver_min.exports;
+    })(FileSaver_min$1);
+    return FileSaver_min$1.exports;
+  }
+  var FileSaver_minExports = requireFileSaver_min();
   const _hoisted_1$6 = { class: "znpb-modal-save-element-wrapper" };
   const _hoisted_2$5 = { class: "znpb-modal-content-save-buttons" };
   const _hoisted_3$4 = ["innerHTML"];
@@ -16500,8 +18924,7 @@ var __async = (__this, __arguments, generator) => {
           if (error.response !== void 0) {
             if (typeof error.response.data === "string") {
               errorMessage.value = error.response.data;
-            } else
-              errorMessage.value = arrayBufferToString(error.response.data);
+            } else errorMessage.value = arrayBufferToString(error.response.data);
           } else {
             console.error(error);
             errorMessage.value = error;
@@ -16542,8 +18965,7 @@ var __async = (__this, __arguments, generator) => {
         }).catch((error) => {
           if (typeof error.response.data === "string") {
             errorMessage.value = error.response.data;
-          } else
-            errorMessage.value = arrayBufferToString(error.response.data);
+          } else errorMessage.value = arrayBufferToString(error.response.data);
         }).finally(() => {
           loading.value = false;
           formModel.value = {};
@@ -16577,38 +18999,50 @@ var __async = (__this, __arguments, generator) => {
                   onClick: saveElement
                 }, {
                   default: Vue.withCtx(() => [
-                    Vue.createElementVNode("span", null, Vue.toDisplayString(i18n__namespace.__("Save", "zionbuilder")), 1)
+                    Vue.createElementVNode(
+                      "span",
+                      null,
+                      Vue.toDisplayString(i18n__namespace.__("Save", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
                   ]),
                   _: 1
+                  /* STABLE */
                 }),
                 Vue.createVNode(_component_Button, {
                   class: "znpb-button--line",
                   onClick: downloadElement
                 }, {
                   default: Vue.withCtx(() => [
-                    Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Download", "zionbuilder")), 1)
+                    Vue.createTextVNode(
+                      Vue.toDisplayString(i18n__namespace.__("Download", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
                   ]),
                   _: 1
+                  /* STABLE */
                 })
               ]),
               loadingMessage.value || errorMessage.value.length > 0 ? (Vue.openBlock(), Vue.createElementBlock("p", {
                 key: 0,
                 class: Vue.normalizeClass(["znpb-modal-save-element-wrapper__message", { "znpb-modal-save-element-wrapper__message--error": errorMessage.value.length > 0 }]),
                 innerHTML: loadingMessage.value ? loadingMessage.value : errorMessage.value
-              }, null, 10, _hoisted_3$4)) : Vue.createCommentVNode("", true),
+              }, null, 10, _hoisted_3$4)) : Vue.createCommentVNode("v-if", true),
               loading.value ? (Vue.openBlock(), Vue.createBlock(_component_Loader, {
                 key: 1,
                 size: 16,
                 class: "znpb-modal-save-element-wrapper__loading"
-              })) : Vue.createCommentVNode("", true)
+              })) : Vue.createCommentVNode("v-if", true)
             ])
           ]),
           _: 1
-        }, 8, ["title", "onCloseModal"])) : Vue.createCommentVNode("", true);
+          /* STABLE */
+        }, 8, ["title", "onCloseModal"])) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const SaveElementModal_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$5 = {
     key: 0,
     class: "znpb-assetsRegenerationWrapper"
@@ -16619,15 +19053,28 @@ var __async = (__this, __arguments, generator) => {
       const AssetsStore = store.useAssetsStore();
       return (_ctx, _cache) => {
         return Vue.unref(AssetsStore).isLoading ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$5, [
-          Vue.createTextVNode(Vue.toDisplayString(i18n__namespace.__("Regenerating assets", "zionbuilder")) + " ", 1),
-          Vue.unref(AssetsStore).filesCount > 0 ? (Vue.openBlock(), Vue.createElementBlock(Vue.Fragment, { key: 0 }, [
-            Vue.createTextVNode(Vue.toDisplayString(Vue.unref(AssetsStore).currentIndex) + "/" + Vue.toDisplayString(Vue.unref(AssetsStore).filesCount), 1)
-          ], 64)) : Vue.createCommentVNode("", true)
-        ])) : Vue.createCommentVNode("", true);
+          Vue.createTextVNode(
+            Vue.toDisplayString(i18n__namespace.__("Regenerating assets", "zionbuilder")) + " ",
+            1
+            /* TEXT */
+          ),
+          Vue.unref(AssetsStore).filesCount > 0 ? (Vue.openBlock(), Vue.createElementBlock(
+            Vue.Fragment,
+            { key: 0 },
+            [
+              Vue.createTextVNode(
+                Vue.toDisplayString(Vue.unref(AssetsStore).currentIndex) + "/" + Vue.toDisplayString(Vue.unref(AssetsStore).filesCount),
+                1
+                /* TEXT */
+              )
+            ],
+            64
+            /* STABLE_FRAGMENT */
+          )) : Vue.createCommentVNode("v-if", true)
+        ])) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const AssetsRegeneration_vue_vue_type_style_index_0_lang = "";
   const { applyFilters } = window.zb.hooks;
   const getLayoutConfigs = () => {
     return applyFilters("editor/addElementsPopup/layoutConfigs", {
@@ -17114,31 +19561,42 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_UIElementIcon = Vue.resolveComponent("UIElementIcon");
         return Vue.openBlock(), Vue.createElementBlock("li", {
-          class: Vue.normalizeClass(["znpb-element-box", ["znpb-element-box--" + _ctx.item.element_type]]),
-          title: _ctx.item.name
+          class: Vue.normalizeClass(["znpb-element-box", ["znpb-element-box--" + __props.item.element_type]]),
+          title: __props.item.name
         }, [
-          _ctx.item.label ? (Vue.openBlock(), Vue.createElementBlock("span", {
-            key: 0,
-            class: "znpb-element-box__label",
-            style: Vue.normalizeStyle({ background: _ctx.item.label.color })
-          }, Vue.toDisplayString(_ctx.item.label.text), 5)) : Vue.createCommentVNode("", true),
+          __props.item.label ? (Vue.openBlock(), Vue.createElementBlock(
+            "span",
+            {
+              key: 0,
+              class: "znpb-element-box__label",
+              style: Vue.normalizeStyle({ background: __props.item.label.color })
+            },
+            Vue.toDisplayString(__props.item.label.text),
+            5
+            /* TEXT, STYLE */
+          )) : Vue.createCommentVNode("v-if", true),
           Vue.createVNode(_component_Icon, {
             icon: "pin",
             class: Vue.normalizeClass(["znpb-element-box__favoriteIcon", {
               "znpb-element-box__favoriteIcon--active": isActiveFavorite.value
             }]),
             onClick: Vue.withModifiers(addToFavorites, ["stop"])
-          }, null, 8, ["class", "onClick"]),
+          }, null, 8, ["class"]),
           Vue.createVNode(_component_UIElementIcon, {
-            element: _ctx.item,
+            element: __props.item,
             class: "znpb-element-box__icon"
           }, null, 8, ["element"]),
-          Vue.createElementVNode("span", _hoisted_2$4, Vue.toDisplayString(_ctx.item.name), 1)
+          Vue.createElementVNode(
+            "span",
+            _hoisted_2$4,
+            Vue.toDisplayString(__props.item.name),
+            1
+            /* TEXT */
+          )
         ], 10, _hoisted_1$4);
       };
     }
   });
-  const ElementListItem_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$3 = { class: "znpb-element-category-listWrapper" };
   const _hoisted_2$3 = {
     key: 0,
@@ -17156,24 +19614,37 @@ var __async = (__this, __arguments, generator) => {
       category: {}
     },
     emits: ["add-element"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       return (_ctx, _cache) => {
         return Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1$3, [
-          _ctx.elements.length ? (Vue.openBlock(), Vue.createElementBlock("h3", _hoisted_2$3, Vue.toDisplayString(_ctx.category), 1)) : Vue.createCommentVNode("", true),
-          _ctx.elements.length ? (Vue.openBlock(), Vue.createElementBlock("ul", _hoisted_3$3, [
-            (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(_ctx.elements, (childElement) => {
-              return Vue.openBlock(), Vue.createBlock(_sfc_main$6, {
-                key: childElement.element_type,
-                item: childElement,
-                onClick: ($event) => emit("add-element", childElement)
-              }, null, 8, ["item", "onClick"]);
-            }), 128))
-          ])) : Vue.createCommentVNode("", true)
+          __props.elements.length ? (Vue.openBlock(), Vue.createElementBlock(
+            "h3",
+            _hoisted_2$3,
+            Vue.toDisplayString(__props.category),
+            1
+            /* TEXT */
+          )) : Vue.createCommentVNode("v-if", true),
+          __props.elements.length ? (Vue.openBlock(), Vue.createElementBlock("ul", _hoisted_3$3, [
+            Vue.createCommentVNode(" list of elements "),
+            (Vue.openBlock(true), Vue.createElementBlock(
+              Vue.Fragment,
+              null,
+              Vue.renderList(__props.elements, (childElement) => {
+                return Vue.openBlock(), Vue.createBlock(_sfc_main$6, {
+                  key: childElement.element_type,
+                  item: childElement,
+                  onClick: ($event) => emit("add-element", childElement)
+                }, null, 8, ["item", "onClick"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ])) : Vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   });
-  const ElementList_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$2 = { class: "znpb-tab__wrapper--columns-template-elements" };
   const _hoisted_2$2 = { class: "znpb-add-elements__filter" };
   const _hoisted_3$2 = {
@@ -17187,8 +19658,9 @@ var __async = (__this, __arguments, generator) => {
       searchKeyword: { default: "" }
     },
     emits: ["update:search-keyword"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const UIStore = useUIStore();
       const elementsDefinitionsStore = useElementDefinitionsStore();
       const { getUserData } = useUserData();
@@ -17328,44 +19800,60 @@ var __async = (__this, __arguments, generator) => {
               autocomplete: "off"
             }, null, 8, ["modelValue", "placeholder"])
           ]),
-          Vue.createElementVNode("div", {
-            ref_key: "categoriesWrapper",
-            ref: categoriesWrapper,
-            class: "znpb-fancy-scrollbar znpb-wrapper-category"
-          }, [
-            categoriesWithElements.value.length ? (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, { key: 0 }, Vue.renderList(categoriesWithElements.value, (category) => {
-              return Vue.openBlock(), Vue.createBlock(_sfc_main$5, {
-                key: category.id,
-                ref_for: true,
-                ref: (el) => {
-                  if (el)
-                    categoriesRefs.value[category.id] = el;
-                },
-                elements: category.elements,
-                element: _ctx.element,
-                category: category.name,
-                onAddElement
-              }, null, 8, ["elements", "element", "category"]);
-            }), 128)) : Vue.createCommentVNode("", true),
-            !activeElements.value.length ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_3$2, Vue.toDisplayString(i18n__namespace.__("No elements found matching the search criteria", "zionbuilder")), 1)) : Vue.createCommentVNode("", true)
-          ], 512)
+          Vue.createElementVNode(
+            "div",
+            {
+              ref_key: "categoriesWrapper",
+              ref: categoriesWrapper,
+              class: "znpb-fancy-scrollbar znpb-wrapper-category"
+            },
+            [
+              categoriesWithElements.value.length ? (Vue.openBlock(true), Vue.createElementBlock(
+                Vue.Fragment,
+                { key: 0 },
+                Vue.renderList(categoriesWithElements.value, (category) => {
+                  return Vue.openBlock(), Vue.createBlock(_sfc_main$5, {
+                    key: category.id,
+                    ref_for: true,
+                    ref: (el) => {
+                      if (el) categoriesRefs.value[category.id] = el;
+                    },
+                    elements: category.elements,
+                    element: __props.element,
+                    category: category.name,
+                    onAddElement
+                  }, null, 8, ["elements", "element", "category"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              )) : Vue.createCommentVNode("v-if", true),
+              !activeElements.value.length ? (Vue.openBlock(), Vue.createElementBlock(
+                "div",
+                _hoisted_3$2,
+                Vue.toDisplayString(i18n__namespace.__("No elements found matching the search criteria", "zionbuilder")),
+                1
+                /* TEXT */
+              )) : Vue.createCommentVNode("v-if", true)
+            ],
+            512
+            /* NEED_PATCH */
+          )
         ]);
       };
     }
   });
-  const ElementsTab_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$1 = { class: "znpb-columns-templates-wrapper" };
   const _hoisted_2$1 = { class: "znpb-columns-templates" };
   const _hoisted_3$1 = ["icon", "onClick"];
-  const _hoisted_4$1 = /* @__PURE__ */ Vue.createElementVNode("span", null, null, -1);
   const _sfc_main$3 = /* @__PURE__ */ Vue.defineComponent({
     __name: "ColumnTemplates",
     props: {
       element: {}
     },
     emits: ["close"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const { isEditable: isEditable2 } = window.zb.utils;
       const UIStore = useUIStore();
       const defaultTab = props.element.element_type === "zion_column" ? "elements" : "layouts";
@@ -17491,21 +19979,34 @@ var __async = (__this, __arguments, generator) => {
               }, {
                 default: Vue.withCtx(() => [
                   Vue.createElementVNode("div", _hoisted_2$1, [
-                    (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(Vue.unref(layouts), (columnConfig, columnId) => {
-                      return Vue.openBlock(), Vue.createElementBlock("div", {
-                        key: columnId,
-                        icon: columnId,
-                        class: Vue.normalizeClass(["znpb-columns-templates__icon znpb-columns-templates__icons--" + columnId]),
-                        onClick: Vue.withModifiers(($event) => addElements(columnConfig), ["stop"])
-                      }, [
-                        (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(getSpanNumber(columnId), (span, i) => {
-                          return Vue.openBlock(), Vue.createElementBlock("span", { key: i });
-                        }), 128))
-                      ], 10, _hoisted_3$1);
-                    }), 128))
+                    (Vue.openBlock(true), Vue.createElementBlock(
+                      Vue.Fragment,
+                      null,
+                      Vue.renderList(Vue.unref(layouts), (columnConfig, columnId) => {
+                        return Vue.openBlock(), Vue.createElementBlock("div", {
+                          key: columnId,
+                          icon: columnId,
+                          class: Vue.normalizeClass(["znpb-columns-templates__icon znpb-columns-templates__icons--" + columnId]),
+                          onClick: Vue.withModifiers(($event) => addElements(columnConfig), ["stop"])
+                        }, [
+                          (Vue.openBlock(true), Vue.createElementBlock(
+                            Vue.Fragment,
+                            null,
+                            Vue.renderList(getSpanNumber(columnId), (span, i) => {
+                              return Vue.openBlock(), Vue.createElementBlock("span", { key: i });
+                            }),
+                            128
+                            /* KEYED_FRAGMENT */
+                          ))
+                        ], 10, _hoisted_3$1);
+                      }),
+                      128
+                      /* KEYED_FRAGMENT */
+                    ))
                   ])
                 ]),
                 _: 1
+                /* STABLE */
               }),
               Vue.createVNode(_component_Tab, { name: "Elements" }, {
                 default: Vue.withCtx(() => [
@@ -17513,25 +20014,33 @@ var __async = (__this, __arguments, generator) => {
                     key: 0,
                     "search-keyword": searchKeyword.value,
                     "onUpdate:searchKeyword": _cache[0] || (_cache[0] = ($event) => searchKeyword.value = $event),
-                    element: _ctx.element
-                  }, null, 8, ["search-keyword", "element"])) : Vue.createCommentVNode("", true)
+                    element: __props.element
+                  }, null, 8, ["search-keyword", "element"])) : Vue.createCommentVNode("v-if", true)
                 ]),
                 _: 1
+                /* STABLE */
               }),
               Vue.createVNode(_component_Tab, { name: "Library" }, {
-                default: Vue.withCtx(() => [
-                  _hoisted_4$1
-                ]),
+                default: Vue.withCtx(() => [..._cache[2] || (_cache[2] = [
+                  Vue.createElementVNode(
+                    "span",
+                    null,
+                    null,
+                    -1
+                    /* CACHED */
+                  )
+                ])]),
                 _: 1
+                /* STABLE */
               })
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["activeTab"])
         ]);
       };
     }
   });
-  const ColumnTemplates_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$2 = /* @__PURE__ */ Vue.defineComponent({
     __name: "AddElementPopup",
     setup(__props) {
@@ -17567,7 +20076,8 @@ var __async = (__this, __arguments, generator) => {
             }, null, 8, ["element", "onClose"])
           ]),
           _: 1
-        }, 8, ["popper-ref", "onHide"])) : Vue.createCommentVNode("", true);
+          /* STABLE */
+        }, 8, ["popper-ref", "onHide"])) : Vue.createCommentVNode("v-if", true);
       };
     }
   });
@@ -17746,31 +20256,23 @@ var __async = (__this, __arguments, generator) => {
             }, null, 8, ["actions", "onAction"])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["popper-ref", "onHide"]);
       };
     }
   });
-  const ElementMenu_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1 = {
     key: 0,
     class: "znpb-editor-layout__preview-breakpoints"
   };
   const _hoisted_2 = ["onClick"];
-  const _hoisted_3 = /* @__PURE__ */ Vue.createElementVNode("div", { class: "znpb-main-wrapper--mainBarPlaceholderInner" }, null, -1);
-  const _hoisted_4 = [
-    _hoisted_3
-  ];
-  const _hoisted_5 = { class: "znpb-center-area" };
-  const _hoisted_6 = /* @__PURE__ */ Vue.createElementVNode("div", { class: "znpb-panel-placeholder" }, null, -1);
-  const _hoisted_7 = [
-    _hoisted_6
-  ];
-  const _hoisted_8 = {
+  const _hoisted_3 = { class: "znpb-center-area" };
+  const _hoisted_4 = {
     key: 0,
     class: "znpb-loading-wrapper-gif"
   };
-  const _hoisted_9 = ["src"];
-  const _hoisted_10 = { class: "znpb-loading-wrapper-gif__text" };
+  const _hoisted_5 = ["src"];
+  const _hoisted_6 = { class: "znpb-loading-wrapper-gif__text" };
   const _sfc_main = /* @__PURE__ */ Vue.defineComponent({
     __name: "EditorApp",
     setup(__props) {
@@ -17792,6 +20294,8 @@ var __async = (__this, __arguments, generator) => {
       const cssClasses = useCSSClassesStore();
       cssClasses.setCSSClasses(window.ZnPbInitialData.css_classes);
       cssClasses.setStaticClasses(window.ZnPbInitialData.css_static_classes);
+      const themeStyles = useThemeStylesStore();
+      themeStyles.setStyles(window.ZnPbInitialData.theme_styles);
       const pageSettings = usePageSettingsStore();
       pageSettings.settings = window.ZnPbInitialData.page_settings.values;
       const mainBarDraggingPlaceholderStyles = Vue.computed(() => {
@@ -17817,7 +20321,6 @@ var __async = (__this, __arguments, generator) => {
       Vue.provide("builderOptions", useBuilderOptionsStore);
       Vue.provide("serverRequester", serverRequest);
       Vue.provide("masks", editorData2.value.masks);
-      Vue.provide("plugin_info", editorData2.value.plugin_info);
       const showEditorButtonStyle = Vue.computed(() => {
         let buttonStyle;
         buttonStyle = {
@@ -17844,125 +20347,217 @@ var __async = (__this, __arguments, generator) => {
         const _component_Icon = Vue.resolveComponent("Icon");
         const _component_Tooltip = Vue.resolveComponent("Tooltip");
         const _component_Notice = Vue.resolveComponent("Notice");
-        return Vue.openBlock(), Vue.createElementBlock("div", {
-          id: "znpb-main-wrapper",
-          class: Vue.normalizeClass(["znpb-main-wrapper", {
-            [`znpb-responsiveDevice--${Vue.unref(activeResponsiveDeviceId)}`]: Vue.unref(activeResponsiveDeviceId)
-          }])
-        }, [
-          Vue.withDirectives(Vue.createElementVNode("div", {
-            style: Vue.normalizeStyle(showEditorButtonStyle.value),
-            class: "znpb-editor-layout__preview-buttons"
-          }, [
-            Vue.createElementVNode("div", {
-              class: "znpb-editor-layout__preview-button",
-              onClick: showPanels
-            }, [
-              Vue.createVNode(_component_Icon, { icon: "layout" })
-            ]),
-            Vue.createElementVNode("div", {
-              class: "znpb-editor-layout__preview-button",
-              onClick: _cache[0] || (_cache[0] = ($event) => devicesVisible.value = !devicesVisible.value)
-            }, [
-              Vue.createVNode(_component_Icon, {
-                icon: Vue.unref(activeResponsiveDeviceInfo2).icon
-              }, null, 8, ["icon"])
-            ]),
-            devicesVisible.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1, [
-              Vue.createVNode(_component_Tooltip, {
-                show: devicesVisible.value,
-                "show-arrows": false,
-                "append-to": "element",
-                trigger: null,
-                placement: "bottom",
-                "close-on-outside-click": true
-              }, {
-                content: Vue.withCtx(() => [
-                  (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(Vue.unref(responsiveDevices), (device, index2) => {
-                    return Vue.openBlock(), Vue.createElementBlock("div", {
-                      key: index2,
-                      ref_for: true,
-                      ref: "dropdown",
-                      class: Vue.normalizeClass(["znpb-options-devices-buttons znpb-has-responsive-options__icon-button", {
-                        "znpb-has-responsive-options__icon-button--active": Vue.unref(activeResponsiveDeviceId) === device.id
-                      }]),
-                      onClick: ($event) => activateDevice(device)
+        return Vue.openBlock(), Vue.createElementBlock(
+          Vue.Fragment,
+          null,
+          [
+            Vue.createElementVNode(
+              "div",
+              {
+                id: "znpb-main-wrapper",
+                class: Vue.normalizeClass(["znpb-main-wrapper", {
+                  [`znpb-responsiveDevice--${Vue.unref(activeResponsiveDeviceId)}`]: Vue.unref(activeResponsiveDeviceId)
+                }])
+              },
+              [
+                Vue.withDirectives(Vue.createElementVNode(
+                  "div",
+                  {
+                    style: Vue.normalizeStyle(showEditorButtonStyle.value),
+                    class: "znpb-editor-layout__preview-buttons"
+                  },
+                  [
+                    Vue.createElementVNode("div", {
+                      class: "znpb-editor-layout__preview-button",
+                      onClick: showPanels
+                    }, [
+                      Vue.createVNode(_component_Icon, { icon: "layout" })
+                    ]),
+                    Vue.createCommentVNode(" devices "),
+                    Vue.createElementVNode("div", {
+                      class: "znpb-editor-layout__preview-button",
+                      onClick: _cache[0] || (_cache[0] = ($event) => devicesVisible.value = !devicesVisible.value)
                     }, [
                       Vue.createVNode(_component_Icon, {
-                        icon: device.icon
+                        icon: Vue.unref(activeResponsiveDeviceInfo2).icon
                       }, null, 8, ["icon"])
-                    ], 10, _hoisted_2);
-                  }), 128))
+                    ]),
+                    devicesVisible.value ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_1, [
+                      Vue.createCommentVNode(" responsive option "),
+                      Vue.createVNode(_component_Tooltip, {
+                        show: devicesVisible.value,
+                        "show-arrows": false,
+                        "append-to": "element",
+                        trigger: null,
+                        placement: "bottom",
+                        "close-on-outside-click": true
+                      }, {
+                        content: Vue.withCtx(() => [
+                          (Vue.openBlock(true), Vue.createElementBlock(
+                            Vue.Fragment,
+                            null,
+                            Vue.renderList(Vue.unref(responsiveDevices), (device, index) => {
+                              return Vue.openBlock(), Vue.createElementBlock("div", {
+                                key: index,
+                                ref_for: true,
+                                ref: "dropdown",
+                                class: Vue.normalizeClass(["znpb-options-devices-buttons znpb-has-responsive-options__icon-button", {
+                                  "znpb-has-responsive-options__icon-button--active": Vue.unref(activeResponsiveDeviceId) === device.id
+                                }]),
+                                onClick: ($event) => activateDevice(device)
+                              }, [
+                                Vue.createVNode(_component_Icon, {
+                                  icon: device.icon
+                                }, null, 8, ["icon"])
+                              ], 10, _hoisted_2);
+                            }),
+                            128
+                            /* KEYED_FRAGMENT */
+                          ))
+                        ]),
+                        _: 1
+                        /* STABLE */
+                      }, 8, ["show"])
+                    ])) : Vue.createCommentVNode("v-if", true)
+                  ],
+                  4
+                  /* STYLE */
+                ), [
+                  [Vue.vShow, Vue.unref(UIStore).isPreviewMode]
                 ]),
-                _: 1
-              }, 8, ["show"])
-            ])) : Vue.createCommentVNode("", true)
-          ], 4), [
-            [Vue.vShow, Vue.unref(UIStore).isPreviewMode]
-          ]),
-          Vue.createElementVNode("div", {
-            class: Vue.normalizeClass(["znpb-panels-wrapper", {
-              [`znpb-editorHeaderPosition--${Vue.unref(UIStore).mainBar.position}`]: Vue.unref(UIStore).mainBar.position
-            }])
-          }, [
-            Vue.unref(UIStore).mainBar.isDragging ? (Vue.openBlock(), Vue.createElementBlock("div", {
-              key: 0,
-              class: Vue.normalizeClass(["znpb-main-wrapper--mainBarPlaceholder", {
-                [`znpb-main-wrapper--mainBarPlaceholder--${Vue.unref(UIStore).mainBar.draggingPosition}`]: Vue.unref(UIStore).mainBar.draggingPosition
-              }])
-            }, _hoisted_4, 2)) : Vue.createCommentVNode("", true),
-            Vue.createVNode(_sfc_main$r),
-            Vue.createElementVNode("div", _hoisted_5, [
-              Vue.unref(UIStore).panelPlaceholder.visibility ? (Vue.openBlock(), Vue.createElementBlock("div", {
-                key: 0,
-                id: "znpb-panel-placeholder",
-                style: Vue.normalizeStyle({ left: Vue.unref(UIStore).panelPlaceholder.left + "px" })
-              }, _hoisted_7, 4)) : Vue.createCommentVNode("", true),
-              (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(Vue.unref(UIStore).openPanels, (panel) => {
-                return Vue.withDirectives((Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent(panelComponentsMap[panel.id]), {
-                  key: panel.id,
-                  panel
-                }, null, 8, ["panel"])), [
-                  [Vue.vShow, !Vue.unref(UIStore).isPreviewMode || panel.id === "preview-iframe"]
-                ]);
-              }), 128))
-            ])
-          ], 2),
-          Vue.unref(UIStore).isPreviewLoading ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_8, [
-            Vue.createElementVNode("img", {
-              src: Vue.unref(editorData2).urls.loader
-            }, null, 8, _hoisted_9),
-            Vue.createElementVNode("div", _hoisted_10, Vue.toDisplayString(i18n__namespace.__("Generating preview...", "zionbuilder")), 1)
-          ])) : Vue.createCommentVNode("", true),
-          Vue.createVNode(Vue.unref(_sfc_main$2)),
-          Vue.unref(UIStore).activeElementMenu ? (Vue.openBlock(), Vue.createBlock(Vue.unref(_sfc_main$1), { key: 1 })) : Vue.createCommentVNode("", true),
-          Vue.createVNode(_sfc_main$8),
-          Vue.createVNode(_sfc_main$9),
-          Vue.createVNode(_sfc_main$a),
-          Vue.createVNode(_sfc_main$7),
-          (Vue.openBlock(true), Vue.createElementBlock(Vue.Fragment, null, Vue.renderList(Vue.unref(notifications), (error) => {
-            return Vue.openBlock(), Vue.createBlock(_component_Notice, {
-              key: error.message,
-              error,
-              onCloseNotice: ($event) => error.remove()
-            }, null, 8, ["error", "onCloseNotice"]);
-          }), 128)),
-          Vue.unref(UIStore).mainBar.isDragging ? (Vue.openBlock(), Vue.createElementBlock("div", {
-            key: 2,
-            class: "znpb-editor-header__helper",
-            style: Vue.normalizeStyle(mainBarDraggingPlaceholderStyles.value)
-          }, [
-            Vue.createVNode(_component_Icon, {
-              icon: "more",
-              rotate: "90"
-            })
-          ], 4)) : Vue.createCommentVNode("", true),
-          Vue.createVNode(Vue.unref(components.CornerLoader), { "is-loading": Vue.unref(isSavePageLoading2) }, null, 8, ["is-loading"])
-        ], 2);
+                Vue.createElementVNode(
+                  "div",
+                  {
+                    class: Vue.normalizeClass(["znpb-panels-wrapper", {
+                      [`znpb-editorHeaderPosition--${Vue.unref(UIStore).mainBar.position}`]: Vue.unref(UIStore).mainBar.position
+                    }])
+                  },
+                  [
+                    Vue.unref(UIStore).mainBar.isDragging ? (Vue.openBlock(), Vue.createElementBlock(
+                      "div",
+                      {
+                        key: 0,
+                        class: Vue.normalizeClass(["znpb-main-wrapper--mainBarPlaceholder", {
+                          [`znpb-main-wrapper--mainBarPlaceholder--${Vue.unref(UIStore).mainBar.draggingPosition}`]: Vue.unref(UIStore).mainBar.draggingPosition
+                        }])
+                      },
+                      [..._cache[1] || (_cache[1] = [
+                        Vue.createElementVNode(
+                          "div",
+                          { class: "znpb-main-wrapper--mainBarPlaceholderInner" },
+                          null,
+                          -1
+                          /* CACHED */
+                        )
+                      ])],
+                      2
+                      /* CLASS */
+                    )) : Vue.createCommentVNode("v-if", true),
+                    Vue.createVNode(_sfc_main$r),
+                    Vue.createCommentVNode(" center area "),
+                    Vue.createElementVNode("div", _hoisted_3, [
+                      Vue.unref(UIStore).panelPlaceholder.visibility ? (Vue.openBlock(), Vue.createElementBlock(
+                        "div",
+                        {
+                          key: 0,
+                          id: "znpb-panel-placeholder",
+                          style: Vue.normalizeStyle({ left: Vue.unref(UIStore).panelPlaceholder.left + "px" })
+                        },
+                        [..._cache[2] || (_cache[2] = [
+                          Vue.createElementVNode(
+                            "div",
+                            { class: "znpb-panel-placeholder" },
+                            null,
+                            -1
+                            /* CACHED */
+                          )
+                        ])],
+                        4
+                        /* STYLE */
+                      )) : Vue.createCommentVNode("v-if", true),
+                      Vue.createCommentVNode(" Start panels "),
+                      (Vue.openBlock(true), Vue.createElementBlock(
+                        Vue.Fragment,
+                        null,
+                        Vue.renderList(Vue.unref(UIStore).openPanels, (panel) => {
+                          return Vue.withDirectives((Vue.openBlock(), Vue.createBlock(Vue.resolveDynamicComponent(panelComponentsMap[panel.id]), {
+                            key: panel.id,
+                            panel
+                          }, null, 8, ["panel"])), [
+                            [Vue.vShow, !Vue.unref(UIStore).isPreviewMode || panel.id === "preview-iframe"]
+                          ]);
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      ))
+                    ]),
+                    Vue.createCommentVNode(" end center area ")
+                  ],
+                  2
+                  /* CLASS */
+                ),
+                Vue.unref(UIStore).isPreviewLoading ? (Vue.openBlock(), Vue.createElementBlock("div", _hoisted_4, [
+                  Vue.createElementVNode("img", {
+                    src: Vue.unref(editorData2).urls.loader
+                  }, null, 8, _hoisted_5),
+                  Vue.createElementVNode(
+                    "div",
+                    _hoisted_6,
+                    Vue.toDisplayString(i18n__namespace.__("Generating preview...", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
+                ])) : Vue.createCommentVNode("v-if", true),
+                Vue.createCommentVNode(" Add Elements Popup "),
+                Vue.createVNode(Vue.unref(_sfc_main$2)),
+                Vue.unref(UIStore).activeElementMenu ? (Vue.openBlock(), Vue.createBlock(Vue.unref(_sfc_main$1), { key: 1 })) : Vue.createCommentVNode("v-if", true),
+                Vue.createVNode(_sfc_main$8),
+                Vue.createVNode(_sfc_main$9),
+                Vue.createVNode(_sfc_main$a),
+                Vue.createVNode(_sfc_main$7),
+                Vue.createCommentVNode(" notices "),
+                (Vue.openBlock(true), Vue.createElementBlock(
+                  Vue.Fragment,
+                  null,
+                  Vue.renderList(Vue.unref(notifications), (error) => {
+                    return Vue.openBlock(), Vue.createBlock(_component_Notice, {
+                      key: error.message,
+                      error,
+                      onCloseNotice: ($event) => error.remove()
+                    }, null, 8, ["error", "onCloseNotice"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                )),
+                Vue.unref(UIStore).mainBar.isDragging ? (Vue.openBlock(), Vue.createElementBlock(
+                  "div",
+                  {
+                    key: 2,
+                    class: "znpb-editor-header__helper",
+                    style: Vue.normalizeStyle(mainBarDraggingPlaceholderStyles.value)
+                  },
+                  [
+                    Vue.createVNode(_component_Icon, {
+                      icon: "more",
+                      rotate: "90"
+                    })
+                  ],
+                  4
+                  /* STYLE */
+                )) : Vue.createCommentVNode("v-if", true),
+                Vue.createVNode(Vue.unref(components.CornerLoader), { "is-loading": Vue.unref(isSavePageLoading2) }, null, 8, ["is-loading"])
+              ],
+              2
+              /* CLASS */
+            ),
+            Vue.createCommentVNode(" end znpb-main-wrapper ")
+          ],
+          2112
+          /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
+        );
       };
     }
   });
-  const EditorApp_vue_vue_type_style_index_0_lang = "";
   class CommandManager {
     constructor() {
       __publicField(this, "commands", []);
@@ -18043,8 +20638,8 @@ var __async = (__this, __arguments, generator) => {
   const _AddElement = class _AddElement extends HistoryCommand {
     doCommand() {
       const contentStore = useContentStore();
-      const { element, parentUID, index: index2 } = this.data;
-      const newElement = contentStore.addElement(element, parentUID, index2);
+      const { element, parentUID, index } = this.data;
+      const newElement = contentStore.addElement(element, parentUID, index);
       if (newElement) {
         const historyManager = this.getHistory();
         historyManager.addHistoryItem({
@@ -18053,7 +20648,7 @@ var __async = (__this, __arguments, generator) => {
           data: {
             elementModel: newElement.toJSON(),
             parentUID,
-            index: index2
+            index
           },
           title: newElement.name,
           action: this.getActionName("added")
@@ -18071,9 +20666,9 @@ var __async = (__this, __arguments, generator) => {
     }
     static redo(historyItem) {
       const { data = {} } = historyItem;
-      const { elementModel, parentUID, index: index2 } = data;
+      const { elementModel, parentUID, index } = data;
       const contentStore = useContentStore();
-      contentStore.addElement(elementModel, parentUID, index2);
+      contentStore.addElement(elementModel, parentUID, index);
     }
   };
   __publicField(_AddElement, "commandID", "editor/elements/add");
@@ -18106,9 +20701,9 @@ var __async = (__this, __arguments, generator) => {
      */
     static undo(historyItem) {
       const { data = {} } = historyItem;
-      const { elementModel, parentUID, index: index2 } = data;
+      const { elementModel, parentUID, index } = data;
       const contentStore = useContentStore();
-      contentStore.addElement(elementModel, parentUID, index2);
+      contentStore.addElement(elementModel, parentUID, index);
     }
     static redo(historyItem) {
       const { data } = historyItem;
@@ -18365,8 +20960,8 @@ var __async = (__this, __arguments, generator) => {
   let WrapElement = _WrapElement;
   const _CopyElement = class _CopyElement extends HistoryCommand {
     doCommand() {
-      const { parent: parent2, copiedElement: copiedElement2, index: index2 } = this.data;
-      const newElement = parent2.addChild(regenerateUIDs(copiedElement2), index2);
+      const { parent: parent2, copiedElement: copiedElement2, index } = this.data;
+      const newElement = parent2.addChild(regenerateUIDs(copiedElement2), index);
       if (newElement) {
         const historyManager = this.getHistory();
         historyManager.addHistoryItem({
@@ -18375,7 +20970,7 @@ var __async = (__this, __arguments, generator) => {
           data: {
             elementModel: newElement.toJSON(),
             parentUID: parent2.uid,
-            index: index2
+            index
           },
           title: newElement.name,
           action: this.getActionName("copied")
@@ -18392,19 +20987,19 @@ var __async = (__this, __arguments, generator) => {
       }
     }
     static redo(historyItem) {
-      const { elementModel, parentUID, index: index2 } = historyItem.data || {};
+      const { elementModel, parentUID, index } = historyItem.data || {};
       const contentStore = useContentStore();
-      contentStore.addElement(elementModel, parentUID, index2);
+      contentStore.addElement(elementModel, parentUID, index);
     }
   };
   __publicField(_CopyElement, "commandID", "editor/elements/copy");
   let CopyElement = _CopyElement;
   const _MoveElement = class _MoveElement extends HistoryCommand {
     doCommand() {
-      const { element, newParent, index: index2 } = this.data;
+      const { element, newParent, index } = this.data;
       const oldParentUID = element.parentUID;
       const oldIndex = element.indexInParent;
-      element.move(newParent, index2);
+      element.move(newParent, index);
       const historyManager = this.getHistory();
       historyManager.addHistoryItem({
         undo: _MoveElement.undo,
@@ -18413,7 +21008,7 @@ var __async = (__this, __arguments, generator) => {
           elementUID: element.uid,
           oldParentUID,
           newParentUID: newParent.uid,
-          newIndex: index2,
+          newIndex: index,
           oldIndex
         },
         title: element.name,
@@ -18461,7 +21056,7 @@ var __async = (__this, __arguments, generator) => {
             stylesToAdd[styleSelector] = styles.styles[styleSelector];
           }
         });
-        merge$1(element.options._styles || {}, stylesToAdd);
+        merge(element.options._styles || {}, stylesToAdd);
       }
       if (styles.custom_css.length) {
         const existingStyles = get(element, "options._advanced_options._custom_css", "");
@@ -18508,7 +21103,7 @@ var __async = (__this, __arguments, generator) => {
               stylesToAdd[styleSelector] = newStyles.styles[styleSelector];
             }
           });
-          merge$1(element.options._styles || {}, stylesToAdd);
+          merge(element.options._styles || {}, stylesToAdd);
         }
         if (newStyles.custom_css.length) {
           const existingStyles = get(element, "options._advanced_options._custom_css", "");
@@ -18523,7 +21118,7 @@ var __async = (__this, __arguments, generator) => {
     doCommand() {
       const { element, classes } = this.data;
       const oldCSSClasses = [...get(element.options, "_styles.wrapper.classes", [])];
-      merge$1(element.options, {
+      merge(element.options, {
         _styles: {
           wrapper: {
             classes
@@ -18556,7 +21151,7 @@ var __async = (__this, __arguments, generator) => {
       const contentStore = useContentStore();
       const element = contentStore.getElement(elementUID);
       if (element) {
-        merge$1(element.options, {
+        merge(element.options, {
           _styles: {
             wrapper: {
               classes: [...newCSSClasses]
@@ -18610,8 +21205,8 @@ var __async = (__this, __arguments, generator) => {
       const UIStore = useUIStore();
       const contentStore = useContentStore();
       const rootElement = contentStore.contentRootElement;
-      const { element = rootElement, index: index2 = -1 } = UIStore.libraryInsertConfig;
-      const addedElements = element.addChildren(templateContent, index2);
+      const { element = rootElement, index = -1 } = UIStore.libraryInsertConfig;
+      const addedElements = element.addChildren(templateContent, index);
       if (addedElements.length) {
         this.getHistory().addHistoryItem({
           undo: _AddTemplate.undo,
@@ -18619,7 +21214,7 @@ var __async = (__this, __arguments, generator) => {
           data: {
             templateContent,
             elementUID: element.uid,
-            index: index2,
+            index,
             addedElementsUIDs: addedElements.map((el) => el.uid)
           },
           title: i18n__namespace.__("Template", "zionbuilder"),
@@ -18637,17 +21232,17 @@ var __async = (__this, __arguments, generator) => {
       }
     }
     static redo(historyItem) {
-      const { templateContent, elementUID, index: index2 } = historyItem.data || {};
+      const { templateContent, elementUID, index } = historyItem.data || {};
       const contentStore = useContentStore();
       const element = contentStore.getElement(elementUID);
-      element.addChildren(templateContent, index2);
+      element.addChildren(templateContent, index);
     }
   };
   __publicField(_AddTemplate, "commandID", "editor/elements/add-template");
   let AddTemplate = _AddTemplate;
   const _AddElements = class _AddElements extends HistoryCommand {
     doCommand() {
-      const { elements, elementUID, index: index2 } = this.data;
+      const { elements, elementUID, index } = this.data;
       const contentStore = useContentStore();
       const element = contentStore.getElement(elementUID);
       const elementsForInsert = regenerateUIDsForContent(elements);
@@ -18655,7 +21250,7 @@ var __async = (__this, __arguments, generator) => {
         console.log(`Element with id ${elementUID} not found. Cannot add elements`);
         return;
       }
-      const addedElements = element.addChildren(elements, index2);
+      const addedElements = element.addChildren(elements, index);
       if (addedElements.length) {
         this.getHistory().addHistoryItem({
           undo: _AddElements.undo,
@@ -18663,7 +21258,7 @@ var __async = (__this, __arguments, generator) => {
           data: {
             elements: elementsForInsert,
             elementUID,
-            index: index2,
+            index,
             addedElementsUIDs: addedElements.map((el) => el.uid)
           },
           title: i18n__namespace.__("Layout", "zionbuilder"),
@@ -18681,10 +21276,10 @@ var __async = (__this, __arguments, generator) => {
       }
     }
     static redo(historyItem) {
-      const { elements, elementUID, index: index2 } = historyItem.data || {};
+      const { elements, elementUID, index } = historyItem.data || {};
       const contentStore = useContentStore();
       const element = contentStore.getElement(elementUID);
-      element.addChildren(elements, index2);
+      element.addChildren(elements, index);
     }
   };
   __publicField(_AddElements, "commandID", "editor/elements/add-elements");

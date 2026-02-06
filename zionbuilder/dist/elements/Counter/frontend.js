@@ -1,12 +1,8 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 (function() {
   "use strict";
-  const main = "";
   window.zbScripts = window.zbScripts || {};
   class Counter {
     constructor(domNode) {
@@ -43,8 +39,7 @@ var __publicField = (obj, key, value) => {
       const startTime = performance.now();
       requestAnimationFrame(function step(time) {
         let pTime = (time - startTime) / duration;
-        if (pTime > 1)
-          pTime = 1;
+        if (pTime > 1) pTime = 1;
         render(from + (to - from) * pTime);
         if (pTime < 1) {
           requestAnimationFrame(step);

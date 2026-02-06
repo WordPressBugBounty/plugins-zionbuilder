@@ -19,8 +19,7 @@ var __spreadValues = (a, b) => {
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 (function(vue) {
   "use strict";
-  const _hoisted_1 = /* @__PURE__ */ vue.createElementVNode("span", { class: "zb-el-accordions-accordionIcon" }, null, -1);
-  const _hoisted_2 = ["innerHTML"];
+  const _hoisted_1 = ["innerHTML"];
   const _sfc_main$1 = /* @__PURE__ */ vue.defineComponent({
     __name: "accordionItem",
     props: {
@@ -42,30 +41,54 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
         return props.options.title_tag || parentAccordionTitle || "div";
       });
       return (_ctx, _cache) => {
-        return vue.unref(accordionApi) ? (vue.openBlock(), vue.createElementBlock("div", {
-          key: 0,
-          class: vue.normalizeClass(["zb-el-accordions-accordionWrapper", { "zb-el-accordions--active": activeByDefault.value }])
-        }, [
-          vue.renderSlot(_ctx.$slots, "start"),
-          (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(titleTag.value), vue.mergeProps({
-            class: ["zb-el-accordions-accordionTitle", vue.unref(accordionApi).getStyleClasses("inner_content_styles_title")]
-          }, vue.unref(accordionApi).getAttributesForTag("inner_content_styles_title")), {
-            default: vue.withCtx(() => [
-              vue.createTextVNode(vue.toDisplayString(_ctx.options.title) + " ", 1),
-              _hoisted_1
-            ]),
-            _: 1
-          }, 16, ["class"])),
-          vue.createElementVNode("div", vue.mergeProps({
-            class: ["zb-el-accordions-accordionContent", vue.unref(accordionApi).getStyleClasses("inner_content_styles_content")]
-          }, vue.unref(accordionApi).getAttributesForTag("inner_content_styles_content")), [
-            vue.createElementVNode("div", {
-              class: "zb-el-accordions-accordionContent__inner",
-              innerHTML: renderedContent.value
-            }, null, 8, _hoisted_2)
-          ], 16),
-          vue.renderSlot(_ctx.$slots, "end")
-        ], 2)) : vue.createCommentVNode("", true);
+        return vue.unref(accordionApi) ? (vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            key: 0,
+            class: vue.normalizeClass(["zb-el-accordions-accordionWrapper", { "zb-el-accordions--active": activeByDefault.value }])
+          },
+          [
+            vue.renderSlot(_ctx.$slots, "start"),
+            (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(titleTag.value), vue.mergeProps({
+              class: ["zb-el-accordions-accordionTitle", vue.unref(accordionApi).getStyleClasses("inner_content_styles_title")]
+            }, vue.unref(accordionApi).getAttributesForTag("inner_content_styles_title")), {
+              default: vue.withCtx(() => [
+                vue.createTextVNode(
+                  vue.toDisplayString(__props.options.title) + " ",
+                  1
+                  /* TEXT */
+                ),
+                _cache[0] || (_cache[0] = vue.createElementVNode(
+                  "span",
+                  { class: "zb-el-accordions-accordionIcon" },
+                  null,
+                  -1
+                  /* CACHED */
+                ))
+              ]),
+              _: 1
+              /* STABLE */
+            }, 16, ["class"])),
+            vue.createElementVNode(
+              "div",
+              vue.mergeProps({
+                class: ["zb-el-accordions-accordionContent", vue.unref(accordionApi).getStyleClasses("inner_content_styles_content")]
+              }, vue.unref(accordionApi).getAttributesForTag("inner_content_styles_content")),
+              [
+                vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
+                vue.createElementVNode("div", {
+                  class: "zb-el-accordions-accordionContent__inner",
+                  innerHTML: renderedContent.value
+                }, null, 8, _hoisted_1)
+              ],
+              16
+              /* FULL_PROPS */
+            ),
+            vue.renderSlot(_ctx.$slots, "end")
+          ],
+          2
+          /* CLASS */
+        )) : vue.createCommentVNode("v-if", true);
       };
     }
   });
@@ -87,7 +110,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
       }));
       return (_ctx, _cache) => {
         const _component_SortableContent = vue.resolveComponent("SortableContent");
-        return vue.openBlock(), vue.createBlock(_component_SortableContent, { element: _ctx.element }, {
+        return vue.openBlock(), vue.createBlock(_component_SortableContent, { element: __props.element }, {
           start: vue.withCtx(() => [
             vue.renderSlot(_ctx.$slots, "start")
           ]),
@@ -95,6 +118,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
             vue.renderSlot(_ctx.$slots, "end")
           ]),
           _: 3
+          /* FORWARDED */
         }, 8, ["element"]);
       };
     }

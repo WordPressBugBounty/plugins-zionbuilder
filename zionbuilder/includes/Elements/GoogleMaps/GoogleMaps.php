@@ -94,7 +94,7 @@ class GoogleMaps extends Element {
 			'zoom',
 			[
 				'type'        => 'slider',
-				'description' => esc_html__( 'Set the map zoom.' ),
+				'description' => esc_html__( 'Set the map zoom.', 'zionbuilder' ),
 				'title'       => esc_html__( 'Zoom level', 'zionbuilder' ),
 				'default'     => 15,
 				'min'         => 1,
@@ -106,7 +106,7 @@ class GoogleMaps extends Element {
 			'height',
 			[
 				'type'                    => 'dynamic_slider',
-				'description'             => esc_html__( 'Set the map height.' ),
+				'description'             => esc_html__( 'Set the map height.', 'zionbuilder' ),
 				'title'                   => esc_html__( 'Map height', 'zionbuilder' ),
 				'default'                 => '400px',
 				'show_responsive_buttons' => true,
@@ -156,7 +156,7 @@ class GoogleMaps extends Element {
 			'map_type',
 			[
 				'type'        => 'custom_selector',
-				'description' => __( 'Set the map type.' ),
+				'description' => __( 'Set the map type.', 'zionbuilder' ),
 				'title'       => __( 'Map type', 'zionbuilder' ),
 				'default'     => 'normal',
 				'columns'     => 2,

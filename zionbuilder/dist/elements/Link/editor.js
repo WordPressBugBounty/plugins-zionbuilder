@@ -11,11 +11,21 @@
       const props = __props;
       const extraAttributes = vue.computed(() => window.zb.utils.getLinkAttributes(props.options.link));
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("a", vue.normalizeProps(vue.guardReactiveProps(extraAttributes.value)), [
-          vue.renderSlot(_ctx.$slots, "start"),
-          vue.createTextVNode(" " + vue.toDisplayString(_ctx.options.content) + " ", 1),
-          vue.renderSlot(_ctx.$slots, "end")
-        ], 16);
+        return vue.openBlock(), vue.createElementBlock(
+          "a",
+          vue.normalizeProps(vue.guardReactiveProps(extraAttributes.value)),
+          [
+            vue.renderSlot(_ctx.$slots, "start"),
+            vue.createTextVNode(
+              " " + vue.toDisplayString(__props.options.content) + " ",
+              1
+              /* TEXT */
+            ),
+            vue.renderSlot(_ctx.$slots, "end")
+          ],
+          16
+          /* FULL_PROPS */
+        );
       };
     }
   });

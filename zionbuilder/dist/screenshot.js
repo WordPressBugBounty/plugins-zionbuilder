@@ -37,7 +37,6 @@ var __async = (__this, __arguments, generator) => {
 };
 (function() {
   "use strict";
-  const index = "";
   function resolveUrl(url, baseUrl) {
     if (url.match(/^[a-z]+:\/\//i)) {
       return url;
@@ -59,7 +58,7 @@ var __async = (__this, __arguments, generator) => {
     a.href = url;
     return a.href;
   }
-  const uuid = (() => {
+  const uuid = /* @__PURE__ */ (() => {
     let counter = 0;
     const random = () => (
       // eslint-disable-next-line no-bitwise
@@ -76,6 +75,18 @@ var __async = (__this, __arguments, generator) => {
       arr.push(arrayLike[i]);
     }
     return arr;
+  }
+  let styleProps = null;
+  function getStyleProperties(options = {}) {
+    if (styleProps) {
+      return styleProps;
+    }
+    if (options.includeStyleProperties) {
+      styleProps = options.includeStyleProperties;
+      return styleProps;
+    }
+    styleProps = toArray(window.getComputedStyle(document.documentElement));
+    return styleProps;
   }
   function px(node, styleProperty) {
     const win = node.ownerDocument.defaultView || window;
@@ -136,8 +147,11 @@ var __async = (__this, __arguments, generator) => {
   function createImage(url) {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.decode = () => resolve(img);
-      img.onload = () => resolve(img);
+      img.onload = () => {
+        img.decode().then(() => {
+          requestAnimationFrame(() => resolve(img));
+        });
+      };
       img.onerror = reject;
       img.crossOrigin = "anonymous";
       img.decoding = "async";
@@ -179,19 +193,19 @@ var __async = (__this, __arguments, generator) => {
     const content = style.getPropertyValue("content");
     return `${style.cssText} content: '${content.replace(/'|"/g, "")}';`;
   }
-  function formatCSSProperties(style) {
-    return toArray(style).map((name) => {
+  function formatCSSProperties(style, options) {
+    return getStyleProperties(options).map((name) => {
       const value = style.getPropertyValue(name);
       const priority = style.getPropertyPriority(name);
       return `${name}: ${value}${priority ? " !important" : ""};`;
     }).join(" ");
   }
-  function getPseudoElementStyle(className, pseudo, style) {
+  function getPseudoElementStyle(className, pseudo, style, options) {
     const selector = `.${className}:${pseudo}`;
-    const cssText = style.cssText ? formatCSSText(style) : formatCSSProperties(style);
+    const cssText = style.cssText ? formatCSSText(style) : formatCSSProperties(style, options);
     return document.createTextNode(`${selector}{${cssText}}`);
   }
-  function clonePseudoElement(nativeNode, clonedNode, pseudo) {
+  function clonePseudoElement(nativeNode, clonedNode, pseudo, options) {
     const style = window.getComputedStyle(nativeNode, pseudo);
     const content = style.getPropertyValue("content");
     if (content === "" || content === "none") {
@@ -204,12 +218,12 @@ var __async = (__this, __arguments, generator) => {
       return;
     }
     const styleElement = document.createElement("style");
-    styleElement.appendChild(getPseudoElementStyle(className, pseudo, style));
+    styleElement.appendChild(getPseudoElementStyle(className, pseudo, style, options));
     clonedNode.appendChild(styleElement);
   }
-  function clonePseudoElements(nativeNode, clonedNode) {
-    clonePseudoElement(nativeNode, clonedNode, ":before");
-    clonePseudoElement(nativeNode, clonedNode, ":after");
+  function clonePseudoElements(nativeNode, clonedNode, options) {
+    clonePseudoElement(nativeNode, clonedNode, ":before", options);
+    clonePseudoElement(nativeNode, clonedNode, ":after", options);
   }
   const WOFF = "application/font-woff";
   const JPEG = "image/jpeg";
@@ -333,12 +347,12 @@ var __async = (__this, __arguments, generator) => {
       return createImage(dataURL);
     });
   }
-  function cloneIFrameElement(iframe) {
+  function cloneIFrameElement(iframe, options) {
     return __async(this, null, function* () {
       var _a;
       try {
         if ((_a = iframe === null || iframe === void 0 ? void 0 : iframe.contentDocument) === null || _a === void 0 ? void 0 : _a.body) {
-          return yield cloneNode(iframe.contentDocument.body, {}, true);
+          return yield cloneNode(iframe.contentDocument.body, options, true);
         }
       } catch (_b) {
       }
@@ -354,15 +368,19 @@ var __async = (__this, __arguments, generator) => {
         return cloneVideoElement(node, options);
       }
       if (isInstanceOfElement(node, HTMLIFrameElement)) {
-        return cloneIFrameElement(node);
+        return cloneIFrameElement(node, options);
       }
-      return node.cloneNode(false);
+      return node.cloneNode(isSVGElement(node));
     });
   }
   const isSlotElement = (node) => node.tagName != null && node.tagName.toUpperCase() === "SLOT";
+  const isSVGElement = (node) => node.tagName != null && node.tagName.toUpperCase() === "SVG";
   function cloneChildren(nativeNode, clonedNode, options) {
     return __async(this, null, function* () {
       var _a, _b;
+      if (isSVGElement(clonedNode)) {
+        return clonedNode;
+      }
       let children = [];
       if (isSlotElement(nativeNode) && nativeNode.assignedNodes) {
         children = toArray(nativeNode.assignedNodes());
@@ -382,7 +400,7 @@ var __async = (__this, __arguments, generator) => {
       return clonedNode;
     });
   }
-  function cloneCSSStyle(nativeNode, clonedNode) {
+  function cloneCSSStyle(nativeNode, clonedNode, options) {
     const targetStyle = clonedNode.style;
     if (!targetStyle) {
       return;
@@ -392,7 +410,7 @@ var __async = (__this, __arguments, generator) => {
       targetStyle.cssText = sourceStyle.cssText;
       targetStyle.transformOrigin = sourceStyle.transformOrigin;
     } else {
-      toArray(sourceStyle).forEach((name) => {
+      getStyleProperties(options).forEach((name) => {
         let value = sourceStyle.getPropertyValue(name);
         if (name === "font-size" && value.endsWith("px")) {
           const reducedFont = Math.floor(parseFloat(value.substring(0, value.length - 2))) - 0.1;
@@ -425,10 +443,10 @@ var __async = (__this, __arguments, generator) => {
       }
     }
   }
-  function decorate(nativeNode, clonedNode) {
+  function decorate(nativeNode, clonedNode, options) {
     if (isInstanceOfElement(clonedNode, Element)) {
-      cloneCSSStyle(nativeNode, clonedNode);
-      clonePseudoElements(nativeNode, clonedNode);
+      cloneCSSStyle(nativeNode, clonedNode, options);
+      clonePseudoElements(nativeNode, clonedNode, options);
       cloneInputValue(nativeNode, clonedNode);
       cloneSelectValue(nativeNode, clonedNode);
     }
@@ -477,7 +495,7 @@ var __async = (__this, __arguments, generator) => {
       if (!isRoot && options.filter && !options.filter(node)) {
         return null;
       }
-      return Promise.resolve(node).then((clonedNode) => cloneSingleNode(clonedNode, options)).then((clonedNode) => cloneChildren(node, clonedNode, options)).then((clonedNode) => decorate(node, clonedNode)).then((clonedNode) => ensureSVGSymbols(clonedNode, options));
+      return Promise.resolve(node).then((clonedNode) => cloneSingleNode(clonedNode, options)).then((clonedNode) => cloneChildren(node, clonedNode, options)).then((clonedNode) => decorate(node, clonedNode, options)).then((clonedNode) => ensureSVGSymbols(clonedNode, options));
     });
   }
   const URL_REGEX = /url\((['"]?)([^'"]+?)\1\)/g;
@@ -501,10 +519,8 @@ var __async = (__this, __arguments, generator) => {
         const resolvedURL = baseURL ? resolveUrl(resourceURL, baseURL) : resourceURL;
         const contentType = getMimeType(resourceURL);
         let dataURL;
-        if (getContentFromUrl) {
-          const content = yield getContentFromUrl(resolvedURL);
-          dataURL = makeDataUrl(content, contentType);
-        } else {
+        if (getContentFromUrl) ;
+        else {
           dataURL = yield resourceToDataURL(resolvedURL, contentType, options);
         }
         return cssText.replace(toRegex(resourceURL), `$1${dataURL}$3`);
@@ -553,12 +569,8 @@ var __async = (__this, __arguments, generator) => {
   }
   function embedBackground(clonedNode, options) {
     return __async(this, null, function* () {
-      if (!(yield embedProp("background", clonedNode, options))) {
-        yield embedProp("background-image", clonedNode, options);
-      }
-      if (!(yield embedProp("mask", clonedNode, options))) {
-        yield embedProp("mask-image", clonedNode, options);
-      }
+      (yield embedProp("background", clonedNode, options)) || (yield embedProp("background-image", clonedNode, options));
+      (yield embedProp("mask", clonedNode, options)) || (yield embedProp("-webkit-mask", clonedNode, options)) || (yield embedProp("mask-image", clonedNode, options)) || (yield embedProp("-webkit-mask-image", clonedNode, options));
     });
   }
   function embedImageNode(clonedNode, options) {
@@ -571,7 +583,13 @@ var __async = (__this, __arguments, generator) => {
       const dataURL = yield resourceToDataURL(url, getMimeType(url), options);
       yield new Promise((resolve, reject) => {
         clonedNode.onload = resolve;
-        clonedNode.onerror = reject;
+        clonedNode.onerror = options.onImageErrorHandler ? (...attributes) => {
+          try {
+            resolve(options.onImageErrorHandler(...attributes));
+          } catch (error) {
+            reject(error);
+          }
+        } : reject;
         const image = clonedNode;
         if (image.decode) {
           image.decode = resolve;
@@ -642,7 +660,7 @@ var __async = (__this, __arguments, generator) => {
       let cssText = data.cssText;
       const regexUrl = /url\(["']?([^"')]+)["']?\)/g;
       const fontLocs = cssText.match(/url\([^)]+\)/g) || [];
-      const loadFonts = fontLocs.map((loc) => __async(this, null, function* () {
+      const loadFonts = fontLocs.map((loc) => __async(null, null, function* () {
         let url = loc.replace(regexUrl, "$1");
         if (!url.startsWith("https://")) {
           url = new URL(url, data.url).href;
@@ -697,9 +715,9 @@ var __async = (__this, __arguments, generator) => {
       styleSheets.forEach((sheet) => {
         if ("cssRules" in sheet) {
           try {
-            toArray(sheet.cssRules || []).forEach((item, index2) => {
+            toArray(sheet.cssRules || []).forEach((item, index) => {
               if (item.type === CSSRule.IMPORT_RULE) {
-                let importIndex = index2 + 1;
+                let importIndex = index + 1;
                 const url = item.href;
                 const deferred = fetchCSS(url).then((metadata) => embedFonts(metadata, options)).then((cssText) => parseCSS(cssText).forEach((rule) => {
                   try {
@@ -720,7 +738,7 @@ var __async = (__this, __arguments, generator) => {
             const inline = styleSheets.find((a) => a.href == null) || document.styleSheets[0];
             if (sheet.href != null) {
               deferreds.push(fetchCSS(sheet.href).then((metadata) => embedFonts(metadata, options)).then((cssText) => parseCSS(cssText).forEach((rule) => {
-                inline.insertRule(rule, sheet.cssRules.length);
+                inline.insertRule(rule, inline.cssRules.length);
               })).catch((err) => {
                 console.error("Error loading remote stylesheet", err);
               }));
@@ -758,10 +776,30 @@ var __async = (__this, __arguments, generator) => {
       return getWebFontRules(cssRules);
     });
   }
+  function normalizeFontFamily(font) {
+    return font.trim().replace(/["']/g, "");
+  }
+  function getUsedFonts(node) {
+    const fonts = /* @__PURE__ */ new Set();
+    function traverse(node2) {
+      const fontFamily = node2.style.fontFamily || getComputedStyle(node2).fontFamily;
+      fontFamily.split(",").forEach((font) => {
+        fonts.add(normalizeFontFamily(font));
+      });
+      Array.from(node2.children).forEach((child) => {
+        if (child instanceof HTMLElement) {
+          traverse(child);
+        }
+      });
+    }
+    traverse(node);
+    return fonts;
+  }
   function getWebFontCSS(node, options) {
     return __async(this, null, function* () {
       const rules = yield parseWebFontRules(node, options);
-      const cssTexts = yield Promise.all(rules.map((rule) => {
+      const usedFonts = getUsedFonts(node);
+      const cssTexts = yield Promise.all(rules.filter((rule) => usedFonts.has(normalizeFontFamily(rule.style.fontFamily))).map((rule) => {
         const baseUrl = rule.parentStyleSheet ? rule.parentStyleSheet.href : null;
         return embedResources(rule.cssText, baseUrl, options);
       }));

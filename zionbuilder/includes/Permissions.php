@@ -5,7 +5,7 @@ namespace ZionBuilder;
 use ZionBuilder\Options\Options;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package ZionBuilder
  */
-class Permissions {
+class Permissions
+{
 	const POST_TYPE_EDIT_PERMISSION    = 'zionbuilder';
 	const USER_EDIT_PERMISSION         = 'zionbuilder';
 	const USER_CONTENT_ONLY_PERMISSION = 'zionbuilder-content';
@@ -38,20 +39,22 @@ class Permissions {
 	/**
 	 * Main class constructor
 	 */
-	public function __construct() {
-		add_action( 'init', [ $this, 'add_post_type_support' ] );
-		add_filter( 'zionbuilder/admin_page/options_schemas', [ $this, 'add_permissions_schema' ] );
+	public function __construct()
+	{
+		add_action('init', [$this, 'add_post_type_support']);
+		add_filter('zionbuilder/admin_page/options_schemas', [$this, 'add_permissions_schema']);
 	}
 
-	public function add_permissions_schema( $schemas ) {
-		$permissions_schema = new Options( 'zionbuilder/permissions/schema' );
+	public function add_permissions_schema($schemas)
+	{
+		$permissions_schema = new Options('zionbuilder/permissions/schema');
 
 		$permissions_schema->add_option(
 			'allowed_access',
 			[
 				'type'    => 'checkbox_switch',
 				'columns' => 2,
-				'title'   => esc_html__( 'Allow access to editor', 'zionbuilder' ),
+				'title'   => esc_html__('Allow access to editor', 'zionbuilder'),
 				'default' => false,
 				'layout'  => 'inline',
 
@@ -62,9 +65,9 @@ class Permissions {
 			'upgrade_message',
 			[
 				'type'                => 'upgrade_to_pro',
-				'message_title'       => esc_html__( 'Meet Advanced permissions', 'zionbuilder' ),
-				'message_description' => esc_html__( 'With advanced permissions you can give your users fine grained control over the builder.', 'zionbuilder' ),
-				'info_text'           => esc_html__( 'Click here to learn more about PRO.', 'zionbuilder' ),
+				'message_title'       => esc_html__('Meet Advanced permissions', 'zionbuilder'),
+				'message_description' => esc_html__('With advanced permissions you can give your users fine grained control over the builder.', 'zionbuilder'),
+				'info_text'           => esc_html__('Click here to learn more about PRO.', 'zionbuilder'),
 			]
 		);
 
@@ -77,8 +80,9 @@ class Permissions {
 	 *
 	 * @return array
 	 */
-	public static function get_allowed_post_types() {
-		return apply_filters( 'zionbuilder/permissions/get_allowed_post_types', Settings::get_allowed_post_types() );
+	public static function get_allowed_post_types()
+	{
+		return apply_filters('zionbuilder/permissions/get_allowed_post_types', Settings::get_allowed_post_types());
 	}
 
 	/**
@@ -90,16 +94,17 @@ class Permissions {
 	 *
 	 * @return void
 	 */
-	public function add_post_type_support() {
+	public function add_post_type_support()
+	{
 		$allowed_post_types = self::get_allowed_post_types();
 
-		if ( ! is_array( $allowed_post_types ) ) {
+		if (! is_array($allowed_post_types)) {
 			return;
 		}
 
 		// Add zion builder capability to post types
-		foreach ( $allowed_post_types as $post_type ) {
-			add_post_type_support( $post_type, self::POST_TYPE_EDIT_PERMISSION );
+		foreach ($allowed_post_types as $post_type) {
+			add_post_type_support($post_type, self::POST_TYPE_EDIT_PERMISSION);
 		}
 	}
 
@@ -115,13 +120,14 @@ class Permissions {
 	 *
 	 * @return bool
 	 */
-	public static function allowed_post_type( $post_type ) {
-		$can_edit_post_type = post_type_supports( $post_type, self::POST_TYPE_EDIT_PERMISSION );
+	public static function allowed_post_type($post_type)
+	{
+		$can_edit_post_type = post_type_supports($post_type, self::POST_TYPE_EDIT_PERMISSION);
 
 		/*
 		 * Allow theme and plugins to disable editing functionality for post type
 		 */
-		return apply_filters( 'zionbuilder/permissions/allowed_post_type', $can_edit_post_type, $post_type );
+		return apply_filters('zionbuilder/permissions/allowed_post_type', $can_edit_post_type, $post_type);
 	}
 
 
@@ -130,16 +136,17 @@ class Permissions {
 	 *
 	 * @return boolean
 	 */
-	public static function user_allowed_edit() {
+	public static function user_allowed_edit()
+	{
 		$current_user_can_edit = false;
 
 		// Administrators are allowed to edit
-		if ( current_user_can( 'administrator' ) ) {
+		if (current_user_can('administrator')) {
 			return true;
 		}
 
 		// Cache the returned value
-		if ( null !== self::$current_user_allowed_edit ) {
+		if (null !== self::$current_user_allowed_edit) {
 			return self::$current_user_allowed_edit;
 		}
 
@@ -148,8 +155,8 @@ class Permissions {
 		$user_roles   = (array) $current_user->roles;
 
 		// Check if the user has access to the page builder
-		foreach ( $user_roles as $role_id ) {
-			if ( isset( $permissions[$role_id]['allowed_access'] ) && $permissions[$role_id]['allowed_access'] ) {
+		foreach ($user_roles as $role_id) {
+			if (isset($permissions[$role_id]['allowed_access']) && $permissions[$role_id]['allowed_access']) {
 				$current_user_can_edit = true;
 				break;
 			}
@@ -158,7 +165,7 @@ class Permissions {
 		/*
 		 * Allow theme and plugins to disable editing functionality for users
 		 */
-		return apply_filters( 'zionbuilder/permissions/allowed_current_user', $current_user_can_edit );
+		return apply_filters('zionbuilder/permissions/allowed_current_user', $current_user_can_edit);
 	}
 
 
@@ -173,21 +180,22 @@ class Permissions {
 	 *
 	 * @return boolean
 	 */
-	public static function can_edit_post( $post_id ) {
-		$post_id   = absint( $post_id );
-		$post_type = get_post_type( $post_id );
+	public static function can_edit_post($post_id)
+	{
+		$post_id   = absint($post_id);
+		$post_type = get_post_type($post_id);
 
-		if ( false === $post_type ) {
+		if (false === $post_type) {
 			return false;
 		}
 
 		// Check permissions
-		$can_edit_post_type = self::allowed_post_type( $post_type );
+		$can_edit_post_type = self::allowed_post_type($post_type);
 		$user_can_edit      = self::user_allowed_edit();
 
 		$can_edit = $can_edit_post_type && $user_can_edit;
 
-		return apply_filters( 'zionbuilder/permissions/allow_edit', $can_edit, $post_id, $post_type );
+		return apply_filters('zionbuilder/permissions/allow_edit', $can_edit, $post_id, $post_type);
 	}
 
 
@@ -198,26 +206,26 @@ class Permissions {
 	 *
 	 * @return boolean
 	 */
-	public static function current_user_can( $permission ) {
+	public static function current_user_can($permission)
+	{
 		$user_can          = self::user_allowed_edit();
 		$saved_permissions = self::get_user_permissions();
 
-		switch ( $permission ) {
+		switch ($permission) {
 			default:
-				if ( isset( $saved_permissions[$permission] ) ) {
+				if (isset($saved_permissions[$permission])) {
 					return $saved_permissions[$permission];
 				}
 
 				break;
 		}
 
-		$hook = sprintf( 'zionbuilder/permissions/user_allowed/%s', $permission );
-
-		return apply_filters( $hook, $user_can );
+		return apply_filters('zionbuilder/permissions/user_allowed/' . $permission, $user_can);
 	}
 
-	public static function get_permission_defaults() {
-		$is_admin = current_user_can( 'administrator' );
+	public static function get_permission_defaults()
+	{
+		$is_admin = current_user_can('administrator');
 		return apply_filters(
 			'zionbuilder/permissions/defaults',
 			[
@@ -226,8 +234,9 @@ class Permissions {
 		);
 	}
 
-	public static function get_user_permissions() {
-		if ( null !== self::$current_user_permissions ) {
+	public static function get_user_permissions()
+	{
+		if (null !== self::$current_user_permissions) {
 			return self::$current_user_permissions;
 		}
 
@@ -238,15 +247,14 @@ class Permissions {
 		$saved_permissions = [];
 
 		// Check if the user has access to the page builder
-		foreach ( $user_roles as $role_id ) {
-			if ( isset( $permissions[$role_id] ) ) {
+		foreach ($user_roles as $role_id) {
+			if (isset($permissions[$role_id])) {
 				$saved_permissions = $permissions[$role_id];
 				break;
 			}
 		}
 
-		self::$current_user_permissions = apply_filters( 'zionbuilder/permissions', wp_parse_args( $saved_permissions, $defaults ) );
+		self::$current_user_permissions = apply_filters('zionbuilder/permissions', wp_parse_args($saved_permissions, $defaults));
 		return self::$current_user_permissions;
-
 	}
 }

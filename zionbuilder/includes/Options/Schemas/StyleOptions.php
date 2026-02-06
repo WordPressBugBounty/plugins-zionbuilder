@@ -157,7 +157,6 @@ class StyleOptions extends BaseSchema {
 			[
 				'type'             => 'panel_accordion',
 				'title'            => esc_html__( 'Box shadow options', 'zionbuilder' ),
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'icon'             => 'border',
 				'label'            => [
 					'type' => 'pro',
@@ -331,7 +330,6 @@ class StyleOptions extends BaseSchema {
 			[
 				'type'             => 'accordion_menu',
 				'title'            => esc_html__( 'Background', 'zionbuilder' ),
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'icon'             => 'background',
 				'show_title'       => false,
 			]
@@ -345,7 +343,6 @@ class StyleOptions extends BaseSchema {
 			[
 				'type'             => 'accordion_menu',
 				'title'            => esc_html__( 'Typography', 'zionbuilder' ),
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'icon'             => 'typography',
 				'show_title'       => false,
 			]
@@ -356,7 +353,6 @@ class StyleOptions extends BaseSchema {
 			'size_and_spacings',
 			[
 				'type'             => 'accordion_menu',
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'title'            => esc_html__( 'Size & Spacing', 'zionbuilder' ),
 				'icon'             => 'size-spacing',
 				'show_title'       => false,
@@ -372,7 +368,6 @@ class StyleOptions extends BaseSchema {
 			'borders',
 			[
 				'type'             => 'accordion_menu',
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'title'            => esc_html__( 'Borders & Shadows', 'zionbuilder' ),
 				'icon'             => 'borders',
 				'show_title'       => false,
@@ -387,7 +382,6 @@ class StyleOptions extends BaseSchema {
 			[
 				'type'             => 'accordion_menu',
 				'title'            => esc_html__( 'Display', 'zionbuilder' ),
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'icon'             => 'display',
 				'show_title'       => false,
 			]
@@ -615,7 +609,6 @@ class StyleOptions extends BaseSchema {
 			[
 				'type'             => 'accordion_menu',
 				'title'            => esc_html__( 'Transitions', 'zionbuilder' ),
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'icon'             => 'transitions',
 				'label'            => [
 					'type' => 'pro',
@@ -641,7 +634,6 @@ class StyleOptions extends BaseSchema {
 			[
 				'type'             => 'accordion_menu',
 				'title'            => esc_html__( 'Transform', 'zionbuilder' ),
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'icon'             => 'transform',
 				'label'            => [
 					'type' => 'pro',
@@ -667,7 +659,6 @@ class StyleOptions extends BaseSchema {
 			[
 				'type'             => 'accordion_menu',
 				'title'            => esc_html__( 'Filters', 'zionbuilder' ),
-				'home-button-text' => esc_html__( 'Styling', 'zionbuilder' ),
 				'icon'             => 'filters',
 				'label'            => [
 					'type' => 'pro',

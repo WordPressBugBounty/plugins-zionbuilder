@@ -48,7 +48,6 @@ var __objRest = (source, exclude) => {
     return Object.freeze(n);
   }
   const i18n__namespace = /* @__PURE__ */ _interopNamespaceDefault(i18n);
-  const index = "";
   class Route {
     constructor(routeConfig = {}) {
       const _a = routeConfig, { children } = _a, remainingRouteConfig = __objRest(_a, ["children"]);
@@ -60,8 +59,8 @@ var __objRest = (source, exclude) => {
       }
     }
     addRoute(routeId, routeConfig) {
-      if (!(this.routeConfig.children instanceof Routes$1)) {
-        this.routeConfig.children = new Routes$1();
+      if (!(this.routeConfig.children instanceof Routes)) {
+        this.routeConfig.children = new Routes();
       }
       return this.routeConfig.children.addRoute(routeId, routeConfig);
     }
@@ -70,7 +69,7 @@ var __objRest = (source, exclude) => {
     }
     getConfigForRouter() {
       const routeConfig = __spreadValues({}, this.routeConfig);
-      if (routeConfig.children instanceof Routes$1) {
+      if (routeConfig.children instanceof Routes) {
         routeConfig.children = routeConfig.children.getConfigForRouter();
       }
       return routeConfig;
@@ -96,12 +95,12 @@ var __objRest = (source, exclude) => {
     getRouteConfig(pathString) {
       const paths = pathString.split(".");
       let searchSchema = this;
-      for (let index2 = 0; index2 < paths.length; index2++) {
-        const path = paths[index2];
+      for (let index = 0; index < paths.length; index++) {
+        const path = paths[index];
         if (!searchSchema) {
           return null;
         }
-        if (index2 === paths.length - 1) {
+        if (index === paths.length - 1) {
           return searchSchema.getRoute(path);
         }
         searchSchema = searchSchema.getRoute(path);
@@ -127,7 +126,6 @@ var __objRest = (source, exclude) => {
       return routes2;
     }
   }
-  const Routes$1 = Routes;
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -141,7 +139,7 @@ var __objRest = (source, exclude) => {
     return vue.openBlock(), vue.createBlock(_component_router_view);
   }
   const SettingsPage = /* @__PURE__ */ _export_sfc(_sfc_main$J, [["render", _sfc_render$1]]);
-  const _hoisted_1$B = ["innerHTML"];
+  const _hoisted_1$A = ["innerHTML"];
   const _sfc_main$I = /* @__PURE__ */ vue.defineComponent({
     __name: "SmallNotice",
     props: {
@@ -153,40 +151,40 @@ var __objRest = (source, exclude) => {
       const iconType = vue.computed(() => {
         if (props.icon === "warning" || props.icon === "not_ok") {
           return "warning";
-        } else
-          return "info";
+        } else return "info";
       });
       return (_ctx, _cache) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _component_Tooltip = vue.resolveComponent("Tooltip");
-        return _ctx.message ? (vue.openBlock(), vue.createBlock(_component_Tooltip, {
+        return __props.message ? (vue.openBlock(), vue.createBlock(_component_Tooltip, {
           key: 0,
           placement: "top",
           class: "znpb-admin-system-notice-wrapper",
           "close-delay": 150
         }, {
           content: vue.withCtx(() => [
-            vue.createElementVNode("div", { innerHTML: _ctx.message }, null, 8, _hoisted_1$B)
+            vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
+            vue.createElementVNode("div", { innerHTML: __props.message }, null, 8, _hoisted_1$A)
           ]),
           default: vue.withCtx(() => [
             vue.createVNode(_component_Icon, {
               icon: iconType.value,
-              class: vue.normalizeClass(["znpb-admin-system-notice", `znpb-admin-system-notice--${_ctx.icon}`])
+              class: vue.normalizeClass(["znpb-admin-system-notice", `znpb-admin-system-notice--${__props.icon}`])
             }, null, 8, ["icon", "class"])
           ]),
           _: 1
+          /* STABLE */
         })) : (vue.openBlock(), vue.createBlock(_component_Icon, {
           key: 1,
           icon: iconType.value,
-          class: vue.normalizeClass(["znpb-admin-system-notice znpb-admin-system-notice--no-tooltip", `znpb-admin-system-notice--${_ctx.icon}`])
+          class: vue.normalizeClass(["znpb-admin-system-notice znpb-admin-system-notice--no-tooltip", `znpb-admin-system-notice--${__props.icon}`])
         }, null, 8, ["icon", "class"]));
       };
     }
   });
-  const SmallNotice_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$A = { class: "znpb-system-list" };
+  const _hoisted_1$z = { class: "znpb-system-list" };
   const _hoisted_2$u = { class: "znpb-system-list__item" };
-  const _hoisted_3$m = { class: "znpb-system-list__item" };
+  const _hoisted_3$k = { class: "znpb-system-list__item" };
   const _sfc_main$H = /* @__PURE__ */ vue.defineComponent({
     __name: "SystemListItem",
     props: {
@@ -194,22 +192,31 @@ var __objRest = (source, exclude) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$A, [
-          vue.createElementVNode("h3", _hoisted_2$u, vue.toDisplayString(_ctx.data.name), 1),
-          vue.createElementVNode("h4", _hoisted_3$m, [
-            vue.createTextVNode(vue.toDisplayString(_ctx.data.value) + " ", 1),
-            _ctx.data.icon ? (vue.openBlock(), vue.createBlock(_sfc_main$I, {
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$z, [
+          vue.createElementVNode(
+            "h3",
+            _hoisted_2$u,
+            vue.toDisplayString(__props.data.name),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode("h4", _hoisted_3$k, [
+            vue.createTextVNode(
+              vue.toDisplayString(__props.data.value) + " ",
+              1
+              /* TEXT */
+            ),
+            __props.data.icon ? (vue.openBlock(), vue.createBlock(_sfc_main$I, {
               key: 0,
-              icon: _ctx.data.icon,
-              message: _ctx.data.message
-            }, null, 8, ["icon", "message"])) : vue.createCommentVNode("", true)
+              icon: __props.data.icon,
+              message: __props.data.message
+            }, null, 8, ["icon", "message"])) : vue.createCommentVNode("v-if", true)
           ])
         ]);
       };
     }
   });
-  const SystemListItem_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$z = { class: "znpb-system-list-wrapper" };
+  const _hoisted_1$y = { class: "znpb-system-list-wrapper" };
   const _hoisted_2$t = { class: "znpb-system-subtitle" };
   const _sfc_main$G = /* @__PURE__ */ vue.defineComponent({
     __name: "SystemList",
@@ -218,24 +225,35 @@ var __objRest = (source, exclude) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$z, [
-          vue.createElementVNode("h2", _hoisted_2$t, vue.toDisplayString(_ctx.categoryData.category_name), 1),
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.categoryData.values, (value, i) => {
-            return vue.openBlock(), vue.createBlock(_sfc_main$H, {
-              key: i,
-              data: value
-            }, null, 8, ["data"]);
-          }), 128))
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$y, [
+          vue.createElementVNode(
+            "h2",
+            _hoisted_2$t,
+            vue.toDisplayString(__props.categoryData.category_name),
+            1
+            /* TEXT */
+          ),
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(__props.categoryData.values, (value, i) => {
+              return vue.openBlock(), vue.createBlock(_sfc_main$H, {
+                key: i,
+                data: value
+              }, null, 8, ["data"]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
         ]);
       };
     }
   });
-  const SystemList_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$y = { class: "znpb-system-list-plugins" };
+  const _hoisted_1$x = { class: "znpb-system-list-plugins" };
   const _hoisted_2$s = { class: "znpb-system-subtitle" };
-  const _hoisted_3$l = { class: "znpb-system-plugins-wrapper" };
-  const _hoisted_4$e = { class: "znpb-system-plugins__item" };
-  const _hoisted_5$c = { class: "znpb-system-plugins__item" };
+  const _hoisted_3$j = { class: "znpb-system-plugins-wrapper" };
+  const _hoisted_4$c = { class: "znpb-system-plugins__item" };
+  const _hoisted_5$b = { class: "znpb-system-plugins__item" };
   const _hoisted_6$6 = { class: "znpb-system-plugins__item" };
   const _sfc_main$F = /* @__PURE__ */ vue.defineComponent({
     __name: "SystemPlugins",
@@ -244,28 +262,57 @@ var __objRest = (source, exclude) => {
     },
     setup(__props) {
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$y, [
-          vue.createElementVNode("h2", _hoisted_2$s, vue.toDisplayString(_ctx.categoryData.category_name), 1),
-          vue.createElementVNode("div", _hoisted_3$l, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.categoryData.values, (value, i) => {
-              return vue.openBlock(), vue.createElementBlock("div", {
-                key: i,
-                class: "znpb-system-plugins"
-              }, [
-                vue.createElementVNode("h3", _hoisted_4$e, vue.toDisplayString(value.name), 1),
-                vue.createElementVNode("h4", _hoisted_5$c, vue.toDisplayString(value.version), 1),
-                vue.createElementVNode("h5", _hoisted_6$6, vue.toDisplayString(value.author), 1)
-              ]);
-            }), 128))
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$x, [
+          vue.createElementVNode(
+            "h2",
+            _hoisted_2$s,
+            vue.toDisplayString(__props.categoryData.category_name),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode("div", _hoisted_3$j, [
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(__props.categoryData.values, (value, i) => {
+                return vue.openBlock(), vue.createElementBlock("div", {
+                  key: i,
+                  class: "znpb-system-plugins"
+                }, [
+                  vue.createElementVNode(
+                    "h3",
+                    _hoisted_4$c,
+                    vue.toDisplayString(value.name),
+                    1
+                    /* TEXT */
+                  ),
+                  vue.createElementVNode(
+                    "h4",
+                    _hoisted_5$b,
+                    vue.toDisplayString(value.version),
+                    1
+                    /* TEXT */
+                  ),
+                  vue.createElementVNode(
+                    "h5",
+                    _hoisted_6$6,
+                    vue.toDisplayString(value.author),
+                    1
+                    /* TEXT */
+                  )
+                ]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ])
         ]);
       };
     }
   });
-  const SystemPlugins_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$x = { class: "znpb-system-list-wrapper" };
+  const _hoisted_1$w = { class: "znpb-system-list-wrapper" };
   const _hoisted_2$r = { class: "znpb-system-title" };
-  const _hoisted_3$k = { class: "znpb-system-subtitle" };
+  const _hoisted_3$i = { class: "znpb-system-subtitle" };
   const _sfc_main$E = /* @__PURE__ */ vue.defineComponent({
     __name: "CopyPasteServer",
     props: {
@@ -290,9 +337,21 @@ var __objRest = (source, exclude) => {
       });
       return (_ctx, _cache) => {
         const _component_BaseInput = vue.resolveComponent("BaseInput");
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$x, [
-          vue.createElementVNode("h2", _hoisted_2$r, vue.toDisplayString(i18n__namespace.__("Copy and paste info", "zionbuilder")), 1),
-          vue.createElementVNode("h5", _hoisted_3$k, vue.toDisplayString(i18n__namespace.__("You can copy the below info as simple text with Ctrl+C / Ctrl+V:", "zionbuilder")), 1),
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$w, [
+          vue.createElementVNode(
+            "h2",
+            _hoisted_2$r,
+            vue.toDisplayString(i18n__namespace.__("Copy and paste info", "zionbuilder")),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode(
+            "h5",
+            _hoisted_3$i,
+            vue.toDisplayString(i18n__namespace.__("You can copy the below info as simple text with Ctrl+C / Ctrl+V:", "zionbuilder")),
+            1
+            /* TEXT */
+          ),
           vue.createVNode(_component_BaseInput, {
             modelValue: getCategoryData.value,
             type: "textarea",
@@ -305,11 +364,9 @@ var __objRest = (source, exclude) => {
       };
     }
   });
-  const CopyPasteServer_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$w = { class: "znpb-admin-content-wrapper" };
-  const _hoisted_2$q = /* @__PURE__ */ vue.createElementVNode("div", { class: "znpb-admin-content znpb-admin-content--left znpb-admin-content--hiddenXs" }, null, -1);
-  const _hoisted_3$j = { class: "znpb-admin-info-p" };
-  const _hoisted_4$d = { class: "znpb-admin-info-p" };
+  const _hoisted_1$v = { class: "znpb-admin-content-wrapper" };
+  const _hoisted_2$q = { class: "znpb-admin-info-p" };
+  const _hoisted_3$h = { class: "znpb-admin-info-p" };
   const _sfc_main$D = /* @__PURE__ */ vue.defineComponent({
     __name: "SystemInfo",
     setup(__props) {
@@ -329,34 +386,71 @@ var __objRest = (source, exclude) => {
       return (_ctx, _cache) => {
         const _component_Loader = vue.resolveComponent("Loader");
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$w, [
-          _hoisted_2$q,
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$v, [
+          _cache[0] || (_cache[0] = vue.createElementVNode(
+            "div",
+            { class: "znpb-admin-content znpb-admin-content--left znpb-admin-content--hiddenXs" },
+            null,
+            -1
+            /* CACHED */
+          )),
           vue.createVNode(_component_PageTemplate, null, {
             right: vue.withCtx(() => [
               vue.createElementVNode("div", null, [
-                vue.createElementVNode("p", _hoisted_3$j, vue.toDisplayString(i18n__namespace.__("System Info", "zionbuilder")), 1),
-                vue.createElementVNode("p", _hoisted_4$d, vue.toDisplayString(i18n__namespace.__("Scroll down to copy paste the Info shown", "zionbuilder")), 1)
+                vue.createElementVNode(
+                  "p",
+                  _hoisted_2$q,
+                  vue.toDisplayString(i18n__namespace.__("System Info", "zionbuilder")),
+                  1
+                  /* TEXT */
+                ),
+                vue.createElementVNode(
+                  "p",
+                  _hoisted_3$h,
+                  vue.toDisplayString(i18n__namespace.__("Scroll down to copy paste the Info shown", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )
               ])
             ]),
             default: vue.withCtx(() => [
-              !loaded.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 1 }, [
-                vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("System Info", "zionbuilder")), 1),
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(systemInfoData.value, (category) => {
-                  return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(getComponent(category.category_id)), {
-                    key: category.category_id,
-                    "category-data": category
-                  }, null, 8, ["category-data"]);
-                }), 128)),
-                vue.createVNode(_sfc_main$E, { "category-data": systemInfoData.value }, null, 8, ["category-data"])
-              ], 64))
+              !loaded.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : (vue.openBlock(), vue.createElementBlock(
+                vue.Fragment,
+                { key: 1 },
+                [
+                  vue.createElementVNode(
+                    "h3",
+                    null,
+                    vue.toDisplayString(i18n__namespace.__("System Info", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  ),
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(systemInfoData.value, (category) => {
+                      return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(getComponent(category.category_id)), {
+                        key: category.category_id,
+                        "category-data": category
+                      }, null, 8, ["category-data"]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  )),
+                  vue.createVNode(_sfc_main$E, { "category-data": systemInfoData.value }, null, 8, ["category-data"])
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   });
-  const _hoisted_1$v = { class: "znpb-admin-color-preset-box__circle--transparent" };
+  const _hoisted_1$u = { class: "znpb-admin-color-preset-box__circle--transparent" };
   const _hoisted_2$p = {
     key: 0,
     class: "znpb-admin-color-preset-box__color-name"
@@ -369,8 +463,9 @@ var __objRest = (source, exclude) => {
       title: { default: "" }
     },
     emits: ["delete-color", "option-updated"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const localColor = vue.ref(props.color);
       const showColorPicker = vue.ref(false);
       vue.watchEffect(() => {
@@ -386,67 +481,97 @@ var __objRest = (source, exclude) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _component_Tooltip = vue.resolveComponent("Tooltip");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: vue.normalizeClass(["znpb-admin-color-preset-box", { ["znpb-admin-color-preset-box--" + _ctx.type]: _ctx.type }])
-        }, [
-          vue.createVNode(_component_Tooltip, {
-            show: showColorPicker.value,
-            "onUpdate:show": _cache[4] || (_cache[4] = ($event) => showColorPicker.value = $event),
-            "tooltip-class": "hg-popper--no-padding",
-            "close-on-outside-click": true,
-            trigger: null,
-            placement: "right-start",
-            "show-arrows": false,
-            onHide: closeColorPicker
-          }, {
-            content: vue.withCtx(() => [
-              vue.createVNode(_component_ColorPicker, {
-                model: localColor.value,
-                "show-library": false,
-                onColorChanged: _cache[0] || (_cache[0] = ($event) => localColor.value = $event)
-              }, null, 8, ["model"])
-            ]),
-            default: vue.withCtx(() => [
-              _ctx.type == "addcolor" ? (vue.openBlock(), vue.createElementBlock("div", {
-                key: 0,
-                class: "znpb-admin-color-preset-box__empty",
-                onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => showColorPicker.value = true, ["stop"]))
-              }, [
-                vue.createVNode(_component_Icon, { icon: "plus" }),
-                vue.createElementVNode("div", null, vue.toDisplayString(i18n__namespace.__("Add color", "zionbuilder")), 1)
-              ])) : vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
-                key: 1,
-                class: "znpb-admin-color-preset-box__color",
-                onClick: _cache[3] || (_cache[3] = vue.withModifiers(($event) => showColorPicker.value = true, ["stop"]))
-              }, [
-                vue.withDirectives(vue.createVNode(_component_Icon, {
-                  icon: "close",
-                  onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => _ctx.$emit("delete-color"), ["stop"]))
-                }, null, 512), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Delete this color from your preset", "zionbuilder")]
-                ]),
-                vue.createElementVNode("div", _hoisted_1$v, [
-                  vue.createElementVNode("div", {
-                    ref: "circleTrigger",
-                    class: "znpb-admin-color-preset-box__circle",
-                    style: vue.normalizeStyle({ background: localColor.value })
-                  }, null, 4)
-                ]),
-                _ctx.title.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$p, [
-                  vue.createElementVNode("span", null, vue.toDisplayString(_ctx.title), 1)
-                ])) : vue.createCommentVNode("", true)
-              ])), [
-                [_directive_znpb_tooltip, localColor.value]
-              ])
-            ]),
-            _: 1
-          }, 8, ["show"])
-        ], 2);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: vue.normalizeClass(["znpb-admin-color-preset-box", { ["znpb-admin-color-preset-box--" + __props.type]: __props.type }])
+          },
+          [
+            vue.createVNode(_component_Tooltip, {
+              show: showColorPicker.value,
+              "onUpdate:show": _cache[4] || (_cache[4] = ($event) => showColorPicker.value = $event),
+              "tooltip-class": "hg-popper--no-padding",
+              "close-on-outside-click": true,
+              trigger: null,
+              placement: "right-start",
+              "show-arrows": false,
+              onHide: closeColorPicker
+            }, {
+              content: vue.withCtx(() => [
+                vue.createVNode(_component_ColorPicker, {
+                  model: localColor.value,
+                  "show-library": false,
+                  onColorChanged: _cache[0] || (_cache[0] = ($event) => localColor.value = $event)
+                }, null, 8, ["model"])
+              ]),
+              default: vue.withCtx(() => [
+                __props.type == "addcolor" ? (vue.openBlock(), vue.createElementBlock("div", {
+                  key: 0,
+                  class: "znpb-admin-color-preset-box__empty",
+                  onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => showColorPicker.value = true, ["stop"]))
+                }, [
+                  vue.createVNode(_component_Icon, { icon: "plus" }),
+                  vue.createElementVNode(
+                    "div",
+                    null,
+                    vue.toDisplayString(i18n__namespace.__("Add color", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
+                ])) : vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
+                  key: 1,
+                  class: "znpb-admin-color-preset-box__color",
+                  onClick: _cache[3] || (_cache[3] = vue.withModifiers(($event) => showColorPicker.value = true, ["stop"]))
+                }, [
+                  vue.withDirectives(vue.createVNode(
+                    _component_Icon,
+                    {
+                      icon: "close",
+                      onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => _ctx.$emit("delete-color"), ["stop"]))
+                    },
+                    null,
+                    512
+                    /* NEED_PATCH */
+                  ), [
+                    [_directive_znpb_tooltip, i18n__namespace.__("Delete this color from your preset", "zionbuilder")]
+                  ]),
+                  vue.createElementVNode("div", _hoisted_1$u, [
+                    vue.createElementVNode(
+                      "div",
+                      {
+                        ref: "circleTrigger",
+                        class: "znpb-admin-color-preset-box__circle",
+                        style: vue.normalizeStyle({ background: localColor.value })
+                      },
+                      null,
+                      4
+                      /* STYLE */
+                    )
+                  ]),
+                  __props.title.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$p, [
+                    vue.createElementVNode(
+                      "span",
+                      null,
+                      vue.toDisplayString(__props.title),
+                      1
+                      /* TEXT */
+                    )
+                  ])) : vue.createCommentVNode("v-if", true)
+                ])), [
+                  [_directive_znpb_tooltip, localColor.value]
+                ])
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["show"])
+          ],
+          2
+          /* CLASS */
+        );
       };
     }
   });
-  const ColorBox_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$u = { class: "znpb-admin-info-p" };
+  const _hoisted_1$t = { class: "znpb-admin-info-p" };
   const _sfc_main$B = /* @__PURE__ */ vue.defineComponent({
     __name: "Colors",
     setup(__props) {
@@ -493,10 +618,22 @@ var __objRest = (source, exclude) => {
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, { class: "znpb-admin-colors__wrapper" }, {
           right: vue.withCtx(() => [
-            vue.createElementVNode("p", _hoisted_1$u, vue.toDisplayString(i18n__namespace.__("Create your color pallette to use locally or globally", "zionbuilder")), 1)
+            vue.createElementVNode(
+              "p",
+              _hoisted_1$t,
+              vue.toDisplayString(i18n__namespace.__("Create your color pallette to use locally or globally", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Color Presets", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Color Presets", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_Tabs, { "tab-style": "minimal" }, {
               default: vue.withCtx(() => [
                 vue.createVNode(_component_Tab, { name: "Local" }, {
@@ -515,19 +652,27 @@ var __objRest = (source, exclude) => {
                         }, null, 8, ["onOptionUpdated"])
                       ]),
                       default: vue.withCtx(() => [
-                        (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(computedLocalColors.value, (color, i) => {
-                          return vue.openBlock(), vue.createBlock(_sfc_main$C, {
-                            key: color + i,
-                            color,
-                            onOptionUpdated: ($event) => vue.unref(editLocalColor)(color, $event),
-                            onDeleteColor: ($event) => vue.unref(deleteLocalColor)(color)
-                          }, null, 8, ["color", "onOptionUpdated", "onDeleteColor"]);
-                        }), 128))
+                        (vue.openBlock(true), vue.createElementBlock(
+                          vue.Fragment,
+                          null,
+                          vue.renderList(computedLocalColors.value, (color, i) => {
+                            return vue.openBlock(), vue.createBlock(_sfc_main$C, {
+                              key: color + i,
+                              color,
+                              onOptionUpdated: ($event) => vue.unref(editLocalColor)(color, $event),
+                              onDeleteColor: ($event) => vue.unref(deleteLocalColor)(color)
+                            }, null, 8, ["color", "onOptionUpdated", "onDeleteColor"]);
+                          }),
+                          128
+                          /* KEYED_FRAGMENT */
+                        ))
                       ]),
                       _: 1
+                      /* STABLE */
                     }, 8, ["modelValue"])
                   ]),
                   _: 1
+                  /* STABLE */
                 }),
                 vue.createVNode(_component_Tab, { name: "Global" }, {
                   default: vue.withCtx(() => [
@@ -553,39 +698,49 @@ var __objRest = (source, exclude) => {
                         })
                       ]),
                       default: vue.withCtx(() => [
-                        (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(computedGlobalColors.value, (color, i) => {
-                          return vue.openBlock(), vue.createBlock(_sfc_main$C, {
-                            key: color.color + i,
-                            color: color.color,
-                            title: color.name,
-                            onOptionUpdated: ($event) => vue.unref(editGlobalColor)(i, $event),
-                            onDeleteColor: ($event) => vue.unref(deleteGlobalColor)(color)
-                          }, null, 8, ["color", "title", "onOptionUpdated", "onDeleteColor"]);
-                        }), 128))
+                        (vue.openBlock(true), vue.createElementBlock(
+                          vue.Fragment,
+                          null,
+                          vue.renderList(computedGlobalColors.value, (color, i) => {
+                            return vue.openBlock(), vue.createBlock(_sfc_main$C, {
+                              key: color.color + i,
+                              color: color.color,
+                              title: color.name,
+                              onOptionUpdated: ($event) => vue.unref(editGlobalColor)(i, $event),
+                              onDeleteColor: ($event) => vue.unref(deleteGlobalColor)(color)
+                            }, null, 8, ["color", "title", "onOptionUpdated", "onDeleteColor"]);
+                          }),
+                          128
+                          /* KEYED_FRAGMENT */
+                        ))
                       ]),
                       _: 1
+                      /* STABLE */
                     }, 8, ["modelValue"]))
                   ]),
                   _: 1
+                  /* STABLE */
                 })
               ]),
               _: 1
+              /* STABLE */
             })
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const Colors_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$A = /* @__PURE__ */ vue.defineComponent({
     __name: "UserModalContent",
     props: {
       permissions: {}
     },
     emits: ["edit-role"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const schema = window.ZnPbAdminPageData.schemas.permissions;
       const modelValue = vue.computed({
         get() {
@@ -607,12 +762,11 @@ var __objRest = (source, exclude) => {
       };
     }
   });
-  const UserModalContent_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$t = { class: "znpb-single-role" };
+  const _hoisted_1$s = { class: "znpb-single-role" };
   const _hoisted_2$o = { class: "znpb-single-role__item" };
-  const _hoisted_3$i = { class: "znpb-single-role__permission" };
-  const _hoisted_4$c = { class: "znpb-single-role-permission-subtitle" };
-  const _hoisted_5$b = { class: "znpb-single-role__actions" };
+  const _hoisted_3$g = { class: "znpb-single-role__permission" };
+  const _hoisted_4$b = { class: "znpb-single-role-permission-subtitle" };
+  const _hoisted_5$a = { class: "znpb-single-role__actions" };
   const _sfc_main$z = /* @__PURE__ */ vue.defineComponent({
     __name: "UserTemplate",
     props: {
@@ -620,39 +774,57 @@ var __objRest = (source, exclude) => {
       hasDelete: { type: Boolean, default: false }
     },
     emits: ["edit-permission", "delete-permission"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       return (_ctx, _cache) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$t, [
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$s, [
           vue.createElementVNode("h3", _hoisted_2$o, [
             vue.renderSlot(_ctx.$slots, "default")
           ]),
-          vue.createElementVNode("div", _hoisted_3$i, [
-            vue.createElementVNode("h4", _hoisted_4$c, vue.toDisplayString(_ctx.permission) + " " + vue.toDisplayString(i18n__namespace.__("Permissions", "zionbuilder")), 1)
+          vue.createElementVNode("div", _hoisted_3$g, [
+            vue.createElementVNode(
+              "h4",
+              _hoisted_4$b,
+              vue.toDisplayString(__props.permission) + " " + vue.toDisplayString(i18n__namespace.__("Permissions", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ]),
-          vue.createElementVNode("div", _hoisted_5$b, [
-            vue.withDirectives(vue.createVNode(_component_Icon, {
-              class: "znpb-edit-icon-pop",
-              icon: "edit",
-              onClick: _cache[0] || (_cache[0] = ($event) => emit("edit-permission"))
-            }, null, 512), [
+          vue.createElementVNode("div", _hoisted_5$a, [
+            vue.withDirectives(vue.createVNode(
+              _component_Icon,
+              {
+                class: "znpb-edit-icon-pop",
+                icon: "edit",
+                onClick: _cache[0] || (_cache[0] = ($event) => emit("edit-permission"))
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            ), [
               [_directive_znpb_tooltip, i18n__namespace.__("Customize the permissions for this user", "zionbuilder")]
             ]),
-            _ctx.hasDelete ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_Icon, {
-              key: 0,
-              icon: "delete",
-              onClick: _cache[1] || (_cache[1] = ($event) => emit("delete-permission"))
-            }, null, 512)), [
+            __props.hasDelete ? vue.withDirectives((vue.openBlock(), vue.createBlock(
+              _component_Icon,
+              {
+                key: 0,
+                icon: "delete",
+                onClick: _cache[1] || (_cache[1] = ($event) => emit("delete-permission"))
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            )), [
               [_directive_znpb_tooltip, i18n__namespace.__("Delete permissions for this user", "zionbuilder")]
-            ]) : vue.createCommentVNode("", true)
+            ]) : vue.createCommentVNode("v-if", true)
           ])
         ]);
       };
     }
   });
-  const UserTemplate_vue_vue_type_style_index_0_lang = "";
-  const _hoisted_1$s = { class: "znpb-admin-user-template" };
+  const _hoisted_1$r = { class: "znpb-admin-user-template" };
   const _sfc_main$y = /* @__PURE__ */ vue.defineComponent({
     __name: "SingleRole",
     props: {
@@ -685,15 +857,20 @@ var __objRest = (source, exclude) => {
       });
       return (_ctx, _cache) => {
         const _component_Modal = vue.resolveComponent("Modal");
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$s, [
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$r, [
           vue.createVNode(_sfc_main$z, {
             permission: permissionsNumber.value,
             onEditPermission: _cache[0] || (_cache[0] = ($event) => showModal.value = true)
           }, {
             default: vue.withCtx(() => [
-              vue.createTextVNode(vue.toDisplayString(__props.role.name), 1)
+              vue.createTextVNode(
+                vue.toDisplayString(__props.role.name),
+                1
+                /* TEXT */
+              )
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["permission"]),
           vue.createVNode(_component_Modal, {
             show: showModal.value,
@@ -710,12 +887,13 @@ var __objRest = (source, exclude) => {
               }, null, 8, ["permissions"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["show", "title"])
         ]);
       };
     }
   });
-  const _hoisted_1$r = {
+  const _hoisted_1$q = {
     key: 0,
     class: "znpb-admin-user-template"
   };
@@ -742,7 +920,7 @@ var __objRest = (source, exclude) => {
       });
       return (_ctx, _cache) => {
         const _component_Modal = vue.resolveComponent("Modal");
-        return vue.unref(userData) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$r, [
+        return vue.unref(userData) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$q, [
           vue.createVNode(_sfc_main$z, {
             permission: permissionsNumber.value,
             "has-delete": true,
@@ -750,9 +928,14 @@ var __objRest = (source, exclude) => {
             onDeletePermission: _cache[1] || (_cache[1] = ($event) => vue.unref(deleteUserPermission)(__props.userId))
           }, {
             default: vue.withCtx(() => [
-              vue.createTextVNode(vue.toDisplayString(vue.unref(userData).name), 1)
+              vue.createTextVNode(
+                vue.toDisplayString(vue.unref(userData).name),
+                1
+                /* TEXT */
+              )
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["permission"]),
           vue.createVNode(_component_Modal, {
             show: showModal.value,
@@ -769,12 +952,12 @@ var __objRest = (source, exclude) => {
               }, null, 8, ["permissions"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["show", "title"])
-        ])) : vue.createCommentVNode("", true);
+        ])) : vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const _hoisted_1$q = ["onClick"];
   const _sfc_main$w = /* @__PURE__ */ vue.defineComponent({
     __name: "ModalListItem",
     props: {
@@ -784,8 +967,9 @@ var __objRest = (source, exclude) => {
       }
     },
     emits: ["close-modal"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const { addUser } = window.zb.store.useUsersStore();
       const { getUserPermissions, addUserPermissions, deleteUserPermission } = window.zb.store.useBuilderOptionsStore();
       const loadingDelete = vue.ref(false);
@@ -806,7 +990,11 @@ var __objRest = (source, exclude) => {
           class: "znpb-baseSelect-list__option znpb-add-specific-permissions__list-item",
           onClick: vue.withModifiers(addNewUser, ["self"])
         }, [
-          vue.createTextVNode(vue.toDisplayString(__props.user.name) + " ", 1),
+          vue.createTextVNode(
+            vue.toDisplayString(__props.user.name) + " ",
+            1
+            /* TEXT */
+          ),
           userPermissionsExists.value ? (vue.openBlock(), vue.createBlock(_component_Tooltip, {
             key: 0,
             content: i18n__namespace.__("This user already has permissions. Click to remove", "zionbuilder")
@@ -815,31 +1003,32 @@ var __objRest = (source, exclude) => {
               vue.createVNode(_component_Icon, {
                 icon: "delete",
                 onClick: vue.withModifiers(deletePermission, ["stop"])
-              }, null, 8, ["onClick"])
+              })
             ]),
             _: 1
-          }, 8, ["content"])) : vue.createCommentVNode("", true),
-          loadingDelete.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 1 })) : vue.createCommentVNode("", true)
-        ], 8, _hoisted_1$q);
+            /* STABLE */
+          }, 8, ["content"])) : vue.createCommentVNode("v-if", true),
+          loadingDelete.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 1 })) : vue.createCommentVNode("v-if", true)
+        ]);
       };
     }
   });
-  const ModalListItem_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$p = { class: "znpb-add-specific-permissions-wrapper znpb-fancy-scrollbar" };
   const _hoisted_2$n = { class: "znpb-add-specific-description" };
-  const _hoisted_3$h = { class: "znpb-admin__google-fonts-modal-search" };
-  const _hoisted_4$b = {
+  const _hoisted_3$f = { class: "znpb-admin__google-fonts-modal-search" };
+  const _hoisted_4$a = {
     key: 0,
     class: "znpb-baseSelect-list znpb-fancy-scrollbar"
   };
-  const _hoisted_5$a = {
+  const _hoisted_5$9 = {
     key: 1,
     class: "znpb-not-found-message"
   };
   const _sfc_main$v = /* @__PURE__ */ vue.defineComponent({
     __name: "AddUserModalContent",
     emits: ["close-modal"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
+      const emit = __emit;
       const searchInput = vue.ref(null);
       const keyword = vue.ref("");
       const loading = vue.ref(false);
@@ -865,8 +1054,14 @@ var __objRest = (source, exclude) => {
         const _component_Loader = vue.resolveComponent("Loader");
         const _component_BaseInput = vue.resolveComponent("BaseInput");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$p, [
-          vue.createElementVNode("p", _hoisted_2$n, vue.toDisplayString(i18n__namespace.__("Type in the search below to find an user and press enter to add it.", "zionbuilder")), 1),
-          vue.createElementVNode("div", _hoisted_3$h, [
+          vue.createElementVNode(
+            "p",
+            _hoisted_2$n,
+            vue.toDisplayString(i18n__namespace.__("Type in the search below to find an user and press enter to add it.", "zionbuilder")),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode("div", _hoisted_3$f, [
             vue.createVNode(_component_BaseInput, {
               ref_key: "searchInput",
               ref: searchInput,
@@ -877,38 +1072,48 @@ var __objRest = (source, exclude) => {
               size: "big"
             }, {
               suffix: vue.withCtx(() => [
-                loading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : vue.createCommentVNode("", true)
+                loading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : vue.createCommentVNode("v-if", true)
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["modelValue", "placeholder", "icon"]),
-            keyword.value.length > 2 ? (vue.openBlock(), vue.createElementBlock("ul", _hoisted_4$b, [
-              (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(users.value, (user, i) => {
-                return vue.openBlock(), vue.createBlock(_sfc_main$w, {
-                  key: i,
-                  user,
-                  onCloseModal: _cache[1] || (_cache[1] = ($event) => emit("close-modal", true))
-                }, null, 8, ["user"]);
-              }), 128))
-            ])) : vue.createCommentVNode("", true),
-            !loading.value && users.value.length === 0 && keyword.value.length > 2 ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_5$a, vue.toDisplayString(i18n__namespace.__("No results", "zionbuilder")), 1)) : vue.createCommentVNode("", true)
+            keyword.value.length > 2 ? (vue.openBlock(), vue.createElementBlock("ul", _hoisted_4$a, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(users.value, (user, i) => {
+                  return vue.openBlock(), vue.createBlock(_sfc_main$w, {
+                    key: i,
+                    user,
+                    onCloseModal: _cache[1] || (_cache[1] = ($event) => emit("close-modal", true))
+                  }, null, 8, ["user"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ])) : vue.createCommentVNode("v-if", true),
+            !loading.value && users.value.length === 0 && keyword.value.length > 2 ? (vue.openBlock(), vue.createElementBlock(
+              "span",
+              _hoisted_5$9,
+              vue.toDisplayString(i18n__namespace.__("No results", "zionbuilder")),
+              1
+              /* TEXT */
+            )) : vue.createCommentVNode("v-if", true)
           ])
         ]);
       };
     }
   });
-  const AddUserModalContent_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$o = { class: "znpb-admin-content-wrapper znpb-permissions-wrapper" };
-  const _hoisted_2$m = /* @__PURE__ */ vue.createElementVNode("div", { class: "znpb-admin-content znpb-admin-content--left znpb-admin-content--hiddenXs" }, null, -1);
-  const _hoisted_3$g = { class: "znpb-admin-content__permission-container" };
-  const _hoisted_4$a = {
+  const _hoisted_2$m = { class: "znpb-admin-content__permission-container" };
+  const _hoisted_3$e = {
     key: 1,
     class: "znpb-admin-role-manager-wrapper"
   };
-  const _hoisted_5$9 = { class: "znpb-admin-info-p" };
-  const _hoisted_6$5 = { class: "znpb-admin-user-specific-wrapper" };
-  const _hoisted_7$4 = { class: "znpb-admin-user-specific-actions" };
-  const _hoisted_8$3 = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-add-element-icon" }, null, -1);
-  const _hoisted_9$2 = { class: "znpb-admin-info-p" };
+  const _hoisted_4$9 = { class: "znpb-admin-info-p" };
+  const _hoisted_5$8 = { class: "znpb-admin-user-specific-wrapper" };
+  const _hoisted_6$5 = { class: "znpb-admin-user-specific-actions" };
+  const _hoisted_7$4 = { class: "znpb-admin-info-p" };
   const _sfc_main$u = /* @__PURE__ */ vue.defineComponent({
     __name: "Permissions",
     setup(__props) {
@@ -936,34 +1141,65 @@ var __objRest = (source, exclude) => {
         const _component_Button = vue.resolveComponent("Button");
         const _component_Modal = vue.resolveComponent("Modal");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$o, [
-          _hoisted_2$m,
-          vue.createElementVNode("div", _hoisted_3$g, [
+          _cache[5] || (_cache[5] = vue.createElementVNode(
+            "div",
+            { class: "znpb-admin-content znpb-admin-content--left znpb-admin-content--hiddenXs" },
+            null,
+            -1
+            /* CACHED */
+          )),
+          vue.createElementVNode("div", _hoisted_2$m, [
             vue.createVNode(_component_PageTemplate, null, {
               right: vue.withCtx(() => [
-                vue.createElementVNode("p", _hoisted_5$9, vue.toDisplayString(i18n__namespace.__(
-                  "Manage the permissions by selecting which users are allowed to use the page builder. Select to edit only the content, the post types such as Post, Pages, and the main features such as the header and the footer builder.",
-                  "zionbuilder"
-                )), 1)
+                vue.createElementVNode(
+                  "p",
+                  _hoisted_4$9,
+                  vue.toDisplayString(i18n__namespace.__(
+                    "Manage the permissions by selecting which users are allowed to use the page builder. Select to edit only the content, the post types such as Post, Pages, and the main features such as the header and the footer builder.",
+                    "zionbuilder"
+                  )),
+                  1
+                  /* TEXT */
+                )
               ]),
               default: vue.withCtx(() => [
-                loading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$a, [
-                  vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Role manager", "zionbuilder")), 1),
-                  (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(dataSets).user_roles, (role, i) => {
-                    return vue.openBlock(), vue.createBlock(_sfc_main$y, {
-                      key: i,
-                      role
-                    }, null, 8, ["role"]);
-                  }), 128))
+                loading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$e, [
+                  vue.createElementVNode(
+                    "h3",
+                    null,
+                    vue.toDisplayString(i18n__namespace.__("Role manager", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  ),
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(vue.unref(dataSets).user_roles, (role, i) => {
+                      return vue.openBlock(), vue.createBlock(_sfc_main$y, {
+                        key: i,
+                        role
+                      }, null, 8, ["role"]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
                 ]))
               ]),
               _: 1
+              /* STABLE */
             }),
             vue.createVNode(_component_PageTemplate, null, {
               right: vue.withCtx(() => [
-                vue.createElementVNode("p", _hoisted_9$2, vue.toDisplayString(i18n__namespace.__(
-                  "Manage your wordpress users permissions. Adding a new user will allow the basic permissions which can be edited afterwards.",
-                  "zionbuilder"
-                )), 1)
+                vue.createElementVNode(
+                  "p",
+                  _hoisted_7$4,
+                  vue.toDisplayString(i18n__namespace.__(
+                    "Manage your wordpress users permissions. Adding a new user will allow the basic permissions which can be edited afterwards.",
+                    "zionbuilder"
+                  )),
+                  1
+                  /* TEXT */
+                )
               ]),
               default: vue.withCtx(() => [
                 !vue.unref(plugin_pro).is_active ? (vue.openBlock(), vue.createBlock(_component_UpgradeToPro, {
@@ -971,68 +1207,103 @@ var __objRest = (source, exclude) => {
                   "info-text": proLink.value,
                   message_title: i18n__namespace.__("specific users control", "zionbuilder"),
                   message_description: i18n__namespace.__("Want to give control to specific users?", "zionbuilder")
-                }, null, 8, ["info-text", "message_title", "message_description"])) : !loading.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 1 }, [
-                  vue.createElementVNode("div", _hoisted_6$5, [
-                    vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("User specific permissions", "zionbuilder")), 1),
-                    Object.entries(vue.unref(userPermissions)).length === 0 ? (vue.openBlock(), vue.createBlock(_component_EmptyList, {
-                      key: 0,
-                      onClick: _cache[0] || (_cache[0] = ($event) => showModal.value = true)
-                    }, {
-                      default: vue.withCtx(() => [
-                        vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("no user added yet", "zionbuilder")), 1)
-                      ]),
-                      _: 1
-                    })) : vue.createCommentVNode("", true),
-                    (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(userPermissions), (permissions, userId) => {
-                      return vue.openBlock(), vue.createBlock(_sfc_main$x, {
-                        key: userId,
-                        "user-id": parseInt(userId),
-                        permissions
-                      }, null, 8, ["user-id", "permissions"]);
-                    }), 128))
-                  ]),
-                  vue.createElementVNode("div", _hoisted_7$4, [
-                    vue.createVNode(_component_Button, {
-                      type: "secondary",
-                      onClick: _cache[1] || (_cache[1] = ($event) => showModal.value = true)
-                    }, {
-                      default: vue.withCtx(() => [
-                        _hoisted_8$3,
-                        vue.createTextVNode(" " + vue.toDisplayString(i18n__namespace.__("Add a User", "zionbuilder")), 1)
-                      ]),
-                      _: 1
-                    }),
-                    vue.createVNode(_component_Modal, {
-                      show: showModal.value,
-                      "onUpdate:show": _cache[3] || (_cache[3] = ($event) => showModal.value = $event),
-                      class: "znpb-admin-permissions-modal",
-                      width: 560,
-                      title: i18n__namespace.__("Add a User", "zionbuilder"),
-                      "show-backdrop": false
-                    }, {
-                      default: vue.withCtx(() => [
-                        vue.createVNode(_sfc_main$v, {
-                          onCloseModal: _cache[2] || (_cache[2] = ($event) => showModal.value = false)
-                        })
-                      ]),
-                      _: 1
-                    }, 8, ["show", "title"])
-                  ])
-                ], 64)) : vue.createCommentVNode("", true)
+                }, null, 8, ["info-text", "message_title", "message_description"])) : !loading.value ? (vue.openBlock(), vue.createElementBlock(
+                  vue.Fragment,
+                  { key: 1 },
+                  [
+                    vue.createElementVNode("div", _hoisted_5$8, [
+                      vue.createElementVNode(
+                        "h3",
+                        null,
+                        vue.toDisplayString(i18n__namespace.__("User specific permissions", "zionbuilder")),
+                        1
+                        /* TEXT */
+                      ),
+                      Object.entries(vue.unref(userPermissions)).length === 0 ? (vue.openBlock(), vue.createBlock(_component_EmptyList, {
+                        key: 0,
+                        onClick: _cache[0] || (_cache[0] = ($event) => showModal.value = true)
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createTextVNode(
+                            vue.toDisplayString(i18n__namespace.__("no user added yet", "zionbuilder")),
+                            1
+                            /* TEXT */
+                          )
+                        ]),
+                        _: 1
+                        /* STABLE */
+                      })) : vue.createCommentVNode("v-if", true),
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(vue.unref(userPermissions), (permissions, userId) => {
+                          return vue.openBlock(), vue.createBlock(_sfc_main$x, {
+                            key: userId,
+                            "user-id": parseInt(userId),
+                            permissions
+                          }, null, 8, ["user-id", "permissions"]);
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      ))
+                    ]),
+                    vue.createElementVNode("div", _hoisted_6$5, [
+                      vue.createVNode(_component_Button, {
+                        type: "secondary",
+                        onClick: _cache[1] || (_cache[1] = ($event) => showModal.value = true)
+                      }, {
+                        default: vue.withCtx(() => [
+                          _cache[4] || (_cache[4] = vue.createElementVNode(
+                            "span",
+                            { class: "znpb-add-element-icon" },
+                            null,
+                            -1
+                            /* CACHED */
+                          )),
+                          vue.createTextVNode(
+                            " " + vue.toDisplayString(i18n__namespace.__("Add a User", "zionbuilder")),
+                            1
+                            /* TEXT */
+                          )
+                        ]),
+                        _: 1
+                        /* STABLE */
+                      }),
+                      vue.createVNode(_component_Modal, {
+                        show: showModal.value,
+                        "onUpdate:show": _cache[3] || (_cache[3] = ($event) => showModal.value = $event),
+                        class: "znpb-admin-permissions-modal",
+                        width: 560,
+                        title: i18n__namespace.__("Add a User", "zionbuilder"),
+                        "show-backdrop": false
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createVNode(_sfc_main$v, {
+                            onCloseModal: _cache[2] || (_cache[2] = ($event) => showModal.value = false)
+                          })
+                        ]),
+                        _: 1
+                        /* STABLE */
+                      }, 8, ["show", "title"])
+                    ])
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : vue.createCommentVNode("v-if", true)
               ]),
               _: 1
+              /* STABLE */
             })
           ])
         ]);
       };
     }
   });
-  const Permissions_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$n = { class: "znpb-admin-modal-two-cols" };
   const _hoisted_2$l = { class: "znpb-admin-modal-two-cols__title-block" };
-  const _hoisted_3$f = { class: "znpb-admin-modal-title-block__title" };
-  const _hoisted_4$9 = { class: "znpb-admin-modal-title-block__desc" };
-  const _hoisted_5$8 = { class: "znpb-admin-modal-two-cols__option-block" };
+  const _hoisted_3$d = { class: "znpb-admin-modal-title-block__title" };
+  const _hoisted_4$8 = { class: "znpb-admin-modal-title-block__desc" };
+  const _hoisted_5$7 = { class: "znpb-admin-modal-two-cols__option-block" };
   const _sfc_main$t = /* @__PURE__ */ vue.defineComponent({
     __name: "ModalTwoColTemplate",
     props: {
@@ -1043,28 +1314,40 @@ var __objRest = (source, exclude) => {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$n, [
           vue.createElementVNode("div", _hoisted_2$l, [
-            vue.createElementVNode("h4", _hoisted_3$f, vue.toDisplayString(_ctx.title), 1),
-            vue.createElementVNode("p", _hoisted_4$9, vue.toDisplayString(_ctx.desc), 1)
+            vue.createElementVNode(
+              "h4",
+              _hoisted_3$d,
+              vue.toDisplayString(__props.title),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "p",
+              _hoisted_4$8,
+              vue.toDisplayString(__props.desc),
+              1
+              /* TEXT */
+            )
           ]),
-          vue.createElementVNode("div", _hoisted_5$8, [
+          vue.createElementVNode("div", _hoisted_5$7, [
             vue.renderSlot(_ctx.$slots, "default")
           ])
         ]);
       };
     }
   });
-  const ModalTwoColTemplate_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$m = { class: "znpb-admin-title-block znpb-admin-title-block--heading" };
   const _hoisted_2$k = { class: "znpb-admin-modal-title-block__title" };
-  const _hoisted_3$e = { class: "znpb-admin-modal-title-block__desc" };
+  const _hoisted_3$c = { class: "znpb-admin-modal-title-block__desc" };
   const _sfc_main$s = /* @__PURE__ */ vue.defineComponent({
     __name: "ModalAddNewTemplate",
     props: {
       templateType: { default: "templates" }
     },
     emits: ["save-template"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const localTemplate = vue.ref({
         title: "",
         template_type: props.templateType
@@ -1093,8 +1376,20 @@ var __objRest = (source, exclude) => {
         }, {
           default: vue.withCtx(() => [
             vue.createElementVNode("div", _hoisted_1$m, [
-              vue.createElementVNode("h4", _hoisted_2$k, vue.toDisplayString(i18n__namespace.__("Templates", "zionbuilder")), 1),
-              vue.createElementVNode("p", _hoisted_3$e, vue.toDisplayString(i18n__namespace.__("Create a new template by choosing the template type and adding a name", "zionbuilder")), 1)
+              vue.createElementVNode(
+                "h4",
+                _hoisted_2$k,
+                vue.toDisplayString(i18n__namespace.__("Templates", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "p",
+                _hoisted_3$c,
+                vue.toDisplayString(i18n__namespace.__("Create a new template by choosing the template type and adding a name", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ]),
             vue.createVNode(_sfc_main$t, {
               title: i18n__namespace.__("Template type", "zionbuilder"),
@@ -1110,6 +1405,7 @@ var __objRest = (source, exclude) => {
                 }, null, 8, ["modelValue", "placeholder", "options"])
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["title", "desc"]),
             vue.createVNode(_sfc_main$t, {
               title: i18n__namespace.__("Template Name", "zionbuilder"),
@@ -1124,19 +1420,20 @@ var __objRest = (source, exclude) => {
                 }, null, 8, ["modelValue", "placeholder"])
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["title", "desc"])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["disabled"]);
       };
     }
   });
-  const ModalAddNewTemplate_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$l = { class: "znpb-admin-single-template__title" };
   const _hoisted_2$j = { class: "znpb-admin-single-template__author" };
-  const _hoisted_3$d = { class: "znpb-admin-single-template__shortcode" };
-  const _hoisted_4$8 = { class: "znpb-admin-single-template__actions" };
-  const _hoisted_5$7 = {
+  const _hoisted_3$b = { class: "znpb-admin-single-template__shortcode" };
+  const _hoisted_4$7 = { class: "znpb-admin-single-template__actions" };
+  const _hoisted_5$6 = {
     key: 0,
     class: "znpb-admin-single-template--error"
   };
@@ -1149,8 +1446,9 @@ var __objRest = (source, exclude) => {
       active: { type: Boolean, default: false }
     },
     emits: ["delete-template", "show-modal-preview"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const templateInputRef = vue.ref(null);
       const isCopied = vue.ref(false);
       const localLoading = vue.ref(props.loading);
@@ -1207,72 +1505,126 @@ var __objRest = (source, exclude) => {
         const _component_Loader = vue.resolveComponent("Loader");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
         return vue.openBlock(), vue.createElementBlock("div", null, [
-          vue.createElementVNode("div", {
-            class: vue.normalizeClass(["znpb-admin-single-template", { "znpb-admin-single-template--active": isActive.value }])
-          }, [
-            vue.createElementVNode("span", _hoisted_1$l, vue.toDisplayString(_ctx.template.name), 1),
-            vue.createElementVNode("span", _hoisted_2$j, vue.toDisplayString(_ctx.template.author), 1),
-            vue.createElementVNode("div", _hoisted_3$d, [
-              vue.withDirectives((vue.openBlock(), vue.createBlock(vue.unref(components.BaseInput), {
-                ref_key: "templateInputRef",
-                ref: templateInputRef,
-                modelValue: _ctx.template.shortcode,
-                readonly: "",
-                spellcheck: "false",
-                autocomplete: "false",
-                class: "znpb-admin-single-template__input",
-                onClick: _cache[1] || (_cache[1] = ($event) => copyTextInput())
-              }, {
-                suffix: vue.withCtx(() => [
-                  vue.createVNode(_component_Icon, {
-                    icon: "copy",
-                    onClick: _cache[0] || (_cache[0] = ($event) => copyTextInput())
-                  })
-                ]),
-                _: 1
-              }, 8, ["modelValue"])), [
-                [_directive_znpb_tooltip, isCopied.value ? i18n__namespace.__("Copied", "zionbuilder") : i18n__namespace.__("Copy", "zionbuilder")]
-              ])
-            ]),
-            vue.createElementVNode("div", _hoisted_4$8, [
-              !_ctx.template.loading ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-                vue.withDirectives(vue.createVNode(_component_Icon, {
-                  icon: "edit",
-                  class: "znpb-admin-single-template__action znpb-delete-icon-pop",
-                  onClick: editUrl
-                }, null, 512), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Edit template", "zionbuilder")]
-                ]),
-                vue.withDirectives(vue.createVNode(_component_Icon, {
-                  icon: "delete",
-                  class: "znpb-admin-single-template__action znpb-delete-icon-pop",
-                  onClick: _cache[2] || (_cache[2] = ($event) => emit("delete-template", _ctx.template))
-                }, null, 512), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Delete template", "zionbuilder")]
-                ]),
-                vue.withDirectives(vue.createVNode(_component_Icon, {
-                  icon: "export",
-                  class: "znpb-admin-single-template__action znpb-export-icon-pop",
-                  onClick: _cache[3] || (_cache[3] = () => _ctx.template.export())
-                }, null, 512), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Export template", "zionbuilder")]
-                ]),
-                vue.withDirectives(vue.createVNode(_component_Icon, {
-                  icon: "eye",
-                  class: "znpb-admin-single-template__action znpb-preview-icon-pop",
-                  onClick: _cache[4] || (_cache[4] = ($event) => emit("show-modal-preview", true))
-                }, null, 512), [
-                  [_directive_znpb_tooltip, i18n__namespace.__("Preview template", "zionbuilder")]
+          vue.createElementVNode(
+            "div",
+            {
+              class: vue.normalizeClass(["znpb-admin-single-template", { "znpb-admin-single-template--active": isActive.value }])
+            },
+            [
+              vue.createElementVNode(
+                "span",
+                _hoisted_1$l,
+                vue.toDisplayString(__props.template.name),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "span",
+                _hoisted_2$j,
+                vue.toDisplayString(__props.template.author),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode("div", _hoisted_3$b, [
+                vue.withDirectives((vue.openBlock(), vue.createBlock(vue.unref(components.BaseInput), {
+                  ref_key: "templateInputRef",
+                  ref: templateInputRef,
+                  modelValue: __props.template.shortcode,
+                  readonly: "",
+                  spellcheck: "false",
+                  autocomplete: "false",
+                  class: "znpb-admin-single-template__input",
+                  onClick: _cache[1] || (_cache[1] = ($event) => copyTextInput())
+                }, {
+                  suffix: vue.withCtx(() => [
+                    vue.createVNode(_component_Icon, {
+                      icon: "copy",
+                      onClick: _cache[0] || (_cache[0] = ($event) => copyTextInput())
+                    })
+                  ]),
+                  _: 1
+                  /* STABLE */
+                }, 8, ["modelValue"])), [
+                  [_directive_znpb_tooltip, isCopied.value ? i18n__namespace.__("Copied", "zionbuilder") : i18n__namespace.__("Copy", "zionbuilder")]
                 ])
-              ], 64)) : (vue.openBlock(), vue.createBlock(_component_Loader, { key: 1 }))
-            ])
-          ], 2),
-          errorMessage.value.length > 0 ? (vue.openBlock(), vue.createElementBlock("p", _hoisted_5$7, vue.toDisplayString(errorMessage.value), 1)) : vue.createCommentVNode("", true)
+              ]),
+              vue.createElementVNode("div", _hoisted_4$7, [
+                !__props.template.loading ? (vue.openBlock(), vue.createElementBlock(
+                  vue.Fragment,
+                  { key: 0 },
+                  [
+                    vue.withDirectives(vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "edit",
+                        class: "znpb-admin-single-template__action znpb-delete-icon-pop",
+                        onClick: editUrl
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Edit template", "zionbuilder")]
+                    ]),
+                    vue.withDirectives(vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "delete",
+                        class: "znpb-admin-single-template__action znpb-delete-icon-pop",
+                        onClick: _cache[2] || (_cache[2] = ($event) => emit("delete-template", __props.template))
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Delete template", "zionbuilder")]
+                    ]),
+                    vue.withDirectives(vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "export",
+                        class: "znpb-admin-single-template__action znpb-export-icon-pop",
+                        onClick: _cache[3] || (_cache[3] = () => __props.template.export())
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Export template", "zionbuilder")]
+                    ]),
+                    vue.withDirectives(vue.createVNode(
+                      _component_Icon,
+                      {
+                        icon: "eye",
+                        class: "znpb-admin-single-template__action znpb-preview-icon-pop",
+                        onClick: _cache[4] || (_cache[4] = ($event) => emit("show-modal-preview", true))
+                      },
+                      null,
+                      512
+                      /* NEED_PATCH */
+                    ), [
+                      [_directive_znpb_tooltip, i18n__namespace.__("Preview template", "zionbuilder")]
+                    ])
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : (vue.openBlock(), vue.createBlock(_component_Loader, { key: 1 }))
+              ])
+            ],
+            2
+            /* CLASS */
+          ),
+          errorMessage.value.length > 0 ? (vue.openBlock(), vue.createElementBlock(
+            "p",
+            _hoisted_5$6,
+            vue.toDisplayString(errorMessage.value),
+            1
+            /* TEXT */
+          )) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   });
-  const TemplateItem_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$k = { class: "znpb-template-preview__wrapper znpb-fancy-scrollbar" };
   const _hoisted_2$i = ["src"];
   const _sfc_main$q = /* @__PURE__ */ vue.defineComponent({
@@ -1288,23 +1640,22 @@ var __objRest = (source, exclude) => {
           !loaded.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
             key: 0,
             class: "znpb-template-preview__loader"
-          })) : vue.createCommentVNode("", true),
+          })) : vue.createCommentVNode("v-if", true),
           vue.createElementVNode("iframe", {
             frameborder: "0",
-            src: _ctx.frameUrl,
+            src: __props.frameUrl,
             scrolling: "yes",
             onLoad: _cache[0] || (_cache[0] = ($event) => loaded.value = true)
-          }, " ", 40, _hoisted_2$i)
+          }, null, 40, _hoisted_2$i)
         ]);
       };
     }
   });
-  const ModalTemplatePreview_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$j = { class: "znpb-template-list__wrapper" };
   const _hoisted_2$h = { class: "znpb-admin-templates-titles" };
-  const _hoisted_3$c = { class: "znpb-admin-templates-titles__heading znpb-admin-templates-titles__heading--title" };
-  const _hoisted_4$7 = { class: "znpb-admin-templates-titles__heading" };
-  const _hoisted_5$6 = { class: "znpb-admin-templates-titles__heading znpb-admin-templates-titles__heading--shortcode" };
+  const _hoisted_3$a = { class: "znpb-admin-templates-titles__heading znpb-admin-templates-titles__heading--title" };
+  const _hoisted_4$6 = { class: "znpb-admin-templates-titles__heading" };
+  const _hoisted_5$5 = { class: "znpb-admin-templates-titles__heading znpb-admin-templates-titles__heading--shortcode" };
   const _hoisted_6$4 = { class: "znpb-admin-templates-titles__heading znpb-admin-templates-titles__heading--actions" };
   const _sfc_main$p = /* @__PURE__ */ vue.defineComponent({
     __name: "TemplateList",
@@ -1315,8 +1666,9 @@ var __objRest = (source, exclude) => {
       loadingItem: { type: Boolean, default: false }
     },
     emits: ["insert"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const showModalConfirm = vue.ref(false);
       const activeTemplate = vue.ref(null);
       const showModalPreview = vue.ref(false);
@@ -1342,30 +1694,65 @@ var __objRest = (source, exclude) => {
         const _component_ModalConfirm = vue.resolveComponent("ModalConfirm");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$j, [
           vue.createElementVNode("div", _hoisted_2$h, [
-            vue.createElementVNode("h5", _hoisted_3$c, vue.toDisplayString(i18n__namespace.__("Title", "zionbuilder")), 1),
-            vue.createElementVNode("h5", _hoisted_4$7, vue.toDisplayString(i18n__namespace.__("Author", "zionbuilder")), 1),
-            vue.createElementVNode("h5", _hoisted_5$6, vue.toDisplayString(i18n__namespace.__("Shortcode", "zionbuilder")), 1),
-            vue.createElementVNode("h5", _hoisted_6$4, vue.toDisplayString(i18n__namespace.__("actions", "zionbuilder")), 1)
+            vue.createElementVNode(
+              "h5",
+              _hoisted_3$a,
+              vue.toDisplayString(i18n__namespace.__("Title", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "h5",
+              _hoisted_4$6,
+              vue.toDisplayString(i18n__namespace.__("Author", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "h5",
+              _hoisted_5$5,
+              vue.toDisplayString(i18n__namespace.__("Shortcode", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "h5",
+              _hoisted_6$4,
+              vue.toDisplayString(i18n__namespace.__("actions", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ]),
-          (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(sortedTemplates.value, (template, index2) => {
-            return vue.openBlock(), vue.createBlock(_sfc_main$r, {
-              ref_for: true,
-              ref: "singleTemplate",
-              key: index2,
-              template,
-              active: _ctx.activeItem === template.ID,
-              "show-insert": _ctx.showInsert,
-              onDeleteTemplate: showConfirmDelete,
-              onShowModalPreview: ($event) => activateModalPreview(template),
-              onInsert: _cache[0] || (_cache[0] = ($event) => emit("insert", $event))
-            }, null, 8, ["template", "active", "show-insert", "onShowModalPreview"]);
-          }), 128)),
-          _ctx.templates.length === 0 ? (vue.openBlock(), vue.createBlock(_component_EmptyList, { key: 0 }, {
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(sortedTemplates.value, (template, index) => {
+              return vue.openBlock(), vue.createBlock(_sfc_main$r, {
+                ref_for: true,
+                ref: "singleTemplate",
+                key: index,
+                template,
+                active: __props.activeItem === template.ID,
+                "show-insert": __props.showInsert,
+                onDeleteTemplate: showConfirmDelete,
+                onShowModalPreview: ($event) => activateModalPreview(template),
+                onInsert: _cache[0] || (_cache[0] = ($event) => emit("insert", $event))
+              }, null, 8, ["template", "active", "show-insert", "onShowModalPreview"]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          )),
+          __props.templates.length === 0 ? (vue.openBlock(), vue.createBlock(_component_EmptyList, { key: 0 }, {
             default: vue.withCtx(() => [
-              vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("No template", "zionbuilder")), 1)
+              vue.createTextVNode(
+                vue.toDisplayString(i18n__namespace.__("No template", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ]),
             _: 1
-          })) : vue.createCommentVNode("", true),
+            /* STABLE */
+          })) : vue.createCommentVNode("v-if", true),
           vue.createVNode(_component_Modal, {
             show: showModalPreview.value,
             "onUpdate:show": _cache[1] || (_cache[1] = ($event) => showModalPreview.value = $event),
@@ -1377,6 +1764,7 @@ var __objRest = (source, exclude) => {
               vue.createVNode(_sfc_main$q, { "frame-url": templatePreview.value }, null, 8, ["frame-url"])
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["show", "title"]),
           showModalConfirm.value ? (vue.openBlock(), vue.createBlock(_component_ModalConfirm, {
             key: 1,
@@ -1387,18 +1775,21 @@ var __objRest = (source, exclude) => {
             onCancel: _cache[2] || (_cache[2] = ($event) => showModalConfirm.value = false)
           }, {
             default: vue.withCtx(() => [
-              vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("Are you sure you want to delete this template?", "zionbuilder")), 1)
+              vue.createTextVNode(
+                vue.toDisplayString(i18n__namespace.__("Are you sure you want to delete this template?", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ]),
             _: 1
-          }, 8, ["confirm-text", "cancel-text"])) : vue.createCommentVNode("", true)
+            /* STABLE */
+          }, 8, ["confirm-text", "cancel-text"])) : vue.createCommentVNode("v-if", true)
         ]);
       };
     }
   });
-  const TemplateList_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$i = { class: "znpb-admin-templates-actions" };
-  const _hoisted_2$g = /* @__PURE__ */ vue.createElementVNode("span", { class: "znpb-add-element-icon" }, null, -1);
-  const _hoisted_3$b = { class: "znpb-admin-info-p" };
+  const _hoisted_2$g = { class: "znpb-admin-info-p" };
   const _sfc_main$o = /* @__PURE__ */ vue.defineComponent({
     __name: "TemplatePage",
     props: {
@@ -1448,32 +1839,52 @@ var __objRest = (source, exclude) => {
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, { class: "znpb-admin-templates-wrapper" }, {
           right: vue.withCtx(() => [
-            vue.createElementVNode("p", _hoisted_3$b, vue.toDisplayString(i18n__namespace.__("Templates allow you to easily build a WordPress page", "zionbuilder")), 1)
+            vue.createElementVNode(
+              "p",
+              _hoisted_2$g,
+              vue.toDisplayString(i18n__namespace.__("Templates allow you to easily build a WordPress page", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(_ctx.templateName), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(__props.templateName),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_Tabs, {
               "tab-style": "minimal",
               onChangedTab: onTabChange
             }, {
               default: vue.withCtx(() => [
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(tabs.value, (tab) => {
-                  return vue.openBlock(), vue.createBlock(_component_Tab, {
-                    id: tab.id,
-                    key: tab.id,
-                    name: tab.title
-                  }, {
-                    default: vue.withCtx(() => [
-                      vue.unref(localLibrary).loading ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : (vue.openBlock(), vue.createBlock(_sfc_main$p, {
-                        key: 1,
-                        templates: getFilteredTemplates.value
-                      }, null, 8, ["templates"]))
-                    ]),
-                    _: 2
-                  }, 1032, ["id", "name"]);
-                }), 128))
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList(tabs.value, (tab) => {
+                    return vue.openBlock(), vue.createBlock(_component_Tab, {
+                      id: tab.id,
+                      key: tab.id,
+                      name: tab.title
+                    }, {
+                      default: vue.withCtx(() => [
+                        vue.unref(localLibrary).loading ? (vue.openBlock(), vue.createBlock(_component_Loader, { key: 0 })) : (vue.openBlock(), vue.createBlock(_sfc_main$p, {
+                          key: 1,
+                          templates: getFilteredTemplates.value
+                        }, null, 8, ["templates"]))
+                      ]),
+                      _: 1
+                      /* STABLE */
+                    }, 8, ["id", "name"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
               ]),
               _: 1
+              /* STABLE */
             }),
             vue.createElementVNode("div", _hoisted_1$i, [
               vue.createVNode(_component_Button, {
@@ -1481,10 +1892,21 @@ var __objRest = (source, exclude) => {
                 onClick: _cache[0] || (_cache[0] = ($event) => showModal.value = true)
               }, {
                 default: vue.withCtx(() => [
-                  _hoisted_2$g,
-                  vue.createTextVNode(" " + vue.toDisplayString(i18n__namespace.__("Add new template", "zionbuilder")), 1)
+                  _cache[2] || (_cache[2] = vue.createElementVNode(
+                    "span",
+                    { class: "znpb-add-element-icon" },
+                    null,
+                    -1
+                    /* CACHED */
+                  )),
+                  vue.createTextVNode(
+                    " " + vue.toDisplayString(i18n__namespace.__("Add new template", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
                 ]),
                 _: 1
+                /* STABLE */
               })
             ]),
             vue.createVNode(_component_Modal, {
@@ -1497,22 +1919,23 @@ var __objRest = (source, exclude) => {
             }, {
               default: vue.withCtx(() => [
                 vue.createVNode(_sfc_main$s, {
-                  "template-type": _ctx.templateType,
+                  "template-type": __props.templateType,
                   onSaveTemplate: onAddNewTemplate
                 }, null, 8, ["template-type"])
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["show", "title"])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const TemplatePage_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$h = { class: "znpb-admin-hidden-select__title" };
   const _hoisted_2$f = { class: "znpb-admin-hidden-select__content" };
-  const _hoisted_3$a = { class: "znpb-admin-hidden-select__content-slot znpb-fancy-scrollbar" };
+  const _hoisted_3$9 = { class: "znpb-admin-hidden-select__content-slot znpb-fancy-scrollbar" };
   const _sfc_main$n = /* @__PURE__ */ vue.defineComponent({
     __name: "HiddenContainer",
     setup(__props) {
@@ -1535,48 +1958,61 @@ var __objRest = (source, exclude) => {
         removeEventListeners();
       });
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root,
-          class: "znpb-admin-hidden-select__wrapper",
-          onClick: _cache[0] || (_cache[0] = ($event) => (showContent.value = true, addEventListeners()))
-        }, [
-          vue.createElementVNode("span", _hoisted_1$h, [
-            vue.renderSlot(_ctx.$slots, "default")
-          ]),
-          vue.withDirectives(vue.createElementVNode("div", _hoisted_2$f, [
-            vue.createVNode(vue.Transition, { name: "fadeGrow" }, {
-              default: vue.withCtx(() => [
-                vue.createElementVNode("div", _hoisted_3$a, [
-                  vue.renderSlot(_ctx.$slots, "content")
-                ])
-              ]),
-              _: 3
-            })
-          ], 512), [
-            [vue.vShow, showContent.value]
-          ])
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root,
+            class: "znpb-admin-hidden-select__wrapper",
+            onClick: _cache[0] || (_cache[0] = ($event) => (showContent.value = true, addEventListeners()))
+          },
+          [
+            vue.createElementVNode("span", _hoisted_1$h, [
+              vue.renderSlot(_ctx.$slots, "default")
+            ]),
+            vue.withDirectives(vue.createElementVNode(
+              "div",
+              _hoisted_2$f,
+              [
+                vue.createVNode(vue.Transition, { name: "fadeGrow" }, {
+                  default: vue.withCtx(() => [
+                    vue.createElementVNode("div", _hoisted_3$9, [
+                      vue.renderSlot(_ctx.$slots, "content")
+                    ])
+                  ]),
+                  _: 3
+                  /* FORWARDED */
+                })
+              ],
+              512
+              /* NEED_PATCH */
+            ), [
+              [vue.vShow, showContent.value]
+            ])
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });
-  const HiddenContainer_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$g = {
     key: 0,
     class: "znpb-admin__google-font-tab"
   };
   const _hoisted_2$e = { class: "znpb-admin__google-font-tab-title" };
-  const _hoisted_3$9 = { class: "znpb-admin__google-font-tab-variants" };
-  const _hoisted_4$6 = { class: "znpb-admin__google-font-tab-subset" };
-  const _hoisted_5$5 = { class: "znpb-admin__google-font-tab-actions" };
+  const _hoisted_3$8 = { class: "znpb-admin__google-font-tab-variants" };
+  const _hoisted_4$5 = { class: "znpb-admin__google-font-tab-subset" };
+  const _hoisted_5$4 = { class: "znpb-admin__google-font-tab-actions" };
   const _sfc_main$m = /* @__PURE__ */ vue.defineComponent({
     __name: "GoogleFontTab",
     props: {
       font: {}
     },
     emits: ["font-updated", "delete"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const showModalConfirm = vue.ref(false);
       const googleFontsStore = store.useGoogleFontsStore();
       const fontData = googleFontsStore.getFontData(props.font["font_family"]);
@@ -1665,8 +2101,14 @@ var __objRest = (source, exclude) => {
         const _component_ModalConfirm = vue.resolveComponent("ModalConfirm");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
         return vue.unref(fontData) ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$g, [
-          vue.createElementVNode("div", _hoisted_2$e, vue.toDisplayString(_ctx.font.font_family), 1),
-          vue.createElementVNode("div", _hoisted_3$9, [
+          vue.createElementVNode(
+            "div",
+            _hoisted_2$e,
+            vue.toDisplayString(__props.font.font_family),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode("div", _hoisted_3$8, [
             vue.createVNode(_sfc_main$n, null, {
               content: vue.withCtx(() => [
                 vue.createVNode(_component_InputCheckboxGroup, {
@@ -1677,12 +2119,17 @@ var __objRest = (source, exclude) => {
                 }, null, 8, ["modelValue", "options"])
               ]),
               default: vue.withCtx(() => [
-                vue.createTextVNode(vue.toDisplayString(niceFontVariants.value) + " ", 1)
+                vue.createTextVNode(
+                  vue.toDisplayString(niceFontVariants.value) + " ",
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
+              /* STABLE */
             })
           ]),
-          vue.createElementVNode("div", _hoisted_4$6, [
+          vue.createElementVNode("div", _hoisted_4$5, [
             vue.createVNode(_sfc_main$n, null, {
               content: vue.withCtx(() => [
                 vue.createVNode(_component_InputCheckboxGroup, {
@@ -1693,17 +2140,28 @@ var __objRest = (source, exclude) => {
                 }, null, 8, ["modelValue", "options"])
               ]),
               default: vue.withCtx(() => [
-                vue.createTextVNode(vue.toDisplayString(niceFontSubsets.value) + " ", 1)
+                vue.createTextVNode(
+                  vue.toDisplayString(niceFontSubsets.value) + " ",
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
+              /* STABLE */
             })
           ]),
-          vue.createElementVNode("div", _hoisted_5$5, [
-            vue.withDirectives(vue.createVNode(_component_Icon, {
-              class: "znpb-edit-icon-pop",
-              icon: "delete",
-              onClick: _cache[2] || (_cache[2] = ($event) => showModalConfirm.value = true)
-            }, null, 512), [
+          vue.createElementVNode("div", _hoisted_5$4, [
+            vue.withDirectives(vue.createVNode(
+              _component_Icon,
+              {
+                class: "znpb-edit-icon-pop",
+                icon: "delete",
+                onClick: _cache[2] || (_cache[2] = ($event) => showModalConfirm.value = true)
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            ), [
               [_directive_znpb_tooltip, i18n__namespace.__("Delete font?", "zionbuilder")]
             ])
           ]),
@@ -1712,19 +2170,23 @@ var __objRest = (source, exclude) => {
             width: 530,
             "confirm-text": i18n__namespace.__("Yes, delete the font", "zionbuilder"),
             "cancel-text": i18n__namespace.__("No, keep the font", "zionbuilder"),
-            onConfirm: _cache[3] || (_cache[3] = ($event) => (_ctx.$emit("delete", _ctx.font), showModalConfirm.value = false)),
+            onConfirm: _cache[3] || (_cache[3] = ($event) => (_ctx.$emit("delete", __props.font), showModalConfirm.value = false)),
             onCancel: _cache[4] || (_cache[4] = ($event) => showModalConfirm.value = false)
           }, {
             default: vue.withCtx(() => [
-              vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("Are you sure you want to delete this font?", "zionbuilder")), 1)
+              vue.createTextVNode(
+                vue.toDisplayString(i18n__namespace.__("Are you sure you want to delete this font?", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ]),
             _: 1
-          }, 8, ["confirm-text", "cancel-text"])) : vue.createCommentVNode("", true)
-        ])) : vue.createCommentVNode("", true);
+            /* STABLE */
+          }, 8, ["confirm-text", "cancel-text"])) : vue.createCommentVNode("v-if", true)
+        ])) : vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const GoogleFontTab_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$f = { class: "znpb-admin__google-fonts-modal-item" };
   const _hoisted_2$d = { class: "znpb-admin__google-fonts-modal-item-header" };
   const _sfc_main$l = /* @__PURE__ */ vue.defineComponent({
@@ -1745,32 +2207,43 @@ var __objRest = (source, exclude) => {
         const _component_Icon = vue.resolveComponent("Icon");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$f, [
           vue.createElementVNode("div", _hoisted_2$d, [
-            vue.createElementVNode("div", null, vue.toDisplayString(_ctx.font.family), 1),
-            !_ctx.isActive ? (vue.openBlock(), vue.createElementBlock("div", {
+            vue.createElementVNode(
+              "div",
+              null,
+              vue.toDisplayString(__props.font.family),
+              1
+              /* TEXT */
+            ),
+            !__props.isActive ? (vue.openBlock(), vue.createElementBlock("div", {
               key: 0,
               class: "znpb-circle-icon-line",
-              onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("font-selected", _ctx.font))
+              onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("font-selected", __props.font))
             }, [
               vue.createVNode(_component_Icon, { icon: "plus" })
-            ])) : vue.createCommentVNode("", true),
-            _ctx.isActive ? (vue.openBlock(), vue.createElementBlock("div", {
+            ])) : vue.createCommentVNode("v-if", true),
+            __props.isActive ? (vue.openBlock(), vue.createElementBlock("div", {
               key: 1,
               class: "znpb-circle-icon-line znpb-circle-delete",
-              onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("font-removed", _ctx.font.family))
+              onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("font-removed", __props.font.family))
             }, [
               vue.createVNode(_component_Icon, { icon: "minus" })
-            ])) : vue.createCommentVNode("", true)
+            ])) : vue.createCommentVNode("v-if", true)
           ]),
-          vue.createElementVNode("div", {
-            class: "znpb-admin__google-fonts-modal-item-preview",
-            contenteditable: "true",
-            style: vue.normalizeStyle(fontStyle.value)
-          }, vue.toDisplayString(_ctx.font.family), 5)
+          vue.createElementVNode(
+            "div",
+            {
+              class: "znpb-admin__google-fonts-modal-item-preview",
+              contenteditable: "true",
+              style: vue.normalizeStyle(fontStyle.value)
+            },
+            vue.toDisplayString(__props.font.family),
+            5
+            /* TEXT, STYLE */
+          )
         ]);
       };
     }
   });
-  const GoogleFontModalElement_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$e = { class: "znpb-admin__google-fonts-modal-wrapper" };
   const _hoisted_2$c = { class: "znpb-admin__google-fonts-modal-search" };
   const fontsPerPage = 20;
@@ -1852,31 +2325,37 @@ var __objRest = (source, exclude) => {
             onScrollEnd
           }, {
             default: vue.withCtx(() => [
-              (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(visibleFonts.value, (font) => {
-                return vue.openBlock(), vue.createBlock(_sfc_main$l, {
-                  key: font.family,
-                  font,
-                  "is-active": __props.activeFonts.includes(font.family),
-                  onFontSelected: ($event) => _ctx.$emit("font-selected", font),
-                  onFontRemoved: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("font-removed", $event))
-                }, null, 8, ["font", "is-active", "onFontSelected"]);
-              }), 128))
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(visibleFonts.value, (font) => {
+                  return vue.openBlock(), vue.createBlock(_sfc_main$l, {
+                    key: font.family,
+                    font,
+                    "is-active": __props.activeFonts.includes(font.family),
+                    onFontSelected: ($event) => _ctx.$emit("font-selected", font),
+                    onFontRemoved: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("font-removed", $event))
+                  }, null, 8, ["font", "is-active", "onFontSelected"]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ]),
             _: 1
+            /* STABLE */
           }, 8, ["loading"])
         ]);
       };
     }
   });
-  const GoogleFontsModalContent_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$d = {
     key: 0,
     class: "znpb-admin__google-font-tab znpb-admin__google-font-tab--titles"
   };
   const _hoisted_2$b = { class: "znpb-admin__google-font-tab-title" };
-  const _hoisted_3$8 = { class: "znpb-admin__google-font-tab-variants" };
-  const _hoisted_4$5 = { class: "znpb-admin__google-font-tab-subset" };
-  const _hoisted_5$4 = { class: "znpb-admin__google-font-tab-actions" };
+  const _hoisted_3$7 = { class: "znpb-admin__google-font-tab-variants" };
+  const _hoisted_4$4 = { class: "znpb-admin__google-font-tab-subset" };
+  const _hoisted_5$3 = { class: "znpb-admin__google-font-tab-actions" };
   const _hoisted_6$3 = {
     key: 2,
     class: "znpb-admin-google-fonts-wrapper"
@@ -1923,49 +2402,105 @@ var __objRest = (source, exclude) => {
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, null, {
           right: vue.withCtx(() => [
             vue.createElementVNode("p", _hoisted_8$2, [
-              vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("Setting up", "zionbuilder")) + " ", 1),
-              vue.createElementVNode("a", _hoisted_9$1, vue.toDisplayString(i18n__namespace.__("Google web fonts", "zionbuilder")), 1),
-              vue.createTextVNode(" " + vue.toDisplayString(i18n__namespace.__("has never been easier. Choose which ones to use for your website's stylish typography", "zionbuilder")), 1)
+              vue.createTextVNode(
+                vue.toDisplayString(i18n__namespace.__("Setting up", "zionbuilder")) + " ",
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "a",
+                _hoisted_9$1,
+                vue.toDisplayString(i18n__namespace.__("Google web fonts", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createTextVNode(
+                " " + vue.toDisplayString(i18n__namespace.__("has never been easier. Choose which ones to use for your website's stylish typography", "zionbuilder")),
+                1
+                /* TEXT */
+              )
             ])
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Google Fonts", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Google Fonts", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             googleFonts.value.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$d, [
-              vue.createElementVNode("div", _hoisted_2$b, vue.toDisplayString(i18n__namespace.__("Font name", "zionbuilder")), 1),
-              vue.createElementVNode("div", _hoisted_3$8, vue.toDisplayString(i18n__namespace.__("variants", "zionbuilder")), 1),
-              vue.createElementVNode("div", _hoisted_4$5, vue.toDisplayString(i18n__namespace.__("subsets", "zionbuilder")), 1),
-              vue.createElementVNode("div", _hoisted_5$4, vue.toDisplayString(i18n__namespace.__("actions", "zionbuilder")), 1)
-            ])) : vue.createCommentVNode("", true),
+              vue.createElementVNode(
+                "div",
+                _hoisted_2$b,
+                vue.toDisplayString(i18n__namespace.__("Font name", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "div",
+                _hoisted_3$7,
+                vue.toDisplayString(i18n__namespace.__("variants", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "div",
+                _hoisted_4$4,
+                vue.toDisplayString(i18n__namespace.__("subsets", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "div",
+                _hoisted_5$3,
+                vue.toDisplayString(i18n__namespace.__("actions", "zionbuilder")),
+                1
+                /* TEXT */
+              )
+            ])) : vue.createCommentVNode("v-if", true),
             googleFonts.value.length === 0 ? vue.withDirectives((vue.openBlock(), vue.createBlock(_component_EmptyList, {
               key: 1,
               onClick: _cache[0] || (_cache[0] = ($event) => showModal.value = true)
             }, {
               default: vue.withCtx(() => [
-                vue.createTextVNode(vue.toDisplayString(i18n__namespace.__("No Google fonts added", "zionbuilder")), 1)
+                vue.createTextVNode(
+                  vue.toDisplayString(i18n__namespace.__("No Google fonts added", "zionbuilder")),
+                  1
+                  /* TEXT */
+                )
               ]),
               _: 1
+              /* STABLE */
             })), [
               [_directive_znpb_tooltip, i18n__namespace.__("Click Me or the Blue button to add a Font", "zionbuilder")]
-            ]) : vue.createCommentVNode("", true),
+            ]) : vue.createCommentVNode("v-if", true),
             googleFonts.value.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$3, [
               vue.createVNode(_component_ListAnimation, null, {
                 default: vue.withCtx(() => [
-                  (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(googleFonts.value, (font) => {
-                    return vue.openBlock(), vue.createBlock(_sfc_main$m, {
-                      key: font.font_family,
-                      class: "znpb-admin-tab",
-                      font,
-                      onDelete: deleteFont,
-                      onFontUpdated: ($event) => onGoogleFontUpdated({
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(googleFonts.value, (font) => {
+                      return vue.openBlock(), vue.createBlock(_sfc_main$m, {
+                        key: font.font_family,
+                        class: "znpb-admin-tab",
                         font,
-                        value: $event
-                      })
-                    }, null, 8, ["font", "onFontUpdated"]);
-                  }), 128))
+                        onDelete: deleteFont,
+                        onFontUpdated: ($event) => onGoogleFontUpdated({
+                          font,
+                          value: $event
+                        })
+                      }, null, 8, ["font", "onFontUpdated"]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
                 ]),
                 _: 1
+                /* STABLE */
               })
-            ])) : vue.createCommentVNode("", true),
+            ])) : vue.createCommentVNode("v-if", true),
             vue.createVNode(_component_Modal, {
               show: showModal.value,
               "onUpdate:show": _cache[1] || (_cache[1] = ($event) => showModal.value = $event),
@@ -1982,6 +2517,7 @@ var __objRest = (source, exclude) => {
                 }, null, 8, ["active-fonts"])
               ]),
               _: 1
+              /* STABLE */
             }, 8, ["show", "title"]),
             vue.createElementVNode("div", _hoisted_7$3, [
               vue.createVNode(_component_Button, {
@@ -1990,21 +2526,26 @@ var __objRest = (source, exclude) => {
               }, {
                 default: vue.withCtx(() => [
                   vue.createVNode(_component_Icon, { icon: "plus" }),
-                  vue.createTextVNode(" " + vue.toDisplayString(i18n__namespace.__("Add Font", "zionbuilder")), 1)
+                  vue.createTextVNode(
+                    " " + vue.toDisplayString(i18n__namespace.__("Add Font", "zionbuilder")),
+                    1
+                    /* TEXT */
+                  )
                 ]),
                 _: 1
+                /* STABLE */
               })
             ])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const GoogleFonts_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$c = { class: "znpb-admin-posts-wrapper" };
   const _hoisted_2$a = { class: "znpb-admin-post-types-tab__title" };
-  const _hoisted_3$7 = { class: "znpb-admin-info-p" };
+  const _hoisted_3$6 = { class: "znpb-admin-info-p" };
   const _sfc_main$i = /* @__PURE__ */ vue.defineComponent({
     __name: "PageAllowedPostTypes",
     setup(__props) {
@@ -2020,42 +2561,60 @@ var __objRest = (source, exclude) => {
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, null, {
           right: vue.withCtx(() => [
-            vue.createElementVNode("p", _hoisted_3$7, vue.toDisplayString(i18n__namespace.__("You can set from here the allowed post types", "zionbuilder")), 1)
+            vue.createElementVNode(
+              "p",
+              _hoisted_3$6,
+              vue.toDisplayString(i18n__namespace.__("You can set from here the allowed post types", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Allowed Post types", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Allowed Post types", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createElementVNode("div", _hoisted_1$c, [
-              (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(dataSets).post_types, (post) => {
-                return vue.openBlock(), vue.createElementBlock("div", {
-                  key: post.id,
-                  class: "znpb-admin-post-types-tab"
-                }, [
-                  vue.createElementVNode("span", _hoisted_2$a, vue.toDisplayString(post.name), 1),
-                  vue.createVNode(_component_InputCheckbox, {
-                    modelValue: allowedPostTypes.value,
-                    "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => allowedPostTypes.value = $event),
-                    class: "znpb-admin-checkbox-wrapper",
-                    rounded: true,
-                    "option-value": post.id
-                  }, null, 8, ["modelValue", "option-value"])
-                ]);
-              }), 128))
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(vue.unref(dataSets).post_types, (post) => {
+                  return vue.openBlock(), vue.createElementBlock("div", {
+                    key: post.id,
+                    class: "znpb-admin-post-types-tab"
+                  }, [
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_2$a,
+                      vue.toDisplayString(post.name),
+                      1
+                      /* TEXT */
+                    ),
+                    vue.createVNode(_component_InputCheckbox, {
+                      modelValue: allowedPostTypes.value,
+                      "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => allowedPostTypes.value = $event),
+                      class: "znpb-admin-checkbox-wrapper",
+                      rounded: true,
+                      "option-value": post.id
+                    }, null, 8, ["modelValue", "option-value"])
+                  ]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const PageAllowedPostTypes_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$b = { class: "znpb-admin-content-wrapper" };
   const _hoisted_2$9 = { class: "znpb-admin-content znpb-admin-content--left" };
-  const _hoisted_3$6 = /* @__PURE__ */ vue.createElementVNode("span", null, [
-    /* @__PURE__ */ vue.createElementVNode("span")
-  ], -1);
-  const _hoisted_4$4 = [
-    _hoisted_3$6
-  ];
   const _sfc_main$h = /* @__PURE__ */ vue.defineComponent({
     __name: "PageContent",
     setup(__props) {
@@ -2087,7 +2646,17 @@ var __objRest = (source, exclude) => {
             vue.createElementVNode("span", {
               class: "znpb-admin-side-menu-trigger js-side-menu-trigger",
               onClick: _cache[0] || (_cache[0] = ($event) => responsiveOpen.value = !responsiveOpen.value)
-            }, _hoisted_4$4),
+            }, [..._cache[1] || (_cache[1] = [
+              vue.createElementVNode(
+                "span",
+                null,
+                [
+                  vue.createElementVNode("span")
+                ],
+                -1
+                /* CACHED */
+              )
+            ])]),
             vue.createVNode(_component_SideMenu, {
               class: vue.normalizeClass({ "znpb-admin-side-menu--open": responsiveOpen.value }),
               "menu-items": childMenus.value,
@@ -2128,30 +2697,47 @@ var __objRest = (source, exclude) => {
         const _component_Icon = vue.resolveComponent("Icon");
         const _component_GradientPreview = vue.resolveComponent("GradientPreview");
         const _directive_znpb_tooltip = vue.resolveDirective("znpb-tooltip");
-        return vue.openBlock(), vue.createElementBlock("div", {
-          class: "znpb-admin-gradient-preset-box",
-          onMouseover: _cache[1] || (_cache[1] = ($event) => showLink.value = true),
-          onMouseleave: _cache[2] || (_cache[2] = ($event) => showLink.value = false)
-        }, [
-          vue.withDirectives(vue.createVNode(_component_Icon, {
-            icon: "close",
-            class: "znpb-admin-gradient-preset-box__delete",
-            onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => _ctx.$emit("delete-gradient"), ["stop"]))
-          }, null, 512), [
-            [_directive_znpb_tooltip, i18n__namespace.__("Delete this gradient from your preset", "zionbuilder")]
-          ]),
-          vue.createElementVNode("div", _hoisted_1$a, [
-            vue.createVNode(_component_GradientPreview, {
-              config: _ctx.config,
-              round: true
-            }, null, 8, ["config"])
-          ]),
-          vue.createElementVNode("div", _hoisted_2$8, vue.toDisplayString(_ctx.title), 1)
-        ], 32);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            class: "znpb-admin-gradient-preset-box",
+            onMouseover: _cache[1] || (_cache[1] = ($event) => showLink.value = true),
+            onMouseleave: _cache[2] || (_cache[2] = ($event) => showLink.value = false)
+          },
+          [
+            vue.withDirectives(vue.createVNode(
+              _component_Icon,
+              {
+                icon: "close",
+                class: "znpb-admin-gradient-preset-box__delete",
+                onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => _ctx.$emit("delete-gradient"), ["stop"]))
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            ), [
+              [_directive_znpb_tooltip, i18n__namespace.__("Delete this gradient from your preset", "zionbuilder")]
+            ]),
+            vue.createElementVNode("div", _hoisted_1$a, [
+              vue.createVNode(_component_GradientPreview, {
+                config: __props.config,
+                round: true
+              }, null, 8, ["config"])
+            ]),
+            vue.createElementVNode(
+              "div",
+              _hoisted_2$8,
+              vue.toDisplayString(__props.title),
+              1
+              /* TEXT */
+            )
+          ],
+          32
+          /* NEED_HYDRATION */
+        );
       };
     }
   });
-  const GradientBox_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$9 = { class: "znpb-admin__gradient-modal-wrapper znpb-fancy-scrollbar" };
   const _sfc_main$f = /* @__PURE__ */ vue.defineComponent({
     __name: "GradientModalContent",
@@ -2160,8 +2746,9 @@ var __objRest = (source, exclude) => {
       gradient: { default: () => [] }
     },
     emits: ["update:show", "update-gradient", "save-gradient"],
-    setup(__props, { emit }) {
+    setup(__props, { emit: __emit }) {
       const props = __props;
+      const emit = __emit;
       const gradientConfig = vue.ref(props.gradient);
       const showModal = vue.computed({
         get() {
@@ -2204,11 +2791,11 @@ var __objRest = (source, exclude) => {
             ])
           ]),
           _: 1
+          /* STABLE */
         }, 8, ["show", "title"]);
       };
     }
   });
-  const GradientModalContent_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$8 = { class: "znpb-admin-gradient-preset-box__empty" };
   const _sfc_main$e = /* @__PURE__ */ vue.defineComponent({
     __name: "AddGradient",
@@ -2217,12 +2804,17 @@ var __objRest = (source, exclude) => {
         const _component_Icon = vue.resolveComponent("Icon");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$8, [
           vue.createVNode(_component_Icon, { icon: "plus" }),
-          vue.createElementVNode("div", null, vue.toDisplayString(i18n__namespace.__("Add Gradient", "zionbuilder")), 1)
+          vue.createElementVNode(
+            "div",
+            null,
+            vue.toDisplayString(i18n__namespace.__("Add Gradient", "zionbuilder")),
+            1
+            /* TEXT */
+          )
         ]);
       };
     }
   });
-  const AddGradient_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$7 = { class: "znpb-admin-gradient__container" };
   const _hoisted_2$7 = {
     key: 1,
@@ -2288,10 +2880,22 @@ var __objRest = (source, exclude) => {
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, { class: "znpb-admin-gradients__wrapper" }, {
           right: vue.withCtx(() => [
-            vue.createElementVNode("p", _hoisted_3$5, vue.toDisplayString(i18n__namespace.__("Create Astonishing Gradients that you will use in all the pages of your website", "zionbuilder")), 1)
+            vue.createElementVNode(
+              "p",
+              _hoisted_3$5,
+              vue.toDisplayString(i18n__namespace.__("Create Astonishing Gradients that you will use in all the pages of your website", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Gradients", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Gradients", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_Tabs, {
               "tab-style": "minimal",
               onChangedTab: _cache[0] || (_cache[0] = ($event) => (activeLibrary.value = $event, activeGradient.value.value = {}))
@@ -2300,18 +2904,25 @@ var __objRest = (source, exclude) => {
                 vue.createVNode(_component_Tab, { name: "Local" }, {
                   default: vue.withCtx(() => [
                     vue.createElementVNode("div", _hoisted_1$7, [
-                      (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(localGradients), (gradient, index2) => {
-                        return vue.openBlock(), vue.createBlock(_sfc_main$g, {
-                          key: index2,
-                          config: gradient.config,
-                          onDeleteGradient: ($event) => vue.unref(deleteLocalGradient)(gradient),
-                          onClick: ($event) => onGradientSelect(gradient)
-                        }, null, 8, ["config", "onDeleteGradient", "onClick"]);
-                      }), 128)),
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(vue.unref(localGradients), (gradient, index) => {
+                          return vue.openBlock(), vue.createBlock(_sfc_main$g, {
+                            key: index,
+                            config: gradient.config,
+                            onDeleteGradient: ($event) => vue.unref(deleteLocalGradient)(gradient),
+                            onClick: ($event) => onGradientSelect(gradient)
+                          }, null, 8, ["config", "onDeleteGradient", "onClick"]);
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      )),
                       vue.createVNode(_sfc_main$e, { onClick: onAddNewGradient })
                     ])
                   ]),
                   _: 1
+                  /* STABLE */
                 }),
                 vue.createVNode(_component_Tab, { name: "Global" }, {
                   default: vue.withCtx(() => [
@@ -2323,22 +2934,30 @@ var __objRest = (source, exclude) => {
                         "zionbuilder"
                       )
                     }, null, 8, ["message_title", "message_description"])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$7, [
-                      (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(globalGradients), (gradient, index2) => {
-                        return vue.openBlock(), vue.createBlock(_sfc_main$g, {
-                          key: index2,
-                          config: gradient.config,
-                          title: gradient.name,
-                          onClick: ($event) => onGradientSelect(gradient),
-                          onDeleteGradient: ($event) => vue.unref(deleteGlobalGradient)(gradient)
-                        }, null, 8, ["config", "title", "onClick", "onDeleteGradient"]);
-                      }), 128)),
+                      (vue.openBlock(true), vue.createElementBlock(
+                        vue.Fragment,
+                        null,
+                        vue.renderList(vue.unref(globalGradients), (gradient, index) => {
+                          return vue.openBlock(), vue.createBlock(_sfc_main$g, {
+                            key: index,
+                            config: gradient.config,
+                            title: gradient.name,
+                            onClick: ($event) => onGradientSelect(gradient),
+                            onDeleteGradient: ($event) => vue.unref(deleteGlobalGradient)(gradient)
+                          }, null, 8, ["config", "title", "onClick", "onDeleteGradient"]);
+                        }),
+                        128
+                        /* KEYED_FRAGMENT */
+                      )),
                       vue.createVNode(_sfc_main$e, { onClick: onAddNewGradient })
                     ]))
                   ]),
                   _: 1
+                  /* STABLE */
                 })
               ]),
               _: 1
+              /* STABLE */
             }),
             vue.createVNode(_sfc_main$f, {
               show: showModal.value,
@@ -2349,16 +2968,16 @@ var __objRest = (source, exclude) => {
             }, null, 8, ["show", "gradient", "onSaveGradient"])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const Gradients_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$6 = { class: "znpb-get-pro" };
   const _hoisted_2$6 = { class: "znpb-get-pro__image" };
   const _hoisted_3$4 = ["src"];
   const _hoisted_4$3 = { class: "znpb-get-pro__title" };
-  const _hoisted_5$3 = { class: "znpb-get-pro__description" };
+  const _hoisted_5$2 = { class: "znpb-get-pro__description" };
   const _hoisted_6$2 = { class: "znpb-get-pro__more" };
   const _hoisted_7$2 = {
     href: "https://zionbuilder.io/documentation/pro-version/",
@@ -2384,22 +3003,44 @@ var __objRest = (source, exclude) => {
           vue.createElementVNode("div", _hoisted_2$6, [
             vue.createElementVNode("img", { src: vue.unref(proUrl) }, null, 8, _hoisted_3$4)
           ]),
-          vue.createElementVNode("h1", _hoisted_4$3, vue.toDisplayString(i18n__namespace.__("Upgrade to PRO now!", "zionbuilder")), 1),
-          vue.createElementVNode("p", _hoisted_5$3, vue.toDisplayString(_ctx.message), 1),
+          vue.createElementVNode(
+            "h1",
+            _hoisted_4$3,
+            vue.toDisplayString(i18n__namespace.__("Upgrade to PRO now!", "zionbuilder")),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode(
+            "p",
+            _hoisted_5$2,
+            vue.toDisplayString(__props.message),
+            1
+            /* TEXT */
+          ),
           vue.createElementVNode("div", _hoisted_6$2, [
-            vue.createElementVNode("a", _hoisted_7$2, vue.toDisplayString(i18n__namespace.__("Click here to learn more about PRO.", "zionbuilder")), 1)
+            vue.createElementVNode(
+              "a",
+              _hoisted_7$2,
+              vue.toDisplayString(i18n__namespace.__("Click here to learn more about PRO.", "zionbuilder")),
+              1
+              /* TEXT */
+            )
           ]),
-          vue.createElementVNode("a", _hoisted_8$1, vue.toDisplayString(i18n__namespace.__("Upgrade to PRO", "zionbuilder")), 1)
+          vue.createElementVNode(
+            "a",
+            _hoisted_8$1,
+            vue.toDisplayString(i18n__namespace.__("Upgrade to PRO", "zionbuilder")),
+            1
+            /* TEXT */
+          )
         ]);
       };
     }
   });
-  const GetPro_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$5 = { class: "znpb-admin-tools-wrapper" };
   const _hoisted_2$5 = { class: "znpb-admin-regenerate" };
-  const _hoisted_3$3 = { key: 0 };
-  const _hoisted_4$2 = { key: 1 };
-  const _hoisted_5$2 = { class: "znpb-admin-info-p" };
+  const _hoisted_3$3 = { class: "znpb-admin-regenerateMessageContainer" };
+  const _hoisted_4$2 = { class: "znpb-admin-info-p" };
   const _sfc_main$b = /* @__PURE__ */ vue.defineComponent({
     __name: "ToolsPage",
     setup(__props) {
@@ -2411,37 +3052,64 @@ var __objRest = (source, exclude) => {
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$5, [
           vue.createVNode(_component_PageTemplate, null, {
             right: vue.withCtx(() => [
-              vue.createElementVNode("p", _hoisted_5$2, vue.toDisplayString(i18n__namespace.__(
-                "Styles are saved in CSS files in the uploads folder. Recreate those files, according to the most recent settings.",
-                "zionbuilder"
-              )), 1)
+              vue.createElementVNode(
+                "p",
+                _hoisted_4$2,
+                vue.toDisplayString(i18n__namespace.__(
+                  "Styles are saved in CSS files in the uploads folder. Recreate those files, according to the most recent settings.",
+                  "zionbuilder"
+                )),
+                1
+                /* TEXT */
+              )
             ]),
             default: vue.withCtx(() => [
-              vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("General", "zionbuilder")), 1),
+              vue.createElementVNode(
+                "h3",
+                null,
+                vue.toDisplayString(i18n__namespace.__("General", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
               vue.createElementVNode("div", _hoisted_2$5, [
-                vue.createElementVNode("h4", null, vue.toDisplayString(i18n__namespace.__("Regenerate CSS & JS", "zionbuilder")), 1),
+                vue.createElementVNode(
+                  "h4",
+                  null,
+                  vue.toDisplayString(i18n__namespace.__("Regenerate CSS & JS", "zionbuilder")),
+                  1
+                  /* TEXT */
+                ),
                 vue.createVNode(_component_Button, {
                   type: "line",
                   class: vue.normalizeClass({ ["-hasLoading"]: vue.unref(AssetsStore).isLoading }),
                   onClick: vue.unref(AssetsStore).regenerateCache
                 }, {
                   default: vue.withCtx(() => [
-                    vue.unref(AssetsStore).isLoading ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 0 }, [
-                      vue.createVNode(_component_Loader, { size: 13 }),
-                      vue.unref(AssetsStore).filesCount > 0 ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_3$3, vue.toDisplayString(vue.unref(AssetsStore).currentIndex) + "/" + vue.toDisplayString(vue.unref(AssetsStore).filesCount), 1)) : vue.createCommentVNode("", true)
-                    ], 64)) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$2, vue.toDisplayString(i18n__namespace.__("Regenerate Files", "zionbuilder")), 1))
+                    vue.unref(AssetsStore).isLoading ? (vue.openBlock(), vue.createBlock(_component_Loader, {
+                      key: 0,
+                      class: "znpb-admin-regenerateLoader",
+                      size: 13
+                    })) : vue.createCommentVNode("v-if", true),
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_3$3,
+                      vue.toDisplayString(i18n__namespace.__("Regenerate Files", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
                   ]),
                   _: 1
+                  /* STABLE */
                 }, 8, ["class", "onClick"])
               ])
             ]),
             _: 1
+            /* STABLE */
           })
         ]);
       };
     }
   });
-  const ToolsPage_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$4 = { class: "znpb-admin-replace" };
   const _hoisted_2$4 = { class: "znpb-admin-replace__title" };
   const _hoisted_3$2 = { class: "znpb-admin-replace__actions" };
@@ -2491,10 +3159,17 @@ var __objRest = (source, exclude) => {
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, null, {
           right: vue.withCtx(() => [
             vue.createElementVNode("div", null, [
-              vue.createElementVNode("p", _hoisted_6$1, vue.toDisplayString(i18n__namespace.__(
-                'Enter your old and new URLs for your WordPress installation, to update all references (Relevant for domain transfers or move to "HTTPS").',
-                "zionbuilder"
-              )), 1),
+              vue.createElementVNode(
+                "p",
+                _hoisted_6$1,
+                vue.toDisplayString(i18n__namespace.__(
+                  'Enter your old and new URLs for your WordPress installation, to update all references (Relevant for domain transfers or move to "HTTPS").',
+                  "zionbuilder"
+                )),
+                1
+                /* TEXT */
+              ),
+              vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html The message comes from the server and may contain markup "),
               vue.createElementVNode("p", {
                 class: "znpb-admin-info-p",
                 innerHTML: vue.unref(panelInfo)
@@ -2502,9 +3177,21 @@ var __objRest = (source, exclude) => {
             ])
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Replace URL", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Replace URL", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createElementVNode("div", _hoisted_1$4, [
-              vue.createElementVNode("h4", _hoisted_2$4, vue.toDisplayString(i18n__namespace.__("Update Site Address (URL)", "zionbuilder")), 1),
+              vue.createElementVNode(
+                "h4",
+                _hoisted_2$4,
+                vue.toDisplayString(i18n__namespace.__("Update Site Address (URL)", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
               vue.createVNode(_component_BaseInput, {
                 modelValue: oldUrl.value,
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => oldUrl.value = $event),
@@ -2537,25 +3224,34 @@ var __objRest = (source, exclude) => {
                       loading.value ? (vue.openBlock(), vue.createBlock(_component_Loader, {
                         key: 0,
                         size: 13
-                      })) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$1, vue.toDisplayString(i18n__namespace.__("Update URL", "zionbuilder")), 1))
+                      })) : (vue.openBlock(), vue.createElementBlock(
+                        "span",
+                        _hoisted_4$1,
+                        vue.toDisplayString(i18n__namespace.__("Update URL", "zionbuilder")),
+                        1
+                        /* TEXT */
+                      ))
                     ]),
                     _: 1
+                    /* STABLE */
                   })
                 ]),
                 _: 1
+                /* STABLE */
               }, 8, ["type"]),
+              vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html The message comes from the server and may contain markup "),
               message.value.length ? (vue.openBlock(), vue.createElementBlock("p", {
                 key: 0,
                 innerHTML: message.value
-              }, null, 8, _hoisted_5$1)) : vue.createCommentVNode("", true)
+              }, null, 8, _hoisted_5$1)) : vue.createCommentVNode("v-if", true)
             ])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const ReplaceUrl_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$9 = /* @__PURE__ */ vue.defineComponent({
     __name: "MaintenanceMode",
     setup(__props) {
@@ -2579,7 +3275,13 @@ var __objRest = (source, exclude) => {
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, null, {
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Maintenance mode", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Maintenance mode", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_OptionsForm, {
               modelValue: computedModel.value,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedModel.value = $event),
@@ -2588,11 +3290,11 @@ var __objRest = (source, exclude) => {
             }, null, 8, ["modelValue", "schema"])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const MaintenanceMode_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$3 = { class: "znpb-admin-info-p" };
   const _hoisted_2$3 = { class: "znpb-admin-info-p" };
   const _sfc_main$8 = /* @__PURE__ */ vue.defineComponent({
@@ -2630,15 +3332,33 @@ var __objRest = (source, exclude) => {
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, null, {
           right: vue.withCtx(() => [
             vue.createElementVNode("div", null, [
-              vue.createElementVNode("p", _hoisted_1$3, vue.toDisplayString(i18n__namespace.__("Builder theme", "zionbuilder")), 1),
-              vue.createElementVNode("p", _hoisted_2$3, vue.toDisplayString(i18n__namespace.__(
-                "By changing the builder theme, it will be applied on all pages where the builder is active, as well as all the builder admin pages",
-                "zionbuilder"
-              )), 1)
+              vue.createElementVNode(
+                "p",
+                _hoisted_1$3,
+                vue.toDisplayString(i18n__namespace.__("Builder theme", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "p",
+                _hoisted_2$3,
+                vue.toDisplayString(i18n__namespace.__(
+                  "By changing the builder theme, it will be applied on all pages where the builder is active, as well as all the builder admin pages",
+                  "zionbuilder"
+                )),
+                1
+                /* TEXT */
+              )
             ])
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Appearance", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Appearance", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_OptionsForm, {
               modelValue: computedModel.value,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedModel.value = $event),
@@ -2647,11 +3367,11 @@ var __objRest = (source, exclude) => {
             }, null, 8, ["modelValue", "schema"])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const Appearance_vue_vue_type_style_index_0_lang = "";
   const _hoisted_1$2 = { class: "znpb-admin-info-p" };
   const _hoisted_2$2 = { class: "znpb-admin-info-p" };
   const _sfc_main$7 = /* @__PURE__ */ vue.defineComponent({
@@ -2677,15 +3397,33 @@ var __objRest = (source, exclude) => {
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, null, {
           right: vue.withCtx(() => [
             vue.createElementVNode("div", null, [
-              vue.createElementVNode("p", _hoisted_1$2, vue.toDisplayString(i18n__namespace.__("Builder theme", "zionbuilder")), 1),
-              vue.createElementVNode("p", _hoisted_2$2, vue.toDisplayString(i18n__namespace.__(
-                "By changing the builder theme, it will be applied on all pages where the builder is active, as well as all the builder admin pages",
-                "zionbuilder"
-              )), 1)
+              vue.createElementVNode(
+                "p",
+                _hoisted_1$2,
+                vue.toDisplayString(i18n__namespace.__("Builder theme", "zionbuilder")),
+                1
+                /* TEXT */
+              ),
+              vue.createElementVNode(
+                "p",
+                _hoisted_2$2,
+                vue.toDisplayString(i18n__namespace.__(
+                  "By changing the builder theme, it will be applied on all pages where the builder is active, as well as all the builder admin pages",
+                  "zionbuilder"
+                )),
+                1
+                /* TEXT */
+              )
             ])
           ]),
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Features", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Features", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_OptionsForm, {
               modelValue: computedModel.value,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedModel.value = $event),
@@ -2694,11 +3432,11 @@ var __objRest = (source, exclude) => {
             }, null, 8, ["modelValue", "schema"])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const Features_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$6 = /* @__PURE__ */ vue.defineComponent({
     __name: "CustomCode",
     setup(__props) {
@@ -2723,7 +3461,13 @@ var __objRest = (source, exclude) => {
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, { class: "znpb-admin-content-wrapper" }, {
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Custom code", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Custom code", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_OptionsForm, {
               modelValue: computedModel.value,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedModel.value = $event),
@@ -2732,6 +3476,7 @@ var __objRest = (source, exclude) => {
             }, null, 8, ["modelValue", "schema"])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
@@ -2760,7 +3505,13 @@ var __objRest = (source, exclude) => {
         const _component_PageTemplate = vue.resolveComponent("PageTemplate");
         return vue.openBlock(), vue.createBlock(_component_PageTemplate, { class: "znpb-performancePage" }, {
           default: vue.withCtx(() => [
-            vue.createElementVNode("h3", null, vue.toDisplayString(i18n__namespace.__("Performance", "zionbuilder")), 1),
+            vue.createElementVNode(
+              "h3",
+              null,
+              vue.toDisplayString(i18n__namespace.__("Performance", "zionbuilder")),
+              1
+              /* TEXT */
+            ),
             vue.createVNode(_component_OptionsForm, {
               modelValue: computedModel.value,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => computedModel.value = $event),
@@ -2769,11 +3520,11 @@ var __objRest = (source, exclude) => {
             }, null, 8, ["modelValue", "schema"])
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const Performance_vue_vue_type_style_index_0_lang = "";
   const getTemplateChildren = () => {
     const templateChildren = {};
     window.ZnPbAdminPageData.template_types.forEach((templateType) => {
@@ -2792,7 +3543,7 @@ var __objRest = (source, exclude) => {
     });
     return templateChildren;
   };
-  const routes = new Routes$1();
+  const routes = new Routes();
   const initRoutes = function() {
     routes.addRoute("home", {
       path: "/",
@@ -3099,7 +3850,13 @@ var __objRest = (source, exclude) => {
                 vue.createElementVNode("img", {
                   src: vue.unref(EnvironmentStore).urls.logo
                 }, null, 8, _hoisted_5),
-                vue.createElementVNode("span", _hoisted_6, "v" + vue.toDisplayString(vue.unref(EnvironmentStore).plugin_free.version), 1)
+                vue.createElementVNode(
+                  "span",
+                  _hoisted_6,
+                  "v" + vue.toDisplayString(vue.unref(EnvironmentStore).plugin_free.version),
+                  1
+                  /* TEXT */
+                )
               ]),
               vue.createElementVNode("div", _hoisted_7, [
                 !vue.unref(EnvironmentStore).plugin_pro.is_active ? (vue.openBlock(), vue.createBlock(_component_router_link, {
@@ -3109,54 +3866,76 @@ var __objRest = (source, exclude) => {
                 }, {
                   default: vue.withCtx(() => [
                     vue.createVNode(_component_Icon, { icon: "quality" }),
-                    vue.createTextVNode(" " + vue.toDisplayString(i18n__namespace.__("Upgrade to PRO", "zionbuilder")), 1)
+                    vue.createTextVNode(
+                      " " + vue.toDisplayString(i18n__namespace.__("Upgrade to PRO", "zionbuilder")),
+                      1
+                      /* TEXT */
+                    )
                   ]),
                   _: 1
-                })) : vue.createCommentVNode("", true),
+                  /* STABLE */
+                })) : vue.createCommentVNode("v-if", true),
                 documentationLink.value && documentationLink.value.length ? (vue.openBlock(), vue.createElementBlock("a", {
                   key: 1,
                   href: documentationLink.value,
                   title: i18n__namespace.__("Documentation", "zionbuilder"),
                   target: "_blank",
                   class: "znpb-button znpb-button--line"
-                }, vue.toDisplayString(i18n__namespace.__("Documentation", "zionbuilder")), 9, _hoisted_8)) : vue.createCommentVNode("", true)
+                }, vue.toDisplayString(i18n__namespace.__("Documentation", "zionbuilder")), 9, _hoisted_8)) : vue.createCommentVNode("v-if", true)
               ])
             ]),
             vue.createElementVNode("div", _hoisted_9, [
               vue.createElementVNode("div", _hoisted_10, [
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(menuItems.value, (menuItem, key) => {
-                  return vue.openBlock(), vue.createBlock(_component_router_link, {
-                    key,
-                    to: `${menuItem.path}`,
-                    class: "znpb-admin__header-menu-item"
-                  }, {
-                    default: vue.withCtx(() => [
-                      vue.createTextVNode(vue.toDisplayString(menuItem.meta.title), 1)
-                    ]),
-                    _: 2
-                  }, 1032, ["to"]);
-                }), 128))
+                (vue.openBlock(true), vue.createElementBlock(
+                  vue.Fragment,
+                  null,
+                  vue.renderList(menuItems.value, (menuItem, key) => {
+                    return vue.openBlock(), vue.createBlock(_component_router_link, {
+                      key,
+                      to: `${menuItem.path}`,
+                      class: "znpb-admin__header-menu-item"
+                    }, {
+                      default: vue.withCtx(() => [
+                        vue.createTextVNode(
+                          vue.toDisplayString(menuItem.meta.title),
+                          1
+                          /* TEXT */
+                        )
+                      ]),
+                      _: 2
+                      /* DYNAMIC */
+                    }, 1032, ["to"]);
+                  }),
+                  128
+                  /* KEYED_FRAGMENT */
+                ))
               ])
             ])
           ]),
           vue.createVNode(_component_router_view),
+          vue.createCommentVNode(" notices "),
           vue.createElementVNode("div", _hoisted_11, [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(notificationsStore).notifications, (error, index2) => {
-              return vue.openBlock(), vue.createBlock(_component_Notice, {
-                key: index2,
-                error,
-                onCloseNotice: ($event) => error.remove()
-              }, null, 8, ["error", "onCloseNotice"]);
-            }), 128))
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(vue.unref(notificationsStore).notifications, (error, index) => {
+                return vue.openBlock(), vue.createBlock(_component_Notice, {
+                  key: index,
+                  error,
+                  onCloseNotice: ($event) => error.remove()
+                }, null, 8, ["error", "onCloseNotice"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ]),
           vue.createVNode(vue.unref(components.CornerLoader), {
             "is-loading": vue.unref(builderOptionsStore).isLoading
           }, null, 8, ["is-loading"])
-        ])) : vue.createCommentVNode("", true);
+        ])) : vue.createCommentVNode("v-if", true);
       };
     }
   });
-  const BaseAdmin_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$3 = /* @__PURE__ */ vue.defineComponent({
     __name: "SideMenuItem",
     props: {
@@ -3174,23 +3953,23 @@ var __objRest = (source, exclude) => {
         const _component_router_link = vue.resolveComponent("router-link");
         return vue.openBlock(), vue.createBlock(_component_router_link, {
           class: vue.normalizeClass(["znpb-admin-side-menu__item", { "znpb-admin__side-menu-item--active": isActive.value }]),
-          to: `${_ctx.basePath}/${_ctx.menuItem.path}`
+          to: `${__props.basePath}/${__props.menuItem.path}`
         }, {
           default: vue.withCtx(() => [
             vue.renderSlot(_ctx.$slots, "default"),
-            _ctx.menuItem.children && _ctx.menuItem.children.length && isActive.value ? (vue.openBlock(), vue.createBlock(_component_SideMenu, {
+            __props.menuItem.children && __props.menuItem.children.length && isActive.value ? (vue.openBlock(), vue.createBlock(_component_SideMenu, {
               key: 0,
-              "menu-items": _ctx.menuItem.children,
+              "menu-items": __props.menuItem.children,
               animate: true,
-              "base-path": `${_ctx.basePath}/${_ctx.menuItem.path}`
-            }, null, 8, ["menu-items", "base-path"])) : vue.createCommentVNode("", true)
+              "base-path": `${__props.basePath}/${__props.menuItem.path}`
+            }, null, 8, ["menu-items", "base-path"])) : vue.createCommentVNode("v-if", true)
           ]),
           _: 3
+          /* FORWARDED */
         }, 8, ["class", "to"]);
       };
     }
   });
-  const SideMenuItem_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$2 = /* @__PURE__ */ vue.defineComponent({
     __name: "SideMenu",
     props: {
@@ -3206,27 +3985,47 @@ var __objRest = (source, exclude) => {
           tag: "ul"
         }, {
           default: vue.withCtx(() => [
-            (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.menuItems, (menuItem, key) => {
-              return vue.openBlock(), vue.createBlock(_sfc_main$3, {
-                key,
-                "menu-item": menuItem,
-                "base-path": `${_ctx.basePath}`
-              }, {
-                default: vue.withCtx(() => [
-                  vue.createTextVNode(vue.toDisplayString(menuItem.meta.title) + " ", 1),
-                  menuItem.meta.label ? (vue.openBlock(), vue.createBlock(_component_Label, vue.mergeProps({ key: 0 }, menuItem.meta.label, { class: "znpb-label--pro" }), null, 16)) : vue.createCommentVNode("", true)
-                ]),
-                _: 2
-              }, 1032, ["menu-item", "base-path"]);
-            }), 128))
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(__props.menuItems, (menuItem, key) => {
+                return vue.openBlock(), vue.createBlock(_sfc_main$3, {
+                  key,
+                  "menu-item": menuItem,
+                  "base-path": `${__props.basePath}`
+                }, {
+                  default: vue.withCtx(() => [
+                    vue.createTextVNode(
+                      vue.toDisplayString(menuItem.meta.title) + " ",
+                      1
+                      /* TEXT */
+                    ),
+                    vue.createCommentVNode(" Item label "),
+                    menuItem.meta.label ? (vue.openBlock(), vue.createBlock(
+                      _component_Label,
+                      vue.mergeProps({
+                        key: 0,
+                        ref_for: true
+                      }, menuItem.meta.label, { class: "znpb-label--pro" }),
+                      null,
+                      16
+                      /* FULL_PROPS */
+                    )) : vue.createCommentVNode("v-if", true)
+                  ]),
+                  _: 2
+                  /* DYNAMIC */
+                }, 1032, ["menu-item", "base-path"]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
           ]),
           _: 1
+          /* STABLE */
         });
       };
     }
   });
-  const SideMenu_vue_vue_type_style_index_0_lang = "";
-  const PageTemplate_vue_vue_type_style_index_0_lang = "";
   const _sfc_main$1 = {};
   const _hoisted_1 = { class: "znpb-admin-content znpb-admin-content--center" };
   const _hoisted_2 = { class: "znpb-admin-content__center" };
@@ -3255,7 +4054,7 @@ var __objRest = (source, exclude) => {
     setup(__props) {
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createBlock(vue.TransitionGroup, {
-          tag: _ctx.tag,
+          tag: __props.tag,
           name: "znpb-list-animate",
           appear: ""
         }, {
@@ -3263,11 +4062,11 @@ var __objRest = (source, exclude) => {
             vue.renderSlot(_ctx.$slots, "default")
           ]),
           _: 3
+          /* FORWARDED */
         }, 8, ["tag"]);
       };
     }
   });
-  const ListAnimate_vue_vue_type_style_index_0_lang = "";
   const appInstance = vue.createApp(_sfc_main$4);
   appInstance.component("SideMenu", _sfc_main$2);
   appInstance.component("PageTemplate", PageTemplate);

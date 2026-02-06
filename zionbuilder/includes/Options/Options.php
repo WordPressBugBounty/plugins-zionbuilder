@@ -6,7 +6,7 @@ use ZionBuilder\RenderAttributes;
 use ZionBuilder\CustomCSS;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -18,7 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package ZionBuilder
  */
-class Options extends Stack {
+class Options extends Stack
+{
 	/**
 	 * Flag to check if the filter was applied
 	 *
@@ -65,11 +66,12 @@ class Options extends Stack {
 	 * @param mixed $id
 	 * @param mixed $options
 	 */
-	public function __construct( $id, $options = [] ) {
+	public function __construct($id, $options = [])
+	{
 		$this->schema_id = $id;
 
 		// Save the schema for this schema
-		$this->register_schema( $id, $options );
+		$this->register_schema($id, $options);
 	}
 
 	/**
@@ -81,31 +83,33 @@ class Options extends Stack {
 	 *
 	 * @return void
 	 */
-	public function trigger_injection() {
+	public function trigger_injection()
+	{
 		/*
 		 * Allow others to add their own options
 		 */
-		do_action( $this->schema_id, $this );
+		do_action($this->schema_id, $this);
 	}
 
 	/**
 	 * Register schema
 	 *
-	 * Will register an option schema to the option schema stach
+	 * Will register an option schema to the option schema stack
 	 *
 	 * @param string               $id      The id for the current stack. This must be unique
 	 * @param array<string, mixed> $options An array containing the options that will be added to stack
 	 *
 	 * @return void
 	 */
-	private function register_schema( $id, $options ) {
-		if ( ! isset( self::$schemas[$id] ) ) {
+	private function register_schema($id, $options)
+	{
+		if (! isset(self::$schemas[$id])) {
 			self::$schemas[$id] = [];
 
 			// Register options
-			if ( ! empty( $options ) && is_array( $options ) ) {
-				foreach ( $options as $option_id => $option_config ) {
-					$this->add_option( $option_id, $option_config );
+			if (! empty($options) && is_array($options)) {
+				foreach ($options as $option_id => $option_config) {
+					$this->add_option($option_id, $option_config);
 				}
 			}
 		}
@@ -117,8 +121,9 @@ class Options extends Stack {
 	 * @param string $schema_id
 	 * @return boolean
 	 */
-	public static function is_schema_registered( $schema_id ) {
-		return isset( self::$schemas[$schema_id] );
+	public static function is_schema_registered($schema_id)
+	{
+		return isset(self::$schemas[$schema_id]);
 	}
 
 	/**
@@ -128,7 +133,8 @@ class Options extends Stack {
 	 *
 	 * @return void
 	 */
-	public function set_model( $model = [] ) {
+	public function set_model($model = [])
+	{
 		$this->model = $model;
 	}
 
@@ -141,7 +147,8 @@ class Options extends Stack {
 	 *
 	 * @return void
 	 */
-	public function set_data( $model, RenderAttributes $render_attributes, CustomCSS $custom_css ) {
+	public function set_data($model, RenderAttributes $render_attributes, CustomCSS $custom_css)
+	{
 		$this->model             = $model;
 		$this->render_attributes = $render_attributes;
 		$this->custom_css        = $custom_css;
@@ -154,24 +161,26 @@ class Options extends Stack {
 	 *
 	 * @return Option[] The schema stack
 	 */
-	public function get_schema() {
-		if ( $this->triggered_injection === null ) {
+	public function get_schema()
+	{
+		if ($this->triggered_injection === null) {
 			$this->triggered_injection = true;
 			$this->trigger_injection();
 		}
 
-		return $this->parse_schema_for_export( self::$schemas[$this->schema_id] );
+		return $this->parse_schema_for_export(self::$schemas[$this->schema_id]);
 	}
 
-	public function parse_schema_for_export( $schema ) {
+	public function parse_schema_for_export($schema)
+	{
 		$new_schema = [];
 
 		// Convert schema to array
-		foreach ( $schema as $key => $value ) {
+		foreach ($schema as $key => $value) {
 			$new_schema[$key] = $value->config;
 
-			if ( $value->has_child_options() ) {
-				$new_schema[$key]['child_options'] = $this->parse_schema_for_export( $value->get_child_options() );
+			if ($value->has_child_options()) {
+				$new_schema[$key]['child_options'] = $this->parse_schema_for_export($value->get_child_options());
 			}
 		}
 
@@ -185,8 +194,9 @@ class Options extends Stack {
 	 *
 	 * @return Option[] The schema stack
 	 */
-	public function get_schema_instance() {
-		if ( $this->triggered_injection === null ) {
+	public function get_schema_instance()
+	{
+		if ($this->triggered_injection === null) {
 			$this->triggered_injection = true;
 			$this->trigger_injection();
 		}
@@ -199,7 +209,8 @@ class Options extends Stack {
 	 *
 	 * @return Option[] The schema stack
 	 */
-	public function &get_stack() {
+	public function &get_stack()
+	{
 		return self::$schemas[$this->schema_id];
 	}
 
@@ -211,10 +222,11 @@ class Options extends Stack {
 	 *
 	 * @return void
 	 */
-	public function parse_data() {
-		$model = apply_filters( 'zionbuilder/options/model_parse', $this->model );
+	public function parse_data()
+	{
+		$model = apply_filters('zionbuilder/options/model_parse', $this->model);
 
-		$this->model = $this->setup_model( $this->get_schema_instance(), $model );
+		$this->model = $this->setup_model($this->get_schema_instance(), $model);
 	}
 
 
@@ -230,54 +242,55 @@ class Options extends Stack {
 	 *
 	 * @return array<string, mixed> The saved values
 	 */
-	public function setup_model( $schema, $model, $index = null ) {
-		foreach ( $schema as $option_id => $option_schema ) {
-			$passed_dependency = $this->check_dependency( $option_schema, $model );
+	public function setup_model($schema, $model, $index = null)
+	{
+		foreach ($schema as $option_id => $option_schema) {
+			$passed_dependency = $this->check_dependency($option_schema, $model);
 
 			// Don't proceed if we didn't passed dependency
-			if ( ! $passed_dependency ) {
+			if (! $passed_dependency) {
 				continue;
 			}
 
 			// Group options don't store the value so we need to look at children
-			if ( isset( $option_schema->is_layout ) && $option_schema->is_layout() ) {
-				if ( $option_schema->has_child_options() ) {
-					$model = array_merge( $model, $this->setup_model( $option_schema->get_child_options(), $model ) );
+			if (isset($option_schema->is_layout) && $option_schema->is_layout()) {
+				if ($option_schema->has_child_options()) {
+					$model = array_merge($model, $this->setup_model($option_schema->get_child_options(), $model));
 				}
 			} else {
 				// Set the option value to model with fallback to default
-				if ( isset( $model[$option_id] ) ) {
+				if (isset($model[$option_id])) {
 
 					// Check for render attributes
-					if ( $this->render_attributes ) {
-						$this->render_attributes->parse_options_schema( $option_schema, $model[$option_id], $index );
+					if ($this->render_attributes) {
+						$this->render_attributes->parse_options_schema($option_schema, $model[$option_id], $index);
 					}
 
 					// check for custom css
-					if ( $this->custom_css ) {
-						$this->custom_css->parse_options_schema( $option_schema, $model[$option_id], $index );
+					if ($this->custom_css) {
+						$this->custom_css->parse_options_schema($option_schema, $model[$option_id], $index);
 					}
-				} elseif ( $option_schema->has_default_value() ) {
-					$model[$option_id] = $option_schema->get_value( 'default' );
+				} elseif ($option_schema->has_default_value()) {
+					$model[$option_id] = $option_schema->get_value('default');
 				}
 
 				// Check for child content
-				if ( $option_schema->has_child_options() ) {
-					if ( $option_schema->get_type() === 'repeater' ) {
-						if ( ! empty( $model[$option_id] ) && is_array( $model[$option_id] ) ) {
-							foreach ( $model[$option_id] as $index => $option_value ) {
+				if ($option_schema->has_child_options()) {
+					if ($option_schema->get_type() === 'repeater') {
+						if (! empty($model[$option_id]) && is_array($model[$option_id])) {
+							foreach ($model[$option_id] as $index => $option_value) {
 								$index                     = (int) $index;
-								$model[$option_id][$index] = $this->setup_model( $option_schema->get_child_options(), $option_value, $index );
+								$model[$option_id][$index] = $this->setup_model($option_schema->get_child_options(), $option_value, $index);
 							}
 
 							// Reset index
 							$index = null;
 						}
 					} else {
-						$saved_value       = isset( $model[$option_id] ) ? $model[$option_id] : [];
-						$model[$option_id] = $this->setup_model( $option_schema->get_child_options(), $saved_value );
+						$saved_value       = isset($model[$option_id]) ? $model[$option_id] : [];
+						$model[$option_id] = $this->setup_model($option_schema->get_child_options(), $saved_value);
 
-						if ( ! empty( $saved_value ) ) {
+						if (! empty($saved_value)) {
 							$model[$option_id] = $saved_value;
 						}
 					}
@@ -296,14 +309,15 @@ class Options extends Stack {
 	 *
 	 * @return boolean True in case the dependency passed
 	 */
-	public function check_dependency( $option_schema, $model ) {
+	public function check_dependency($option_schema, $model)
+	{
 		$passed_dependency = true;
 
-		if ( $option_schema->has_dependency() ) {
-			foreach ( $option_schema->get_value( 'dependency' ) as $dependency_config ) {
-				$passed_dependency = $this->check_single_dependency( $dependency_config, $model );
+		if ($option_schema->has_dependency()) {
+			foreach ($option_schema->get_value('dependency') as $dependency_config) {
+				$passed_dependency = $this->check_single_dependency($dependency_config, $model);
 
-				if ( ! $passed_dependency ) {
+				if (! $passed_dependency) {
 					break;
 				}
 			}
@@ -320,21 +334,22 @@ class Options extends Stack {
 	 *
 	 * @return boolean True in case the dependency passed
 	 */
-	public function check_single_dependency( $dependency_config, $model ) {
-		$validation_type = isset( $dependency_config['type'] ) ? $dependency_config['type'] : 'includes';
+	public function check_single_dependency($dependency_config, $model)
+	{
+		$validation_type = isset($dependency_config['type']) ? $dependency_config['type'] : 'includes';
 		$value           = null;
 
-		if ( isset( $dependency_config['option'] ) ) {
-			$value = isset( $model[$dependency_config['option']] ) ? $model[$dependency_config['option']] : null;
-		} elseif ( isset( $dependency_config['option_path'] ) ) {
-				$value = $this->get_value_from_path( $dependency_config['option_path'] );
+		if (isset($dependency_config['option'])) {
+			$value = isset($model[$dependency_config['option']]) ? $model[$dependency_config['option']] : null;
+		} elseif (isset($dependency_config['option_path'])) {
+			$value = $this->get_value_from_path($dependency_config['option_path']);
 		}
 
-		if ( $validation_type === 'includes' && in_array( $value, $dependency_config['value'], true ) ) {
+		if ($validation_type === 'includes' && in_array($value, $dependency_config['value'], true)) {
 			return true;
-		} elseif ( $validation_type === 'not_in' && ! in_array( $value, $dependency_config['value'], true ) ) {
+		} elseif ($validation_type === 'not_in' && ! in_array($value, $dependency_config['value'], true)) {
 			return true;
-		} elseif ( $validation_type === 'value_set' && $value !== null ) {
+		} elseif ($validation_type === 'value_set' && $value !== null) {
 			return true;
 		}
 
@@ -346,7 +361,8 @@ class Options extends Stack {
 	 *
 	 * @return array<string, mixed> The saved value for this schema
 	 */
-	public function get_model() {
+	public function get_model()
+	{
 		return $this->model;
 	}
 
@@ -357,12 +373,13 @@ class Options extends Stack {
 	 *
 	 * @return mixed|null The saved value. In case the value is not saved, null is returned
 	 */
-	public function get_value_from_path( $path = '' ) {
-		$path       = explode( '.', $path );
+	public function get_value_from_path($path = '')
+	{
+		$path       = explode('.', $path);
 		$temp_model = &$this->model;
 
-		foreach ( $path as $key ) {
-			if ( ! isset( $temp_model[$key] ) ) {
+		foreach ($path as $key) {
+			if (! isset($temp_model[$key])) {
 				return null;
 			}
 
@@ -382,28 +399,30 @@ class Options extends Stack {
 	 *
 	 * @return mixed|null
 	 */
-	public function get_value( $path, $default_value = null ) {
-		$value = $this->get_value_from_path( $path );
+	public function get_value($path, $default_value = null)
+	{
+		$value = $this->get_value_from_path($path);
 
-		if ( ! is_null( $value ) ) {
+		if (! is_null($value)) {
 			return $value;
 		}
 
 		return $default_value;
 	}
 
-	public function set_value( $path, $new_value ) {
-		$path_locations = explode( '.', $path );
+	public function set_value($path, $new_value)
+	{
+		$path_locations = explode('.', $path);
 		$active_model   = &$this->model;
-		$paths_count    = count( $path_locations );
+		$paths_count    = count($path_locations);
 		$i              = 1;
 
-		foreach ( $path_locations as $path_location ) {
-			if ( ! is_array( $active_model ) ) {
+		foreach ($path_locations as $path_location) {
+			if (! is_array($active_model)) {
 				$active_model = [];
 			}
 
-			if ( $i === $paths_count ) {
+			if ($i === $paths_count) {
 				$active_model[$path_location] = $new_value;
 			} else {
 				$active_model[$path_location] = [];

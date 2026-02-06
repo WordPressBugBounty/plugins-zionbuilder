@@ -1,6 +1,5 @@
 (function() {
   "use strict";
-  const editPage = "";
   const $ = window.jQuery;
   const wp = window.wp;
   class EditPage {

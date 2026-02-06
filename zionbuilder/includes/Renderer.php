@@ -30,13 +30,28 @@ class Renderer {
 	 */
 	private $instantiated_elements = [];
 
+	public function __construct()
+	{
+		// Catch the HTML of the page from template_redirect hook
+		add_filter( 'template_include', [ $this, 'catch_page_html' ], 999999999 );
+	}
+
+	public function catch_page_html($template_file) {
+		ob_start();
+		include $template_file;
+
+		echo apply_filters('zionbuilder/renderer/page_content', ob_get_clean());
+
+		return null;
+	}
+
 
 	/**
 	 * Get Registered Areas
 	 *
 	 * Returns an array containing all registered areas and their data
 	 *
-	 * @return array
+	 * @return array<string, array<string, mixed>>
 	 */
 	public function get_registered_areas() {
 		return $this->registered_areas;

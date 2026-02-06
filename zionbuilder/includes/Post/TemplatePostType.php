@@ -7,7 +7,7 @@ use ZionBuilder\Templates;
 use ZionBuilder\FileSystem;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -16,7 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package ZionBuilder\Post
  */
-class TemplatePostType extends BasePostType {
+class TemplatePostType extends BasePostType
+{
 	const THUMBNAIL_META_FIELD        = 'zionbuilder_template_thumbnail';
 	const THUMBNAIL_FAILED_META_FIELD = 'zionbuilder_template_thumbnail_failed';
 
@@ -29,7 +30,8 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return string
 	 */
-	public static function get_type() {
+	public static function get_type()
+	{
 		return Templates::TEMPLATE_POST_TYPE;
 	}
 
@@ -39,7 +41,8 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return string|null
 	 */
-	public function get_screenshot_generation_url() {
+	public function get_screenshot_generation_url()
+	{
 		return get_preview_post_link(
 			$this->get_post_id(),
 			[
@@ -54,14 +57,14 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return array
 	 */
-	public function get_data_for_api() {
-		$filter_hook     = sprintf( 'zionbuilder/post/%s/data_for_api', Templates::TEMPLATE_POST_TYPE );
-		$item_categories = [ get_post_meta( $this->get_post_id(), Templates::TEMPLATE_TYPE_META, true ) ];
+	public function get_data_for_api()
+	{
+		$item_categories = [get_post_meta($this->get_post_id(), Templates::TEMPLATE_TYPE_META, true)];
 
 		// Template author
 		$author    = '';
-		$user_data = get_user_by( 'id', $this->get_post_value( 'post_author' ) );
-		if ( $user_data ) {
+		$user_data = get_user_by('id', $this->get_post_value('post_author'));
+		if ($user_data) {
 			$author = $user_data->display_name;
 		}
 
@@ -70,24 +73,24 @@ class TemplatePostType extends BasePostType {
 		$shortcode        = '[' . $prefix_shortcode . ' id="' . $this->get_post_id() . '"]';
 
 		return apply_filters(
-			$filter_hook,
+			'zionbuilder/post/' . $this->get_post_id() . '/data_for_api',
 			[
 				'id'               => $this->get_post_id(),
-				'name'             => $this->get_post_value( 'post_title' ),
-				'status'           => $this->get_post_value( 'post_status' ),
+				'name'             => $this->get_post_value('post_title'),
+				'status'           => $this->get_post_value('post_status'),
 				'author'           => $author,
 				'shortcode'        => $shortcode,
 				'category'         => $item_categories,
 				'thumbnail'        => $this->get_thumbnail(),
 				'thumbnail_failed' => $this->has_thumbnail_generation_failed(),
-				'date'             => $this->get_post_value( 'post_date' ),
+				'date'             => $this->get_post_value('post_date'),
 				'tags'             => [],
 				'urls'             => [
 					'edit_url'                  => $this->get_edit_url(),
 					'preview_url'               => $this->get_preview_url_barebone(),
 					'screenshot_generation_url' => $this->get_screenshot_generation_url(),
 				],
-				'type'             => get_post_meta( $this->get_post_id(), Templates::TEMPLATE_TYPE_META, true ),
+				'type'             => get_post_meta($this->get_post_id(), Templates::TEMPLATE_TYPE_META, true),
 			],
 			$this->get_post()
 		);
@@ -98,8 +101,9 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return boolean
 	 */
-	public function has_thumbnail_generation_failed() {
-		return get_post_meta( $this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD, true ) === true;
+	public function has_thumbnail_generation_failed()
+	{
+		return get_post_meta($this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD, true) === true;
 	}
 
 	/**
@@ -107,8 +111,9 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return string
 	 */
-	public function get_thumbnail() {
-		return get_post_meta( $this->get_post_id(), self::THUMBNAIL_META_FIELD, true );
+	public function get_thumbnail()
+	{
+		return get_post_meta($this->get_post_id(), self::THUMBNAIL_META_FIELD, true);
 	}
 
 	/**
@@ -118,9 +123,10 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return void
 	 */
-	public function set_thumbnail( $thumbnail_url ) {
-		update_post_meta( $this->get_post_id(), self::THUMBNAIL_META_FIELD, $thumbnail_url );
-		delete_post_meta( $this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD );
+	public function set_thumbnail($thumbnail_url)
+	{
+		update_post_meta($this->get_post_id(), self::THUMBNAIL_META_FIELD, $thumbnail_url);
+		delete_post_meta($this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD);
 	}
 
 	/**
@@ -130,8 +136,9 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return void
 	 */
-	public function set_failed_thumbnail_generation_status( $status ) {
-		update_post_meta( $this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD, $status );
+	public function set_failed_thumbnail_generation_status($status)
+	{
+		update_post_meta($this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD, $status);
 	}
 
 	/**
@@ -139,14 +146,15 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return void
 	 */
-	public function clear_thumbnail_data() {
-		delete_post_meta( $this->get_post_id(), self::THUMBNAIL_META_FIELD );
-		delete_post_meta( $this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD );
+	public function clear_thumbnail_data()
+	{
+		delete_post_meta($this->get_post_id(), self::THUMBNAIL_META_FIELD);
+		delete_post_meta($this->get_post_id(), self::THUMBNAIL_FAILED_META_FIELD);
 
-		$screenshot_folder = FileSystem::get_zionbuilder_upload_dir( self::CACHE_DIRECTORY_NAME );
-		$file_path         = sprintf( '%s/template-%s.png', $screenshot_folder['basedir'], $this->get_post_id() );
+		$screenshot_folder = FileSystem::get_zionbuilder_upload_dir(self::CACHE_DIRECTORY_NAME);
+		$file_path         = sprintf('%s/template-%s.png', $screenshot_folder['basedir'], $this->get_post_id());
 
-		FileSystem::get_file_system()->delete( $file_path );
+		FileSystem::get_file_system()->delete($file_path);
 	}
 
 	/**
@@ -156,20 +164,21 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return void
 	 */
-	public function save_base64Image( $base_64_data ) {
+	public function save_base64Image($base_64_data)
+	{
 		// Get the base64 string
-		$image_data = str_replace( 'data:image/png;base64,', '', $base_64_data );
+		$image_data = str_replace('data:image/png;base64,', '', $base_64_data);
 		// phpcs:ignore
-		$image_data = base64_decode( $image_data );
+		$image_data = base64_decode($image_data);
 
-		$screenshot_folder = FileSystem::get_zionbuilder_upload_dir( self::CACHE_DIRECTORY_NAME );
-		$file_path         = sprintf( '%s/template-%s.png', $screenshot_folder['basedir'], $this->get_post_id() );
-		$file_url          = sprintf( '%s/template-%s.png', $screenshot_folder['baseurl'], $this->get_post_id() );
+		$screenshot_folder = FileSystem::get_zionbuilder_upload_dir(self::CACHE_DIRECTORY_NAME);
+		$file_path         = sprintf('%s/template-%s.png', $screenshot_folder['basedir'], $this->get_post_id());
+		$file_url          = sprintf('%s/template-%s.png', $screenshot_folder['baseurl'], $this->get_post_id());
 
-		FileSystem::get_file_system()->put_contents( $file_path, $image_data, 0644 );
+		FileSystem::get_file_system()->put_contents($file_path, $image_data, 0644);
 
 		// TODO: check for fail
-		$this->set_thumbnail( $file_url );
+		$this->set_thumbnail($file_url);
 	}
 
 	/**
@@ -179,10 +188,11 @@ class TemplatePostType extends BasePostType {
 	 *
 	 * @return boolean
 	 */
-	public function save( $post_data ) {
+	public function save($post_data)
+	{
 		// Clear the thumbnail data so we can regenerate it
 		$this->clear_thumbnail_data();
 
-		return parent::save( $post_data );
+		return parent::save($post_data);
 	}
 }

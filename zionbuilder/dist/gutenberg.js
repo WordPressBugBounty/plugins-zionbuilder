@@ -1,6 +1,5 @@
 (function() {
   "use strict";
-  const editPage = "";
   const wp = window.wp;
   function initGutenberg(args) {
     var _a, _b;
@@ -29,7 +28,7 @@
       if (!editorLayout) {
         editorLayout = document.querySelector(".block-editor-block-list__layout");
       }
-      if (editorHeader && !editorHeader.querySelector(".znpb-admin-post__edit") && editorHeader) {
+      if (editorHeader && !editorHeader.querySelector(".znpb-admin-post__edit")) {
         editorHeader.insertAdjacentHTML("beforeend", buttonWrapperMarkup);
       }
       if (editorLayout && !editorLayout.querySelector(".znpb-admin-post__edit-block") && editorLayout) {

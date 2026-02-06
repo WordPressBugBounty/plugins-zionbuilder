@@ -18,6 +18,7 @@
         const _component_Icon = vue.resolveComponent("Icon");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [
           vue.renderSlot(_ctx.$slots, "start"),
+          vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
           vue.createElementVNode("span", {
             innerHTML: `#${getCssID.value}`
           }, null, 8, _hoisted_2),
@@ -31,7 +32,6 @@
       };
     }
   });
-  const anchorPoint_vue_vue_type_style_index_0_lang = "";
   window.zb.editor.registerElementComponent({
     elementType: "anchor_point",
     component: _sfc_main

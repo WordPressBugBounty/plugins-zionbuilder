@@ -8,7 +8,7 @@ use ZionBuilder\Post\BasePostType;
 use ZionBuilder\Settings;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -17,7 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package ZionBuilder\Api\RestControllers
  */
-class ReplaceUrl extends RestApiController {
+class ReplaceUrl extends RestApiController
+{
 
 	/**
 	 * Api endpoint namespace
@@ -38,14 +39,15 @@ class ReplaceUrl extends RestApiController {
 	 *
 	 * @return void
 	 */
-	public function register_routes() {
+	public function register_routes()
+	{
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->base,
 			[
 				[
 					'methods'             => \WP_REST_Server::CREATABLE,
-					'callback'            => [ $this, 'replace_item' ],
+					'callback'            => [$this, 'replace_item'],
 					'args'                => [
 						'find'    => [
 							'required' => true,
@@ -54,9 +56,9 @@ class ReplaceUrl extends RestApiController {
 							'required' => true,
 						],
 					],
-					'permission_callback' => [ $this, 'replace_item_permissions_check' ],
+					'permission_callback' => [$this, 'replace_item_permissions_check'],
 				],
-				'schema' => [ $this, 'get_public_item_schema' ],
+				'schema' => [$this, 'get_public_item_schema'],
 			]
 		);
 	}
@@ -70,9 +72,10 @@ class ReplaceUrl extends RestApiController {
 	 *
 	 * @return \WP_Error|bool true if the request has read access for the item, WP_Error object otherwise
 	 */
-	public function replace_item_permissions_check( $request ) {
-		if ( ! $this->userCan( $request ) ) {
-			return new \WP_Error( 'rest_forbidden', esc_html__( 'You do not have permissions to view this resource.', 'zionbuilder' ), [ 'status' => $this->authorization_status_code() ] );
+	public function replace_item_permissions_check($request)
+	{
+		if (! $this->userCan($request)) {
+			return new \WP_Error('rest_forbidden', esc_html__('You do not have permissions to view this resource.', 'zionbuilder'), ['status' => $this->authorization_status_code()]);
 		}
 
 		return true;
@@ -85,22 +88,23 @@ class ReplaceUrl extends RestApiController {
 	 *
 	 * @return string|\WP_REST_Response|mixed
 	 */
-	public function replace_item( $request ) {
-		$find    = $request->get_param( 'find' );
-		$replace = $request->get_param( 'replace' );
+	public function replace_item($request)
+	{
+		$find    = $request->get_param('find');
+		$replace = $request->get_param('replace');
 
-		if ( $find === $replace ) {
-			return new \WP_Error( 'replace_url_failed', esc_html__( 'Cannot replace URL\'s. They are the same.', 'zionbuilder' ) );
+		if ($find === $replace) {
+			return new \WP_Error('replace_url_failed', esc_html__('Cannot replace URL\'s. They are the same.', 'zionbuilder'));
 		}
 
-		$is_valid_urls = filter_var( $find, FILTER_VALIDATE_URL ) && filter_var( $replace, FILTER_VALIDATE_URL );
-		if ( ! $is_valid_urls ) {
-			return new \WP_Error( 'replace_url_failed', esc_html__( 'Provided URL\'s are not valid.', 'zionbuilder' ) );
+		$is_valid_urls = filter_var($find, FILTER_VALIDATE_URL) && filter_var($replace, FILTER_VALIDATE_URL);
+		if (! $is_valid_urls) {
+			return new \WP_Error('replace_url_failed', esc_html__('Provided URL\'s are not valid.', 'zionbuilder'));
 		}
 
 		// Secure sql input
-		$find    = str_replace( '/', '\\\/', trim( $find ) );
-		$replace = str_replace( '/', '\\\/', trim( $replace ) );
+		$find    = str_replace('/', '\\/', trim($find));
+		$replace = str_replace('/', '\\/', trim($replace));
 
 		$meta_fields_to_replace = apply_filters(
 			'zionbuilder/options_utils/replace_urls_meta_fields',
@@ -109,21 +113,21 @@ class ReplaceUrl extends RestApiController {
 			]
 		);
 
-		foreach ( $meta_fields_to_replace as $meta_field ) {
-			$replace_urls = $this->replace_urls( $find, $replace, $meta_field );
+		foreach ($meta_fields_to_replace as $meta_field) {
+			$replace_urls = $this->replace_urls($find, $replace, $meta_field);
 
-			if ( is_wp_error( $replace_urls ) ) {
-				$replace_urls->add_data( [ 'status' => 500 ] );
+			if (is_wp_error($replace_urls)) {
+				$replace_urls->add_data(['status' => 500]);
 				return $replace_urls;
 			}
 		}
 
-		do_action( 'zionbuilder/options_utils/replace_urls', $find, $replace );
+		do_action('zionbuilder/options_utils/replace_urls', $find, $replace);
 
 		// Replace in Page builder options
-		$replace_urls_from_options = $this->replace_urls_from_options( $find, $replace, Settings::SETTINGS_OPTION_KEY );
-		if ( is_wp_error( $replace_urls_from_options ) ) {
-			$replace_urls_from_options->add_data( [ 'status' => 500 ] );
+		$replace_urls_from_options = $this->replace_urls_from_options($find, $replace, Settings::SETTINGS_OPTION_KEY);
+		if (is_wp_error($replace_urls_from_options)) {
+			$replace_urls_from_options->add_data(['status' => 500]);
 			return $replace_urls_from_options;
 		}
 
@@ -132,7 +136,7 @@ class ReplaceUrl extends RestApiController {
 
 		return rest_ensure_response(
 			[
-				'message' => esc_html__( 'URLs successfully replaced!', 'zionbuilder' ),
+				'message' => esc_html__('URLs successfully replaced!', 'zionbuilder'),
 			]
 		);
 	}
@@ -146,19 +150,23 @@ class ReplaceUrl extends RestApiController {
 	 *
 	 * @return true|\WP_Error
 	 */
-	public function replace_urls( $find, $replace, $meta_key ) {
+	public function replace_urls($find, $replace, $meta_key)
+	{
 		global $wpdb;
 
 		// @codingStandardsIgnoreStart `$wpdb->prepare` will remove the backslashes when it's used
 		$rows_affected = $wpdb->query(
-			"UPDATE {$wpdb->postmeta} " .
-			"SET `meta_value` = REPLACE(`meta_value`, '" . $find . "', '" . $replace . "') " .
-			"WHERE `meta_key` = '" . $meta_key . "'"
+			$wpdb->prepare(
+				"UPDATE {$wpdb->postmeta} SET `meta_value` = REPLACE(`meta_value`, %s, %s) WHERE `meta_key` = %s;",
+				$find,
+				$replace,
+				$meta_key
+			)
 		);
 		// @codingStandardsIgnoreEnd
 
-		if ( false === $rows_affected ) {
-			return new \WP_Error( 'replace_url_failed', esc_html__( 'An error has occurred while updating the urls.', 'zionbuilder' ) );
+		if (false === $rows_affected) {
+			return new \WP_Error('replace_url_failed', esc_html__('An error has occurred while updating the urls.', 'zionbuilder'));
 		}
 		return true;
 	}
@@ -172,19 +180,23 @@ class ReplaceUrl extends RestApiController {
 	 *
 	 * @return \WP_Error|bool Boolean true on success
 	 */
-	public function replace_urls_from_options( $find, $replace, $option_name ) {
+	public function replace_urls_from_options($find, $replace, $option_name)
+	{
 		global $wpdb;
 
 		// @codingStandardsIgnoreStart `$wpdb->prepare` will remove the backslashes when it's used
 		$rows_affected = $wpdb->query(
-			"UPDATE {$wpdb->options} " .
-			"SET `option_value` = REPLACE(`option_value`, '" . $find . "', '" . $replace . "') " .
-			"WHERE `option_name` = '" . $option_name . "';"
+			$wpdb->prepare(
+				"UPDATE {$wpdb->options} SET `option_value` = REPLACE(`option_value`, %s, %s) WHERE `option_name` = %s;",
+				$find,
+				$replace,
+				$option_name
+			)
 		);
 		// @codingStandardsIgnoreEnd
 
-		if ( false === $rows_affected ) {
-			return new \WP_Error( 'replace_url_failed', esc_html__( 'An error has occurred while updating the urls from page builder options.', 'zionbuilder' ) );
+		if (false === $rows_affected) {
+			return new \WP_Error('replace_url_failed', esc_html__('An error has occurred while updating the urls from page builder options.', 'zionbuilder'));
 		}
 		return true;
 	}

@@ -19,7 +19,6 @@ var __spreadValues = (a, b) => {
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 (function() {
   "use strict";
-  const frontend = "";
   window.zbFrontend = window.zbFrontend || [];
   window.zbFrontend.scripts = window.zbFrontend.scripts || {};
   function useSwiper() {

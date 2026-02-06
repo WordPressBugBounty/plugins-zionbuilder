@@ -23,8 +23,6 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   const _hoisted_2 = ["data-zion-slider-config"];
   const _hoisted_3 = { class: "swiper-wrapper" };
   const _hoisted_4 = ["src"];
-  const _hoisted_5 = /* @__PURE__ */ vue.createElementVNode("div", { class: "swiper-button-prev" }, null, -1);
-  const _hoisted_6 = /* @__PURE__ */ vue.createElementVNode("div", { class: "swiper-button-next" }, null, -1);
   const __default__ = {
     name: "ImageSlider"
   };
@@ -103,27 +101,59 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
             "data-zion-slider-config": elementOptions.value
           }, [
             vue.createElementVNode("div", _hoisted_3, [
-              (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.options.images, (slide, i) => {
-                return vue.openBlock(), vue.createElementBlock("div", {
-                  key: i,
-                  class: "swiper-slide"
-                }, [
-                  vue.createElementVNode("img", {
-                    src: slide.image
-                  }, null, 8, _hoisted_4)
-                ]);
-              }), 128))
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(__props.options.images, (slide, i) => {
+                  return vue.openBlock(), vue.createElementBlock("div", {
+                    key: i,
+                    class: "swiper-slide"
+                  }, [
+                    vue.createElementVNode("img", {
+                      src: slide.image
+                    }, null, 8, _hoisted_4)
+                  ]);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ]),
-            _ctx.options.dots ? (vue.openBlock(), vue.createElementBlock("div", {
-              key: 0,
-              ref_key: "pagination",
-              ref: pagination,
-              class: "swiper-pagination"
-            }, null, 512)) : vue.createCommentVNode("", true),
-            _ctx.options.arrows ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, { key: 1 }, [
-              _hoisted_5,
-              _hoisted_6
-            ], 64)) : vue.createCommentVNode("", true)
+            vue.createCommentVNode(" Add Pagination "),
+            __props.options.dots ? (vue.openBlock(), vue.createElementBlock(
+              "div",
+              {
+                key: 0,
+                ref_key: "pagination",
+                ref: pagination,
+                class: "swiper-pagination"
+              },
+              null,
+              512
+              /* NEED_PATCH */
+            )) : vue.createCommentVNode("v-if", true),
+            vue.createCommentVNode(" Arrows "),
+            __props.options.arrows ? (vue.openBlock(), vue.createElementBlock(
+              vue.Fragment,
+              { key: 1 },
+              [
+                _cache[0] || (_cache[0] = vue.createElementVNode(
+                  "div",
+                  { class: "swiper-button-prev" },
+                  null,
+                  -1
+                  /* CACHED */
+                )),
+                _cache[1] || (_cache[1] = vue.createElementVNode(
+                  "div",
+                  { class: "swiper-button-next" },
+                  null,
+                  -1
+                  /* CACHED */
+                ))
+              ],
+              64
+              /* STABLE_FRAGMENT */
+            )) : vue.createCommentVNode("v-if", true)
           ], 8, _hoisted_2),
           vue.renderSlot(_ctx.$slots, "end")
         ]);

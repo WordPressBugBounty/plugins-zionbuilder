@@ -4,7 +4,7 @@ namespace ZionBuilder;
 
 use ZionBuilder\Whitelabel;
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -17,17 +17,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package ZionBuilder
  */
-class AdminBar {
+class AdminBar
+{
 	/**
 	 * AdminBar constructor.
 	 */
-	public function __construct() {
-		if ( isset( $_GET['zionbuilder-barebone-preview'] ) && $_GET['zionbuilder-barebone-preview'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-			show_admin_bar( false );
-			add_filter( 'body_class', [ $this, 'remove_body_classes' ] );
+	public function __construct()
+	{
+		if (isset($_GET['zionbuilder-barebone-preview']) && sanitize_text_field(wp_unslash($_GET['zionbuilder-barebone-preview'])) === 'true') { // phpcs:ignore WordPress.Security.NonceVerification
+			show_admin_bar(false);
+			add_filter('body_class', [$this, 'remove_body_classes']);
 		}
 
-		add_action( 'admin_bar_menu', [ $this, 'add_toolbar_items' ], 100 );
+		add_action('admin_bar_menu', [$this, 'add_toolbar_items'], 100);
 	}
 
 	/**
@@ -35,7 +37,8 @@ class AdminBar {
 	 *
 	 * @return array<int, string>
 	 */
-	public function remove_body_classes() {
+	public function remove_body_classes()
+	{
 		return [];
 	}
 
@@ -46,29 +49,30 @@ class AdminBar {
 	 *
 	 * @return void
 	 */
-	public function add_toolbar_items( $admin_bar ) {
+	public function add_toolbar_items($admin_bar)
+	{
 		// Add edit with zion link
 		global $post;
 
-		if ( ! $post ) {
+		if (! $post) {
 			return;
 		}
 
-		$post_instance = Plugin::$instance->post_manager->get_post_instance( $post->ID );
+		$post_instance = Plugin::$instance->post_manager->get_post_instance($post->ID);
 
-		if ( ! $post_instance ) {
+		if (! $post_instance) {
 			return;
 		}
 
 		// If this is a single page, show edit with zion builder button
-		if ( is_singular() ) {
+		if (is_singular()) {
 			$admin_bar->add_menu(
 				[
 					'id'    => 'edit-with-zion',
 					/* translators: %s: ZionBuilder white label name */
-					'title' => sprintf( __( 'Edit with %s', 'zionbuilder' ), Whitelabel::get_title() ),
+					'title' => sprintf(__('Edit with %s', 'zionbuilder'), Whitelabel::get_title()),
 					'href'  => $post_instance->get_edit_url(),
-	
+
 				]
 			);
 		} else {
@@ -85,7 +89,6 @@ class AdminBar {
 
 
 
-		do_action( 'zionbuilder/admin-bar/register_menu_items', $admin_bar );
-		
+		do_action('zionbuilder/admin-bar/register_menu_items', $admin_bar);
 	}
 }

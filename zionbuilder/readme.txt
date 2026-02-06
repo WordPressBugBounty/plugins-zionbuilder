@@ -1,30 +1,24 @@
-=== WordPress Page Builder – Zion Builder ===
+=== Zion Builder – Website Builder for Speed & Creativity ===
 Contributors: zionbuilder
-Tags: page builder, editor, visual editor, drag and drop, website builder, front-end builder
+Tags: page builder, editor, visual editor, drag and drop, website builder
 Requires at least: 6.0.0
-Tested up to: 6.7.1
-Stable tag: 3.6.14
+Tested up to: 6.9
+Stable tag: 3.6.17
 Requires PHP: 7.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
-
-Building websites just got easier! The latest WordPress page builder plugin on the market,Zion Builder is a visual editor with powerful design features to help you build interactive pages and posts in WordPress.
+Building websites just got easier! Zion Builder is a visual website builder with powerful design features to help you build interactive websites.
 
 == Description ==
 
 https://www.youtube.com/watch?v=oVsxuHh-DzU
 
-Built and designed by [Hogash team](https://hogash.com/?utm_source=wp-plugins&utm_medium=link&utm_campaign=description), the creator of the famous WordPress theme [Kallyas](https://kallyas.net/?utm_source=wp-plugins&utm_medium=link&utm_campaign=description), this plugin is the fastest page builder on the market. The user-friendly tools included in Zion Page Builder make the building process for WordPress websites easier than ever before. Read more on [Zion Builder](https://zionbuilder.io/?utm_source=wp-plugins&utm_medium=link&utm_campaign=description).
-
 Zion Builder in action - [TRY IT NOW](https://demo.zionbuilder.io/?enable-zion-builder&utm_source=wp-plugins&utm_medium=link&utm_campaign=description)
 
- ## WORDPRESS PAGE BUILDER FEATURES  ##
+## WORDPRESS PAGE BUILDER FEATURES  ##
 
 = Elements and templates at your fingertips =
 Add elements and pre-made templates right where you need them from the page builder “Add Elements” Popup. This popup gives access to pre-made layouts, elements, and to the Library System.
-
-= Independent composition of elements =
-Each element is composed of a wrapper and its sub-components. For example, a button is composed of a wrapper, the button, and the icon, and each one of them may have individual styles applied. Unlike other page builders, the plugin adds only the minimal HTML markup needed to render the elements in page.
 
 = Unified system of options =
 Every element has the same easy to use and intuitive options pattern found in the “Element Options” panel. It consists of 3 main tabs: general, styling and advanced. The general tab contains options specific to the edited element, the style tab contains options that can be used to style every aspect of the element while the advanced tab contains options for changing the element name, id, animations and more.
@@ -40,9 +34,6 @@ The inline editor is triggered on text click and provides options such as font f
 
 = Gradient background =
 Multiple gradients may be layered by making use of color opacity. When set a lower opacity of gradient colors, other gradient layers become visible. This is a powerful and unique feature that lets you add a distinctive touch to your design.
-
-= Manage loaded resources =
-Choose what fonts, colors, gradients, icon packs, or templates to appear in the page builder. That means you can choose only the fonts you need on your website even if on the dashboard you have access to hundreds of other fonts. By default, the builder loads only the resources needed for the rendered page so you can get a fast website out of the box, without the hassle of micro optimization.
 
 = History of actions =
 Saving system, history of your actions, post revisions, users permissions, or easily discard changes give you the power of becoming the sole creator of your website. Shortcuts for undo and redo are also available.
@@ -98,40 +89,14 @@ Locating the correct element to interact with can be difficult when developing a
 = RTL support =
 Zion Page Builder supports RTL which is vital for languages that are read from right-to-left (rather than left-to-right).
 
-== WORDPRESS PAGE BUILDER 25+ FREE ELEMENTS ==
-* __Section__ - Has plenty of options to customize your layout.
-* __Column__ - Create your initial structure and fill it with other content elements.
-* __Text Editor__ -  Write, edit, format text, and even WordPress shortcodes on your website.
-* __Custom HTML__ - Allows to include HTML code in the element section in case you need them.
-* __Shortcode__ - Insert advanced features or content blocks within your site.
-* __Google Maps__ - Add this item wherever you think it is necessary to guide your visitors to a place of interest.
-* __Counter__ - Progressively count up a value of your choice.
-* __Progress Bars__ - Visually represent the evolution of a process, skills, and project progress.
-* __Image Slider__ - Perfect for showcasing a set of images, portfolio pieces, and client logos.
-* __Anchor Point__ - Used to set up a One Page navigation on your website or maybe a documentation-like page.
-* __Testimonials__ - Perfect way to show your potential clients the kind of work you can provide.
-* __Icon List__ - Assign an icon to each element of the list and set the content of the element.
-* __Alert__ - Notify the user about something special, like – danger, success, information, or warning.
-* __Sidebar__ - Display information other than the main content of the web page.
-* __Soundcloud__ - Display an embedded SoundCloud module to play an audio file hosted on SoundCloud.
-* __Pricing Box__ - Create highly customizable interactive pricing tables with a lot of customization options.
-* __Tabs__ - Perfect for displaying a large amount of organized information in a small area.
-* __Accordions__ - Display the content like the tabs element, and use the available space more efficiently.
-* __Image Box__ - Easily add images with a large amount of control over their appearance and behavior.
-* __Image__ - Place an image from the media library or computer to the layout.
-* __Icon__ - Every icon is 100% full vector, so they look incredibly sharp and are retina-ready!
-* __Icon Box__ - Create a box with an icon and add a description to it.
-* __Gallery__ - Quickly create a responsive and stylish image gallery.
-* __Heading__ - Very easy to use, and allows for some interesting customizations.
-* __Video__ - Offers the ability for users to post self-hosted, YouTube, or Vimeo video clips easily to their websites.
-* __Button__ - Allows a variety of buttons with a lot of options.
-* __Separator__ - Highly flexible separator allows to control border size, color, width, alignment, margins above and below, and you even add icons to them.
-
 == WORDPRESS PAGE BUILDER PREMIUM FEATURES ==
 [Zion Builder Pro](https://zionbuilder.io/pricing/?utm_source=wp-plugins&utm_medium=link&utm_campaign=description) - Innovative plugin that comes to complete Zion Builder with many awesome features and elements which are meant to help users build their websites in no-time.
 
 = Access to complete style options =
 One of the things users love about Zion Builder Pro is the ability to fine tune almost every CSS property directly from the options panel. Combine this with the ability to change the styling for responsive devices and pseudo selectors so you have complete control over the page design.
+
+= Dynamic content for various fields =
+Replace static content from elements that are managed in WordPress with dynamic ones.
 
 = Ability to upload custom fonts =
 Zion Builder Pro makes it really easy to add custom fonts to your website. After uploading your font files to Zion Builder, your newly added fonts will be available in the editor at typography settings.
@@ -163,33 +128,8 @@ Global Colors and Gradients have the superpower to edit a color or a gradient in
 = Access to global gradients =
 Try out the Global Gradients yourself and you’ll see how you can spice up the design of your website while saving time.
 
-= Dynamic content for various fields =
-Replace static content from elements that are managed in WordPress with dynamic ones.
-
 = Access to PRO shape dividers =
 Add extra spice to the design and users will love them.
-
-= Additional PRO elements =
-The most wanted and powerful elements are provided in the Zion Builder Pro version. Currently the elements from Pro version are:
-* __Countdown__
-* __Social Share__
-* __Search__
-* __Pro Tabs__
-* __Pro Accordions__
-
-== ZION PAGE BUILDER UPCOMING FEATURES ==
-* Theme Builder
-* WooCommerce elements for theme builder
-* Header & Footer Builder
-* Popup Builder
-* Background Multi-Layers + Parallax
-* Global Smart Areas
-* Global Typography
-* Grid display
-* Copy / Paste Specific styles
-* Import / Export Page options
-* New Pro Templates
-* New Pro Elements
 
 Take total visual control of your layouts and escape from theme limitations with [Zion Builder Pro](https://zionbuilder.io/pricing/?utm_source=wp-plugins&utm_medium=link&utm_campaign=description)
 
@@ -209,7 +149,19 @@ We are here to help you anytime - Just join the [Zion Builder Community](https:/
 * Follow us on [Twitter](https://twitter.com/zionpagebuilder)
 * Subscribe to our [YouTube](https://www.youtube.com/channel/UCfjUWpdwjBnOuMSvL7u6yXg) channel
 
+## Undocumented use of a 3rd Party / external service
+
+To improve the user experience, Zion Builder may use the following 3rd party services if the required feature is enabled:
+
+Google Fonts – are loaded to add additional fonts to your website. Google’s [TOS](https://policies.google.com/terms) and [Privacy Policy](https://policies.google.com/privacy)
+Local Google fonts through https://gwfh.mranftl.com/ . This service is used to download and serve Google fonts locally. It does not store any user information.
+Some features require loading assets from [zionbuilder.io](https://zionbuilder.io). These assets are not used for tracking unless explicitly mentioned. Learn more in our [TOS](https://zionbuilder.io/terms-of-services/) and [Privacy Policy](https://zionbuilder.io/privacy-policy/).
+
 == Frequently Asked Questions ==
+
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the ZionBuilder plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/ab92b9d2-40bd-45d7-a330-b511cac63fdd). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 = What is Zion Page Builder? =
 
@@ -224,7 +176,19 @@ Zion Builder is compatible with most themes that are well constructed according 
 = Can I integrate Zion Page Builder for my commercial theme? =
 The answer is definitely yes. If you run any kind of commercial business based on a WordPress theme and you wish to add interactivity in your pages, then Zion Builder can serve you the best.
 
+= Where do I report security bugs found in this plugin? =
+Please report security bugs found in the source code of the ZionBuilder plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/ab92b9d2-40bd-45d7-a330-b511cac63fdd). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Changelog ==
+= 3.6.17 =
+Fixed: https://www.cve.org/CVERecord?id=CVE-2024-54213
+
+= 3.6.16 =
+Improved: Code changes required by WordPress coding standards and plugin requirements
+
+= 3.6.15 =
+Improved: Implemented new dynamic asset generation
+
 = 3.6.14 =
 Fixed: Fixed columns not displaying properly
 
@@ -653,391 +617,3 @@ Fixed: Custom breakpoints not generating proper CSS in certain conditions
 Fixed: Library screenshot not generating in certain conditions
 Misc: Updated builder external dependencies to latest version
 Misc: Updated many components to Vue 3
-
-= 2.7.4 2021-09-15 =
-* Improved shortcut keys for MacOS
-* Added missing animate.css animations
-* Added integration with Yoast
-* Made tabs accessible by keyboard
-* Added proper aria labels to tabs element
-* [UX] Added search input for animations option
-* [UX] Improvement: Keep only one options panel open at the same time
-* [UX] Added tooltips to main panel icons
-* [UX] Added element name to context menu
-* [UX] Added shortcut keys to context menu
-* [UX] Reduce the spacing around "has changes" green dot
-* [UX] Set default selector when deleting all additional selectors from an element
-* [UX] Show hover states visually when editing the options
-* [UX] Added confirmation popup before deleting a css class
-* Fixed compatibility with Blocksy template areas
-* Fixed Section masks not working on certain hosting companies
-* Fixed opacity bullet follows mouse on Firefox browser
-* Fixed dynamic colors not working for border option
-
-= 2.7.3 2021-08-19 =
-* Fixed jquery not loading in certain conditions
-
-= 2.7.2 2021-08-18 =
-* Added RankMath integration
-* Improved dynamic scripts management
-* Improved site SSL migration compatibility
-* Improved dark mode appearance
-* Fixed 404 error page appears sometimes when editing a template
-* Fixed replace URL option not working in certain conditions
-* Added WP filter for developers to add additional css to page assets file
-* Improved code documentation
-* Improved compatibility with PHP8
-
-= 2.7.1 2021-07-23 =
-* Fixed rendered page now working
-
-= 2.7.0 2021-07-22 =
-* Added Dark mode
-* Added image ALT text and sizes to gallery element images
-* Added compatibility with cart flow plugin
-* Added JS filter for input select options
-* Improvement - UX: Set mask options as collapsed when opening the element options panel
-* Improvement: unified clone element texts throughout the builder
-* Improved: Reordered icon box options
-* Improved internal API
-* Improved Blocksy theme integration
-* Fixed: Deleting a parent element while having a child element options panel open, doesn't close the panel
-* Fixed: Element CSS id not visually updating inside styling tab after changing it
-* Fixed changing page template requires a page refresh
-* Fixed icon list links not working properly
-* Fixed image not showing properly in a responsive mode in certain conditions
-* Fixed icon element not printing mobile device styles
-* Fixed some options that cannot be found when using the search from the elements panel
-* Fixed server rendered components doesn't render in certain conditions
-* Fixed element menu can sometimes go behind editor toolbars
-* Removed video controls option from Vimeo sources - Vimeo API doesn't allow controls removal for normal users
-* Various small fixes
-* Internal code cleanup
-
-= 2.6.1 2021-06-24 =
-* Fixed input select can show loading icon in certain conditions
-
-= 2.6.0 2021-06-22 =
-* Added coming soon and maintenance mode - Options can be found in the builder settings panel
-* Added option to select the page to use for "post/page" dynamic field
-* Added ability to search for an internal link for the link option
-* Improved select option
-* Added ability to add custom attributes to link options
-* Added ability to set custom tags for section/column and container
-* Added tooltips for add element insert icon so you know where the element will be inserted
-* Allow the user to toggle the add elements popup by pressing its trigger icon
-* Removed the p tags addition for all inline editors/TinyMCE
-* Highlight elements in the tree view panel when clicking on them
-* Removed the minimum default value for number inputs
-* Allow clicking on the element options button even if the button is behind a padding overlay
-* Improved undo/redo system for editing elements
-* Various inline editor small improvements
-* Implemented new tooltips that can be used in the editor interface
-* Fixed page jumping if hovering the last element in a blank canvas page
-* Fixed featured image dynamic data not working as the background image in certain conditions
-* Fixed input shape divider value cannot be deleted
-* Fixed element button - icon on right doesn't display any space between the icon and text
-* Fixed library item import can sometimes import in revers section order
-* Fix background "repeat-x" option not working
-* Improved element icons loading in the editor by caching the icons that are received from the server
-* Fixed Chrome console warning related to wheel event used in an editor component
-
-= 2.5.0 2021-06-14 =
-* Improvement: Scroll to the top when searching for an element in the "add elements popup"
-* Improvement: Prevent bottom scrolling closes the "add elements popup"
-* Improvement: Tree view now opens all the active element parents and highlights it
-* Improvement: Tree view scrolls automatically to the active element
-* Improvement: Added a delay while hovering over the system info tooltips
-* Improvement: Added a drag threshold before you can drag the options panel
-* Improvement: Links from the main panel open in the same tab now
-* Improved developer API
-* Added proper tooltips to background option tabs
-* Reduced the CSS output for various elements
-* Fixed Google fonts reset in certain conditions
-* Fixed Google Font variant can exceed browser window size in certain conditions
-* Added responsive options for Image slider - slides to show
-* Fixed autosave post status not saving correctly in certain conditions
-* Fixed typo in Slider option
-* Fixed releasing the mouse click while resizing an element can reset the size in certain conditions
-* Fixed border size of 0 doesn't generate the CSS in preview mode
-* Fixed Add elements popup can show duplicated elements
-* Fixed Custom fonts upload not working without an external WP plugin
-* Fixed separator border line thickness default value not working
-* Updated developer plugins
-
-= 2.4.1 2021-05-18 =
-* Fixed animation library not loading on certain hosting platforms
-* Fixed transform scale not working properly while dragging to change the value
-* Fixed editor CSS affects the content in editor mode
-
-= 2.4.0 2021-05-14 =
-* Added container element
-* Fixed undo/redo not working from history panel
-* Fixed discard changes for repeater option shows console error
-* Fixed animation delay not working properly
-* Fixed icon option placed in a modal window closes modal when the icon is deleted
-* Improved builder assets generation and loading order
-* Added code action for server component render
-* Various small code fixes
-
-= 2.3.1 2021-04-27 =
-* Better styled child selectors display in options panel
-* Fixed child selector sortable prevents chaning draggable inner options
-
-= 2.3.0 2021-04-27 =
-* Added ability to style any child css class or selector to all elements and global css classes
-* Fixed Adding extra css classes to column not working in editor mode
-* Fixed code helper pseudo_selector not working properly
-* Fixed admin page icon not showing properly if PRO version is active
-
-= 2.2.0 2021-04-12 =
-* Varsious overall builder speed improvements
-* All elements that reqiures data from server are now grouped in a single server call
-* Removed various css/js files from loading if they are not needed on the page
-* Added style options for icon box spacer
-* Improved order of scripts loading
-* Added style options for modal close button
-* Added indicator showing that an element has custom css classes applied
-* Added additional style options for separator element
-* Plugin developers: You can now condition the render element from inside the element class
-* Fixed css classes added multilple times in certain conditions
-* Fixed element from library added after a section instead of inside it
-* Improvement: When a new item is added to the library, the library automatically navigates to the newly added element
-* Improved initial disply of library items
-* Added additional php actions and filters
-* Updated Vue JS to latest version
-* Fixed local changes popup appears in certain conditions even if there were not unsaved changes to a page
-* Fixed global colors generating with the same id
-* removed empty options values from saving to DB
-* Improved PRO compatiblity regarding repeated elements
-
-= 2.1.1 2021-03-16 =
-* Fixed modal script not loaded properly
-
-= 2.1.0 2021-03-16 =
-* Feature: Improved compatibility with caching plugins
-* Feature: Added ability to change the icon background for icon element
-* Feature: Added style options for icon element
-* Feature: Added repsonsive options for section/column mask height
-* Improvement: Added ability to use dynamic data for accordion titles
-* Fixed: 0 column offset not applying
-* Fixed: Custom css classes cannot be deleted in certain conditions
-* Fixed: Various small fixes
-
-= 2.0.0 2021-02-26 =
-* Feature: Added breadcrumbs above options when using element options search
-* Feature: Added element icon for elements in tree view
-* Feature: Added categories to add elements popup
-* Feature: Added move element action to history
-* Feature: Added link option for column
-* Improvement: White space typography option
-* Improvement: Default WordPress themes compatibility
-* Improvement: Tooltip and rest API
-* Improvement: Visual improvements for Panel Element Options and OptionsForm
-* Improvement: Visual improvement for has changes bullet
-* Improvement: Added element icons to treeview and wireframe view
-* Improvement: Updated style for anchorPoint element in editor mode
-* Improvement: Performance tweaks for input range dynamic
-* Improvement: Inline-editor bugfixes and code improvement
-* Improvement: Added inner content styles and single item color option for iconlist
-* Improvement: Admin dashboard responsiveness
-* Improvement: Added string in case no value added for inline edit
-* Improvement: Added message when the element has no specific options
-* Improvement: Added background video options
-* Improvement: Allow themes to hook into plugin integrations
-* Improvement: Added invalid element component
-* Fixed errors when ssl is not properly set on websites
-* Fixed cannot properly drag items inside tabs
-* Fixed console error related to open panels
-* Fixed Toggle Library Panel when inserting items
-* Fixed dynamic text can be edited with inline editor
-* Fixed visual bug for right click in tree view panel
-* Fixed rename elements with right click
-* Fixed heading from 'Add Elements' popup inheriting styles from theme
-* Fixed CSS is not loaded in editor mode when using shortcodes
-* Fixed Custom css class cannot be deleted
-* Fixed repeater option console error in case no button text added
-* Fixed several sortable related issues
-* Fixed icon height bigger than width for certain icons
-* Fixed prevent link follow in text element and button element
-* Fixed delete custom-pseudoselectors
-* Fixed Added delete changes for responsive options
-* Fixed panel options search
-* Fixed pseudo selector delete kept styling
-* Fixed pseudo selector not resetting when editing a new element
-* Fixed add elements popup show while sorting elements
-* Fixed php notice for accordion element
-* Fixed Switch option styles
-* Fixed typography option not showing on general tab
-* Fixed Custom pseudoselector field not closing
-* Fixed modal visual bugs
-* Fixed Save is triggered only if clicked on the icon on the main panel
-* Fixed set wrapper tag for ProgressBars
-* Fixed Search content tab is not displaying correctly
-* Fixed Empty element appear in Add Elements popup
-
-
-= 1.2.3 2020-12-14 =
-* Improvement: rtl support for both editor and rendered page
-* Improvement: Error message when a template cannot be inserted
-* Improvement: Added video to plugin description
-* Improvement: Avoid extra click when inserting icon into page
-* Improvement: Added invert filter to style options
-* Fixed icon element generates color css twice
-* Fixed back button from library preview closes the panel
-* Fixed plugin name display
-* Fixed add global color visual bug
-* Fixed placement and style for Elements filtering in Add Elements popup
-* Fixed description text in about modal
-
-= 1.2.2 2020-12-09 =
-* Fixed focus on inline editor font size
-* Fixed Panel Library maximize buton click not working
-* Fixed wp 5.6 compatibility
-* Fixed click on adding global color closes colorPicker
-* Fixed tabs element not applying custom classes
-
-= 1.2.1 2020-12-08 =
-* Internal Feature: allow setting default value for repeater field
-* Improved: Add message when there are no saved gradients
-* Improved: Added allow Html in title fields in editor mode
-* Improved: Icon element markup in editor mode
-* Improved: demo mode
-* Improved: icon tab set normal default
-* Fixed Column styling options not showing on Safari on MacOS Big Sur
-* Fixed render classes on positioning the counter element
-* Fixed accordions element not showing in page when first added
-* Fixed Box shadow inset applies even if it is set to no
-* Fixed heading align option not responsive
-* Fixed custom classes not applying to various elements
-
-= 1.2.0- 2020-12-07 =
-* Added options to style the active tab for Tabs element
-* Added WordPress filters for REST controllers
-* Renamed Custom HTML element to Custom Code
-* Improved: Changes green dot now appears for dynamic values
-* Improved Zion Builder library display Improved: The options panel will show the general tab when editing a different element
-* Improved: Removed help tab from builder panel.
-* Improved: Page cache not clearing properly when modifying the page
-* Fixed accordion and tabs elements not working in certain conditions
-* Fixed icon element options not applying in certain conditions
-* Fixed shortcodes not working
-* Fixed element changes not saving to history in certain conditions
-* Fixed pseudo-element before options shows console error in certain conditions
-* Fixed restoring from local storage not working in certain conditions
-* Various code cleanup and improvements
-
-= 1.1.0- 2020-11-24 =
-* Feature: Add Elements Popup pens automatically when column layouts are inserted
-* Feature: Element options panel: Added ability to click on the element title to select the parent element
-* Feature: Abillity to change Column setting for each viewport for Zion's Gallery Element
-* Feature: Make Button Position option changeable per viewport
-* Renamed regenerate css to regenerate css and js
-* Improved history
-* Improved Tabs Element
-* Allow save page on content editable
-* Allow browser context on right click in preview mode
-* Hide element menu when scrolling
-* Replaced pageEvents with windows
-* Update plugin info card for pro version
-* Update Urls for changelog
-* Implemented element scroll to
-* Replace modal tour with intro video
-* Change Tab name from "Columns" to "Layouts"
-* Updated elements registration
-* Created methods for adding children to elements
-* Added ability to use zion builder version of Vue
-* Made components package as vue plugin
-* Reorganized components
-* Updated to Popper2
-* Removed Vuex from dependencies
-* Add padding to element icon for image element
-* Add v1.0.0 to lerna
-* Update to Vue 3 and fix compatibility syntax
-* Switched to monorepo
-* Added filter for license check
-* Update Data Fonts Google set
-* Add ability to get render attributes for multiple tag ids
-* Fixed poper behaviour on scroll
-* Fixed image wrapper border on image option
-* Fixed element custom css not working
-* Fixed Mozilla bug on input
-* Fixed locked user data
-* Fixed image element margin drag hides the toolbox
-* Fixed Zion Builder not working with Yoast in certain conditions
-* Fixed PHP Stan erors
-* Fixed CSS classes not cleared when a new css class is added or changed
-* Fixed render "Array" string on elements classes
-* Fixed section masks not working
-* Fixed element with no options shows values as array
-* Fixed CSS not generated when using 0 (zero) without any suffix like 'px' for input values
-* Fixed Absolute Positioning of elements in Zion Builder is not the same as on the front end
-* Fixed CSS not working correctly inside Zion Builder after changing Column ID
-* Fixed Zion Keyboard Shortcuts prohibit from typing capital letters inside the Wordpress media popup screen
-* Fixed css classes not cleared when a new css class is added or changed
-* Fixed Custom Javascript doesn't get removed in 'Custom Javascript' under 'Page Options' when saving page
-
-= 1.0.1- 2020-08-17 =
-* Renamed plugin
-* Changed register element system
-* Updated composer dependencies
-* Replaced PRO description from admin
-* Updated minimum PHP version
-* Performance optimizations
-* Implement pro connection
-* Add pro badge to dashboard
-* Add calendar picker
-* Add new transform properties
-* Moved render methods to render class
-* Added loading gif to element loading
-* Update keywords for elements
-* Prevent adding emty values on transition property
-* Added offset 0 value for columns
-* Added dynamic background color option type
-* Implement masks for sections and columns
-* Change png to svg in section view
-* Add specialFilterPak prop to iconsLibraryModal
-* Add dynamic content to heading, iconbox, iconList, ImageBox,PricingBox, ProgressBars, Testimonial
-* Added vendor prefixes for css styles
-* Added filters to various locations
-* Remove seconds from History items
-* Added filter for options parsing
-* Added form filters
-* Added filter for element custom css
-* Updated plugin version
-* Added namespace to plugin file
-* Updated pagebuilder meta keys
-* Implemented update system
-* Added updater base code
-* Fixed data update not working properly
-* Fixed template not importing images in certain conditions
-* Fixed background size contain
-* Fixed panels height dragging
-* Fixed background gradient not working
-* Fixed case sensitive icon search
-* Fixed styles not generating proper css
-* Fixed duplicate renderer var
-* Fixed css duplicated
-* Fixed animations visibility glitch
-* Fixed flex direction row in rendered page
-* Fixed uploaded icons not showing in frontend editor
-* Fixed css gradients
-* Fixed animation duration and delay not working properly
-* Fixed missing post id for bulk actions API call
-* Fixed inverse text shadow icons for horizontal and vertical spread
-* Fixed no loader for templates library preview when inserting the item
-* Fixed blur not rendering correctly
-* Fixed compatibility with older versions of MySQL/MariaDB
-* Fixed safari library scroll not working
-* Fixed compatibility with legacy zionbuilder
-* Fixed several PHP stan errors
-* Fixed build command
-* Fixed testimonial element not showing properly in frontend
-* Fixed scrollTop and overflow hidden from accordion menu
-* Fixed compatibility with WP 5.4.2
-* Fixed error showing when using video background
-
-
-= 0.1.0 =
-* Initial Public Release
-

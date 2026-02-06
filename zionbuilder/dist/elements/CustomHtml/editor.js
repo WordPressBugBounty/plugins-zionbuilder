@@ -12,8 +12,9 @@
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", null, [
           vue.renderSlot(_ctx.$slots, "start"),
+          vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html "),
           vue.createElementVNode("div", {
-            innerHTML: _ctx.options.content
+            innerHTML: __props.options.content
           }, null, 8, _hoisted_1),
           vue.renderSlot(_ctx.$slots, "end")
         ]);

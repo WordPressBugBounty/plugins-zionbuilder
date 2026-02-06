@@ -38,46 +38,64 @@
         const _component_ElementIcon = vue.resolveComponent("ElementIcon");
         return vue.openBlock(), vue.createElementBlock("div", null, [
           vue.renderSlot(_ctx.$slots, "start"),
-          image.value && _ctx.options.position !== void 0 && _ctx.options.position === "top" ? (vue.openBlock(), vue.createElementBlock("img", vue.mergeProps({
+          image.value && __props.options.position !== void 0 && __props.options.position === "top" ? (vue.openBlock(), vue.createElementBlock("img", vue.mergeProps({
             key: 0,
-            class: ["zb-el-testimonial__userImage", _ctx.api.getStyleClasses("inner_content_styles_image")]
-          }, _ctx.api.getAttributesForTag("inner_content_styles_image"), { src: image.value }), null, 16, _hoisted_1)) : vue.createCommentVNode("", true),
+            class: ["zb-el-testimonial__userImage", __props.api.getStyleClasses("inner_content_styles_image")]
+          }, __props.api.getAttributesForTag("inner_content_styles_image"), { src: image.value }), null, 16, _hoisted_1)) : vue.createCommentVNode("v-if", true),
           vue.createVNode(_component_RenderValue, vue.mergeProps({
             option: "content",
-            class: ["zb-el-testimonial-content", _ctx.api.getStyleClasses("inner_content_styles_misc")]
-          }, _ctx.api.getAttributesForTag("inner_content_styles_misc")), null, 16, ["class"]),
+            class: ["zb-el-testimonial-content", __props.api.getStyleClasses("inner_content_styles_misc")]
+          }, __props.api.getAttributesForTag("inner_content_styles_misc")), null, 16, ["class"]),
           vue.createElementVNode("div", _hoisted_2, [
-            image.value && _ctx.options.position !== void 0 && _ctx.options.position !== "top" ? (vue.openBlock(), vue.createElementBlock("img", vue.mergeProps({
+            image.value && __props.options.position !== void 0 && __props.options.position !== "top" ? (vue.openBlock(), vue.createElementBlock("img", vue.mergeProps({
               key: 0,
-              class: ["zb-el-testimonial__userImage", _ctx.api.getStyleClasses("inner_content_styles_image")]
-            }, _ctx.api.getAttributesForTag("inner_content_styles_image"), { src: image.value }), null, 16, _hoisted_3)) : vue.createCommentVNode("", true),
+              class: ["zb-el-testimonial__userImage", __props.api.getStyleClasses("inner_content_styles_image")]
+            }, __props.api.getAttributesForTag("inner_content_styles_image"), { src: image.value }), null, 16, _hoisted_3)) : vue.createCommentVNode("v-if", true),
             vue.createElementVNode("div", _hoisted_4, [
               vue.createVNode(_component_RenderValue, vue.mergeProps({
                 option: "name",
-                class: [_ctx.api.getStyleClasses("inner_content_styles_user"), "zb-el-testimonial__userInfo-name"]
-              }, _ctx.api.getAttributesForTag("inner_content_styles_user")), null, 16, ["class"]),
+                class: [__props.api.getStyleClasses("inner_content_styles_user"), "zb-el-testimonial__userInfo-name"]
+              }, __props.api.getAttributesForTag("inner_content_styles_user")), null, 16, ["class"]),
               vue.createVNode(_component_RenderValue, vue.mergeProps({
                 option: "description",
-                class: [_ctx.api.getStyleClasses("inner_content_styles_description"), "zb-el-testimonial__userInfo-description"]
-              }, _ctx.api.getAttributesForTag("inner_content_styles_description")), null, 16, ["class"]),
-              stars.value && stars.value !== "no_stars" ? (vue.openBlock(), vue.createElementBlock("div", vue.mergeProps({
-                key: 0,
-                class: ["zb-el-testimonial__stars", _ctx.api.getStyleClasses("inner_content_styles_stars")]
-              }, _ctx.api.getAttributesForTag("inner_content_styles_stars")), [
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(stars.value, (star, index) => {
-                  return vue.openBlock(), vue.createBlock(_component_ElementIcon, {
-                    key: index + 10,
-                    class: "zb-el-testimonial__stars--full",
-                    "icon-config": getStar.value
-                  }, null, 8, ["icon-config"]);
-                }), 128)),
-                (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(5 - stars.value, (star) => {
-                  return vue.openBlock(), vue.createBlock(_component_ElementIcon, {
-                    key: star,
-                    "icon-config": getEmptyStar.value
-                  }, null, 8, ["icon-config"]);
-                }), 128))
-              ], 16)) : vue.createCommentVNode("", true)
+                class: [__props.api.getStyleClasses("inner_content_styles_description"), "zb-el-testimonial__userInfo-description"]
+              }, __props.api.getAttributesForTag("inner_content_styles_description")), null, 16, ["class"]),
+              stars.value && stars.value !== "no_stars" ? (vue.openBlock(), vue.createElementBlock(
+                "div",
+                vue.mergeProps({
+                  key: 0,
+                  class: ["zb-el-testimonial__stars", __props.api.getStyleClasses("inner_content_styles_stars")]
+                }, __props.api.getAttributesForTag("inner_content_styles_stars")),
+                [
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(stars.value, (star, index) => {
+                      return vue.openBlock(), vue.createBlock(_component_ElementIcon, {
+                        key: index + 10,
+                        class: "zb-el-testimonial__stars--full",
+                        "icon-config": getStar.value
+                      }, null, 8, ["icon-config"]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  )),
+                  (vue.openBlock(true), vue.createElementBlock(
+                    vue.Fragment,
+                    null,
+                    vue.renderList(5 - stars.value, (star) => {
+                      return vue.openBlock(), vue.createBlock(_component_ElementIcon, {
+                        key: star,
+                        "icon-config": getEmptyStar.value
+                      }, null, 8, ["icon-config"]);
+                    }),
+                    128
+                    /* KEYED_FRAGMENT */
+                  ))
+                ],
+                16
+                /* FULL_PROPS */
+              )) : vue.createCommentVNode("v-if", true)
             ])
           ]),
           vue.renderSlot(_ctx.$slots, "end")

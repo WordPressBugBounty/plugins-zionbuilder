@@ -25,8 +25,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Preview {
 	const CONTENT_FILTER_PRIORITY = 999999;
 
-	private $server_render_flag = false;
-
 	/**
 	 * Preview constructor.
 	 */
@@ -162,10 +160,6 @@ class Preview {
 			'preview_app_css_classes' => apply_filters( 'zionbuilder/preview/app/css_classes', [] ),
 			'post'                    => get_post(),
 			'masks'                   => Masks::get_shapes(),
-			'plugin_info'             => [
-				'is_pro_active'    => Utils::is_pro_active(),
-				'is_pro_installed' => Utils::is_pro_installed(),
-			],
 			'urls'                    => [
 				'assets_url'        => Utils::get_file_url( 'assets' ),
 				'logo'              => Whitelabel::get_logo_url(),
@@ -181,7 +175,6 @@ class Preview {
 				'pro_changelog'     => 'https://zionbuilder.io/changelog-pro-version/',
 				'ajax_url'          => admin_url( 'admin-ajax.php', 'relative' ),
 			],
-			'user_data'               => User::get_user_data(),
 		];
 	}
 
@@ -189,8 +182,8 @@ class Preview {
 	 * Add Content Filter
 	 *
 	 * Replaces post content with our pagebuilder area data
-	 * In preview mode we are rendering the elements for dynamic templating. We need to add the
-	 * filter only to the post that mathces the preview post id
+	 * In preview mode we are rendering the elements for dynamic template. We need to add the
+	 * filter only to the post that matches the preview post id
 	 *
 	 * @since 1.0.0
 	 *
@@ -204,7 +197,7 @@ class Preview {
 	}
 
 	public function render_area( $area_id ) {
-		return '<div id="znpb-preview-' . $area_id . '-area"></div>';
+		return '<div id="znpb-preview-canvas"></div>';
 	}
 
 
@@ -232,13 +225,5 @@ class Preview {
 
 	private function get_current_post_id() {
 		return isset( $_GET['zionbuilder-preview'] ) ? absint( $_GET['zionbuilder-preview'] ) : false; // phpcs:ignore WordPress.Security.NonceVerification
-	}
-
-	public function get_server_render_flag() {
-		return $this->server_render_flag;
-	}
-
-	public function set_server_render_flag( $flag ) {
-		$this->server_render_flag = $flag;
 	}
 }

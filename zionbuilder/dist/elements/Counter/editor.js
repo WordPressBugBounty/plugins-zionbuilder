@@ -26,27 +26,51 @@
         }
       }
       return (_ctx, _cache) => {
-        return vue.openBlock(), vue.createElementBlock("div", {
-          ref_key: "root",
-          ref: root,
-          class: "zb-el-counter"
-        }, [
-          vue.renderSlot(_ctx.$slots, "start"),
-          _ctx.options.before ? (vue.openBlock(), vue.createElementBlock("div", vue.mergeProps({
-            key: 0,
-            class: "zb-el-counter__before"
-          }, _ctx.api.getAttributesForTag("before_text_styles"), {
-            class: _ctx.api.getStyleClasses("before_text_styles")
-          }), vue.toDisplayString(_ctx.options.before), 17)) : vue.createCommentVNode("", true),
-          vue.createElementVNode("div", _hoisted_1, vue.toDisplayString(_ctx.options.start), 1),
-          _ctx.options.after ? (vue.openBlock(), vue.createElementBlock("div", vue.mergeProps({
-            key: 1,
-            class: "zb-el-counter__after"
-          }, _ctx.api.getAttributesForTag("after_text_styles"), {
-            class: _ctx.api.getStyleClasses("after_text_styles")
-          }), vue.toDisplayString(_ctx.options.after), 17)) : vue.createCommentVNode("", true),
-          vue.renderSlot(_ctx.$slots, "end")
-        ], 512);
+        return vue.openBlock(), vue.createElementBlock(
+          "div",
+          {
+            ref_key: "root",
+            ref: root,
+            class: "zb-el-counter"
+          },
+          [
+            vue.renderSlot(_ctx.$slots, "start"),
+            __props.options.before ? (vue.openBlock(), vue.createElementBlock(
+              "div",
+              vue.mergeProps({
+                key: 0,
+                class: "zb-el-counter__before"
+              }, __props.api.getAttributesForTag("before_text_styles"), {
+                class: __props.api.getStyleClasses("before_text_styles")
+              }),
+              vue.toDisplayString(__props.options.before),
+              17
+              /* TEXT, FULL_PROPS */
+            )) : vue.createCommentVNode("v-if", true),
+            vue.createElementVNode(
+              "div",
+              _hoisted_1,
+              vue.toDisplayString(__props.options.start),
+              1
+              /* TEXT */
+            ),
+            __props.options.after ? (vue.openBlock(), vue.createElementBlock(
+              "div",
+              vue.mergeProps({
+                key: 1,
+                class: "zb-el-counter__after"
+              }, __props.api.getAttributesForTag("after_text_styles"), {
+                class: __props.api.getStyleClasses("after_text_styles")
+              }),
+              vue.toDisplayString(__props.options.after),
+              17
+              /* TEXT, FULL_PROPS */
+            )) : vue.createCommentVNode("v-if", true),
+            vue.renderSlot(_ctx.$slots, "end")
+          ],
+          512
+          /* NEED_PATCH */
+        );
       };
     }
   });

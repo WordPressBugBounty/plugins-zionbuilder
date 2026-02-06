@@ -7,7 +7,7 @@ use ZionBuilder\Permissions;
 use ZionBuilder\Whitelabel;
 
 // Prevent direct access
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	return;
 }
 
@@ -16,15 +16,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Handles all page templates provided by the Zion Builder plugin
  */
-class PageTemplates {
+class PageTemplates
+{
 	/**
 	 * PageTemplates constructor.
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		// Add our templates to template list dropdown
-		add_filter( 'theme_templates', array( $this, 'register_page_templates_options' ), 10, 4 );
+		add_filter('theme_templates', array($this, 'register_page_templates_options'), 10, 4);
 		// Check and load our template
-		add_filter( 'template_include', array( $this, 'template_include' ), 12 );
+		add_filter('template_include', array($this, 'template_include'), 12);
 	}
 
 	/**
@@ -34,10 +36,11 @@ class PageTemplates {
 	 *
 	 * @return array
 	 */
-	public function get_custom_templates() {
+	public function get_custom_templates()
+	{
 		return array(
-			'zion_builder_full_width' => sprintf( '%s Full Width', Whitelabel::get_title() ),
-			'zion_builder_blank'      => sprintf( '%s Blank Canvas', Whitelabel::get_title() ),
+			'zion_builder_full_width' => sprintf('%s Full Width', Whitelabel::get_title()),
+			'zion_builder_blank'      => sprintf('%s Blank Canvas', Whitelabel::get_title()),
 		);
 	}
 
@@ -53,12 +56,13 @@ class PageTemplates {
 	 *
 	 * @return array
 	 */
-	public function register_page_templates_options( $post_templates, $wp_theme, $post, $post_type ) {
-		$post_types = get_post_types_by_support( Permissions::POST_TYPE_EDIT_PERMISSION );
+	public function register_page_templates_options($post_templates, $wp_theme, $post, $post_type)
+	{
+		$post_types = get_post_types_by_support(Permissions::POST_TYPE_EDIT_PERMISSION);
 
 		// Only add the templates to post types supported by Zion Builder
-		if ( is_array( $post_types ) && in_array( $post_type, $post_types, true ) ) {
-			foreach ( $this->get_custom_templates() as $template_id => $template_name ) {
+		if (is_array($post_types) && in_array($post_type, $post_types, true)) {
+			foreach ($this->get_custom_templates() as $template_id => $template_name) {
 				$post_templates[$template_id] = $template_name;
 			}
 		}
@@ -73,37 +77,38 @@ class PageTemplates {
 	 *
 	 * @return string Path to the template that needs to be included
 	 */
-	public function template_include( $template ) {
-		if ( ! is_singular() ) {
+	public function template_include($template)
+	{
+		if (! is_singular()) {
 			return $template;
 		}
 
 		$post_instance = Plugin::$instance->post_manager->get_active_post_instance();
 
-		if ( ! $post_instance ) {
+		if (! $post_instance) {
 			return $template;
 		}
 
 		// If we are on preview mode, check for autosave
-		if ( Plugin::$instance->editor->preview->is_preview_mode() ) {
+		if (Plugin::$instance->editor->preview->is_preview_mode()) {
 			// get_post_or_autosave_instance
-			$post_instance = Plugin::$instance->post_manager->get_post_or_autosave_instance( $post_instance->get_post_id() );
+			$post_instance = Plugin::$instance->post_manager->get_post_or_autosave_instance($post_instance->get_post_id());
 		}
 
 		$post_template = $post_instance->get_post_template();
 		// Check to see if this is one of our templates
-		if ( in_array( $post_template, array_keys( $this->get_custom_templates() ), true ) ) {
+		if (in_array($post_template, array_keys($this->get_custom_templates()), true)) {
 			// Fix for WP themes
-			add_filter( 'body_class', array( $this, 'remove_body_classes' ) );
-			$template = $this->get_template_file( $post_template );
+			add_filter('body_class', array($this, 'remove_body_classes'));
+			$template = $this->get_template_file($post_template);
 		}
 
 		/*
 		 * Load barebone template if this is requested
 		 * @see: admin templates page => preview
 		 */
-		if ( isset( $_GET['zionbuilder-barebone-preview'] ) && $_GET['zionbuilder-barebone-preview'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$template = $this->get_template_file( 'zion_builder_blank' );
+		if (isset($_GET['zionbuilder-barebone-preview']) && sanitize_text_field(wp_unslash($_GET['zionbuilder-barebone-preview'])) === 'true') {
+			$template = $this->get_template_file('zion_builder_blank');
 		}
 
 		return $template;
@@ -118,10 +123,11 @@ class PageTemplates {
 	 *
 	 * @return array
 	 */
-	public function remove_body_classes( $classes = array() ) {
-		foreach ( $classes as $key => $css_class ) {
-			if ( $css_class === 'has-sidebar' ) {
-				unset( $classes[$key] );
+	public function remove_body_classes($classes = array())
+	{
+		foreach ($classes as $key => $css_class) {
+			if ($css_class === 'has-sidebar') {
+				unset($classes[$key]);
 			}
 		}
 		return $classes;
@@ -136,8 +142,9 @@ class PageTemplates {
 	 *
 	 * @return string
 	 */
-	public function get_template_file( $template_id ) {
-		return sprintf( '%s/templates/%s.php', __DIR__, $template_id );
+	public function get_template_file($template_id)
+	{
+		return sprintf('%s/templates/%s.php', __DIR__, $template_id);
 	}
 
 	/**
@@ -147,8 +154,9 @@ class PageTemplates {
 	 *
 	 * @return void
 	 */
-	public function render_content() {
-		while ( have_posts() ) :
+	public function render_content()
+	{
+		while (have_posts()) :
 			the_post();
 			the_content();
 		endwhile;

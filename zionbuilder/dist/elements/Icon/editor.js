@@ -30,17 +30,17 @@
           vue.renderSlot(_ctx.$slots, "start"),
           hasLink.value ? (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
             key: 0,
-            href: _ctx.options.link.link ? _ctx.options.link.link : null,
-            target: _ctx.options.link.target ? _ctx.options.link.target : null,
-            title: _ctx.options.link.title ? _ctx.options.link.title : null,
+            href: __props.options.link.link ? __props.options.link.link : null,
+            target: __props.options.link.target ? __props.options.link.target : null,
+            title: __props.options.link.title ? __props.options.link.title : null,
             class: "zb-el-icon-link zb-el-icon-icon",
             "data-znpbiconfam": iconConfig.value.family,
             "data-znpbicon": iconUnicode.value
-          }, _ctx.api.getAttributesForTag("shape")), null, 16, _hoisted_1)) : (vue.openBlock(), vue.createBlock(_component_ElementIcon, vue.mergeProps({
+          }, __props.api.getAttributesForTag("shape")), null, 16, _hoisted_1)) : (vue.openBlock(), vue.createBlock(_component_ElementIcon, vue.mergeProps({
             key: 1,
             class: "zb-el-icon-icon",
             "icon-config": iconConfig.value
-          }, _ctx.api.getAttributesForTag("shape")), null, 16, ["icon-config"])),
+          }, __props.api.getAttributesForTag("shape")), null, 16, ["icon-config"])),
           vue.renderSlot(_ctx.$slots, "end")
         ]);
       };
